@@ -1,0 +1,84 @@
+general {
+        output_format = "i3bar"
+        colors = true
+        interval = 5
+        color_good = "#aaff00"
+        color_degraded = "#00dddd"
+        color_bad = "#ff2200"
+}
+
+# order += "run_command wifi_name"
+order += "wireless wlan0"
+# order += "ethernet eno16777736"
+order += "battery 0"
+order += "cpu_usage"
+order += "volume master"
+order += "tztime localdate"
+order += "tztime localtime"
+
+# disk "/" {
+#         format = "  %avail "
+#         prefix_type = custom
+# }
+
+disk "/home" {
+        format = "  %avail "
+        prefix_type = custom
+}
+
+run_watch DHCP {
+        pidfile = "/var/run/dhclient*.pid"
+}
+
+run_watch VPN {
+        pidfile = "/var/run/vpnc/pid"
+}
+
+# run_command wifi_name {
+#     format = "%output"
+#     command = "~/scripts/wifi_name.sh"
+# }
+wireless wlan0 {
+        # format_up = "W: (%quality at %essid, %bitrate) %ip"
+        format_up = "無線 %quality %bitrate"
+        format_down = "W: down"
+}
+
+ethernet eno16777736 {
+        # if you use %speed, i3status requires root privileges
+        format_up = "  %ip "
+        format_down = "  "
+}
+
+battery 0 {
+        format = "%status %percentage %remaining %emptytime"
+        format_down = "空"
+        status_chr = "増"
+        status_bat = "減"
+        status_unk = "不明"
+        status_full = "満"
+        path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 10
+}
+
+volume master {
+  format = "%volume "
+    format_muted = "  %volume "
+    device = "default"
+    mixer = "Master"
+    mixer_idx = 0
+}
+
+# load {
+#         format = "%1min "
+#         max_threshold = 5
+# }
+
+tztime localdate {
+        format = "%Y-%m-%d "
+}
+
+tztime localtime {
+        format = "%H:%M"
+}
+
