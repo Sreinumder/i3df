@@ -6,6 +6,7 @@ vim.opt.laststatus = 2
 opt.lazyredraw = false
 opt.termguicolors = true
 opt.relativenumber = true --show relative number
+vim.opt.undofile = true
 opt.number = true
 
 opt.ignorecase = true -- ignore case when searching

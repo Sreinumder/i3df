@@ -21,7 +21,7 @@ return {
       }
     }
   },
-  config = function()
-    -- print("hello autotag!")
-  end,
+  -- config = function()
+  --   -- print("hello autotag!")
+  -- end,
 }
