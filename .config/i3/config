@@ -54,18 +54,18 @@ bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p ~/Screenshots -c
 bindsym $mod+Mod1+Print exec --no-startup-id flameshot screen -p ~/Screenshots
 
 # 4. system-commands, monitor-management and Scripts------------------------
-bindsym $mod+period exec "alacritty -e nvim -O ~/.config/i3/config ~/.config/i3/i3wm-advent.md"
+bindsym $mod+period exec "wezterm -e nvim -O ~/.config/i3/config ~/.config/i3/i3wm-advent.md"
 bindsym $mod+Shift+p move workspace to output right
 bindsym $mod+mod1+shift+s exec shutdown now
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # 5. Applications -------------------------------------------------------------
-bindsym $mod+Return exec kitty
-bindsym $mod+g exec "alacritty -e retroarch"
-bindsym $mod+space exec alacritty
-bindsym ctrl+$mod+space exec warp-terminal
-bindsym $mod+c exec alacritty --class dotfiles-floating -e vim ~/.config/i3/config
+bindsym $mod+Return exec warp-terminal
+bindsym $mod+g exec "wezterm -e retroarch"
+bindsym $mod+space exec wezterm
+# bindsym ctrl+$mod+space exec warp-terminal
+bindsym $mod+c exec wezterm --class dotfiles-floating -e vim ~/.config/i3/config
 bindsym $mod+ctrl+f exec chromium
 # bindsym $mod+e exec pcmanfm
 bindsym $mod+e exec thunar
