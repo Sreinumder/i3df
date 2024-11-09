@@ -7,5 +7,8 @@ return {
 	-- keys = {
 	-- 	{ "cr", mode = { "v", "n" } },
 	-- },
-  opts = {},
+  -- opts = {},
+  config = function()
+    require("coerce").setup()
+  end,
 }

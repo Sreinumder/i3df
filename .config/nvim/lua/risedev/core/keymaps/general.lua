@@ -5,14 +5,6 @@ keymap.set("n", "<leader>", "<NOP>", { desc = "Lazy nvim" })
 keymap.set("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy nvim" })
 keymap.set("n", "<A-v>", "vlh", { desc = "vi single char under cursor" })
 
-if not vim.g.os then
-    local is_windows = vim.fn.has("win64") or vim.fn.has("win32") or vim.fn.has("win16")
-    if is_windows then
-        vim.g.os = "Windows"
-        keymap.set("n", "<leader>v", "<C-v>", { desc = "vi for windows" })
-    end
-end
-
 vim.keymap.set("x", "J", "j")
 
 keymap.set({ "n", "x" }, "j", "gj", { desc = "next text wrapped line" })

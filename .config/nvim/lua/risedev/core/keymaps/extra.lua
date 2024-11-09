@@ -3,8 +3,8 @@ local keymap = vim.keymap -- for conciseness
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- clone sentences up and down
-keymap.set("n", "<A-J>", 'V"by"bPgv', { desc = "clone line Down(n)" })
-keymap.set("n", "<A-K>", 'V"by"bgpgv', { desc = "clone line Up(n)" })
+keymap.set("n", "<A-J>", 'V"by"bPgv<Esc>', { desc = "clone line Down(n)" })
+keymap.set("n", "<A-K>", 'V"by"bgpgv<Esc>', { desc = "clone line Up(n)" })
 keymap.set("x", "<A-J>", '"by"bPgv', { desc = "clone selection Down(v)" })
 keymap.set("x", "<A-K>", '"by"bgpgv', { desc = "clone selection Up(v)" })
 
