@@ -6,7 +6,7 @@
 --  └─────────────────────────────────────────────────────┘
 return {
 	"chrisgrieser/nvim-various-textobjs",
-  event = "User FilePost",
+  event = "UIEnter",
 	opts = { useDefaultKeymaps = true },
 	keys = {
 		{ "ii", "<cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>", mode = { "o", "x" } },

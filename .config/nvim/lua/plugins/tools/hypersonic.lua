@@ -1,6 +1,6 @@
 return {
     'tomiis4/Hypersonic.nvim',
-    event = "User FilePost",
+    event = "UIEnter",
     cmd = "Hypersonic",
 }
 

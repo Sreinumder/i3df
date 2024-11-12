@@ -5,7 +5,7 @@
 -- └────────────────────────────────┘
 return {
   "monaqa/dial.nvim",
-  event = "User FilePost",
+  event = "UIEnter",
   keys = { "<Leader>", mode = { "n", "x" } },
   config = function()
     local augend = require("dial.augend")

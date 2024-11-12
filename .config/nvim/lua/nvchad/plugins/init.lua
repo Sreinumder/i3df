@@ -30,7 +30,7 @@ return {
 
   {
     "lukas-reineke/indent-blankline.nvim",
-    event = "User FilePost",
+    event = "UIEnter",
     opts = {
       indent = { char = "│", highlight = "IblChar" },
       scope = { char = "│", highlight = "IblScopeChar" },
@@ -58,7 +58,7 @@ return {
   {
     "folke/which-key.nvim",
     keys = { "<Space>", "<c-w>", '"', "'", "`", "c", "v", "g" },
-    event = "User FilePost",
+    event = "UIEnter",
     cmd = "WhichKey",
     opts = function()
       dofile(vim.g.base46_cache .. "whichkey")
@@ -77,7 +77,7 @@ return {
   -- git stuff
   {
     "lewis6991/gitsigns.nvim",
-    event = "User FilePost",
+    event = "UIEnter",
     opts = function()
       return require "nvchad.configs.gitsigns"
     end,
@@ -94,7 +94,7 @@ return {
 
   {
     "neovim/nvim-lspconfig",
-    event = "User FilePost",
+    event = "UIEnter",
     config = function()
       require("nvchad.configs.lspconfig").defaults()
     end,

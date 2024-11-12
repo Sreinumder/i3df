@@ -1,7 +1,7 @@
 return {
 	"andymass/vim-matchup",
 	dependencies = {"nvim-treesitter/nvim-treesitter"},
-  event = "User FilePost",
+  event = "UIEnter",
 	keys = {{"%"}},
 	-- opts = {},
 	config = function()

@@ -1,7 +1,7 @@
 return {
   'stevearc/oil.nvim',
   dependencies = { { "echasnovski/mini.icons", opts = {} } },
-  event = "User FilePost",
+  event = "UIEnter",
   keys = {{"-", "<CMD>Oil<CR>", { desc = "Open parent directory" }}},
   opts = {
     default_file_explorer = true,

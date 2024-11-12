@@ -10,6 +10,7 @@ config.line_height = 1.0
 config.hide_tab_bar_if_only_one_tab = true
 config.use_dead_keys = false
 config.use_ime = true
+config.window_background_opacity = 0.9
 config.window_padding = {
   left = 1,
   right = 1,

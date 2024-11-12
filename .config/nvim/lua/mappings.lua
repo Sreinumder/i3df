@@ -12,6 +12,30 @@ map({ "n", "v", "o" }, "M", "gM", { desc = "Middle of Line" }) map("n", "<A-M>",
 map({ "n", "v", "o" }, "L", "g_", { desc = "End of Line" }) map("n", "<A-L>", "L", { desc = "Default L" })
 map("x", "$", "g_") map("x", "g_", "$")
 
+-- LSP
+map("n", "gD", vim.lsp.buf.declaration,{desc = "Go to lsp declaration"})
+map("n", "<Leader>gD", "gD",{desc = "Go to declaration"})
+map("n", "gd", vim.lsp.buf.definition,{desc = "Go to lsp definition"})
+map("n", "<Leader>gd", "gd",{desc = "Go to definition"})
+map("n", "gi", vim.lsp.buf.implementation,{desc = "Go to implementation"})
+map("n", "gi", vim.lsp.buf.implementation,{desc = "Go to implementation"})
+map("n", "<leader>sh", vim.lsp.buf.signature_help,{desc = "Show signature help"})
+map("n", "<leader>sh", vim.lsp.buf.signature_help,{desc = "Show signature help"})
+map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder,{desc = "Add workspace folder"})
+map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder,{desc = "Add workspace folder"})
+map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder,{desc = "Remove workspace folder"})
+map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder,{desc = "Remove workspace folder"})
+
+  -- map("n", "<leader>wl", function()
+  --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  -- end, opts "List workspace folders")
+
+  -- map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
+  -- map("n", "<leader>ra", require "nvchad.lsp.renamer", opts "NvRenamer")
+
+--   map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
+--   map("n", "gr", vim.lsp.buf.references, opts "Show references")
+-- end
 -- pain saver
 map("n", "<leader>", "<NOP>", { desc = "" })
 map("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
