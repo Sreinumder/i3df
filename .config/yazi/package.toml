@@ -1,0 +1,5 @@
+[plugin]
+deps = [{ use = "dedukun/relative-motions", rev = "1d6d686" }, { use = "dawsers/toggle-view", rev = "d326a53" }, { use = "hankertrix/augment-command", rev = "fe145ac" }, { use = "dedukun/bookmarks", rev = "600f87c" }, { use = "Reledia/glow", rev = "388e847" }, { use = "Sonico98/exifaudio", rev = "855ff05" }, { use = "GrzegorzKozub/mdcat", rev = "1706af4" }, { use = "Ape/mediainfo", rev = "c69314e" }, { use = "yazi-rs/plugins:git", rev = "235437c" }, { use = "yazi-rs/plugins:chmod", rev = "235437c" }]
+
+[flavor]
+deps = []

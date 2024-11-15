@@ -34,6 +34,7 @@ map("n", "<A-?>", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
 --
 -- telescope
 map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
+map("n", "<leader>fs", "<cmd>Telescope smart_open<CR>", { desc = "telescope smart open" })
 map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "telescope find buffers" })
 map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "telescope help page" })
 map("n", "<leader>ma", "<cmd>Telescope marks<CR>", { desc = "telescope find marks" })

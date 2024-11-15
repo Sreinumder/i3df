@@ -20,12 +20,12 @@ this is typo
 
 align
 ----
->>gajc or l or r
+gajc or l or r
 rizz 100
 rizz 100 rizz 100
 rizz 100
 
->>ga=
+ga=
 int a = 100;
 str word = 100;
 vector<str> longVariableName = {};
@@ -63,7 +63,7 @@ Sunday Monday Tuesday Wednesday Thursday Friday Saturday
 
 calculate 
 ----------
-144 <= 12^2
+144 -> 12^2
 1.9545454545455 <= (33+32-22)/22
 
 use bash filters or commands directly

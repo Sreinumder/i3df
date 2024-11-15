@@ -2,10 +2,13 @@ return {
   'stevearc/oil.nvim',
   dependencies = { { "echasnovski/mini.icons", opts = {} } },
   event = "UIEnter",
-  keys = {{"-", "<CMD>Oil<CR>", { desc = "Open parent directory" }}},
+  keys = {
+    {"-", "<CMD>Oil<CR>", { desc = "Open parent directory" }},
+    -- {"-", "<CMD>Oil<CR>", { desc = "Open parent directory" }},
+  },
   opts = {
     default_file_explorer = true,
-    columns = { "icon", "permissions", "size", "mtime", },
+    -- columns = { "icon", "permissions", "size", "mtime", },
     buf_options = { buflisted = false, bufhidden = "hide", },
     win_options = { wrap = false, signcolumn = "no", cursorcolumn = false, foldcolumn = "0",
       spell = false, list = false, conceallevel = 3, concealcursor = "nvic", },

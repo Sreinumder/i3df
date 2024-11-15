@@ -3,7 +3,7 @@ return {
   keys = {":"},
   opts = {
     messages = {
-      "頑張れ",
+      "頑張れよ",
       "これからだよ",
       "まだまだだよ",
       "光の方へ",
@@ -11,6 +11,9 @@ return {
       "確乎不抜",
       "外柔内剛",
       "だってばよ",
+      "だめだめだめ",
+      "諦めないよ",
+      "絶対出来るよ",
       "We will fail when we fail to try.",
       "If you want to lift yourself up, lift up someone else.",
       "Through discipline comes freedom.",

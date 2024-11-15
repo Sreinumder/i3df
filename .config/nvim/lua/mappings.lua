@@ -4,6 +4,7 @@ local nomap = vim.keymap.del
 
 -- j k <-> gj gk and HML to start mid end of line <A-HML> to high middle low part of screen
 map("n", "<leader>w", "<C-w>", { desc = "window control" }) -- split window vertically
+map({"n", "x"}, "<leader>r", '"', { desc = "register select" }) -- <leader>ra for a register
 map("n", "ygG", "<cmd>%y+<CR>", { desc = "yank all" })
 map({ "n", "x" }, "j", "gj", { desc = "next text wrapped line" }) map({ "n", "x" }, "gj", "j", { desc = "next line" })
 map({ "n", "x" }, "k", "gk", { desc = "prev text wrapped line" }) map({ "n", "x" }, "gk", "k", { desc = "prev line" })
@@ -49,7 +50,6 @@ map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true"
 map("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy nvim" })
 map({"n", "x"}, "<leader>*", "*``cgn", { desc = "replace word" })
 map("n", "/", [[/\v]]) -- Always use very magic mode for searching
-map("t", "<Esc>", [[<c-\><c-n>]]) -- Use Esc to quit builtin terminal
 
 -- cd to things
 map("n", "<leader>cdh", ":cd ..<CR>", { desc = "cd.." })
@@ -137,6 +137,11 @@ map("n", "]q", "<cmd>cnext<cr>zv", { silent = true, desc = "next qf item" })
 map("n", "[Q", "<cmd>cfirst<cr>zv", { silent = true, desc = "first qf item" })
 map("n", "]Q", "<cmd>clast<cr>zv", { silent = true, desc = "last qf item" })
 
+-- insert / command mode hacks
+map("n", "<leader>to", "o- [ ] ", {desc = "markdown todo below"})
+map("n", "<leader>tO", "O- [ ] ", {desc = "markdown todo below"})
+map("n", "<leader>tc", "cc- [ ] ", {desc = "markdown todo change"})
+map("n", "<A-.>", ":<Up><CR>", {desc="last command"})
 map("i", "<c-u>", "<Esc>viw~ea", {desc="toggle case"})
 map("i", "<c-t>", "<Esc>b~lea", {desc="change word case to title"})
 map("i", "<C-l>", '<C-r>=expand("%:p:h") . "/" <CR>', {desc = "write file path"})
