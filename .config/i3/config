@@ -1,5 +1,5 @@
 set $mod Mod4
-font pango:monospace 8
+font  'Iosevka Nerd Font':monospace 8
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
@@ -66,10 +66,12 @@ bindsym $mod+Return exec warp-terminal
 bindsym $mod+g exec "wezterm -e retroarch"
 bindsym $mod+space exec wezterm
 # bindsym ctrl+$mod+space exec warp-terminal
-bindsym $mod+c exec wezterm --class dotfiles-floating -e vim ~/.config/i3/config
+bindsym $mod+c exec wezterm -e nvim -O ~/.config/i3/config ~/.config/i3/i3wm-advent.md
 bindsym $mod+ctrl+f exec chromium
 # bindsym $mod+e exec pcmanfm
-bindsym $mod+e exec thunar
+bindsym $mod+Shfit+e exec thunar
+bindsym $mod+e exec wezterm -e yazi
+# bindsym $mod+e exec wezterm --class yazi -e yazi ~
 bindsym $mod+ctrl+q exec qutebrowser
 
 # kill focused window
@@ -182,9 +184,9 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # resize window (you can also use the mouse for that)
 bindsym $mod+Shift+h resize shrink width 10 px or 10 ppt
+bindsym $mod+Shift+l resize grow width 10 px or 10 ppt
 bindsym $mod+Shift+j resize grow height 10 px or 10 ppt
 bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
-bindsym $mod+Shift+l resize grow width 10 px or 10 ppt
 #
 # bindsym $mod+r mode "resize"
 
@@ -193,7 +195,7 @@ bar {
   status_command i3status
    	height 15
     # position top
-  font pango:isoveka Nerd Font 9
+  font pango:'isoveka Nerd Font' 9
   tray_padding 1
   strip_workspace_numbers yes
 
