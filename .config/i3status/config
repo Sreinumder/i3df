@@ -40,7 +40,7 @@ run_watch VPN {
 # }
 wireless wlan0 {
         # format_up = "W: (%quality at %essid, %bitrate) %ip"
-        format_up = "無線 %quality %bitrate"
+        format_up = "無線 %quality %byterate"
         format_down = "W: down"
 }
 
