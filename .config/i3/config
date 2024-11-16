@@ -5,7 +5,9 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
-exec --no-startup-id feh ~/Downloads/scooter.jpg --bg-center
+exec --no-startup-id dunst
+exec --no-startup-id feh ~/wallpaper/scooter.jpg --bg-center
+exec --no-startup-id ~/i3df/scripts/every_15_second.sh
 
 set $refresh_i3status killall -SIGUSR1 i3status
 # media --------------------------------------------------
@@ -85,6 +87,7 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+bindsym $mod+minus focus mode_toggle
 
 # move focused window Mod1==Alt
 bindsym $mod+Mod1+h move left
