@@ -35,11 +35,10 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 
 -- yank highlight
 vim.api.nvim_create_autocmd("TextYankPost", {
-	group = vim.api.nvim_create_augroup("mariasolos/yank_highlight", { clear = true }),
+	group = vim.api.nvim_create_augroup("yank_highlight", { clear = true }),
 	desc = "Highlight on yank",
 	callback = function()
-		-- Setting a priority higher than the LSP references one.
-		vim.highlight.on_yank({ higroup = "Visual", priority = 250 })
+		vim.highlight.on_yank({ higroup = "IncSearch", Timeout = 700,  priority = 250 })
 	end,
 })
 
@@ -54,3 +53,4 @@ vim.api.nvim_create_autocmd("CmdwinEnter", {
 
 -- Disable sql omni completion, it is broken.
 vim.g.loaded_sql_completion = 1
+vim.g.preserve_cursor_pos = false
