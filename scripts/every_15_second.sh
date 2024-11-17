@@ -1,7 +1,7 @@
 #!/bin/bash
 
 prev_status="N/A"
-while sleep 1;
+while sleep 15;
 do date > ~/a.txt 
   if [[ $(cat /sys/class/power_supply/BAT0/status) != "Charging" ]]; then 
     echo "not charging "
