@@ -40,6 +40,8 @@ return {
       number = {
         augend.integer.alias.decimal_int, -- decimal number (-1, 0, 1, 2, 3, ...)
         augend.integer.alias.hex, -- nonnegative hex number  (0x01, 0x1a1f, etc.)
+        AGN({"first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"}),
+        AGN({"First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth", "Tenth"}),
       },
       logical = {
         augend.constant.alias.bool, -- boolean value (true <-> false)
