@@ -2,14 +2,27 @@ require("nvchad.mappings")
 local map = vim.keymap.set
 local nomap = vim.keymap.del
 
--- j k <-> gj gk and HML to start mid end of line <A-HML> to high middle low part of screen
+ -- clever j k
+map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+map({ "n", "x" }, "gj", "j", { desc = "next line" })
+map({ "n", "x" }, "gk", "k", { desc = "prev line" })
+
+-- Resize window using <ctrl> arrow keys
+map("n", "<C-Up>",    "<cmd>resize   +2<cr>", {        desc =    "Increase Window    Height" })
+map("n", "<C-Down>",  "<cmd>resize   -2<cr>", {        desc =    "Decrease Window    Height" })
+map("n", "<C-Left>",  "<cmd>vertical resize   -2<cr>", {    desc =         "Decrease Window  Width" })
+map("n", "<C-Right>", "<cmd>vertical resize   +2<cr>", {    desc =         "Increase Window  Width" })
+map("n", "<Up>",    "<C-W>k", { desc = "Window up" })
+map("n", "<Down>",  "<C-W>j", { desc = "Window down" })
+map("n", "<Left>",  "<C-W>h", { desc = "Window left"  })
+map("n", "<Right>", "<C-W>l", { desc = "Window right"  })
+
+
+--and HML to start mid end of line <A-HML> to high middle low part of screen
 map("n", "<leader>w", "<C-w>", { desc = "window control" }) -- split window vertically
 map({ "n", "x" }, "<leader>r", '"', { desc = "register select" }) -- <leader>ra for a register
 map("n", "ygG", "<cmd>%y+<CR>", { desc = "yank all" })
-map({ "n", "x" }, "j", "gj", { desc = "next text wrapped line" })
-map({ "n", "x" }, "gj", "j", { desc = "next line" })
-map({ "n", "x" }, "k", "gk", { desc = "prev text wrapped line" })
-map({ "n", "x" }, "gk", "k", { desc = "prev line" })
 map({ "n", "v", "o" }, "H", "^", { desc = "Start of line" })
 map("n", "<A-H>", "H", { desc = "Default H" })
 map({ "n", "v", "o" }, "M", "gM", { desc = "Middle of Line" })
@@ -45,7 +58,11 @@ map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, { desc = "Remove wor
 -- end
 -- pain saver
 map("n", "<leader>", "<NOP>", { desc = "" })
-map("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+map("n", "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and Clear hlsearch" })
+map( "n", "<leader>nh",
+  "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
+  { desc = "Redraw / Clear hlsearch / Diff Update" }
+)
 map("n", "<A-v>", "vlh", { desc = "vi single char under cursor" })
 map("x", "J", "j", { desc = "Disable annoying J " })
 map("n", "<C-u>", "<C-u>zz", { desc = "Half page up" })
@@ -142,6 +159,8 @@ map("x", "<A-g><A-g>", '"bdgg"bp`[v`]', { desc = "move selection with gg" })
 map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
 
 -- simple hacks
+map("n", "<leader>ll", "<cmd>lopen<cr>", { desc = "Location List" })
+map("n", "<leader>qf", "<cmd>copen<cr>", { desc = "Quickfix List" })
 map("n", "<leader>qw", ":exit<cr>", { silent = true, desc = "save buffer" }) -- Shortcut for faster save and quit
 map("n", "<leader>qq", "<cmd>x<cr>", { silent = true, desc = "quit current window" }) -- Saves the file if modified and quit
 map("n", "<leader>qa", "<cmd>qa!<cr>", { silent = true, desc = "quit nvim" }) -- Quit all opened buffers
@@ -153,6 +172,13 @@ map("n", "[q", "<cmd>cprevious<cr>zv", { silent = true, desc = "previous qf item
 map("n", "]q", "<cmd>cnext<cr>zv", { silent = true, desc = "next qf item" })
 map("n", "[Q", "<cmd>cfirst<cr>zv", { silent = true, desc = "first qf item" })
 map("n", "]Q", "<cmd>clast<cr>zv", { silent = true, desc = "last qf item" })
+map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
+map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+
+-- Add undo break-points
+map("i", ",", ",<c-g>u")
+map("i", ".", ".<c-g>u")
+map("i", ";", ";<c-g>u")
 
 -- insert / command mode hacks
 map("n", "<leader>to", "o- [ ] ", { desc = "markdown todo below" })
