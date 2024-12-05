@@ -18,9 +18,6 @@ return {
     --     require('Comment.api').call('toggle.linewise.current', 'g@$')
     -- end, { expr = true }, mode={"v", "n"}},
   },
-	opts = {
-      -- [[ toggler = { line ={'<C-/>', 'gcc'}, block = 'gbc' }, ]]
-  },
 	config = true,
-	lazy = true,
+	lazy = false,
 }

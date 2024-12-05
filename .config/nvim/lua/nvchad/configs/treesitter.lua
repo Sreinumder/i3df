@@ -4,7 +4,7 @@ pcall(function()
 end)
 
 return {
-  ensure_installed = { "lua", "luadoc", "printf", "vim", "vimdoc" },
+  ensure_installed = { "c", "lua", "luadoc", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
   matchup = {
     enable = true,              -- mandatory, false will disable the whole extension
     disable = { "c", "ruby" },  -- optional, list of language that will be disabled

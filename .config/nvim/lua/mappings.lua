@@ -2,25 +2,25 @@ require("nvchad.mappings")
 local map = vim.keymap.set
 local nomap = vim.keymap.del
 
- -- clever j k
+-- clever j k
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 map({ "n", "x" }, "gj", "j", { desc = "next line" })
 map({ "n", "x" }, "gk", "k", { desc = "prev line" })
 
 -- Resize window using <ctrl> arrow keys
-map("n", "<C-Up>",    "<cmd>resize   +2<cr>", {        desc =    "Increase Window    Height" })
-map("n", "<C-Down>",  "<cmd>resize   -2<cr>", {        desc =    "Decrease Window    Height" })
-map("n", "<C-Left>",  "<cmd>vertical resize   -2<cr>", {    desc =         "Decrease Window  Width" })
-map("n", "<C-Right>", "<cmd>vertical resize   +2<cr>", {    desc =         "Increase Window  Width" })
-map("n", "<Up>",    "<C-W>k", { desc = "Window up" })
-map("n", "<Down>",  "<C-W>j", { desc = "Window down" })
-map("n", "<Left>",  "<C-W>h", { desc = "Window left"  })
-map("n", "<Right>", "<C-W>l", { desc = "Window right"  })
+map("n", "<C-Up>", "<cmd>resize   +2<cr>", { desc = "Increase Window    Height" })
+map("n", "<C-Down>", "<cmd>resize   -2<cr>", { desc = "Decrease Window    Height" })
+map("n", "<C-Left>", "<cmd>vertical resize   -2<cr>", { desc = "Decrease Window  Width" })
+map("n", "<C-Right>", "<cmd>vertical resize   +2<cr>", { desc = "Increase Window  Width" })
+map("n", "<Up>", "<C-W>k", { desc = "Window up" })
+map("n", "<Down>", "<C-W>j", { desc = "Window down" })
+map("n", "<Left>", "<C-W>h", { desc = "Window left" })
+map("n", "<Right>", "<C-W>l", { desc = "Window right" })
 
 
 --and HML to start mid end of line <A-HML> to high middle low part of screen
-map("n", "<leader>w", "<C-w>", { desc = "window control" }) -- split window vertically
+map("n", "<leader>w", "<C-w>", { desc = "window control" })       -- split window vertically
 map({ "n", "x" }, "<leader>r", '"', { desc = "register select" }) -- <leader>ra for a register
 map("n", "ygG", "<cmd>%y+<CR>", { desc = "yank all" })
 map({ "n", "v", "o" }, "H", "^", { desc = "Start of line" })
@@ -59,16 +59,16 @@ map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, { desc = "Remove wor
 -- pain saver
 map("n", "<leader>", "<NOP>", { desc = "" })
 map("n", "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and Clear hlsearch" })
-map( "n", "<leader>nh",
-  "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-  { desc = "Redraw / Clear hlsearch / Diff Update" }
+map("n", "<leader>nh",
+    "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
+    { desc = "Redraw / Clear hlsearch / Diff Update" }
 )
 map("n", "<A-v>", "vlh", { desc = "vi single char under cursor" })
 map("x", "J", "j", { desc = "Disable annoying J " })
 map("n", "<C-u>", "<C-u>zz", { desc = "Half page up" })
 map("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })
 map("x", "<", "<gv")
-map("x", ">", ">gv") -- Continuous visual shifting (does not exit Visual mode), `gv` means
+map("x", ">", ">gv")                                                                -- Continuous visual shifting (does not exit Visual mode), `gv` means
 map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
 
 -- others
@@ -94,10 +94,10 @@ map({ "n", "v", "x" }, "<A-x>", "x")
 map({ "n", "v", "x" }, "<A-X>", "X")
 map({ "n", "v", "x" }, "<A-d>", "d")
 map({ "n", "v", "x" }, "<A-D>", "D")
-map({ "n", "v"}, "<A-c>", "c")
+map({ "n", "v" }, "<A-c>", "c")
 map({ "n", "v", "x" }, "<A-C>", "C")
 map({ "n", "v", "x" }, "<A-d><A-d>", "dd")
-map({ "n", "v"}, "<A-c><A-c>", "cc")
+map({ "n", "v" }, "<A-c><A-c>", "cc")
 map({ "v", "x" }, "p", '"_dP')
 map({ "v", "x" }, "P", '"_dp')
 map({ "v", "x" }, "<A-p>", "p")
@@ -159,11 +159,15 @@ map("x", "<A-g><A-g>", '"bdgg"bp`[v`]', { desc = "move selection with gg" })
 map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
 
 -- simple hacks
-map("n", "<leader>ll", "<cmd>lopen<cr>", { desc = "Location List" })
+map("n", "g<leader>gx", '"gya":lua vim.ui.open("https://www.github.com/"..<C-r>g)<CR>', { desc = "Location List" })
+map("n", "<leader>ql", "<cmd>lopen<cr>", { desc = "Location List" })
 map("n", "<leader>qf", "<cmd>copen<cr>", { desc = "Quickfix List" })
-map("n", "<leader>qw", ":exit<cr>", { silent = true, desc = "save buffer" }) -- Shortcut for faster save and quit
-map("n", "<leader>qq", "<cmd>x<cr>", { silent = true, desc = "quit current window" }) -- Saves the file if modified and quit
-map("n", "<leader>qa", "<cmd>qa!<cr>", { silent = true, desc = "quit nvim" }) -- Quit all opened buffers
+map("n", "<leader>ww", ":w<cr>", { silent = true, desc = "save this buffer" })
+map("n", "<leader>qq", "<cmd>q!<cr>", { silent = true, desc = "quit current window" })
+map("n", "<leader>sa", "<cmd>wqa!<cr>", { silent = true, desc = "write and quit all" })
+map("n", "<leader>qw", ":wq<cr>", { silent = true, desc = "save buffer" })
+map("n", "<leader>wa", ":wa<cr>", { silent = true, desc = "save all buffer" })
+map("n", "<leader>qa", "<cmd>qa!<cr>", { silent = true, desc = "quit nvim" })              -- Quit all opened buffers
 map("n", "[l", "<cmd>lprevious<cr>zv", { silent = true, desc = "previous location item" }) -- Navigation in the location and quickfix list
 map("n", "]l", "<cmd>lnext<cr>zv", { silent = true, desc = "next location item" })
 map("n", "[L", "<cmd>lfirst<cr>zv", { silent = true, desc = "first location item" })
@@ -213,46 +217,63 @@ map("c", "<C-A-K>", "\\(.*\\)", { desc = "kirby " })
 -- shuf -i 1-10 -n 10 -r  | sed -z "s/\\n/, /g"
 -- map("n", "<leader>vrl", 'i<enter><esc>!!shuf -i 1-10 -n 10 -r  | sed -z "s/\\n/, /g"<CR>kgJ')
 map(
-	"n",
-	"<A-o>",
-	'i<enter><enter><Up><esc>!! | sed -z "s/\\n/, /g"<Home><Right><Right>',
-	{ desc = "genearate comma seperated seq or shuf or any bash output" }
+    "n",
+    "<A-o>",
+    'i<enter><enter><Up><esc>!! | sed -z "s/\\n/, /g"<Home><Right><Right>',
+    { desc = "genearate comma seperated seq or shuf or any bash output" }
 )
 map(
-	"i",
-	"<A-o>",
-	'<enter><enter><Up><esc>!! | sed -z "s/\\n/, /g"<Home><Right><Right>',
-	{ desc = "genearate comma seperated seq or shuf or any bash output" }
+    "i",
+    "<A-o>",
+    '<enter><enter><Up><esc>!! | sed -z "s/\\n/, /g"<Home><Right><Right>',
+    { desc = "genearate comma seperated seq or shuf or any bash output" }
 )
 map(
-	"x",
-	"<A-o>",
-	'<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" |  | sed -z "s/\\n/, /g"<C-Left><C-Left><C-Left><C-Left><C-Left><C-Left>'
+    "x",
+    "<A-o>",
+    '<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" |  | sed -z "s/\\n/, /g"<C-Left><C-Left><C-Left><C-Left><C-Left><C-Left>'
 )
 map(
-	"x",
-	"<leader>oso",
-	'<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | sort -g | sed -z "s/\\n/, /g"<CR>kJxJhx'
+    "x",
+    "<leader>oso",
+    '<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | sort -g | sed -z "s/\\n/, /g"<CR>kJxJhx'
 )
 map(
-	"x",
-	"<leader>osr",
-	'<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | sort -gr | sed -z "s/\\n/, /g"<CR>kJxJhx'
+    "x",
+    "<leader>osr",
+    '<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | sort -gr | sed -z "s/\\n/, /g"<CR>kJxJhx'
 )
 map(
-	"x",
-	"<leader>oss",
-	'<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | shuf | sed -z "s/\\n/, /g"<CR>kJxJhx'
+    "x",
+    "<leader>oss",
+    '<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | shuf | sed -z "s/\\n/, /g"<CR>kJxJhx'
 )
 map(
-	"x",
-	"<leader>on",
-	'<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | wc -l<CR>kJxJhx'
+    "x",
+    "<leader>on",
+    '<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | wc -l<CR>kJxJhx'
 )
 
 -- bash filter magic with <leader>rs
 map("n", "<leader>rs", '"byy"bp"bp0d}k!!sh<cr>', { desc = "bash filter append" })
 map("n", "<leader>rS", "!!sh<cr>", { desc = "bash filter replace" })
+
+-- https://aur.archlinux.org/packages/python-translate-shell
+map("x", "<leader>ttt", "\"ty:vnew <CR>:.!trans <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>",
+    { desc = "translate autodetect -> en" })
+map("x", "<leader>ttd", "\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>",
+    { desc = "translate autodetect -> en" })
+map("n", "<leader>ttt", "^vg_\"ty:vnew <CR>:.!trans <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>",
+    { desc = "translate autodetect -> en" })
+map("n", "<leader>ttd", "viw\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>",
+    { desc = "translate autodetect -> en" })
+map("n", "<leader>ttc", "^vg_\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t ",
+    { desc = "translate autodetect -> ??" })
+-- map("x", "<leader>tc", "w !trans<CR> | sed 's/\\x1b\\[[0-9;]*m//g'<CR>", {desc = "translate autodetect -> en"})
+-- map("x", "<leader>tda", "w !trans -d<CR> | sed 's/\\x1b\\[[0-9;]*m//g'", {desc = "translate autodetect dictionary -> en"})
+-- map("x", "<leader>tdc", "w !trans -d<CR> | sed 's/\\x1b\\[[0-9;]*m//g'", {desc = "translate autodetect dictionary -> en"})
+-- map("x", "w !trans<CR> | sed 's/\\x1b\\[[0-9;]*m//g'", {desc = "translate autodetect -> en"})
+
 
 -- easier access for 67890:
 map({ "n", "v", "o", "i" }, "<A-`>", "5")
@@ -261,7 +282,7 @@ map({ "n", "v", "o", "i" }, "<A-2>", "7")
 map({ "n", "v", "o", "i" }, "<A-3>", "8")
 map({ "n", "v", "o", "i" }, "<A-4>", "9")
 map({ "n", "v", "o", "i" }, "<A-;>", "0")
-map({ "n", "x" }, "<leader>;", ":")
+map({ "n", "x" }, "<leader>l", ":")
 
 -- toggle options
 map("n", "<leader>,nn", ":set number!<CR>", { desc = "Toggle number" })
@@ -271,9 +292,9 @@ map("n", "<leader>,sp", ":set spell!<CR>", { desc = "Toggle spell" })
 map("n", "<leader>,cl", ":set cursorline!<CR>", { desc = "Toggle cursorline" })
 map("n", "<leader>,ii", ":set list!<CR>", { desc = "Toggle invisible char" })
 map("n", "<leader>,ct", function()
-	if vim.opt.background:get() == "dark" then
-		vim.cmd(":set bg=light")
-	else
-		vim.cmd(":set bg=dark")
-	end
+    if vim.opt.background:get() == "dark" then
+        vim.cmd(":set bg=light")
+    else
+        vim.cmd(":set bg=dark")
+    end
 end, { desc = "Toggle colorscheme bg" })

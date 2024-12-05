@@ -33,14 +33,14 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 	command = "setlocal filetype=conf | setlocal commentstring=#%s",
 })
 
--- yank highlight
-vim.api.nvim_create_autocmd("TextYankPost", {
-	group = vim.api.nvim_create_augroup("yank_highlight", { clear = true }),
-	desc = "Highlight on yank",
-	callback = function()
-		vim.highlight.on_yank({ higroup = "IncSearch", Timeout = 700,  priority = 250 })
-	end,
-})
+-- -- yank highlight
+-- vim.api.nvim_create_autocmd("TextYankPost", {
+-- 	group = vim.api.nvim_create_augroup("yank_highlight", { clear = true }),
+-- 	desc = "Highlight on yank",
+-- 	callback = function()
+-- 		vim.highlight.on_yank({ higroup = "IncSearch", Timeout = 700,  priority = 250 })
+-- 	end,
+-- })
 
 -- Execute command and stay in the command-line window
 vim.api.nvim_create_autocmd("CmdwinEnter", {
@@ -109,7 +109,3 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.spell = true
   end,
 })
-
--- Disable sql omni completion, it is broken.
-vim.g.loaded_sql_completion = 1
-vim.g.preserve_cursor_pos = false

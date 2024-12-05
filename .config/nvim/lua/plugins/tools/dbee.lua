@@ -3,10 +3,12 @@ return {
   dependencies = { "MunifTanjim/nui.nvim", },
   cmd = {"Dbee"},
   opts = {},
+  keys  = {
+    {"<leader>dbb",function() require("dbee").toggle() end, {desc="toggle dbee"}}, -- Open/close/toggle the UI.
+    {"<leader>dbc",function() require("dbee").close() end, {desc="close dbee"}},
+    {"<leader>dbo",function() require("dbee").open() end, {desc="open dbee"}},
+  },
   build = function()
-    -- Install tries to automatically detect the install method.
-    -- if it fails, try calling it with one of these parameters:
-    --    "curl", "wget", "bitsadmin", "go"
     require("dbee").install()
   end,
 }

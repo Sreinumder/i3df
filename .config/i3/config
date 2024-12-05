@@ -1,5 +1,6 @@
 set $mod Mod4
-font  'Iosevka Nerd Font':monospace 8
+set $alt Mod1
+# font  'Iosevka Nerd Font':monospace 8
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
@@ -66,13 +67,16 @@ floating_modifier $mod
 
 # 5. Applications -------------------------------------------------------------
 bindsym $mod+Return exec warp-terminal
-bindsym $mod+g exec "wezterm -e retroarch"
+bindsym $mod+z exec zeditor
+bindsym $mod+g exec "ezterm -e retroarch"
 bindsym $mod+space exec wezterm
 # bindsym ctrl+$mod+space exec warp-terminal
 bindsym $mod+c exec wezterm -e nvim -O ~/.config/i3/config ~/.config/i3/i3wm-advent.md
-bindsym $mod+ctrl+f exec chromium
+bindsym $mod+ctrl+f exec chromium --profile-directory="work"
+bindsym $mod+$alt+f  exec chromium --profile-directory="Profile 4"
+
 # bindsym $mod+e exec pcmanfm
-bindsym $mod+Shfit+e exec thunar
+bindsym $mod+$alt+e exec thunar
 bindsym $mod+e exec wezterm -e yazi
 # bindsym $mod+e exec wezterm --class yazi -e yazi ~
 bindsym $mod+ctrl+q exec qutebrowser
@@ -194,42 +198,53 @@ bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 #
 # bindsym $mod+r mode "resize"
 
+# Define Vim mode
+# mode "music" {
+#     bindsym --release comma exec --no-startup-id xdotool key exclam
+#     bindsym --release period exec --no-startup-id xdotool key Left
+#     bindsym --release h exec --no-startup-id xdotool key Left
+#     bindsym $mod+Escape mode "default"
+#     bindsym $alt+Escape mode "default"
+# }
+# bindsym $mod+Escape mode "music"
+# bindsym $alt+Escape mode "music"
+
 # Start i3bar to display a workspace bar (plus the system information i3status
-bar {
-  status_command i3status
-   	height 15
-    # position top
-  font pango:'isoveka Nerd Font' 9
-  tray_padding 1
-  strip_workspace_numbers yes
+    bar {
+    status_command i3status
+    height 15
+# position top
+    font pango:'isoveka Nerd Font' 9
+    tray_padding 1
+    strip_workspace_numbers yes
 
     colors {
-    #         separator  #1f222d
-            # background #1f222d
-            # statusline #81a1c1
-    #
-    #         #                   border  background text
-    #         focused_workspace  #1f222d #1f222d    #81a1c1
-    #         active_workspace   #1f222d #252936    #5e81ac
-    #         inactive_workspace #1f222d #1f222d    #4c566a
-    #         urgent_workspace   #1f222d #1f222d    #ee829f
-    #         binding_mode       #1f222d #81a1c1    #2e3440
+#         separator  #1f222d
+# background #1f222d
+# statusline #81a1c1
+#
+#         #                   border  background text
+#         focused_workspace  #1f222d #1f222d    #81a1c1
+#         active_workspace   #1f222d #252936    #5e81ac
+#         inactive_workspace #1f222d #1f222d    #4c566a
+#         urgent_workspace   #1f222d #1f222d    #ee829f
+#         binding_mode       #1f222d #81a1c1    #2e3440
     }
-}
+    }
 
-    ##START THEMING WM
+##START THEMING WM
 
-    # Window color settings
-    # class                 border  backgr. text    indicator
-    # client.focused          #81a1c1 #81a1c1 #ffffff #81a1c1
-    # client.unfocused        #2e3440 #1f222d #888888 #1f222d
-    # client.focused_inactive #2e3440 #1f222d #888888 #1f222d
-    # client.placeholder      #2e3440 #1f222d #888888 #1f222d
-    # client.urgent           #900000 #900000 #ffffff #900000
-    #
-    # client.background       #242424
+# Window color settings
+# class                 border  backgr. text    indicator
+# client.focused          #81a1c1 #81a1c1 #ffffff #81a1c1
+# client.unfocused        #2e3440 #1f222d #888888 #1f222d
+# client.focused_inactive #2e3440 #1f222d #888888 #1f222d
+# client.placeholder      #2e3440 #1f222d #888888 #1f222d
+# client.urgent           #900000 #900000 #ffffff #900000
+#
+# client.background       #242424
 
-    ##STOP THEMING WM
+##STOP THEMING WM
 
 bindsym $mod+i bar mode toggle
 # bindsym $mod+ctrl+i bar mode invisible
@@ -243,3 +258,4 @@ gaps outer 1
 
 for_window [class=Eog|nsxiv|feh|mpv|Vlc|pavucontrol|Xarchiver] floating enable
 for_window [class=Eog|nsxiv|feh|mpv|Vlc|File-roller|Xarchiver] focus
+set $mod Mod4

@@ -4,7 +4,7 @@ return {
 	opts = {
 		enable_autocmd = false,
 	},
-	ft = { "html", "css", "js", "html5", "svelte" },
+	-- ft = { "html", "css", "js", "jsx", "ts", "tsx", "html5", "svelte" },
 	config = function()
 		require("ts_context_commentstring").setup({
 			enable_autocmd = false,

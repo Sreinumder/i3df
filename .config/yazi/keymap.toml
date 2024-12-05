@@ -5,7 +5,7 @@
 [manager]
 
 keymap = [
-{on  = "<A-g>", run = '''shell 'dragon-drop -x -i -T "$1"' --confirm''', desc = "dragon give"}, 
+# {on  = "<A-g>", run = '''shell 'dragon-drop -x -i -T "$1"' --confirm''', desc = "dragon give"}, 
 {on  = "<A-g>", run = '''shell 'dragon-drop -x -i -T "$1"' --confirm''', desc = "dragon give"}, 
 {on   = "<A-t>", run  = "plugin --sync smart-tab", desc = "Create a tab and enter the hovered directory"},
 {on   = "!", run  = 'shell "$SHELL" --block --confirm', desc = "Open shell here"},
