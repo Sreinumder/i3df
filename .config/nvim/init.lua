@@ -16,8 +16,11 @@ local lazy_config = require "configs.lazy"
 if vim.g.vscode then
   require("lazy").setup({
     { import = "plugins.treesitter" },
-    { import = "plugins.editing" }
+    { import = "plugins.editing" },
+    { import = "plugins.vscode" },
   }, lazy_config)
+  require "options"
+  require "mappings"
 else
   local plugins = {
     { import = "nvchad.plugins" },
@@ -30,13 +33,13 @@ else
     { import = "plugins.req_internet" },
     { import = "plugins.tools" }
   }
-
   require("lazy").setup(plugins, lazy_config)
 
   dofile(vim.g.base46_cache .. "defaults")
   dofile(vim.g.base46_cache .. "statusline")
 
   require "options"
+  require "mappings"
 
   vim.schedule(function()
     require "mappings"

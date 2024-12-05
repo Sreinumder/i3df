@@ -1,4 +1,6 @@
-require("nvchad.mappings")
+if not vim.g.vscode then
+    require("nvchad.mappings")
+end
 local map = vim.keymap.set
 local nomap = vim.keymap.del
 
@@ -74,7 +76,6 @@ map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true"
 -- others
 map("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy nvim" })
 map({ "n", "x" }, "<leader>*", "*``cgn", { desc = "replace word" })
-map("n", "/", [[/\v]]) -- Always use very magic mode for searching
 
 -- cd to things
 map("n", "<leader>cdh", ":cd ..<CR>", { desc = "cd.." })
@@ -187,7 +188,7 @@ map("i", ";", ";<c-g>u")
 -- insert / command mode hacks
 map("n", "<leader>to", "o- [ ] ", { desc = "markdown todo below" })
 map("n", "<leader>tO", "O- [ ] ", { desc = "markdown todo below" })
-map("n", "<leader>tc", "cc- [ ] ", { desc = "markdown todo change" })
+map("n", "<leader>t;", "cc- [ ] ", { desc = "markdown todo change" })
 map("n", "<A-.>", ":<Up><CR>", { desc = "last command" })
 map("i", "<c-u>", "<Esc>viw~ea", { desc = "toggle case" })
 map("i", "<c-t>", "<Esc>b~lea", { desc = "change word case to title" })
