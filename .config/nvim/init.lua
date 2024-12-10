@@ -20,8 +20,8 @@ if vim.g.vscode then
     { import = "plugins.vscode" },
   }, lazy_config)
   require("options")
-  require("hacks")
   require("mappings")
+  require("hacks")
 else
   local plugins = {
     { import = "nvchad.plugins" },
@@ -44,7 +44,7 @@ else
   require("hacks")
 
   vim.schedule(function()
-    require("mappings")
+  require("mappings")
     require("autocmd")
   end)
 end

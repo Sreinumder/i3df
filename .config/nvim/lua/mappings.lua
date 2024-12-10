@@ -132,6 +132,10 @@ map("x", "<C-S-h>", "hoho", { desc = "shift vi range" })
 map("x", "<C-S-j>", "jojo", { desc = "shift vi range" })
 map("x", "<C-S-k>", "koko", { desc = "shift vi range" })
 
+
+-- comment and clone sentence 
+-- map("n", "<A-y>", 'gcc', { desc = "clone line Down(n)" })
+
 -- clone sentences up and down
 map("n", "<A-J>", 'V"by"bPgv<Esc>', { desc = "clone line Down(n)" })
 map("n", "<A-K>", 'V"by"bgpgv<Esc>', { desc = "clone line Up(n)" })
@@ -207,70 +211,6 @@ map("i", "<A-p>", "<esc>F,Bct, ", { desc = "change prev csv" }) --   good, bindi
 map({ "i", "c" }, "<C-A>", "<HOME>")
 map({ "i", "c" }, "<C-E>", "<END>")
 map("c", "<C-A-K>", "\\(.*\\)", { desc = "kirby " })
-
--- bash hack for sorting/shuffling/sequencing csv with <A-o> in normal or insert mode
--- {e, a, b, d, c, f, }
--- {a, b, c, d, e, f, }
--- shuf -i 1-10 -n 10 -r  | sed -z "s/\\n/, /g"
--- map("n", "<leader>vrl", 'i<enter><esc>!!shuf -i 1-10 -n 10 -r  | sed -z "s/\\n/, /g"<CR>kgJ')
-map(
-    "n",
-    "<A-o>",
-    'i<enter><enter><Up><esc>!! | sed -z "s/\\n/, /g"<Home><Right><Right>',
-    { desc = "genearate comma seperated seq or shuf or any bash output" }
-)
-map(
-    "i",
-    "<A-o>",
-    '<enter><enter><Up><esc>!! | sed -z "s/\\n/, /g"<Home><Right><Right>',
-    { desc = "genearate comma seperated seq or shuf or any bash output" }
-)
-map(
-    "x",
-    "<A-o>",
-    '<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" |  | sed -z "s/\\n/, /g"<C-Left><C-Left><C-Left><C-Left><C-Left><C-Left>'
-)
-map(
-    "x",
-    "<leader>oso",
-    '<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | sort -g | sed -z "s/\\n/, /g"<CR>kJxJhx'
-)
-map(
-    "x",
-    "<leader>osr",
-    '<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | sort -gr | sed -z "s/\\n/, /g"<CR>kJxJhx'
-)
-map(
-    "x",
-    "<leader>oss",
-    '<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | shuf | sed -z "s/\\n/, /g"<CR>kJxJhx'
-)
-map(
-    "x",
-    "<leader>on",
-    '<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | wc -l<CR>kJxJhx'
-)
-
--- bash filter magic with <leader>rs
-map("n", "<leader>rs", '"byy"bp"bp0d}k!!sh<cr>', { desc = "bash filter append" })
-map("n", "<leader>rS", "!!sh<cr>", { desc = "bash filter replace" })
-
--- https://aur.archlinux.org/packages/python-translate-shell
-map("x", "<leader>ttt", "\"ty:vnew <CR>:.!trans <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>",
-    { desc = "translate autodetect -> en" })
-map("x", "<leader>ttd", "\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>",
-    { desc = "translate autodetect -> en" })
-map("n", "<leader>ttt", "^vg_\"ty:vnew <CR>:.!trans <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>",
-    { desc = "translate autodetect -> en" })
-map("n", "<leader>ttd", "viw\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>",
-    { desc = "translate autodetect -> en" })
-map("n", "<leader>ttc", "^vg_\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t ",
-    { desc = "translate autodetect -> ??" })
--- map("x", "<leader>tc", "w !trans<CR> | sed 's/\\x1b\\[[0-9;]*m//g'<CR>", {desc = "translate autodetect -> en"})
--- map("x", "<leader>tda", "w !trans -d<CR> | sed 's/\\x1b\\[[0-9;]*m//g'", {desc = "translate autodetect dictionary -> en"})
--- map("x", "<leader>tdc", "w !trans -d<CR> | sed 's/\\x1b\\[[0-9;]*m//g'", {desc = "translate autodetect dictionary -> en"})
--- map("x", "w !trans<CR> | sed 's/\\x1b\\[[0-9;]*m//g'", {desc = "translate autodetect -> en"})
-
 
 -- easier access for 67890:
 map({ "n", "v", "o", "i" }, "<A-`>", "5")
