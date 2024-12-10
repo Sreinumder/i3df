@@ -11,7 +11,7 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-local lazy_config = require "configs.lazy"
+local lazy_config = require("configs.lazy")
 
 if vim.g.vscode then
   require("lazy").setup({
@@ -19,8 +19,9 @@ if vim.g.vscode then
     { import = "plugins.editing" },
     { import = "plugins.vscode" },
   }, lazy_config)
-  require "options"
-  require "mappings"
+  require("options")
+  require("hacks")
+  require("mappings")
 else
   local plugins = {
     { import = "nvchad.plugins" },
@@ -31,18 +32,19 @@ else
     { import = "plugins.essential" },
     { import = "plugins.treesitter" },
     { import = "plugins.req_internet" },
-    { import = "plugins.tools" }
+    { import = "plugins.tools" },
   }
   require("lazy").setup(plugins, lazy_config)
 
   dofile(vim.g.base46_cache .. "defaults")
   dofile(vim.g.base46_cache .. "statusline")
 
-  require "options"
-  require "mappings"
+  require("options")
+  require("mappings")
+  require("hacks")
 
   vim.schedule(function()
-    require "mappings"
-    require "autocmd"
+    require("mappings")
+    require("autocmd")
   end)
 end

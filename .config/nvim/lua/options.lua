@@ -1,7 +1,11 @@
 local opt = vim.opt
 if not vim.g.vscode then
 	require "nvchad.options"
+  -- Numbers
 	opt.relativenumber   = true
+  opt.numberwidth = 1
+  opt.number = true
+  -- o.ruler = false
 end
 
 opt.tabstop          = 2 -- 2 spaces for tabs (prettier default)
@@ -13,6 +17,7 @@ opt.ignorecase       = true -- ignore case when searching
 opt.smartcase        = true -- if you include mixed case in your search, assumes you want case-sensitive
 
 -- opt.rulerformat   = ""
+vim.o.cmdheight      = 0
 opt.cursorline       = true -- highlight the current cursor line
 -- opt.cursorcolumn  = true -- highlight the current cursor column
 -- opt.cursorlineopt = "number"

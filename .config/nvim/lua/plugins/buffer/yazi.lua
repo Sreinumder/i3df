@@ -2,7 +2,6 @@ return {
   "mikavilpas/yazi.nvim",
   event = "VeryLazy",
   keys = {
-    -- 👇 in this section, choose your own keymappings!
     -- {
     --   "<leader>e",
     --   "<cmd>Yazi<cr>",
@@ -14,7 +13,7 @@ return {
       desc = "Open the file manager in nvim's working directory" ,
     },
     {
-      '<leader>ee',
+      '<A-e>',
       "<cmd>Yazi toggle<cr>",
       desc = "Resume the last yazi session",
     },
@@ -24,6 +23,15 @@ return {
     open_for_directories = false,
     keymaps = {
       show_help = 'g?',
+      open_file_in_vertical_split = '<c-v>',
+      open_file_in_horizontal_split = '<c-s>',
+      open_file_in_tab = '<c-t>',
+      grep_in_directory = '<leader>fw',
+      replace_in_directory = '<c-g>',
+      cycle_open_buffers = '<tab>',
+      copy_relative_path_to_selected_files = '<c-y>',
+      send_to_quickfix_list = '<c-q>',
+      change_working_directory = "Q",
     },
   },
 }

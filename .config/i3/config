@@ -1,14 +1,14 @@
 set $mod Mod4
 set $alt Mod1
 # font  'Iosevka Nerd Font':monospace 8
+exec --no-startup-id xrdb -merge ~/.Xresources # for dark mode for applications
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
-exec --no-startup-id feh ~/wallpaper/scooter.jpg --bg-center
-exec --no-startup-id ~/i3df/scripts/every_15_second.sh
+exec --no-startup-id feh --bg-fill ~/wallpaper/sky.jpg --bg-fill ~/wallpaper/crow.png --bg-fill ~/wallpaper/scooter.jpg
 
 set $refresh_i3status killall -SIGUSR1 i3status
 # media --------------------------------------------------
@@ -68,11 +68,12 @@ floating_modifier $mod
 # 5. Applications -------------------------------------------------------------
 bindsym $mod+Return exec warp-terminal
 bindsym $mod+z exec zeditor
+bindsym $mod+x exec emacs
 bindsym $mod+g exec "ezterm -e retroarch"
 bindsym $mod+space exec wezterm
 # bindsym ctrl+$mod+space exec warp-terminal
 bindsym $mod+c exec wezterm -e nvim -O ~/.config/i3/config ~/.config/i3/i3wm-advent.md
-bindsym $mod+ctrl+f exec chromium --profile-directory="work"
+bindsym $mod+ctrl+f exec chromium --profile-directory="Default"
 bindsym $mod+$alt+f  exec chromium --profile-directory="Profile 4"
 
 # bindsym $mod+e exec pcmanfm
@@ -80,12 +81,13 @@ bindsym $mod+$alt+e exec thunar
 bindsym $mod+e exec wezterm -e yazi
 # bindsym $mod+e exec wezterm --class yazi -e yazi ~
 bindsym $mod+ctrl+q exec qutebrowser
+bindsym $mod+ctrl+c exec codium
 
 # kill focused window
 bindsym $mod+w kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+d exec --no-startup-id dmenu_run -m 0 -fn 'Iosevka Nerd Font-11'
 
 # change focus
 bindsym $mod+h focus left
@@ -210,7 +212,7 @@ bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 # bindsym $alt+Escape mode "music"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
-    bar {
+  bar {
     status_command i3status
     height 15
 # position top
@@ -230,7 +232,7 @@ bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 #         urgent_workspace   #1f222d #1f222d    #ee829f
 #         binding_mode       #1f222d #81a1c1    #2e3440
     }
-    }
+  }
 
 ##START THEMING WM
 
@@ -256,6 +258,6 @@ for_window [class="^.*"] border pixel 2
 gaps inner 1
 gaps outer 1
 
-for_window [class=Eog|nsxiv|feh|mpv|Vlc|pavucontrol|Xarchiver] floating enable
-for_window [class=Eog|nsxiv|feh|mpv|Vlc|File-roller|Xarchiver] focus
+for_window [class=Eog|nsxiv|feh|Vlc|pavucontrol|Xarchiver] floating enable
+for_window [class=Eog|nsxiv|feh|Vlc|File-roller|Xarchiver] focus
 set $mod Mod4

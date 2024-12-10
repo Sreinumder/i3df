@@ -1,17 +1,84 @@
--- This file needs to have same structure as nvconfig.lua 
--- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
--- Please read that file to know all available options :( 
+local options = {
+  base46 = {
+    theme = "everblush",
+    transparency = false,
+    theme_toggle = { "everblush", "one_light" },
+  },
 
----@type ChadrcConfig
-local M = {}
+  ui = {
+    cmp = {
+      icons_left = false, -- only for non-atom styles!
+      lspkind_text = true,
+      style = "default", -- default/flat_light/flat_dark/atom/atom_colored
+      format_colors = {
+        tailwind = false, -- will work for css lsp too
+        icon = "󱓻",
+      },
+    },
 
-M.base46 = {
-	theme = "everblush",
-	-- hl_override = {
-	-- 	Comment = { italic = true },
-	-- 	["@comment"] = { italic = true },
-	-- },
+    telescope = { style = "borderless" }, -- borderless / bordered
+
+    statusline = {
+      enabled = true,
+      theme = "default",
+      separator_style = "block",
+      order = { "git", "file", "%=", "lsp_msg", "%=", "diagnostics", "macro","lsp", "cwd", },
+      modules = {
+        macro =function()
+          local reg = vim.fn.reg_recording()
+          if reg == "" then return "   "  end -- not recording
+          return "rec @" .. reg .. " "
+        end,
+        curs = function() 
+          local row, col =vim.api.nvim_win_get_cursor(0).unpack()
+          local filename = vim.fn.expand('%:t')
+          local total_lines = vim.api.nvim_buf_line_count(0)
+          local percentage = math.floor((row / total_lines) * 100)
+          return string.format("%s | Line %d/%d", filename, row, total_lines, percentage)
+        end
+      }
+    },
+
+    -- lazyload it when there are 1+ buffers
+    tabufline = {
+      enabled = true,
+      lazyload = true,
+      order = { "treeOffset", "buffers", "tabs", "btns" },
+      modules = nil,
+    },
+  },
+
+  nvdash = { load_on_startup = false, },
+
+  term = {
+    winopts = { number = false, relativenumber = false },
+    sizes = { sp = 0.3, vsp = 0.2, ["bo sp"] = 0.3, ["bo vsp"] = 0.2 },
+    float = {
+      relative = "editor",
+      row = 0.3,
+      col = 0.25,
+      width = 0.5,
+      height = 0.4,
+      border = "single",
+    },
+  },
+
+  lsp = { signature = true },
+
+  cheatsheet = {
+    theme = "grid", -- simple/grid
+    excluded_groups = { "terminal (t)", "autopairs", "Nvim", "Opens" }, -- can add group name or with mode
+  },
+
+  mason = { pkgs = {}, skip = {} },
+
+  colorify = {
+    enabled = true,
+    mode = "virtual", -- fg, bg, virtual
+    virt_text = "󱓻 ",
+    highlight = { hex = true, lspvars = true },
+  },
 }
 
-
-return M
+local status, chadrc = pcall(require, "chadrc")
+return vim.tbl_deep_extend("force", options, status and chadrc or {})

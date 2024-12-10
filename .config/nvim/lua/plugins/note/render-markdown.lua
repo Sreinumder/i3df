@@ -1,6 +1,6 @@
 return {
 	'MeanderingProgrammer/render-markdown.nvim',
-	ft = {"markdown"},
+	-- ft = {"markdown"},
   keys = {
     {"<leader>,mm", ":RenderMarkdown toggle<CR>", {desc = "toggle markview"}},
     {"<leader>,mh", ":RenderMarkdown contract<CR>", {desc = "contract markview"}},

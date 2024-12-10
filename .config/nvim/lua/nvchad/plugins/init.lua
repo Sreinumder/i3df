@@ -46,15 +46,6 @@ return {
     end,
   },
 
-  -- file managing , picker etc
-  {
-    "nvim-tree/nvim-tree.lua",
-    cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-    opts = function()
-      return require "nvchad.configs.nvimtree"
-    end,
-  },
-
   {
     "folke/which-key.nvim",
     keys = { "<Space>", "<c-w>", '"', "'", "`", "c", "v", "g" },
@@ -69,9 +60,9 @@ return {
   -- formatting!
   {
     "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = { lua = { "stylua" } },
-    },
+    opts = function()
+      require "nvchad.configs.conform"
+    end,
   },
 
   -- git stuff

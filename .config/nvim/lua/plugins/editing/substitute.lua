@@ -10,10 +10,10 @@ return {
   config = function()
     require("substitute").setup({
       yank_substituted_text = false,
-      preserve_cursor_position = false,
-      highlight_substituted_text = { enabled = true, timer = 500, },
+      preserve_cursor_position = true,
+      highlight_substituted_text = { enabled = true, timer = 300, },
       range = { cursor_position = "end", },
-      exchange = { preserve_cursor_position =  false, },
+      exchange = { preserve_cursor_position =  true, },
     })
     local keymap = vim.keymap
     keymap.set("n", "s", require("substitute").operator, { noremap = true })

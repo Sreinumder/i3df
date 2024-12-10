@@ -42,9 +42,9 @@ return {
     highlight = {
       on_put = true,
       on_yank = true,
-      timer = 200,
+      timer = 300,
     },
-    preserve_cursor_position = {enabled = false,},
+    preserve_cursor_position = {enabled = true,},
     textobj = {
       enabled = true,
     },

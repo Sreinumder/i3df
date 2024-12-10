@@ -4,12 +4,13 @@
 --└─────────────────────────────────────────┘
 return {
   "gregorias/coerce.nvim",
-  lazy = false,
+  event = 'VeryLazy',
+  dependencies = { "gregorias/coop.nvim" },
   -- keys = {
   --   { "go", mode = { "v", "n" } },
   -- },
   config = function()
-    require"coerce".setup{
+    require "coerce".setup {
       keymap_registry = require("coerce.keymap").keymap_registry(),
       -- The notification function used during error conditions.
       notify = function(...) return vim.notify(...) end,

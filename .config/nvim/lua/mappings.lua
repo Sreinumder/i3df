@@ -55,7 +55,7 @@ map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, { desc = "Remove wor
 -- map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
 -- map("n", "<leader>ra", require "nvchad.lsp.renamer", opts "NvRenamer")
 
---   map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
+  map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {desc = "Code action"})
 --   map("n", "gr", vim.lsp.buf.references, opts "Show references")
 -- end
 -- pain saver
@@ -185,10 +185,6 @@ map("i", ",", ",<c-g>u")
 map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
--- insert / command mode hacks
-map("n", "<leader>to", "o- [ ] ", { desc = "markdown todo below" })
-map("n", "<leader>tO", "O- [ ] ", { desc = "markdown todo below" })
-map("n", "<leader>t;", "cc- [ ] ", { desc = "markdown todo change" })
 map("n", "<A-.>", ":<Up><CR>", { desc = "last command" })
 map("i", "<c-u>", "<Esc>viw~ea", { desc = "toggle case" })
 map("i", "<c-t>", "<Esc>b~lea", { desc = "change word case to title" })

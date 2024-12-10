@@ -2,8 +2,22 @@
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
 "$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
 
-[manager]
+[[manager.prepend_keymap]]
+on   = [ "f","w" ]
+run  = "plugin fg --args='rg'"
+desc = "find file by content (ripgrep match)"
 
+[[manager.prepend_keymap]]
+on   = [ "f","W" ]
+run  = "plugin fg"
+desc = "find file by content (fuzzy match)"
+
+[[manager.prepend_keymap]]
+on   = [ "f","f" ]
+run  = "plugin fg --args='fzf'"
+desc = "find file by filename"
+
+[manager]
 keymap = [
 # {on  = "<A-g>", run = '''shell 'dragon-drop -x -i -T "$1"' --confirm''', desc = "dragon give"}, 
 {on  = "<A-g>", run = '''shell 'dragon-drop -x -i -T "$1"' --confirm''', desc = "dragon give"}, 
@@ -37,6 +51,7 @@ keymap = [
 { on = "<Esc>", run = "escape",             desc = "Exit visual mode, clear selected, or cancel search" },
 { on = "<C-[>", run = "escape",             desc = "Exit visual mode, clear selected, or cancel search" },
 { on = "q",     run = "quit",               desc = "Exit the process" },
+{ on = "<A-e>", run = "quit",               desc = "Exit the process" },
 { on = "Q",     run = "quit --no-cwd-file", desc = "Exit the process without writing cwd-file" },
 { on = "<C-c>", run = "close",              desc = "Close the current tab, or quit if it is last tab" },
 { on = "<C-z>", run = "suspend",            desc = "Suspend the process" },
@@ -149,6 +164,7 @@ keymap = [
 { on = [ "g", "c" ],       run = "cd ~/.config",     desc = "Go to the config directory" },
 { on = [ "g", "d" ],       run = "cd ~/Downloads",   desc = "Go to the downloads directory" },
 { on = [ "g", "<Space>" ], run = "cd --interactive", desc = "Go to a directory interactively" },
+{ on = [ "Y" ], run = "cd", args = [ "$@" ], exit = false },
 
 # Tabs
 { on = "t", run = "tab_create --current", desc = "Create a new tab with CWD" },

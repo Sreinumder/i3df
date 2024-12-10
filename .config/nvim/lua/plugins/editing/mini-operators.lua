@@ -10,7 +10,7 @@ return {
 			"<A-=>",
 			function()
 				require("mini.operators").multiply("visual")
-        vim.cmd("norm i <= ")
+        vim.cmd("norm i <- ")
 				require("mini.operators").evaluate("visual")
 			end,
 			mode = { "x" },

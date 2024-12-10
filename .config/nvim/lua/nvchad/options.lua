@@ -3,7 +3,7 @@ local o = vim.o
 local g = vim.g
 
 -------------------------------------- options ------------------------------------------
-o.laststatus = 3
+-- o.laststatus = 3
 o.showmode = false
 
 o.clipboard = "unnamedplus"
@@ -21,11 +21,6 @@ opt.fillchars = { eob = " " }
 o.ignorecase = true
 o.smartcase = true
 o.mouse = "a"
-
--- Numbers
-o.number = true
-o.numberwidth = 2
-o.ruler = false
 
 -- disable nvim intro
 opt.shortmess:append "sI"
