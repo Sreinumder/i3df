@@ -16,7 +16,8 @@ return {
 			mode = { "x" },
 		},
 		{ "gm", mode = { "n", "v" } },
-		-- { "<leader>gs", mode = { "n", "v" } },
+		{ "<A-s>", mode = { "n", "v" } },
+		{ "s", mode = { "n", "v" } },
 	},
 	opts = {
 		-- Evaluate text and replace with output
@@ -27,7 +28,7 @@ return {
 
 		-- Exchange text regions
 		exchange = {
-			prefix = "", -- Whether to reindent new text to match previous indent
+			prefix = "<A-s>", -- Whether to reindent new text to match previous indent
 			-- reindent_linewise = true,
 		},
 
@@ -39,13 +40,13 @@ return {
 
 		-- Replace text with register
 		replace = {
-			prefix = "", -- Whether to reindent new text to match previous indent
-			reindent_linewise = true,
+			prefix = "s", 
+			reindent_linewise = true, -- Whether to reindent new text to match previous indent
 		},
 
 		-- Sort text
 		sort = {
-			prefix = "", -- Function which does the sort
+			prefix = "sg", -- Function which does the sort
 			func = nil,
 		},
 	},

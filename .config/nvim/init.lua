@@ -31,7 +31,7 @@ else
     { import = "plugins.editing" },
     { import = "plugins.essential" },
     { import = "plugins.treesitter" },
-    { import = "plugins.req_internet" },
+    { import = "plugins.git+others" },
     { import = "plugins.tools" },
   }
   require("lazy").setup(plugins, lazy_config)

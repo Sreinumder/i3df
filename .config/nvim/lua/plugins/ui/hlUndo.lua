@@ -1,5 +1,5 @@
 return   {
     'tzachar/highlight-undo.nvim',
-    opts = {},
+    opts = { duration = vim.g.change_hl_duration, },
     keys = {'u', '<C-r>'}
   }

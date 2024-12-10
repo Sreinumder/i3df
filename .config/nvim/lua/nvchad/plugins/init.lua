@@ -65,15 +65,6 @@ return {
     end,
   },
 
-  -- git stuff
-  {
-    "lewis6991/gitsigns.nvim",
-    event = "UIEnter",
-    opts = function()
-      return require "nvchad.configs.gitsigns"
-    end,
-  },
-
   -- lsp stuff
   {
     "williamboman/mason.nvim",

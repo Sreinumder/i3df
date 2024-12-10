@@ -8,7 +8,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
-exec --no-startup-id feh --bg-fill ~/wallpaper/sky.jpg --bg-fill ~/wallpaper/crow.png --bg-fill ~/wallpaper/scooter.jpg
+exec --no-startup-id feh --bg-fill ~/wallpaper/scooter.jpg --bg-fill ~/wallpaper/crow.png --bg-fill ~/wallpaper/sky.jpg
 
 set $refresh_i3status killall -SIGUSR1 i3status
 # media --------------------------------------------------

@@ -52,6 +52,9 @@ vim.g.matchup_matchparen_offscreen = { method = "popup" }
 
 -- Disable sql omni completion, it is broken.
 vim.g.loaded_sql_completion = 1
-vim.g.preserve_cursor_pos = true
 vim.g.nvim_ghost_server_port = 4001
 vim.g.nvim_ghost_autostart = 0
+
+-- plugin parameters
+vim.g.preserve_cursor_pos = true
+vim.g.change_hl_duration = 300

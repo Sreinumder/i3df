@@ -42,7 +42,7 @@ return {
     highlight = {
       on_put = true,
       on_yank = true,
-      timer = 300,
+      timer = vim.g.change_hl_duration,
     },
     preserve_cursor_position = {enabled = true,},
     textobj = {

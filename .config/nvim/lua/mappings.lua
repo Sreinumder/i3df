@@ -78,10 +78,10 @@ map("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy nvim" })
 map({ "n", "x" }, "<leader>*", "*``cgn", { desc = "replace word" })
 
 -- cd to things
-map("n", "<leader>cdh", ":cd ..<CR>", { desc = "cd.." })
+map("n", "<leader>cdh", ":cd ..<CR>", { desc = "cd .." })
 map("n", "<leader>cdf", "<cmd>lcd %:p:h<cr><cmd>pwd<cr>", { desc = "change dir" })
 map("n", "<leader>cdp", "<cmd>lcd ~/.config/nvim/lua/plugins<cr>", { desc = "change dir to nvim config" })
-map("n", "<leader>cdh", "<cmd>lcd ~<cr>", { desc = "change dir to ~" })
+map("n", "<leader>cdr", "<cmd>lcd ~<cr>", { desc = "change dir to ~" })
 map("n", "<leader>cdn", "<cmd>lcd ~/notes<cr>", { desc = "change dir to notes" })
 
 -- delete with x d or D and cut with alt + x + d + D
