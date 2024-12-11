@@ -164,7 +164,7 @@ map("x", "<A-g><A-g>", '"bdgg"bp`[v`]', { desc = "move selection with gg" })
 map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
 
 -- simple hacks
-map("n", "g<leader>gx", '"gya":lua vim.ui.open("https://www.github.com/"..<C-r>g)<CR>', { desc = "Location List" })
+map("n", "g<leader>gx", '"gya":lua vim.ui.open("https://www.github.com/"..<C-r>g)<CR>', { desc = "open in github" })
 map("n", "<leader>ql", "<cmd>lopen<cr>", { desc = "Location List" })
 map("n", "<leader>qf", "<cmd>copen<cr>", { desc = "Quickfix List" })
 map("n", "<leader>ww", ":w<cr>", { silent = true, desc = "save this buffer" })

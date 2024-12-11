@@ -17,7 +17,7 @@ opt.ignorecase       = true -- ignore case when searching
 opt.smartcase        = true -- if you include mixed case in your search, assumes you want case-sensitive
 
 -- opt.rulerformat   = ""
-vim.o.cmdheight      = 0
+opt.cmdheight      = 0
 opt.cursorline       = true -- highlight the current cursor line
 -- opt.cursorcolumn  = true -- highlight the current cursor column
 -- opt.cursorlineopt = "number"
@@ -40,12 +40,13 @@ opt.splitbelow       = true -- split horizontal window to the bottom
 -- hide the ~ character on empty lines at the end of the buffer
 opt.fcs              = "eob: "
 
+opt.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions" -- better auto-session
 opt.spell            = false
 opt.spelllang        = { 'en_us' }
-vim.o.foldcolumn     = '1' -- '0' is not bad
-vim.o.foldlevel      = 99 -- Using ufo provider need a large value, feel free to decrease the value
-vim.o.foldlevelstart = 99
-vim.o.foldenable     = true
+opt.foldcolumn     = '1' -- '0' is not bad
+opt.foldlevel      = 99 -- Using ufo provider need a large value, feel free to decrease the value
+opt.foldlevelstart = 99
+opt.foldenable     = true
 vim.g.netrw_banner        = 0 -- disable that anoying Netrw banner
 vim.g.netrw_browser_split = 4 -- open in a prior windowvim.cmd("let g:netrw_liststyle = 3") -- tree view
 vim.g.matchup_matchparen_offscreen = { method = "popup" }

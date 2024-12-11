@@ -82,7 +82,6 @@ bindsym $mod+$alt+f  exec chromium --profile-directory="Profile 4"
 bindsym $mod+$alt+e exec thunar
 bindsym $mod+e exec wezterm -e yazi
 # bindsym $mod+e exec wezterm --class yazi -e yazi ~
-bindsym $mod+ctrl+q exec qutebrowser
 bindsym $mod+ctrl+c exec codium
 
 # kill focused window

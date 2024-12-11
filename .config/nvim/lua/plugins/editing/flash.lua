@@ -8,7 +8,7 @@ return {
           jump_labels = true,
           multi_line = true,
           label = { exclude = "hjkliardc" },
-          keys = { "f", "t", "F", "T", ";", "," },
+          keys = { "<A-f>", "<A-t>", "<A-F>", "<A-T>", ";", "," },
           search = { wrap = false },
           highlight = { backdrop = false },
           jump = {
