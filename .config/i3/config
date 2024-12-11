@@ -73,7 +73,9 @@ bindsym $mod+g exec "ezterm -e retroarch"
 bindsym $mod+space exec wezterm
 # bindsym ctrl+$mod+space exec warp-terminal
 bindsym $mod+c exec wezterm -e nvim -O ~/.config/i3/config ~/.config/i3/i3wm-advent.md
-bindsym $mod+ctrl+f exec chromium --profile-directory="Default"
+bindsym $mod+ctrl+f exec zen-browser
+bindsym $mod+ctrl+shift+f exec chromium --profile-directory="Default"
+bindsym $mod+ctrl+q exec qutebrowser
 bindsym $mod+$alt+f  exec chromium --profile-directory="Profile 4"
 
 # bindsym $mod+e exec pcmanfm
