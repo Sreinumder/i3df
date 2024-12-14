@@ -4,8 +4,8 @@
 [global]
     monitor = 0
     follow = mouse
-    width = 300
-    height = 300
+    # width = 300
+    # height = 100
     origin = top-right
     offset = 20x50
     scale = 0
@@ -59,17 +59,17 @@
     background = "#2e2e3eaa"
     foreground = "#a6e3a1"
     frame_color = "#a6e3a1"
-    timeout = 10
+    timeout = 2
 [urgency_normal]
     background = "#2e2e3eaa"
     foreground = "#74c7ec"
     frame_color = "#74c7ec"
-    timeout = 10
+    timeout = 3
 [urgency_critical]
     background = "#2e2e3eaa"
     foreground = "#f38ba8"
     frame_color = "#f38ba8"
-    timeout = 10
+    timeout = 7
 [notify-send]
     appname = notify-send
     format = "%s\n%b"

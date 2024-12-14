@@ -4,7 +4,7 @@ return {
   keys = {
     { "gs", mode={ "n", "x" } },
     { "ds", mode={ "n", "x" } },
-    { "ys", mode={ "n", "x" } },
+    { "ms", mode={ "n", "x" } },
     { "cs", mode={ "n", "x" } },
   },
 	opts = {
@@ -19,15 +19,15 @@ return {
 		mappings = {
 			add = "gs", -- Add surrounding in Normal and Visual modes
 			delete = "ds", -- Delete surrounding
-			find = "ysn", -- Find surrounding (to the right)
-			find_left = "ysl", -- Find surrounding (to the left)
-			highlight = "ysh", -- Highlight surrounding
-			replace = "cs", -- Replace surrounding
-			update_n_lines = "ysn", -- Update `n_lines`
+      replace = "cs", -- Change surrounding
+			find = "msn", -- Find surrounding next
+			find_left = "msl", -- Find surrounding last
+			highlight = "msh", -- Highlight surrounding
+			-- update_n_lines = "ysu", -- Update `n_lines`
 			suffix_last = "l", -- Suffix to search with "prev" method
 			suffix_next = "n", -- Suffix to search with "next" method
 		},
-		n_lines = 20, -- Number of lines within which surrounding is searched
+		n_lines = 50, -- Number of lines within which surrounding is searched
 		respect_selection_type = true,
 		search_method = "cover",
 		silent = false, -- Whether to disable showing non-error feedback

@@ -40,13 +40,13 @@ return {
 
 		-- Replace text with register
 		replace = {
-			prefix = "s", 
+			prefix = "s",
 			reindent_linewise = true, -- Whether to reindent new text to match previous indent
 		},
 
 		-- Sort text
 		sort = {
-			prefix = "sg", -- Function which does the sort
+			prefix = "<leader>so", -- Function which does the sort
 			func = nil,
 		},
 	},
