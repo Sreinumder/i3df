@@ -15,49 +15,32 @@ map("n", "<C-Up>", "<cmd>resize   +2<cr>", { desc = "Increase Window    Height" 
 map("n", "<C-Down>", "<cmd>resize   -2<cr>", { desc = "Decrease Window    Height" })
 map("n", "<C-Left>", "<cmd>vertical resize   -2<cr>", { desc = "Decrease Window  Width" })
 map("n", "<C-Right>", "<cmd>vertical resize   +2<cr>", { desc = "Increase Window  Width" })
-map("n", "<Up>", "<C-W>k", { desc = "Window up" })
-map("n", "<Down>", "<C-W>j", { desc = "Window down" })
-map("n", "<Left>", "<C-W>h", { desc = "Window left" })
-map("n", "<Right>", "<C-W>l", { desc = "Window right" })
+-- map("n", "<Up>", "<C-W>k", { desc = "Window up" })
+-- map("n", "<Down>", "<C-W>j", { desc = "Window down" })
+-- map("n", "<Left>", "<C-W>h", { desc = "Window left" })
+-- map("n", "<Right>", "<C-W>l", { desc = "Window right" })
 
 
 --and HML to start mid end of line <A-HML> to high middle low part of screen
 map("n", "<leader>w", "<C-w>", { desc = "window control" })       -- split window vertically
 map({ "n", "x" }, "<leader>r", '"', { desc = "register select" }) -- <leader>ra for a register
 map("n", "ygG", "<cmd>%y+<CR>", { desc = "yank all" })
-map({ "n", "v", "o" }, "H", "^", { desc = "Start of line" })
-map("n", "<A-H>", "H", { desc = "Default H" })
-map({ "n", "v", "o" }, "M", "gM", { desc = "Middle of Line" })
-map("n", "<A-M>", "M", { desc = "Default M" })
-map({ "n", "v", "o" }, "L", "g_", { desc = "End of Line" })
-map("n", "<A-L>", "L", { desc = "Default L" })
-map("x", "$", "g_")
-map("x", "g_", "$")
+map({ "n", "v", "o" }, "H", "^",  { desc = "Beg of line" }) map("n", "<A-H>", "H", { desc = "Default H" })
+map({ "n", "v", "o" }, "M", "gM", { desc = "Mid of Line" }) map("n", "<A-M>", "M", { desc = "Default M" })
+map({ "n", "v", "o" }, "L", "g_", { desc = "End of Line" }) map("n", "<A-L>", "L", { desc = "Default L" })
+map("x", "$", "g_", { desc ="to last non-white char"}) map("x", "g_", "$")
 
 -- LSP
-map("n", "gD", vim.lsp.buf.declaration, { desc = "Go to lsp declaration" })
-map("n", "<Leader>gD", "gD", { desc = "Go to declaration" })
-map("n", "gd", vim.lsp.buf.definition, { desc = "Go to lsp definition" })
-map("n", "<Leader>gd", "gd", { desc = "Go to definition" })
-map("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
-map("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
-map("n", "<leader>sh", vim.lsp.buf.signature_help, { desc = "Show signature help" })
-map("n", "<leader>sh", vim.lsp.buf.signature_help, { desc = "Show signature help" })
-map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, { desc = "Add workspace folder" })
-map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, { desc = "Add workspace folder" })
+map("n", "gr",         vim.lsp.buf.references,     { desc = "Show references"      })
+map("n", "gd",         vim.lsp.buf.definition,     { desc = "Go to lsp definition" }) map("n", "<Leader>gd", "gd")
+map("n", "gD",         vim.lsp.buf.declaration,    { desc = "Go to lsp declaration"}) map("n", "<Leader>gD", "gD")
+map("n", "<leader>D",  vim.lsp.buf.type_definition,{ desc = "Go to type definition"})
+map("n", "gi",         vim.lsp.buf.implementation, { desc = "Go to implementation" }) map("n", "<Leader>gi", "gi")
+map({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, {desc = "Code action"})
+map("n", "<leader>wi", vim.lsp.buf.add_workspace_folder, { desc = "Insert workspace folder" })
 map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, { desc = "Remove workspace folder" })
-map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, { desc = "Remove workspace folder" })
+-- map("n", "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,{ desc= "List workspace folders"})
 
--- map("n", "<leader>wl", function()
---   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
--- end, opts "List workspace folders")
-
--- map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
--- map("n", "<leader>ra", require "nvchad.lsp.renamer", opts "NvRenamer")
-
-  map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {desc = "Code action"})
---   map("n", "gr", vim.lsp.buf.references, opts "Show references")
--- end
 -- pain saver
 map("n", "<leader>", "<NOP>", { desc = "" })
 map("n", "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and Clear hlsearch" })
@@ -65,17 +48,21 @@ map("n", "<leader>nh",
     "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
     { desc = "Redraw / Clear hlsearch / Diff Update" }
 )
-map("n", "<A-v>", "vlh", { desc = "vi single char under cursor" })
 map("x", "J", "j", { desc = "Disable annoying J " })
 map("n", "<C-u>", "<C-u>zz", { desc = "Half page up" })
 map("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })
 map("x", "<", "<gv")
 map("x", ">", ">gv")                                                                -- Continuous visual shifting (does not exit Visual mode), `gv` means
 map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
-
+map("n", "vih", "^vg_", { desc = "true" })
+map("n", "yih", "^yg_", { desc = "true" })
+map({ "o", "x" }, "i<space>", "iW") -- select WORD by i<space>
 -- others
 map("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy nvim" })
 map({ "n", "x" }, "<leader>*", "*``cgn", { desc = "replace word" })
+for _, quote in ipairs({ '"', "'", "`" }) do
+	vim.keymap.set({ "x", "o" }, "a" .. quote, "2i" .. quote)
+end
 
 -- cd to things
 map("n", "<leader>cdh", ":cd ..<CR>", { desc = "cd .." })
@@ -83,6 +70,14 @@ map("n", "<leader>cdf", "<cmd>lcd %:p:h<cr><cmd>pwd<cr>", { desc = "change dir" 
 map("n", "<leader>cdp", "<cmd>lcd ~/.config/nvim/lua/plugins<cr>", { desc = "change dir to nvim config" })
 map("n", "<leader>cdr", "<cmd>lcd ~<cr>", { desc = "change dir to ~" })
 map("n", "<leader>cdn", "<cmd>lcd ~/notes<cr>", { desc = "change dir to notes" })
+vim.keymap.set("n", "<leader>cdg", function()
+  local git_root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel"))
+  if vim.fn.isdirectory(git_root) == 1 then
+    vim.cmd("cd " .. git_root)
+  else
+    print("Not inside a Git repository")
+  end
+end, { desc = "Change directory to Git repository root" })
 
 -- delete with x d or D and cut with alt + x + d + D
 map({ "n", "v", "x" }, "x", '"_x')
@@ -133,9 +128,10 @@ map("x", "<C-S-j>", "jojo", { desc = "shift vi range" })
 map("x", "<C-S-k>", "koko", { desc = "shift vi range" })
 
 
--- comment and clone sentence 
+-- comment and clone sentence
 -- map("n", "<A-y>", 'gcc', { desc = "clone line Down(n)" })
 
+-- simple editing hacks
 -- clone sentences up and down
 map("n", "<A-J>", 'V"by"bPgv<Esc>', { desc = "clone line Down(n)" })
 map("n", "<A-K>", 'V"by"bgpgv<Esc>', { desc = "clone line Up(n)" })
@@ -149,6 +145,7 @@ map("x", "<leader><A-J>", '"byo<esc>"bp^vg_', { desc = "clone selection Down(v) 
 map("x", "<leader><A-K>", '"byO<esc>"bp^vg_', { desc = "clone selection Up(v) to new line" })
 
 -- move selection with vi motion of web(ge)/WEB(GE)/HML/gg/G
+map("n", "<A-v>", "vlh", { desc = "vi single char under cursor" })
 map("x", "<A-w>", '"bdw"bp`[v`]', { desc = "move selection with w" })
 map("x", "<A-e>", '"bde"bp`[v`]', { desc = "move selection with e" })
 map("x", "<A-b>", '"bdb"bP`[v`]', { desc = "move selection with b" })
@@ -156,7 +153,7 @@ map("x", "<A-W>", '"bdW"bp`[v`]', { desc = "move selection with W" })
 map("x", "<A-E>", '"bdE"bp`[v`]', { desc = "move selection with e" })
 map("x", "<A-B>", '"bdB"bP`[v`]', { desc = "move selection with b" })
 map("x", "<A-H>", '"bd^"bP`[v`]', { desc = "move selection with H" })
-map("x", "<A-M>", '"bdgM"bP`[v`]', { desc = "move selection with H" })
+map("x", "<A-M>", '"bdgM"bP`[v`]',{ desc = "move selection with H" })
 map("x", "<A-L>", '"bd$"bp`[v`]', { desc = "move selection with L" })
 map("x", "<A-g><A-e>", '"bdge"bp`[v`]', { desc = "move selection with ge" })
 map("x", "<A-g><A-E>", '"bdgE"bp`[v`]', { desc = "move selection with gE" })
@@ -164,9 +161,8 @@ map("x", "<A-g><A-g>", '"bdgg"bp`[v`]', { desc = "move selection with gg" })
 map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
 
 -- simple hacks
-map("n", "g<leader>gx", '"gya":lua vim.ui.open("https://www.github.com/"..<C-r>g)<CR>', { desc = "open in github" })
-map("n", "<leader>ql", "<cmd>lopen<cr>", { desc = "Location List" })
-map("n", "<leader>qf", "<cmd>copen<cr>", { desc = "Quickfix List" })
+-- map("n", "<leader>ql", "<cmd>lopen<cr>", { desc = "Location List" })
+-- map("n", "<leader>qf", "<cmd>copen<cr>", { desc = "Quickfix List" })
 map("n", "<leader>ww", ":w<cr>", { silent = true, desc = "save this buffer" })
 map("n", "<leader>qq", "<cmd>q!<cr>", { silent = true, desc = "quit current window" })
 map("n", "<leader>sa", "<cmd>wqa!<cr>", { silent = true, desc = "write and quit all" })
@@ -184,33 +180,42 @@ map("n", "]Q", "<cmd>clast<cr>zv", { silent = true, desc = "last qf item" })
 map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 
+-- insert mode hack
 -- Add undo break-points
 map("i", ",", ",<c-g>u")
 map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
-
-map("n", "<A-.>", ":<Up><CR>", { desc = "last command" })
 map("i", "<c-u>", "<Esc>viw~ea", { desc = "toggle case" })
 map("i", "<c-t>", "<Esc>b~lea", { desc = "change word case to title" })
+map("i", "<C-k>", function() -- capitalize word
+	local line = vim.fn.getline(".")
+	local col = vim.fn.getpos(".")[3]
+	local substring = line:sub(1, col - 1)
+	local result = vim.fn.matchstr(substring, [[\v<(\k(<)@!)*$]])
+	return "<C-w>" .. result:upper()
+end, { expr = true })
 map("i", "<C-l>", '<C-r>=expand("%:p:h") . "/" <CR>', { desc = "write file path" })
 
+--- Emacs style
 map({ "i", "c", "t" }, "<A-h>", "<Left>", { desc = "Insert mode left" })
 map({ "i", "c", "t" }, "<A-j>", "<Down>", { desc = "Insert mode down" })
 map({ "i", "c", "t" }, "<A-k>", "<Up>", { desc = "Insert mode up" })
 map({ "i", "c", "t" }, "<A-l>", "<Right>", { desc = "Insert mode Right" })
-
-map("i", "<A-H>", "<C-Left>", { desc = "Insert mode left" })
-map("i", "<A-J>", "<C-Down>", { desc = "Insert mode down" })
-map("i", "<A-K>", "<C-Up>", { desc = "Insert mode up" })
-map("i", "<A-L>", "<C-Right>", { desc = "Insert mode Right" })
-
-map("i", "<A-c>", "<esc>ciw", { desc = "change this word" })
-map("i", "<A-n>", "<esc>2f,Bct,", { desc = "change next csv" })
-map("i", "<A-p>", "<esc>F,Bct, ", { desc = "change prev csv" }) --   good, binding, this, is,
-
 map({ "i", "c" }, "<C-A>", "<HOME>")
 map({ "i", "c" }, "<C-E>", "<END>")
 map("c", "<C-A-K>", "\\(.*\\)", { desc = "kirby " })
+
+map("i", "<A-c>", "<esc>ciw", { desc = "change except the selection" })
+map("i", "<A-n>", "<esc>2f,Bct,", { desc = "change next csv" })
+map("i", "<A-p>", "<esc>F,Bct, ", { desc = "change prev csv" }) --   this, is, good, binding,
+
+-- Automatically indent with i and A made by ycino
+vim.keymap.set("n", "i", function()
+	return vim.fn.len(vim.fn.getline(".")) ~= 0 and "i" or '"_cc'
+end, { expr = true, silent = true })
+vim.keymap.set("n", "A", function()
+	return vim.fn.len(vim.fn.getline(".")) ~= 0 and "A" or '"_cc'
+end, { expr = true, silent = true })
 
 -- easier access for 67890:
 map({ "n", "v", "o", "i" }, "<A-`>", "5")

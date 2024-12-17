@@ -9,5 +9,5 @@ return {
 			-- {'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true}},
       {'<Leader>,l', '<Cmd>HlSearchLensToggle<CR>', {noremap = true, silent = true}}
 	},
-	events = {"UIEnter"},
+	event = {"UIEnter"},
 }

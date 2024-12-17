@@ -1,5 +1,3 @@
-vim.cmd([[autocmd BufEnter * set formatoptions-=cro]])
-
 vim.g.base46_cache = vim.fn.stdpath("data") .. "/base46/"
 vim.g.mapleader = " "
 
@@ -10,18 +8,14 @@ if not vim.uv.fs_stat(lazypath) then
 end
 
 vim.opt.rtp:prepend(lazypath)
-
 local lazy_config = require("configs.lazy")
 
-if vim.g.vscode then
-  require("lazy").setup({
-    { import = "plugins.treesitter" },
-    { import = "plugins.editing" },
-    { import = "plugins.vscode" },
-  }, lazy_config)
-  require("options")
-  require("mappings")
-  require("hacks")
+require("abbrev")
+require("filetype")
+if vim.g.started_by_firenvim == true then --firenvim
+  require("firenvim")
+elseif vim.g.vscode then --vscode
+  require("vscode")
 else
   local plugins = {
     { import = "nvchad.plugins" },
@@ -43,8 +37,8 @@ else
   require("mappings")
   require("hacks")
 
-  vim.schedule(function()
-  require("mappings")
-    require("autocmd")
-  end)
 end
+vim.schedule(function()
+  require("mappings")
+  require("autocmd")
+end)

@@ -1,6 +1,6 @@
 return {
 	"uga-rosa/ccc.nvim",
-  -- events = "BufEnter",
+  -- event = "BufEnter",
   ft = { "html", "css", "js", "config", "conf" },
   keys = {
     {

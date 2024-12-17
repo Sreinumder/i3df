@@ -109,3 +109,11 @@ treesj.lua
 outline
 -------
 <leader>to to open jumplist of functions or classes or whatever is releant in the file
+
+
+vim-table-mode go brr
+---------------------
+| lol | surname | ji-number |
++------+---------+--------------+
+| jifej | Dev     | 4151546818   |
+

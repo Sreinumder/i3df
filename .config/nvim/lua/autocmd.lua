@@ -1,5 +1,14 @@
 local autocmd = vim.api.nvim_create_autocmd
 
+autocmd("Filetype", {
+	pattern = "*",
+	callback = function()
+		vim.opt_local.fo:remove({ "c", "r", "o" })
+	end,
+	desc = "disable comment in newline",
+})
+
+
 autocmd("BufReadPost", {
   pattern = "*",
   callback = function()
@@ -32,6 +41,12 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 	pattern = "*.conf",
 	command = "setlocal filetype=conf | setlocal commentstring=#%s",
 })
+
+-- get current buffer absolute path
+vim.api.nvim_create_user_command("QuickLook", function()
+	local path = vim.fn.expand("%:p")
+	require("core.utils").open_file_with_quicklook(path)
+end, { nargs = 0, force = true })
 
 -- -- yank highlight
 -- vim.api.nvim_create_autocmd("TextYankPost", {

@@ -2,7 +2,6 @@ export PATH=$PATH:/var/lib/flatpak/exports/bin
 export PATH=$PATH:~/.config/emacs/bin
 export MANPAGER="nvim +Man!"
 export QT_STYLE_OVERRIDE=adwaita-dark # dark mode
-alias ll='ls --color=auto -alh'
 [[ $- != *i* ]] && return
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
@@ -14,6 +13,8 @@ export EDITOR=nvim
 
 set -o vi # vim mode for terminal
 
+alias ytm="yt-dlp --extract-audio --audio-quality 0"
+alias ll='ls --color=auto -alh'
 alias od="ouch decompress"
 alias oc="ouch   compress"
 alias So='source ~/.bashrc'

@@ -8,8 +8,10 @@ if not vim.g.vscode then
   -- o.ruler = false
 end
 
+opt.clipboard:append("unnamedplus") -- use system clipboard as default registeropt.undofile         = true
 opt.tabstop          = 2 -- 2 spaces for tabs (prettier default)
 opt.shiftwidth       = 2 -- 2 spaces for indent width
+opt.softtabstop      = 2
 opt.expandtab        = true -- expand tab to spaces
 opt.autoindent       = true -- copy indent from current line when starting new one
 opt.wrap             = true -- enable line wrappingopt.number           = true
@@ -27,7 +29,6 @@ vim.g.colorcolumn    = 80 -- turn on termguicolors for nightfly colorscheme to w
 opt.background       = "dark" -- colorschemes that can be light or dark will be made dark
 opt.signcolumn       = "yes" -- show sign column so that text doesn't shift
 opt.backspace        = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
-opt.clipboard:append("unnamedplus") -- use system clipboard as default registeropt.undofile         = true
 opt.undolevels       = 10000
 opt.virtualedit      = "block" -- Allow cursor to move where there is no text in visual block mode
 opt.wildmode         = "longest:full,full" -- Command-line completion mode
@@ -55,6 +56,14 @@ vim.g.matchup_matchparen_offscreen = { method = "popup" }
 vim.g.loaded_sql_completion = 1
 vim.g.nvim_ghost_server_port = 4001
 vim.g.nvim_ghost_autostart = 0
+
+vim.opt.listchars = {
+	tab = "▸▹┊",
+	trail = "▫",
+	nbsp = "␣",
+	extends = "❯",
+	precedes = "❮",
+}
 
 -- plugin parameters
 vim.g.preserve_cursor_pos = true

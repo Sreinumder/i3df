@@ -1,8 +1,3 @@
-vim.api.nvim_command('command! W w')
-vim.api.nvim_command('command! Wq wq')
-vim.api.nvim_command('command! WQ wq')
-vim.api.nvim_command('command! Q q')
-
 local map = vim.keymap.set
 
 function toggle_todo()
@@ -35,9 +30,11 @@ map("n", "<leader>eo", function()
 	end
 end, { desc = "Open current file in file manager" })
 
+map("n", "<A-.>", ":<Up><CR>", { desc = "last command" })
+map("n", "g<leader>gx", '"gya":lua vim.ui.open("https://www.github.com/"..<C-r>g)<CR>', { desc = "open in github" })
+
 -- bash hack for sorting/shuffling/sequencing csv with <A-o> in normal or insert mode
 -- map( "<leader>vrl", /g"<CR>kgJ', "n", 'i<enter><esc>!!shuf -i 1-10 -n 10 -r  | sed -z "s/\\n/, )
-
 map(
 	"n",
 	"<A-o>",
@@ -104,19 +101,8 @@ map(
 	"\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
 	{ desc = "dictionary autodetect -> ??" }
 )
--- map("x", "<leader>tc", "w !trans<CR> | sed 's/\\x1b\\[[0-9;]*m//g'<CR>", {desc = "translate autodetect -> en"})
--- map("x", "<leader>tda", "w !trans -d<CR> | sed 's/\\x1b\\[[0-9;]*m//g'", {desc = "translate autodetect dictionary -> en"})
--- map("x", "<leader>tdc", "w !trans -d<CR> | sed 's/\\x1b\\[[0-9;]*m//g'", {desc = "translate autodetect dictionary -> en"})
--- map("x", "w !trans<CR> | sed 's/\\x1b\\[[0-9;]*m//g'", {desc = "translate autodetect -> en"})
 
--- this is cool
--- i am `rise`
--- trans -t ja -b "i am -rise-'"
--- 私は-ライズ-です」
---
--- trans -t ja -b "hacker"
-
--- bash filter magic with <leader>rs
-map("n", "<leader>rs", '"byy"bp"bp0d}k!!sh<cr>', { desc = "bash filter append" })
+-- bash filter trans
 map("n", "<leader>rt", '"tyy"tp"tp0d}k!!trans -t  -b<C-Left><Left>', { desc = "translate filter append" })
+map("n", "<leader>rs", '"byy"bp"bp0d}k!!sh<cr>', { desc = "bash filter append" })
 map("n", "<leader>rS", "!!sh<cr>", { desc = "bash filter replace" })

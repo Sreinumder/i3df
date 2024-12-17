@@ -28,7 +28,7 @@ return {
     {'<leader>hp', function() require('gitsigns').preview_hunk() end, {desc = "preview_hunk"}},
     {'<leader>hS', function() require('gitsigns').stage_buffer() end, {desc = "stage_buffer"}},
     {'<leader>hR', function() require('gitsigns').reset_buffer() end, {desc = "reset_buffer"}},
-    {'<leader>hR', function() require('gitsigns').undo_staget_buffer() end, {desc = "reset_buffer"}},
+    {'<leader>hR', function() require('gitsigns').undo_stage_buffer() end, {desc = "reset_buffer"}},
     {'<leader>tb', function() require('gitsigns').toggle_current_line_blame() end, {desc="toggle_line_blame"}},
     {'<leader>hd', function() require('gitsigns').diffthis() end, {desc="gitsigns_diffthis"}},
     {'<leader>td', function() require('gitsigns').toggle_deleted() end, {desc="toggle_deleted"}},
@@ -45,3 +45,9 @@ return {
     return M
   end,
 }
+
+-- return { 
+--   'echasnovski/mini.diff',
+-- 	event = "UIEnter",
+--   -- version = false,
+-- }
