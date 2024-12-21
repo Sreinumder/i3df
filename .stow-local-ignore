@@ -3,3 +3,4 @@ nvim/
 .*git/
 .git/
 .config/nvim/
+README.md

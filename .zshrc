@@ -11,7 +11,7 @@ export FCITX5_UI=gtk
 export GLFW_IM_MODULE=ibus
 export EDITOR=nvim
 
-source .zshrc.alias
+source ~/.zshrc.alias
 # bindkey -v
 # start of z4h config Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
 # You can manually run `z4h update` to update everything.
@@ -110,3 +110,5 @@ export FZF_CTRL_R_OPTS="
 export FZF_ALT_C_OPTS="
   --walker-skip .git,node_modules,target
   --preview 'tree -C {}'"
+
+source /home/rose/.config/broot/launcher/bash/br

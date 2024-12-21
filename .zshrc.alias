@@ -1,7 +1,11 @@
 alias ff="find * -type f | fzf > selected"
 
-alias ytm="yt-dlp --extract-audio --audio-quality 0"
-alias ll='ls --color=auto -alh'
+alias ytvc='yt-dlp -P "$HOME/videos/" "$(xclip -selection c -o 2>/dev/null)"'
+alias ytmc='yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xclip -selection c -o 2>/dev/null)"'
+alias ytv='yt-dlp -P "$HOME/videos/" '
+alias ytm='yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/"'
+alias ll='eza --icons --color=auto -alh'
+alias ls='eza --icons=always --color=auto -h'
 alias od="ouch decompress"
 alias oc="ouch   compress"
 # alias So='source ~/.zshrc'
@@ -12,17 +16,16 @@ alias grep='grep --color=auto'
 
 alias cona='nvim ~/.zshrc.alias'
 alias conb='nvim ~/.bashrc'
-alias cond='nvim ~/i3df/.config/dunst/dunstrc'
-alias cone='nvim ~/.config/doom/'
-alias coni='nvim -O ~/i3df/.config/i3/config ~/i3df/.config/i3/i3wm-advent.md'
+alias cond='cd ~/i3df/.config/dunst; nvim dunstrc'
+alias cone='cd ~/.config/doom/; nvim .'
+alias coni='cd ~/i3df/.config/i3/; nvim config'
 alias conm='nvim ~/.config/mimeapps.list'
-alias conn='yazi ~/i3df/.config/nvim/lua/risedev/'
-alias conq='yazi ~/.config/qutebrowser'
-alias cons='yazi ~/i3df/scripts'
+alias conn='cd ~/i3df/.config/nvim/lua/plugins/; yazi'
+alias conq='cd ~/.config/qutebrowser; yazi .'
+alias cons='cd ~/i3df/scripts; yazi .'
 alias conw='nvim ~/i3df/.config/wezterm/wezterm.lua'
 alias con.='yazi ~/.config/'
-alias cony='nvim ~/.config/yazi/'
-alias conz='nvim ~/.zshrc'
+alias cony='cd ~/.config/yazi/; nvim .'
 alias conz='nvim ~/.zshrc'
 
 alias Nha='nvim ~/notes/hobby/anime/'
