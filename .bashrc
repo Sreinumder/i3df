@@ -1,3 +1,4 @@
+PS1='[\u@\h \W]\$'
 export PATH=$PATH:/var/lib/flatpak/exports/bin
 export PATH=$PATH:~/.config/emacs/bin
 export MANPAGER="nvim +Man!"
@@ -11,7 +12,10 @@ export FCITX5_UI=gtk
 export GLFW_IM_MODULE=ibus
 export EDITOR=nvim
 
-set -o vi # vim mode for terminal
+# Enable vi mode only when NOT in Neovim
+if [[ -z "$NVIM_LISTEN_ADDRESS" ]]; then
+  set -o vi
+fi
 
 alias ytm="yt-dlp --extract-audio --audio-quality 0"
 alias ll='ls --color=auto -alh'
@@ -57,7 +61,6 @@ alias gc="xclip -selection c -o"
 alias retroarch='(retroarch &)'
 alias DR="pkill dunst; ( dunst & ); sleep 1; notify-send -u low "low"; notify-send -u normal "normal"; notify-send -u critical "critical";" 
 # alias sudo='mpv ~/i3df/scripts/notify/bell.mp3; sudo'
-PS1='[\u@\h \W]\$'
 
 alias RB="cd ~/FUTSALA/; source env/bin/activate; uvicorn backend.main:app --reload"
 alias RF="cd ~/FUTSALA/frontend; npm run dev"

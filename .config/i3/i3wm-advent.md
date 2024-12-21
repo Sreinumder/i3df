@@ -87,3 +87,11 @@ in bashrc
 ```
     export QT_STYLE_OVERRIDE=Adwaita-Dark # dark mode
 ```
+
+* Starting to use zshrc with [zsh4humans](https://github.com/romkatv/zsh4humans)
+also a [vi mode plugin](https://github.com/jeffreytse/zsh-vi-mode)
+```
+yay -S zsh-vi-mode
+source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+```
+

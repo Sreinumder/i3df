@@ -1,0 +1,5 @@
+nvim/
+.*nvim/
+.*git/
+.git/
+.config/nvim/
