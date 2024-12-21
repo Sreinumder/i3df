@@ -10,12 +10,7 @@ return {
 	"https://github.com/stevearc/quicker.nvim",
 	ft = { "qf" },
 	keys = {
-		{
-			"<leader>R",
-			function()
-				require("quicker").refresh()
-			end,
-		},
+		{ "<leader>R", function() require("quicker").refresh() end, },
 	},
 	init = function()
 		vim.api.nvim_create_autocmd("BufReadPost", {

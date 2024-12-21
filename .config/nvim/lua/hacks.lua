@@ -106,3 +106,18 @@ map(
 map("n", "<leader>rt", '"tyy"tp"tp0d}k!!trans -t  -b<C-Left><Left>', { desc = "translate filter append" })
 map("n", "<leader>rs", '"byy"bp"bp0d}k!!sh<cr>', { desc = "bash filter append" })
 map("n", "<leader>rS", "!!sh<cr>", { desc = "bash filter replace" })
+
+-- niche visual selection hacks
+map("x", "<A-x>", '<esc>"_x`<"_xv`>h', { desc = "delete surrounding of visual mode" })
+map("x", "<A-c>", '"bdo<esc>"bpk"_dd', { desc = "delete except the selection of current line" })
+
+-- -- increase/decrease and shift visual selection
+-- map("x", "<C-l>", "loho", { desc = "change vi range" })
+-- map("x", "<C-h>", "holo", { desc = "change vi range" })
+-- map("x", "<C-j>", "joko", { desc = "change vi range" })
+-- map("x", "<C-k>", "kojo", { desc = "change vi range" })
+-- map("x", "<C-S-l>", "lolo", { desc = "shift vi range" })
+-- map("x", "<C-S-h>", "hoho", { desc = "shift vi range" })
+-- map("x", "<C-S-j>", "jojo", { desc = "shift vi range" })
+-- map("x", "<C-S-k>", "koko", { desc = "shift vi range" })
+

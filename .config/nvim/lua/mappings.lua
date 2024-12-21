@@ -54,8 +54,8 @@ map("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })
 map("x", "<", "<gv")
 map("x", ">", ">gv")                                                                -- Continuous visual shifting (does not exit Visual mode), `gv` means
 map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
-map("n", "vih", "^vg_", { desc = "true" })
-map("n", "yih", "^yg_", { desc = "true" })
+-- map("n", "vih", "^vg_", { desc = "true" })
+-- map("n", "yih", "^yg_", { desc = "true" })
 map({ "o", "x" }, "i<space>", "iW") -- select WORD by i<space>
 -- others
 map("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy nvim" })
@@ -80,20 +80,22 @@ vim.keymap.set("n", "<leader>cdg", function()
 end, { desc = "Change directory to Git repository root" })
 
 -- delete with x d or D and cut with alt + x + d + D
-map({ "n", "v", "x" }, "x", '"_x')
-map({ "n", "v", "x" }, "X", '"_X')
-map({ "n", "v", "x" }, "d", '"_d')
-map({ "n", "v", "x" }, "D", '"_D')
-map({ "n", "v", "x" }, "c", '"_c')
-map({ "n", "v", "x" }, "C", '"_C')
-map({ "n", "v", "x" }, "<A-x>", "x")
-map({ "n", "v", "x" }, "<A-X>", "X")
-map({ "n", "v", "x" }, "<A-d>", "d")
-map({ "n", "v", "x" }, "<A-D>", "D")
-map({ "n", "v" }, "<A-c>", "c")
-map({ "n", "v", "x" }, "<A-C>", "C")
-map({ "n", "v", "x" }, "<A-d><A-d>", "dd")
-map({ "n", "v" }, "<A-c><A-c>", "cc")
+map({ "n", "x" }, "x", '"_x')
+map({ "n", "x" }, "X", '"_X')
+map({ "n", "x" }, "d", '"_d')
+map({ "n", "x" }, "D", '"_D')
+map({ "n", "x" }, "c", '"_c')
+map({ "n" }, "c", '"_c')
+-- map({ "n", "x" }, "cc", '"_cc')
+map({ "n", "x" }, "C", '"_C')
+map({ "n", "x" }, "<A-x>", "x")
+map({ "n", "x" }, "<A-X>", "X")
+map({ "n", "x" }, "<A-d>", "d")
+map({ "n", "x" }, "<A-D>", "D")
+map({ "n", "x" }, "<A-c>", "c")
+map({ "n", "x" }, "<A-C>", "C")
+map({ "n", "x" }, "<A-d><A-d>", "dd")
+map({ "n", "x" }, "<A-c><A-c>", "cc")
 map({ "v", "x" }, "p", '"_dP')
 map({ "v", "x" }, "P", '"_dp')
 map({ "v", "x" }, "<A-p>", "p")
@@ -112,20 +114,6 @@ map("n", "<A-m>", "o<esc>kO<esc>j", { desc = "insert new line below and above" }
 map("x", "<A-m>", "<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^vg_", { desc = "insert new line below and above" })
 map("n", "<A-n>", "JkJ", { desc = "join with prev and next line" })
 map("x", "<A-n>", ":j<cr>^mgk$JJgv", { desc = "join with prev and next line" })
-
--- niche visual selection hacks
-map("x", "<A-x>", '<esc>"_x`<"_xv`>h', { desc = "delete surrounding of visual mode" })
-map("x", "<A-c>", '"bdo<esc>"bpk"_dd', { desc = "delete except the selection of current line" })
-
--- increase/decrease and shift visual selection
-map("x", "<C-l>", "loho", { desc = "change vi range" })
-map("x", "<C-h>", "holo", { desc = "change vi range" })
-map("x", "<C-j>", "joko", { desc = "change vi range" })
-map("x", "<C-k>", "kojo", { desc = "change vi range" })
-map("x", "<C-S-l>", "lolo", { desc = "shift vi range" })
-map("x", "<C-S-h>", "hoho", { desc = "shift vi range" })
-map("x", "<C-S-j>", "jojo", { desc = "shift vi range" })
-map("x", "<C-S-k>", "koko", { desc = "shift vi range" })
 
 
 -- comment and clone sentence

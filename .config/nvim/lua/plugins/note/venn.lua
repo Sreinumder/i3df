@@ -20,7 +20,7 @@ return {
 		"smoka7/hydra.nvim",
 	},
 	keys = {
-		{ "<leader>,v" },
+		{mode={"n", "v"}, "<leader>,v" },
 	},
 	config = function()
 		local Hydra = require("hydra")
@@ -44,7 +44,7 @@ return {
 					vim.o.virtualedit = "all"
 				end,
 			},
-			mode = "n",
+			mode = {"n", "v"},
 			body = "<leader>,v",
 			heads = {
 				{ "H", "<C-v>h:VBox<CR>" },
