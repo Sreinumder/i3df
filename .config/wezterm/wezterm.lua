@@ -10,6 +10,7 @@ config.font = wezterm.font_with_fallback({
 })
 -- config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, --disable ligature
 -- config.font = wezterm.font_with_fallback { 'Fira Code', }
+config.enable_kitty_graphics=true
 config.font_size = 10.0
 config.line_height = 1.0
 config.hide_tab_bar_if_only_one_tab = true
