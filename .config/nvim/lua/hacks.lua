@@ -121,3 +121,9 @@ map("x", "<A-c>", '"bdo<esc>"bpk"_dd', { desc = "delete except the selection of 
 -- map("x", "<C-S-j>", "jojo", { desc = "shift vi range" })
 -- map("x", "<C-S-k>", "koko", { desc = "shift vi range" })
 
+-- -- Comment
+map("n", "<C-/>", "gcc", { desc = "toggle comment", remap = true })
+map("v", "<C-/>", "gc", { desc = "toggle comment", remap = true })
+
+-- comment and clone sentence
+map("v", "<leader><C-/>", '"cyygcc"cp', { desc = "toggle comment", remap = true })

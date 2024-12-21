@@ -2,10 +2,10 @@ return {
 	"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
 	name = "lsp_lines",
 	dependencies = { "neovim/nvim-lspconfig" },
-	event = { "LspAttach" },
+	-- event = { "LspAttach" },
 	keys = {
 		{
-			"<Leader>l",
+			"<Leader>,l",
 			function()
 				require("lsp_lines").toggle()
 			end,
@@ -14,6 +14,9 @@ return {
 		},
 	},
 	config = function(_, opts)
+		vim.diagnostic.config({
+			virtual_text = false,
+		})
 		require("lsp_lines").setup(opts)
 		-- vim.diagnostic.config({ virtual_text = false })
 	end,

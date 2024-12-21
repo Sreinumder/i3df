@@ -37,6 +37,7 @@ return {
   },
   opts = function()
     local M ={
+		count_chars = { "", "󰬻", "󰬼", "󰬽", "󰬾", "󰬿", "󰭀", "󰭁", "󰭂", ["+"] = "󰿮" },
       signs = {
         delete = { text = "󰍵" },
         changedelete = { text = "󱕖" },

@@ -17,8 +17,8 @@ return {
 	  opts = {},
 	  keys = {
       {"<A-,>", "<cmd>AerialToggle!<CR>"},
-      {"<A-->", "<cmd>AerialPrev<CR>"},
-      {"<A-=>", "<cmd>AerialNext<CR>"},
+      -- {"<A-->", "<cmd>AerialPrev<CR>"},
+      -- {"<A-=>", "<cmd>AerialNext<CR>"},
     },
 	  dependencies = {
 	    "nvim-treesitter/nvim-treesitter",

@@ -1,5 +1,5 @@
 if not vim.g.vscode then
-    require("nvchad.mappings")
+	require("nvchad.mappings")
 end
 local map = vim.keymap.set
 local nomap = vim.keymap.del
@@ -20,39 +20,33 @@ map("n", "<C-Right>", "<cmd>vertical resize   +2<cr>", { desc = "Increase Window
 -- map("n", "<Left>", "<C-W>h", { desc = "Window left" })
 -- map("n", "<Right>", "<C-W>l", { desc = "Window right" })
 
-
 --and HML to start mid end of line <A-HML> to high middle low part of screen
-map("n", "<leader>w", "<C-w>", { desc = "window control" })       -- split window vertically
+map("n", "<leader>w", "<C-w>", { desc = "window control" }) -- split window vertically
 map({ "n", "x" }, "<leader>r", '"', { desc = "register select" }) -- <leader>ra for a register
 map("n", "ygG", "<cmd>%y+<CR>", { desc = "yank all" })
-map({ "n", "v", "o" }, "H", "^",  { desc = "Beg of line" }) map("n", "<A-H>", "H", { desc = "Default H" })
-map({ "n", "v", "o" }, "M", "gM", { desc = "Mid of Line" }) map("n", "<A-M>", "M", { desc = "Default M" })
-map({ "n", "v", "o" }, "L", "g_", { desc = "End of Line" }) map("n", "<A-L>", "L", { desc = "Default L" })
-map("x", "$", "g_", { desc ="to last non-white char"}) map("x", "g_", "$")
-
--- LSP
-map("n", "gr",         vim.lsp.buf.references,     { desc = "Show references"      })
-map("n", "gd",         vim.lsp.buf.definition,     { desc = "Go to lsp definition" }) map("n", "<Leader>gd", "gd")
-map("n", "gD",         vim.lsp.buf.declaration,    { desc = "Go to lsp declaration"}) map("n", "<Leader>gD", "gD")
-map("n", "<leader>D",  vim.lsp.buf.type_definition,{ desc = "Go to type definition"})
-map("n", "gi",         vim.lsp.buf.implementation, { desc = "Go to implementation" }) map("n", "<Leader>gi", "gi")
-map({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, {desc = "Code action"})
-map("n", "<leader>wi", vim.lsp.buf.add_workspace_folder, { desc = "Insert workspace folder" })
-map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, { desc = "Remove workspace folder" })
--- map("n", "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,{ desc= "List workspace folders"})
+map({ "n", "v", "o" }, "H", "^", { desc = "Beg of line" })
+map("n", "<A-H>", "H", { desc = "Default H" })
+map({ "n", "v", "o" }, "M", "gM", { desc = "Mid of Line" })
+map("n", "<A-M>", "M", { desc = "Default M" })
+map({ "n", "v", "o" }, "L", "g_", { desc = "End of Line" })
+map("n", "<A-L>", "L", { desc = "Default L" })
+map("x", "$", "g_", { desc = "to last non-white char" })
+map("x", "g_", "$")
 
 -- pain saver
 map("n", "<leader>", "<NOP>", { desc = "" })
 map("n", "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and Clear hlsearch" })
-map("n", "<leader>nh",
-    "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-    { desc = "Redraw / Clear hlsearch / Diff Update" }
+map(
+	"n",
+	"<leader>nh",
+	"<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
+	{ desc = "Redraw / Clear hlsearch / Diff Update" }
 )
 map("x", "J", "j", { desc = "Disable annoying J " })
 map("n", "<C-u>", "<C-u>zz", { desc = "Half page up" })
 map("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })
 map("x", "<", "<gv")
-map("x", ">", ">gv")                                                                -- Continuous visual shifting (does not exit Visual mode), `gv` means
+map("x", ">", ">gv") -- Continuous visual shifting (does not exit Visual mode), `gv` means
 map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
 -- map("n", "vih", "^vg_", { desc = "true" })
 -- map("n", "yih", "^yg_", { desc = "true" })
@@ -71,12 +65,12 @@ map("n", "<leader>cdp", "<cmd>lcd ~/.config/nvim/lua/plugins<cr>", { desc = "cha
 map("n", "<leader>cdr", "<cmd>lcd ~<cr>", { desc = "change dir to ~" })
 map("n", "<leader>cdn", "<cmd>lcd ~/notes<cr>", { desc = "change dir to notes" })
 vim.keymap.set("n", "<leader>cdg", function()
-  local git_root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel"))
-  if vim.fn.isdirectory(git_root) == 1 then
-    vim.cmd("cd " .. git_root)
-  else
-    print("Not inside a Git repository")
-  end
+	local git_root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel"))
+	if vim.fn.isdirectory(git_root) == 1 then
+		vim.cmd("cd " .. git_root)
+	else
+		print("Not inside a Git repository")
+	end
 end, { desc = "Change directory to Git repository root" })
 
 -- delete with x d or D and cut with alt + x + d + D
@@ -115,16 +109,15 @@ map("x", "<A-m>", "<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^vg_", { desc = "inser
 map("n", "<A-n>", "JkJ", { desc = "join with prev and next line" })
 map("x", "<A-n>", ":j<cr>^mgk$JJgv", { desc = "join with prev and next line" })
 
-
 -- comment and clone sentence
 -- map("n", "<A-y>", 'gcc', { desc = "clone line Down(n)" })
 
 -- simple editing hacks
 -- clone sentences up and down
-map("n", "<A-J>", 'V"by"bPgv<Esc>', { desc = "clone line Down(n)" })
-map("n", "<A-K>", 'V"by"bgpgv<Esc>', { desc = "clone line Up(n)" })
-map("x", "<A-J>", '"by"bPgv', { desc = "clone selection Down(v)" })
-map("x", "<A-K>", '"by"bgpgv', { desc = "clone selection Up(v)" })
+map("n", "<A-J>", 'V"cy"cPgv<Esc>', { desc = "clone line Down" })
+map("n", "<A-K>", 'V"cy"cgpgv<Esc>', { desc = "clone line Up" })
+map("x", "<A-J>", '"cy"cPgv', { desc = "clone selection Down" })
+map("x", "<A-K>", '"cy"cgpgv', { desc = "clone selection Up" })
 
 -- move/clone selection to new line above or below
 map("x", "<leader><A-j>", '"bdo<esc>"bp^vg_', { desc = "move selection Down(v) to new line" })
@@ -141,7 +134,7 @@ map("x", "<A-W>", '"bdW"bp`[v`]', { desc = "move selection with W" })
 map("x", "<A-E>", '"bdE"bp`[v`]', { desc = "move selection with e" })
 map("x", "<A-B>", '"bdB"bP`[v`]', { desc = "move selection with b" })
 map("x", "<A-H>", '"bd^"bP`[v`]', { desc = "move selection with H" })
-map("x", "<A-M>", '"bdgM"bP`[v`]',{ desc = "move selection with H" })
+map("x", "<A-M>", '"bdgM"bP`[v`]', { desc = "move selection with H" })
 map("x", "<A-L>", '"bd$"bp`[v`]', { desc = "move selection with L" })
 map("x", "<A-g><A-e>", '"bdge"bp`[v`]', { desc = "move selection with ge" })
 map("x", "<A-g><A-E>", '"bdgE"bp`[v`]', { desc = "move selection with gE" })
@@ -156,7 +149,7 @@ map("n", "<leader>qq", "<cmd>q!<cr>", { silent = true, desc = "quit current wind
 map("n", "<leader>sa", "<cmd>wqa!<cr>", { silent = true, desc = "write and quit all" })
 map("n", "<leader>qw", ":wq<cr>", { silent = true, desc = "save buffer" })
 map("n", "<leader>wa", ":wa<cr>", { silent = true, desc = "save all buffer" })
-map("n", "<leader>qa", "<cmd>qa!<cr>", { silent = true, desc = "quit nvim" })              -- Quit all opened buffers
+map("n", "<leader>qa", "<cmd>qa!<cr>", { silent = true, desc = "quit nvim" }) -- Quit all opened buffers
 map("n", "[l", "<cmd>lprevious<cr>zv", { silent = true, desc = "previous location item" }) -- Navigation in the location and quickfix list
 map("n", "]l", "<cmd>lnext<cr>zv", { silent = true, desc = "next location item" })
 map("n", "[L", "<cmd>lfirst<cr>zv", { silent = true, desc = "first location item" })
@@ -212,7 +205,6 @@ map({ "n", "v", "o", "i" }, "<A-2>", "7")
 map({ "n", "v", "o", "i" }, "<A-3>", "8")
 map({ "n", "v", "o", "i" }, "<A-4>", "9")
 map({ "n", "v", "o", "i" }, "<A-;>", "0")
-map({ "n", "x" }, "<leader>l", ":")
 
 -- toggle options
 map("n", "<leader>,nn", ":set number!<CR>", { desc = "Toggle number" })
@@ -222,9 +214,9 @@ map("n", "<leader>,sp", ":set spell!<CR>", { desc = "Toggle spell" })
 map("n", "<leader>,cl", ":set cursorline!<CR>", { desc = "Toggle cursorline" })
 map("n", "<leader>,ii", ":set list!<CR>", { desc = "Toggle invisible char" })
 map("n", "<leader>,ct", function()
-    if vim.opt.background:get() == "dark" then
-        vim.cmd(":set bg=light")
-    else
-        vim.cmd(":set bg=dark")
-    end
+	if vim.opt.background:get() == "dark" then
+		vim.cmd(":set bg=light")
+	else
+		vim.cmd(":set bg=dark")
+	end
 end, { desc = "Toggle colorscheme bg" })
