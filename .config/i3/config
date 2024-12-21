@@ -1,14 +1,14 @@
 set $mod Mod4
 set $alt Mod1
 # font  'Iosevka Nerd Font':monospace 8
-exec --no-startup-id xrdb -merge ~/.Xresources # for dark mode for applications
+exec --no-startup-id xrdb -merge $HOME/.Xresources # for dark mode for applications
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
-exec --no-startup-id feh --bg-fill ~/wallpaper/scooter.jpg --bg-fill ~/wallpaper/crow.png --bg-fill ~/wallpaper/sky.jpg
+exec --no-startup-id feh --bg-fill $HOME/wallpaper/scooter.jpg --bg-fill ~/wallpaper/crow.png --bg-fill ~/wallpaper/sky.jpg
 
 set $refresh_i3status killall -SIGUSR1 i3status
 # media --------------------------------------------------
@@ -22,11 +22,11 @@ bindsym shift+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @D
 bindsym shift+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-bindsym $mod+m exec wezterm -e yazi ~/music/
+bindsym $mod+m exec wezterm -e yazi $HOME/music/
 
 # 2. Brighness --------------------------------------------------
-bindsym Mod1+XF86MonBrightnessUp    exec brightnessctl set +50
-bindsym Mod1+XF86MonBrightnessDown  exec brightnessctl set 50-
+bindsym $alt+XF86MonBrightnessUp    exec brightnessctl set +50
+bindsym $alt+XF86MonBrightnessDown  exec brightnessctl set 50-
 bindsym Mod4+XF86MonBrightnessUp    exec brightnessctl set +100
 bindsym Mod4+XF86MonBrightnessDown  exec brightnessctl set 100-
 bindsym XF86MonBrightnessUp         exec brightnessctl set +2%
@@ -43,25 +43,27 @@ bindsym XF86AudioPrev  exec playerctl previous
 # bindsym Ctrl+XF86AudioPrev  exec playerctl previous
 bindsym $mod+XF86AudioNext  exec playerctl position 3+
 bindsym $mod+XF86AudioPrev  exec playerctl position 3-
-bindsym Mod1+XF86AudioNext  exec playerctl position 5+
-bindsym Mod1+XF86AudioPrev  exec playerctl position 5-
-bindsym Shift+Mod1+XF86AudioNext  exec playerctl position 10+
-bindsym Shift+Mod1+XF86AudioPrev  exec playerctl position 10-
+bindsym $alt+XF86AudioNext  exec playerctl position 5+
+bindsym $alt+XF86AudioPrev  exec playerctl position 5-
+bindsym Shift+$alt+XF86AudioNext  exec playerctl position 10+
+bindsym Shift+$alt+XF86AudioPrev  exec playerctl position 10-
 bindsym XF86Calculator exec qalculate-gtk
 
 # 3. Clipboard and Screenshot -------------------------------------------------
 bindsym $mod+v exec clipmenu -i -fn Terminus:size=8 -nb '#232a2e' -nf '#839496' -sb '#374145' -sf '#93a1a1'
-bindsym Print exec --no-startup-id flameshot gui -p ~/Screenshots
-bindsym Shift+Print exec --no-startup-id flameshot full -p ~/Screenshots
-bindsym Mod1+Print exec --no-startup-id flameshot screen -p ~/Screenshots
-bindsym $mod+Print exec --no-startup-id flameshot gui -p ~/Screenshots -c
-bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p ~/Screenshots -c
-bindsym $mod+Mod1+Print exec --no-startup-id flameshot screen -p ~/Screenshots
+bindsym Print exec --no-startup-id flameshot gui -p $HOME/Screenshots
+bindsym Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshots
+bindsym $alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
+bindsym $mod+Print exec --no-startup-id flameshot gui -p $HOME/Screenshots -c
+bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshots -c
+bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
 
 # 4. system-commands, monitor-management and Scripts------------------------
-bindsym $mod+period exec "wezterm -e nvim -O ~/.config/i3/config ~/.config/i3/i3wm-advent.md"
+bindsym $mod+period exec "wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"
 bindsym $mod+Shift+p move workspace to output right
-bindsym $mod+mod1+shift+s exec shutdown now
+bindsym $mod+$alt+shift+s exec shutdown now
+bindsym $mod+y exec 'yt-dlp -P "$HOME/videos/" "$(xclip -selection c -o 2>/dev/null)"'
+bindsym $mod+$alt+y exec  'yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xclip -selection c -o 2>/dev/null)"'
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -72,7 +74,7 @@ bindsym $mod+x exec emacs
 bindsym $mod+g exec "ezterm -e retroarch"
 bindsym $mod+space exec wezterm
 # bindsym ctrl+$mod+space exec warp-terminal
-bindsym $mod+c exec wezterm -e nvim -O ~/.config/i3/config ~/.config/i3/i3wm-advent.md
+bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md
 bindsym $mod+ctrl+f exec zen-browser
 bindsym $mod+ctrl+shift+f exec chromium --profile-directory="Default"
 bindsym $mod+ctrl+q exec qutebrowser
@@ -97,11 +99,11 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 bindsym $mod+minus focus mode_toggle
 
-# move focused window Mod1==Alt
-bindsym $mod+Mod1+h move left
-bindsym $mod+Mod1+j move down
-bindsym $mod+Mod1+k move up
-bindsym $mod+Mod1+l move right
+# move focused window $alt==Alt
+bindsym $mod+$alt+h move left
+bindsym $mod+$alt+j move down
+bindsym $mod+$alt+k move up
+bindsym $mod+$alt+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -150,7 +152,7 @@ set $ws10 "10"
 bindsym $mod+Tab workspace next
 bindsym $mod+Shift+Tab workspace prev
 bindsym $mod+grave workspace back_and_forth
-bindsym $mod+n exec --no-startup-id i3-msg "workspace $(bash ~/i3df/.config/i3/least_empty_workspace.sh)"
+bindsym $mod+n exec --no-startup-id i3-msg "workspace $(bash $HOME/i3df/.config/i3/least_empty_workspace.sh)"
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
 bindsym $mod+3 workspace number $ws3
