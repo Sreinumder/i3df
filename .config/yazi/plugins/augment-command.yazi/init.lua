@@ -1,14 +1,79 @@
 -- Plugin to make some Yazi commands smarter
 -- Written in Lua 5.4
 
+-- Type aliases
+
 -- The type for the arguments
 ---@alias Arguments table<string|number, string|number|boolean>
+
+-- The type for the input event
+--
+-- The event for the input function can be one of 3 values:
+--     0: Unknown error
+--     1: The user has confirmed the input
+--     2: The user has cancelled the input
+--     3: The user has changed the input (only if realtime is true)
+---@alias InputEvent integer
+
+-- The type for the function to handle a command
+--
+-- Description of the function parameters:
+--     args: The arguments to pass to the command
+--     config: The configuration object
+--     command_table: The command table containing all the command functions
+---@alias CommandFunction fun(
+---    args: Arguments,
+---    config: Configuration,
+---    command_table: CommandTable): nil
+
+-- The type of the command table
+---@alias CommandTable table<SupportedCommands, CommandFunction>
+
+-- The type for the extractor command
+---@alias ExtractorFunction fun(
+---    password: string|nil,
+---    configuration: Configuration): CommandOutput|nil, integer
+
+-- Custom types
+
+-- The type of the user configuration table
+-- The user configuration for the plugin
+---@class (exact) UserConfiguration
+---@field prompt boolean Whether or not to prompt the user
+---@field default_item_group_for_prompt ItemGroup The default prompt item group
+---@field smart_enter boolean Whether to use smart enter
+---@field smart_paste boolean Whether to use smart paste
+---@field smart_tab_create boolean Whether to use smart tab create
+---@field smart_tab_switch boolean Whether to use smart tab switch
+---@field open_file_after_creation boolean Whether to open after creation
+---@field enter_directory_after_creation boolean Whether to enter after creation
+---@field use_default_create_behaviour boolean Use Yazi's create behaviour?
+---@field enter_archives boolean Whether to enter archives
+---@field extract_retries number How many times to retry extracting
+---@field extract_archives_recursively boolean Re-extract inner archives or not
+---@field must_have_hovered_item boolean Whether to stop when no item is hovered
+---@field skip_single_subdirectory_on_enter boolean Skip single subdir on enter
+---@field skip_single_subdirectory_on_leave boolean Skip single subdir on leave
+---@field ignore_hidden_items boolean Whether to ignore hidden items
+---@field wraparound_file_navigation boolean Have wraparound navigation or not
+---@field sort_directories_first boolean Informs the plugin if dirs are first
+
+-- The additional data passed to the function to initialise the configuration
+---@class (exact) AdditionalData
+---@field extractor_command string The extractor shell command, like 7z
+
+-- The full configuration for the plugin
+---@class (exact) Configuration: UserConfiguration, AdditionalData
+
+-- The type for the state
+---@class (exact) State
+---@field config Configuration
 
 -- The type for the Command output
 ---@class (exact) CommandOutput
 ---@field stdout string
 ---@field stderr string
----@field status table { success: boolean, code: number }
+---@field status { success: boolean, code: number }
 
 --- The type for the Url object
 ---@class (exact) Url
@@ -18,13 +83,20 @@
 ---@field is_archive boolean
 ---@field is_absolute boolean
 ---@field has_root boolean
----@field name function(): string|nil
----@field stem function(): string|nil
----@field join function(url: Url|string): Url
----@field parent function(): Url|nil
----@field starts_with function(url: Url|string): boolean
----@field ends_with function(url: Url|string): boolean
----@field strip_prefix function(url: Url|string): boolean
+---@field name fun(self): string|nil
+---@field stem fun(self): string|nil
+---@field join fun(self, url: Url|string): Url
+---@field parent fun(self): Url|nil
+---@field starts_with fun(self, url: Url|string): boolean
+---@field ends_with fun(self, url: Url|string): boolean
+---@field strip_prefix fun(self, url: Url|string): boolean
+
+-- The type for the extraction results
+---@class (exact) ExtractionResult
+---@field archive_path string
+---@field successful boolean
+---@field extracted_items_path string|nil
+---@field error_message string|nil
 
 -- The enum for which group of items to operate on
 ---@enum ItemGroup
@@ -43,10 +115,13 @@ local Commands = {
     Leave = "leave",
     Rename = "rename",
     Remove = "remove",
-    Paste = "paste",
+    Create = "create",
     Shell = "shell",
+    Paste = "paste",
+    TabCreate = "tab_create",
+    TabSwitch = "tab_switch",
     Arrow = "arrow",
-    ParentArrow = "parent-arrow",
+    ParentArrow = "parent_arrow",
     Editor = "editor",
     Pager = "pager",
 }
@@ -62,27 +137,20 @@ local ExtractBehaviour = {
 }
 
 -- The default configuration for the plugin
----@class (exact) Configuration
----@field prompt boolean
----@field default_item_group_for_prompt ItemGroup
----@field smart_enter boolean
----@field smart_paste boolean
----@field enter_archives boolean
----@field extract_retries number
----@field must_have_hovered_item boolean
----@field skip_single_subdirectory_on_enter boolean
----@field skip_single_subdirectory_on_leave boolean
----@field ignore_hidden_items boolean
----@field wraparound_file_navigation boolean
----@field sort_directories_first boolean
----@field extractor_command string
+---@type UserConfiguration
 local DEFAULT_CONFIG = {
     prompt = false,
     default_item_group_for_prompt = ItemGroup.Hovered,
     smart_enter = true,
     smart_paste = false,
+    smart_tab_create = false,
+    smart_tab_switch = false,
+    open_file_after_creation = false,
+    enter_directory_after_creation = false,
+    use_default_create_behaviour = false,
     enter_archives = true,
     extract_retries = 3,
+    extract_archives_recursively = true,
     must_have_hovered_item = true,
     skip_single_subdirectory_on_enter = true,
     skip_single_subdirectory_on_leave = true,
@@ -99,7 +167,7 @@ local DEFAULT_CONFIG = {
 ---@field level "info" | "warn" | "error"
 local DEFAULT_NOTIFICATION_OPTIONS = {
     title = "Augment Command Plugin",
-    timeout = 5.0,
+    timeout = 5,
 }
 
 -- The default input options for this plugin
@@ -129,19 +197,65 @@ local ARCHIVE_MIME_TYPES = {
     "application/7z-compressed",
     "application/rar",
     "application/xz",
+
+    -- Bug in file(1) that classifies
+    -- some zip archives as a data stream,
+    -- hopefully this can be removed in the future.
+    --
+    -- Link to bug report:
+    -- https://bugs.astron.com/view.php?id=571
+    "application/octet-stream",
 }
 
--- The pattern to get the double dash from the front of the argument
----@type string
-local double_dash_pattern = "^%-%-"
+-- The list of archive file extensions
+---@type string[]
+local ARCHIVE_FILE_EXTENSIONS = {
+    "7z",
+    "boz",
+    "bz",
+    "bz2",
+    "bzip2",
+    "cb7",
+    "cbr",
+    "cbz",
+    "cbt",
+    "cbz",
+    "gz",
+    "gzip",
+    "rar",
+    "s7z",
+    "tar",
+    "tbz",
+    "tbz2",
+    "tgz",
+    "txz",
+    "xz",
+    "zip",
+}
 
--- The pattern to get the mime type without the "x-" prefix
+-- The list of mime type prefixes to remove
+--
+-- The prefixes are used in a lua pattern
+-- to match on the mime type, so special
+-- characters need to be escaped
+---@type string[]
+local MIME_TYPE_PREFIXES_TO_REMOVE = {
+    "x%-",
+    "vnd%.",
+}
+
+-- The pattern template to get the mime type without a prefix
 ---@type string
-local get_mime_type_without_x_prefix_pattern = "^(%a-)/x%-([%-%d%a]-)$"
+local get_mime_type_without_prefix_template_pattern =
+    "^(%%a-)/%s([%%-%%d%%a]-)$"
 
 -- The pattern to get the information from an archive item
 ---@type string
 local archive_item_info_pattern = "%s+([%.%a]+)%s+(%d+)%s+(%d+)%s+(.+)$"
+
+-- The pattern to get the file extension
+---@type string
+local file_extension_pattern = "%.([%a]+)$"
 
 -- The pattern to get the shell variables in a command
 ---@type string
@@ -161,8 +275,8 @@ local bat_command_with_pager_pattern = "%f[%a]bat%f[%A].*%-%-pager%s+"
 -- with the items in the first table being added first,
 -- and the items in the second table being added second,
 -- and so on.
----@param ... table<any, any>[]
----@return table<any, any>
+---@param ... table<any, any>[] The tables to merge
+---@return table<any, any> merged_table The merged table
 local function merge_tables(...)
     --
 
@@ -207,9 +321,9 @@ local function merge_tables(...)
 end
 
 -- Function to check if a list contains a given value
----@param list any[]
----@param value any
----@return boolean
+---@param list any[] The list to check
+---@param value any The value to check for
+---@return boolean value_is_in_list Whether the value is in the list
 local function list_contains(list, value)
     --
 
@@ -227,9 +341,9 @@ local function list_contains(list, value)
 end
 
 -- Function to split a string into a list
----@param given_string string
----@param separator string
----@return string[]
+---@param given_string string The string to split
+---@param separator string The character to split the string by
+---@return string[] splitted_strings The list of strings split by the character
 local function string_split(given_string, separator)
     --
 
@@ -251,9 +365,9 @@ local function string_split(given_string, separator)
     return splitted_strings
 end
 
--- The function to trim a string
----@param string string
----@return string
+-- Function to trim a string
+---@param string string The string to trim
+---@return string trimmed_string The trimmed string
 local function string_trim(string)
     --
 
@@ -262,90 +376,110 @@ local function string_trim(string)
     return string:match("^%s*(.-)%s*$")
 end
 
--- Function to parse the arguments given.
--- This function takes the arguments passed to the entry function
----@param args string[]
----@return Arguments
-local function parse_args(args)
+-- Function to pop a key from a table
+---@param table table The table to pop from
+---@param key string The key to pop
+---@param default any The default value to return if the key doesn't exist
+---@return any value The value of the key or the default value
+local function table_pop(table, key, default)
     --
 
-    -- The table of arguments to pass to ya.manager_emit
-    ---@type table<(string|number), (string|number|boolean)>
-    local parsed_arguments = {}
+    -- Get the value of the key from the table
+    local value = table[key]
 
-    -- Iterates over the arguments given
-    for index, argument in ipairs(args) do
+    -- Remove the key from the table
+    table[key] = nil
+
+    -- Return the value if it exist,
+    -- otherwise return the default value
+    return value or default
+end
+
+-- Function to parse the number arguments to the number type
+---@param args Arguments The arguments to parse
+---@return Arguments parsed_args The parsed arguments
+local function parse_number_arguments(args)
+    --
+
+    -- The parsed arguments
+    ---@type Arguments
+    local parsed_args = {}
+
+    -- Iterate over the arguments given
+    for arg_name, arg_value in pairs(args) do
         --
 
-        -- If the index isn't 1,
-        -- which means it is the arguments to the command given
-        if index ~= 1 then
-            --
+        -- Try to convert the argument to a number
+        local number_arg_value = tonumber(arg_value)
 
-            -- If the argument doesn't start with a double dash
-            if not argument:find(double_dash_pattern) then
-                --
-
-                -- Try to convert the argument to a number
-                local number_argument = tonumber(argument)
-
-                -- Add the argument to the list of options
-                table.insert(
-                    parsed_arguments,
-                    number_argument and number_argument or argument
-                )
-
-                -- Continue the loop
-                goto continue
-            end
-
-            -- Otherwise, remove the double dash from the front of the argument
-            local cleaned_argument = argument:gsub(double_dash_pattern, "")
-
-            -- Replace all of the dashes with underscores
-            cleaned_argument = cleaned_argument:gsub("%-", "_")
-
-            -- Split the arguments at the = character
-            local arg_name, arg_value =
-                table.unpack(string_split(cleaned_argument, "="))
-
-            -- If the argument value is nil
-            if arg_value == nil then
-                --
-
-                -- Set the argument name to the cleaned argument
-                arg_name = cleaned_argument
-
-                -- Set the argument value to true
-                arg_value = true
-
-            -- Otherwise
-            else
-                --
-
-                -- Try to convert the argument value to a number
-                local number_arg_value = tonumber(arg_value)
-
-                -- Set the argument value to the number
-                -- if the the argument value can be converted to a number
-                arg_value = number_arg_value and number_arg_value or arg_value
-            end
-
-            -- Add the argument name and value to the options
-            parsed_arguments[arg_name] = arg_value
-        end
-
-        -- The label to continue the loop
-        ::continue::
+        -- Set the argument to the number argument value
+        -- if the argument is a number,
+        -- otherwise just set it to the given argument value
+        parsed_args[arg_name] = number_arg_value or arg_value
     end
 
-    -- Return the table of arguments
-    return parsed_arguments
+    -- Return the parsed arguments
+    return parsed_args
+end
+
+-- Function to show a warning
+---@param warning_message string The warning message
+---@return nil
+local function show_warning(warning_message)
+    return ya.notify(merge_tables(DEFAULT_NOTIFICATION_OPTIONS, {
+        content = warning_message,
+        level = "warn",
+    }))
+end
+
+-- Function to show an error
+---@param error_message string The error message
+---@return nil
+local function show_error(error_message)
+    return ya.notify(merge_tables(DEFAULT_NOTIFICATION_OPTIONS, {
+        content = error_message,
+        level = "error",
+    }))
+end
+
+-- Function to get the user's input
+---@param prompt string The prompt to show to the user
+---@return string|nil user_input The user's input
+---@return InputEvent event The event for the input function
+local function get_user_input(prompt)
+    return ya.input(merge_tables(DEFAULT_INPUT_OPTIONS, {
+        title = prompt,
+    }))
+end
+
+-- Function to get the user's confirmation
+-- TODO: Switch to `ya.confirm()` when it's available
+---@param prompt string The prompt to show to the user
+---@return boolean confirmation Whether the user has confirmed or not
+local function get_user_confirmation(prompt)
+    --
+
+    -- Get the user's input
+    local user_input, event = get_user_input(prompt)
+
+    -- If the user has not confirmed the input,
+    -- or the user input is nil,
+    -- then return false
+    if not user_input or event ~= 1 then return false end
+
+    -- Lowercase the user's input
+    user_input = user_input:lower()
+
+    -- If the user input starts with a "y", then return true
+    if user_input:find("^y") then return true end
+
+    -- Otherwise, return false
+    return false
 end
 
 -- Function to merge the given configuration table with the default one
----@param config Configuration|nil The configuration table to merge
----@return Configuration merged_config The merged configuration table
+---@param config UserConfiguration|nil The configuration table to merge
+---@return UserConfiguration merged_config The merged configuration table
 local function merge_configuration(config)
     --
 
@@ -392,39 +526,37 @@ local function merge_configuration(config)
     -- then return the merged configuration
     if #invalid_configuration_options <= 0 then return merged_config end
 
-    -- Otherwise, notify the user of the invalid configuration options
-    ya.notify(merge_tables(DEFAULT_NOTIFICATION_OPTIONS, {
-        content = "Invalid configuration options: "
-            .. table.concat(invalid_configuration_options, ", "),
-        level = "warn",
-    }))
+    -- Otherwise, warn the user of the invalid configuration options
+    show_warning(
+        "Invalid configuration options: "
+            .. table.concat(invalid_configuration_options, ", ")
+    )
 
     -- Return the merged configuration
     return merged_config
 end
 
 -- Function to initialise the configuration
----@param state any
----@param user_config Configuration|nil
----@param additional_data any
----@return Configuration
+---@param state State The state object
+---@param user_config Configuration|nil The configuration object
+---@param additional_data AdditionalData The additional data
+---@return Configuration config The initialised configuration object
 local initialise_config = ya.sync(function(state, user_config, additional_data)
     --
 
     -- Merge the default configuration with the user given one,
     -- as well as the additional data given,
     -- and set it to the state.
-    state.config = merge_tables(
-        merge_configuration(user_config), additional_data
-    )
+    state.config =
+        merge_tables(merge_configuration(user_config), additional_data)
 
     -- Return the configuration object for async functions
     return state.config
 end)
 
--- The function to try if a shell command exists
----@param shell_command string
----@return boolean
+-- Function to try if a shell command exists
+---@param shell_command string The shell command to check
+---@return boolean shell_command_exists Whether the shell command exists
 local function shell_command_exists(shell_command)
     --
 
@@ -470,9 +602,9 @@ local function shell_command_exists(shell_command)
     return successfully_executed
 end
 
--- The function to initialise the plugin
----@param opts Configuration|nil
----@return Configuration
+-- Function to initialise the plugin
+---@param opts Configuration|nil The options given to the plugin
+---@return Configuration config The initialised configuration object
 local function initialise_plugin(opts)
     --
 
@@ -496,6 +628,38 @@ local function initialise_plugin(opts)
     return config
 end
 
+-- Function to standardise the mime type of a file.
+-- This function will follow what Yazi does to standardise
+-- mime types returned by the file command.
+---@param mime_type string The mime type of the file
+---@return string standardised_mime_type The standardised mime type of the file
+local function standardise_mime_type(mime_type)
+    --
+
+    -- Trim the whitespace from the mime type
+    local trimmed_mime_type = string_trim(mime_type)
+
+    -- Iterate over the mime type prefixes to remove
+    for _, prefix in ipairs(MIME_TYPE_PREFIXES_TO_REMOVE) do
+        --
+
+        -- Get the pattern to remove the mime type prefix
+        local pattern =
+            get_mime_type_without_prefix_template_pattern:format(prefix)
+
+        -- Remove the prefix from the mime type
+        local mime_type_without_prefix, replacement_count =
+            trimmed_mime_type:gsub(pattern, "%1/%2")
+
+        -- If the replacement count is greater than zero,
+        -- return the mime type without the prefix
+        if replacement_count > 0 then return mime_type_without_prefix end
+    end
+
+    -- Return the mime type with whitespace removed
+    return trimmed_mime_type
+end
+
 -- Function to check if a given mime type is an archive
 ---@param mime_type string|nil The mime type of the file
 ---@return boolean is_archive Whether the mime type is an archive
@@ -505,22 +669,42 @@ local function is_archive_mime_type(mime_type)
     -- If the mime type is nil, return false
     if not mime_type then return false end
 
-    -- Trim the whitespace from the mime type
-    mime_type = string_trim(mime_type)
-
-    -- Remove the "x-" prefix from the mime type
-    mime_type = mime_type:gsub(get_mime_type_without_x_prefix_pattern, "%1/%2")
+    -- Standardise the mime type
+    local standardised_mime_type = standardise_mime_type(mime_type)
 
     -- Get if the mime type is an archive
-    local is_archive = list_contains(ARCHIVE_MIME_TYPES, mime_type)
+    local is_archive = list_contains(ARCHIVE_MIME_TYPES, standardised_mime_type)
 
     -- Return if the mime type is an archive
     return is_archive
 end
 
+-- Function to check if a given file extension
+-- is an archive file extension
+---@param file_extension string|nil The file extension of the file
+---@return boolean is_archive Whether the file extension is an archive
+local function is_archive_file_extension(file_extension)
+    --
+
+    -- If the file extension is nil, return false
+    if not file_extension then return false end
+
+    -- Make the file extension lower case
+    file_extension = file_extension:lower()
+
+    -- Trim the whitespace from the file extension
+    file_extension = string_trim(file_extension)
+
+    -- Get if the file extension is an archive
+    local is_archive = list_contains(ARCHIVE_FILE_EXTENSIONS, file_extension)
+
+    -- Return if the file extension is an archive file extension
+    return is_archive
+end
+
 -- Function to get the configuration from an async function
----@param state any
----@return Configuration
+---@param state State The state object
+---@return Configuration config The configuration object
 local get_config = ya.sync(function(state)
     --
 
@@ -529,16 +713,15 @@ local get_config = ya.sync(function(state)
 end)
 
 -- Function to get the current working directory
----@param _ any
----@return string
-local get_current_directory = ya.sync(function(_)
-    return tostring(cx.active.current.cwd)
-end)
+---@type fun(_): Url Returns the current working directory as a url
+local get_current_directory_url = ya.sync(
+    function(_) return cx.active.current.cwd end
+)
 
 -- Function to get the path of the hovered item
 ---@param _ any
----@param quote boolean
----@return string|nil
+---@param quote boolean Whether to shell escape the characters in the path
+---@return string|nil hovered_item_path The path of the hovered item
 local get_path_of_hovered_item = ya.sync(function(_, quote)
     --
 
@@ -561,7 +744,7 @@ end)
 
 -- Function to get if the hovered item is a directory
 ---@param _ any
----@return boolean
+---@return boolean is_directory Whether the hovered item is a directory
 local hovered_item_is_dir = ya.sync(function(_)
     --
 
@@ -574,7 +757,7 @@ end)
 
 -- Function to get if the hovered item is an archive
 ---@param _ any
----@return boolean
+---@return boolean is_archive Whether the hovered item is an archive
 local hovered_item_is_archive = ya.sync(function(_)
     --
 
@@ -587,8 +770,8 @@ end)
 
 -- Function to get the paths of the selected items
 ---@param _ any
----@param quote boolean
----@return string[]|nil
+---@param quote boolean Whether to shell escape the characters in the path
+---@return string[]|nil paths The list of paths of the selected items
 local get_paths_of_selected_items = ya.sync(function(_, quote)
     --
 
@@ -620,13 +803,26 @@ local get_paths_of_selected_items = ya.sync(function(_, quote)
     return paths_of_selected_items
 end)
 
+-- Function to get if Yazi is loading
+---@type fun(_): boolean Returns whether Yazi is loading
+local yazi_is_loading = ya.sync(
+    function(_) return cx.active.current.stage.is_loading end
+)
+
+-- Function to wait until Yazi is loaded
+---@return nil
+local function wait_until_yazi_is_loaded()
+    while yazi_is_loading() do
+    end
+end
+
 -- Function to choose which group of items to operate on.
 -- It returns ItemGroup.Hovered for the hovered item,
 -- ItemGroup.Selected for the selected items,
 -- and ItemGroup.Prompt to tell the calling function
 -- to prompt the user.
----@param state any
----@return ItemGroup|nil
+---@param state State The state object
+---@return ItemGroup|nil item_group The desired item group
 local get_item_group_from_state = ya.sync(function(state)
     --
 
@@ -677,7 +873,7 @@ local get_item_group_from_state = ya.sync(function(state)
 end)
 
 -- Function to prompt the user for their desired item group
----@return ItemGroup|nil
+---@return ItemGroup|nil item_group The item group selected by the user
 local function prompt_for_desired_item_group()
     --
 
@@ -694,9 +890,12 @@ local function prompt_for_desired_item_group()
     if default_item_group == ItemGroup.None then default_item_group = nil end
 
     -- Prompt the user for their input
-    local user_input, event = ya.input(merge_tables(DEFAULT_INPUT_OPTIONS, {
-        title = "Operate on hovered or selected items? " .. input_options,
-    }))
+    local user_input, event = get_user_input(
+        "Operate on hovered or selected items? " .. input_options
+    )
+
+    -- If the user input is empty, then exit the function
+    if not user_input then return end
 
     -- Lowercase the user's input
     user_input = user_input:lower()
@@ -722,7 +921,7 @@ local function prompt_for_desired_item_group()
 end
 
 -- Function to get the item group
----@return ItemGroup|nil
+---@return ItemGroup|nil item_group The desired item group
 local function get_item_group()
     --
 
@@ -740,13 +939,13 @@ local function get_item_group()
     end
 end
 
--- The function to get all the items in the given directory
----@param directory string
----@param ignore_hidden_items boolean
----@param directories_only boolean|nil
----@return string[]
+-- Function to get all the items in the given directory
+---@param directory_url Url The url to the directory
+---@param ignore_hidden_items boolean Whether to ignore hidden items
+---@param directories_only boolean|nil Whether to only get directories
+---@return Url[] directory_items The list of urls to the directory items
 local function get_directory_items(
-    directory,
+    directory_url,
     ignore_hidden_items,
     directories_only
 )
@@ -756,7 +955,7 @@ local function get_directory_items(
     local directory_items = {}
 
     -- Read the contents of the directory
-    local directory_contents, _ = fs.read_dir(Url(directory), {})
+    local directory_contents, _ = fs.read_dir(directory_url, {})
 
     -- If there are no directory contents,
     -- then return the empty list of directory items
@@ -776,8 +975,8 @@ local function get_directory_items(
         -- then continue the loop
         if directories_only and not item.cha.is_dir then goto continue end
 
-        -- Otherwise, add the item path to the list of directory items
-        table.insert(directory_items, tostring(item.url))
+        -- Otherwise, add the item url to the list of directory items
+        table.insert(directory_items, item.url)
 
         -- The continue label to continue the loop
         ::continue::
@@ -788,22 +987,14 @@ local function get_directory_items(
 end
 
 -- Function to skip child directories with only one directory
----@param args Arguments
----@param config Configuration
----@param initial_directory string
+---@param config Configuration The configuration object
+---@param initial_directory_url Url The url of the initial directory
 ---@return nil
-local function skip_single_child_directories(args, config, initial_directory)
+local function skip_single_child_directories(config, initial_directory_url)
     --
 
-    -- If the user doesn't want to skip single subdirectories on enter,
-    -- or one of the arguments passed is no skip,
-    -- then exit the function
-    if not config.skip_single_subdirectory_on_enter or args.no_skip then
-        return
-    end
-
     -- Initialise the directory variable to the initial directory given
-    local directory = initial_directory
+    local directory = initial_directory_url
 
     -- Start an infinite loop
     while true do
@@ -818,27 +1009,28 @@ local function skip_single_child_directories(args, config, initial_directory)
         if #directory_items ~= 1 then break end
 
         -- Otherwise, get the directory item
-        local directory_item = table.unpack(directory_items)
+        ---@type Url
+        local directory_item_url = table.unpack(directory_items)
 
         -- Get the cha object of the directory item
         -- and don't follow symbolic links
-        local directory_item_cha = fs.cha(Url(directory_item), false)
+        local directory_item_cha = fs.cha(directory_item_url, false)
 
         -- If the directory item is not a directory,
         -- break the loop
         if not directory_item_cha.is_dir then break end
 
         -- Otherwise, set the directory to the inner directory
-        directory = directory_item
+        directory = directory_item_url
     end
 
     -- Emit the change directory command to change to the directory variable
     ya.manager_emit("cd", { directory })
 end
 
--- The function to check if an archive is password protected
----@param command_error_string string
----@return boolean
+-- Function to check if an archive is password protected
+---@param command_error_string string The error string from the extractor
+---@return boolean is_encrypted Whether the archive is password protected
 local function archive_is_encrypted(command_error_string)
     --
 
@@ -851,18 +1043,12 @@ local function archive_is_encrypted(command_error_string)
     end
 end
 
--- The function to handle retrying the extractor command
---
--- The extractor command is a function that takes
--- two arguments, first being the password to the archive,
--- and the second being the configuration object.
--- It returns the output and the err
--- from the Command:output() function.
+-- Function to handle retrying the extractor command
 --
 -- The initial password is the password given to the extractor command
 -- and the test encryption is to test the archive password without
 -- actually executing the given extractor command.
----@param extractor_command function A function that extracts the archive
+---@param extractor_function ExtractorFunction Function to run the extractor
 ---@param config Configuration The configuration object
 ---@param initial_password string|nil The initial password to try
 ---@param archive_path string|nil The path to the archive file
@@ -871,7 +1057,7 @@ end
 ---@return string|nil stdout The standard output of the extractor command
 ---@return string|nil correct_password The correct password to the archive
 local function retry_extractor(
-    extractor_command,
+    extractor_function,
     config,
     initial_password,
     archive_path
@@ -893,12 +1079,20 @@ local function retry_extractor(
     -- to the number of retries plus 1
     local total_number_of_tries = config.extract_retries + 1
 
+    -- Initialise the initial password prompt
+    local initial_password_prompt =
+        "Archive is encrypted, please enter the password:"
+
+    -- Initialise the wrong password prompt
+    local wrong_password_prompt =
+        "Wrong password, please enter another password:"
+
     -- Iterate over the number of times to try the extraction
     for tries = 0, total_number_of_tries do
         --
 
         -- Execute the extractor command
-        local output, err = extractor_command(password, config)
+        local output, err = extractor_function(password, config)
 
         -- If there is no output
         -- then return false, the error code as a string,
@@ -947,25 +1141,15 @@ local function retry_extractor(
             return false, error_message, output.stdout, nil
         end
 
-        -- Initialise the prompt for the password
-        local password_prompt = "Wrong password, please enter another password:"
-
-        -- If this is the first time opening the archive,
-        -- which means the number of tries is 0,
-        -- then ask the user for the password
-        -- instead of giving the wrong password message.
-        if tries == 0 then
-            password_prompt = "Archive is encrypted, please enter the password:"
-        end
-
         -- Ask the user for the password
-        local user_input, event = ya.input(merge_tables(DEFAULT_INPUT_OPTIONS, {
-            title = password_prompt,
-        }))
+        local user_input, event = get_user_input(
+            tries == 0 and initial_password_prompt or wrong_password_prompt
+        )
 
         -- If the user has confirmed the input,
+        -- and the user input is not nil,
         -- set the password to the user's input
-        if event == 1 then
+        if event == 1 and user_input ~= nil then
             password = user_input
 
         -- Otherwise, return false, the error message,
@@ -985,12 +1169,12 @@ local function retry_extractor(
 end
 
 -- The command to list the items in an archive
----@param archive_path string
----@param config Configuration
----@param password string|nil
----@param remove_headers boolean|nil
----@param show_details boolean|nil
----@return CommandOutput, integer
+---@param archive_path string The path to the archive
+---@param config Configuration The configuration object
+---@param password string|nil The password to the archive
+---@param remove_headers boolean|nil Whether to remove the headers
+---@param show_details boolean|nil Whether to show the details
+---@return CommandOutput|nil, integer
 local function list_archive_items_command(
     archive_path,
     config,
@@ -1046,17 +1230,18 @@ local function list_archive_items_command(
         :output()
 end
 
--- The function to get if the archive
+-- Function to get if the archive
 -- file has more than one file in it.
 ---@param archive_path string The path to the archive file
 ---@param config Configuration The configuration object
----@return boolean|nil has_one_file Whether the archive file has one file in it
+---@return table<string> files The list of files in the archive
+---@return table<string> directories The list of directories in the archive
 ---@return string|nil error_message The error message for an incorrect password
 ---@return string|nil correct_password The correct password to the archive
-local function archive_only_has_one_file(archive_path, config)
+local function get_archive_items(archive_path, config)
     --
 
-    -- The function to list the items in the archive
+    -- Function to list the items in the archive
     local function list_items_in_archive(password, configuration, _)
         return list_archive_items_command(
             archive_path,
@@ -1083,7 +1268,9 @@ local function archive_only_has_one_file(archive_path, config)
     -- or the output was nil,
     -- then return nil the error message,
     -- and nil as the correct password
-    if not successful or not output then return nil, error_message, nil end
+    if not successful or not output then
+        return files, directories, error_message, nil
+    end
 
     -- Otherwise, split the output at the newline character
     local output_lines = string_split(output, "\n")
@@ -1118,52 +1305,39 @@ local function archive_only_has_one_file(archive_path, config)
 
         -- The continue label to continue the loop
         ::continue::
-
-        -- If there is more than 1 file in the archive
-        -- then break out of the loop
-        if #files > 1 then break end
     end
 
-    -- If there are no files in the archive,
-    -- return nil, an error saying that there's
-    -- no files in the archive, and the password
-    if #files == 0 then return nil, "No files in the archive!", password end
-
-    -- If there is only one file in the archive and no directories,
-    -- then return true, the error message, and the password
-    if #files == 1 and #directories == 0 then
-        return true, error_message, password
-    end
-
-    -- Otherwise, return false, the error message and the password
-    return false, error_message, password
+    -- Return the list of files, the list of directories,
+    -- the error message, and the password
+    return files, directories, error_message, password
 end
 
 -- Function to get a temporary name.
 -- The code is taken from Yazi's source code.
----@param file_path string
----@return string
-local function get_temporary_name(file_path)
+---@param path string The path to the item to create a temporary name
+---@return string temporary_name The temporary name for the item
+local function get_temporary_name(path)
     return ".tmp_"
-        .. ya.md5(string.format("extract//%s//%.10f", file_path, ya.time()))
+        .. ya.hash(string.format("extract//%s//%.10f", path, ya.time()))
 end
 
 -- Function to get a temporary directory url
 -- for the given file path
----@param file_path string
----@return Url|nil
-local function get_temporary_directory_url(file_path)
+---@param path string The path to the item to create a temporary directory
+---@return Url|nil url The url of the temporary directory
+local function get_temporary_directory_url(path)
     --
 
     -- Get the parent directory of the file path
-    local parent_directory = Url(file_path):parent()
+    ---@type Url
+    local parent_directory = Url(path):parent()
 
     -- If the parent directory doesn't exist, then return nil
     if not parent_directory then return nil end
 
     -- Otherwise, create the temporary directory path
     local temporary_directory_url =
-        fs.unique_name(parent_directory:join(get_temporary_name(file_path)))
+        fs.unique_name(parent_directory:join(get_temporary_name(path)))
 
     -- Return the temporary directory path
     return temporary_directory_url
@@ -1176,7 +1350,7 @@ end
 ---@param password string|nil The password to the archive
 ---@param extract_files_only boolean|nil Extract the files only or not
 ---@param extract_behaviour ExtractBehaviour|nil The extraction behaviour
----@return CommandOutput, integer
+---@return CommandOutput|nil, integer
 local function extract_command(
     archive_path,
     destination_directory_path,
@@ -1242,9 +1416,9 @@ local function extract_command(
         :output()
 end
 
--- The function to get the mime type of a file
----@param file_path string
----@return string
+-- Function to get the mime type of a file
+---@param file_path string The path to the file
+---@return string mime_type The mime type of the file
 local function get_mime_type(file_path)
     --
 
@@ -1275,9 +1449,9 @@ local function get_mime_type(file_path)
     return mime_type
 end
 
--- The function to check if a file is an archive
----@param file_path string
----@return boolean
+-- Function to check if a file is an archive
+---@param file_path string The path to the file
+---@return boolean is_archive Whether the file is an archive
 local function is_archive_file(file_path)
     --
 
@@ -1294,12 +1468,12 @@ local function is_archive_file(file_path)
     return is_archive
 end
 
--- The function to clean up the temporary directory
+-- Function to clean up the temporary directory
 -- after extracting an archive.
----@param temporary_directory_url Url
----@param removal_mode "dir" | "dir_all" | "dir_clean"
----@param ... any
----@return ... any
+---@param temporary_directory_url Url The url of the temporary directory
+---@param removal_mode "dir" | "dir_all" | "dir_clean" The removal mode
+---@param ... any Return values
+---@return ... Returns the given return values
 local function clean_up_temporary_directory(
     temporary_directory_url,
     removal_mode,
@@ -1314,10 +1488,10 @@ local function clean_up_temporary_directory(
     return ...
 end
 
--- The function to move extracted items out of the temporary directory
----@param archive_url Url
----@param temporary_directory_url Url
----@return boolean move_successful A boolean if the move was successful
+-- Function to move extracted items out of the temporary directory
+---@param archive_url Url The url of the archive
+---@param temporary_directory_url Url The url of the temporary directory
+---@return boolean move_successful Whether the move was successful
 ---@return string|nil error_message An error message for unsuccessful extracts
 ---@return string|nil extracted_items_path The path of the extracted item
 local function move_extracted_items_to_archive_parent_directory(
@@ -1382,6 +1556,22 @@ local function move_extracted_items_to_archive_parent_directory(
         )
     end
 
+    -- Get the file name of the archive without the extension
+    local archive_file_name = archive_url:stem()
+
+    -- If the archive file name is nil,
+    -- then return the move successful variable,
+    -- the error message, and the extracted item path
+    if not archive_file_name then
+        return clean_up_temporary_directory(
+            temporary_directory_url,
+            "dir_all",
+            move_successful,
+            "Archive's file name is empty",
+            extracted_items_path
+        )
+    end
+
     -- Get the first extracted item
     local first_extracted_item = table.unpack(extracted_items)
 
@@ -1396,7 +1586,7 @@ local function move_extracted_items_to_archive_parent_directory(
     -- Initialise the target directory url to move the extracted items to,
     -- which is the parent directory of the archive
     -- joined with the file name of the archive without the extension
-    local target_url = parent_directory_url:join(archive_url:stem())
+    local target_url = parent_directory_url:join(archive_file_name)
 
     -- If there is only one item in the archive
     if #extracted_items == 1 then
@@ -1422,7 +1612,7 @@ local function move_extracted_items_to_archive_parent_directory(
             temporary_directory_url,
             "dir_all",
             move_successful,
-            "Failed to get a unique name for to move the extracted items to",
+            "Failed to get a unique name to move the extracted items to",
             extracted_items_path
         )
     end
@@ -1462,21 +1652,19 @@ local function move_extracted_items_to_archive_parent_directory(
     )
 end
 
---- The function to extract an archive.
---- This function returns 2 values:
---- 1. A boolean to indicate if the extraction of the archive was successful
---- 2. An error message if the extraction was unsuccessful
---- 3. The file path indicating the directory to change to, which can be nil
----@param archive_path string
----@param config Configuration
----@return boolean successful A boolean indicating extraction success
----@return string|nil error_message An error message if extraction failed
----@return string|nil extracted_items_path The path of the extracted items
-local function extract_archive(archive_path, config)
+--- Function to extract an archive.
+---@param archive_path string The path to the archive
+---@param config Configuration The configuration object
+---@param has_only_one_file boolean Whether the archive has only one file
+---@param initial_password string|nil The initial password to try
+---@return ExtractionResult extraction_result The result of the extraction
+local function extract_archive(
+    archive_path,
+    config,
+    has_only_one_file,
+    initial_password
+)
     --
-
-    -- Initialise the extract files only flag to false
-    local extract_files_only = false
 
     -- Initialise the successful variable to false
     local successful = false
@@ -1484,25 +1672,8 @@ local function extract_archive(archive_path, config)
     -- Initialise the error message to nil
     local error_message = nil
 
-    -- Get the list of archive items, the error message and the password
-    local has_only_one_file, archive_error, correct_password =
-        archive_only_has_one_file(archive_path, config)
-
     -- Initialise the extracted items path to nil
     local extracted_items_path = nil
-
-    -- If there are no files in the archive,
-    -- then return the successful variable,
-    -- the error message, and the extracted items path
-    if has_only_one_file == nil then
-        return successful, archive_error, extracted_items_path
-    end
-
-    -- Otherwise, the archive only has one file,
-    -- then set the files only flag to true
-    if has_only_one_file then
-        extract_files_only = true
-    end
 
     -- Get the url of the temporary directory
     local temporary_directory_url = get_temporary_directory_url(archive_path)
@@ -1512,12 +1683,17 @@ local function extract_archive(archive_path, config)
     -- saying a path for the temporary directory
     -- cannot be determined, and the extracted items path
     if not temporary_directory_url then
-        return successful,
-            "Failed to determine a path for the temporary directory",
-            extracted_items_path
+        return {
+            archive_path = archive_path,
+            successful = successful,
+            extracted_items_path = extracted_items_path,
+            error_message = "Failed to determine a path "
+                .. "for the temporary directory",
+        }
     end
 
     -- Get the url of the archive
+    ---@type Url
     local archive_url = Url(archive_path)
 
     -- Get the name of the archive
@@ -1529,7 +1705,12 @@ local function extract_archive(archive_path, config)
     -- that the archive file name is somehow empty,
     -- and the extracted items path
     if not archive_name then
-        return successful, "Archive file name is empty", extracted_items_path
+        return {
+            archive_path = archive_path,
+            successful = successful,
+            extracted_items_path = extracted_items_path,
+            error_message = "Archive file name is empty",
+        }
     end
 
     -- Create the extractor command
@@ -1539,7 +1720,7 @@ local function extract_archive(archive_path, config)
             tostring(temporary_directory_url),
             configuration,
             password,
-            extract_files_only,
+            has_only_one_file,
             ExtractBehaviour.Overwrite
         )
     end
@@ -1548,15 +1729,24 @@ local function extract_archive(archive_path, config)
     successful, error_message, _, _ = retry_extractor(
         extractor_command,
         config,
-        correct_password,
+        initial_password,
         archive_path
     )
 
     -- If the extraction was not successful,
-    -- then return whether the extraction was successful,
-    -- the error message and the extracted items path
     if not successful then
-        return successful, error_message, extracted_items_path
+        --
+
+        -- Clean up the temporary directory
+        clean_up_temporary_directory(temporary_directory_url, "dir_all")
+
+        -- Return the extraction results
+        return {
+            archive_path = archive_path,
+            successful = successful,
+            extracted_items_path = extracted_items_path,
+            error_message = error_message,
+        }
     end
 
     -- Otherwise, move the extracted items
@@ -1567,46 +1757,153 @@ local function extract_archive(archive_path, config)
             temporary_directory_url
         )
 
-    -- If the extract files only flag is false,
-    -- then return whether the extraction was successful,
-    -- the error message and the extracted items path
-    if not extract_files_only or not extracted_items_path then
-        return successful, error_message, extracted_items_path
-    end
-
-    -- If the item is not an archive
-    -- then return whether the extraction was successful,
-    -- the error message and the extract directory
-    if not is_archive_file(extracted_items_path) then
-        return successful, error_message, extracted_items_path
-    end
-
-    -- Save the extracted archive path
-    local extracted_archive_path = extracted_items_path
-
-    -- Extract the archive item
-    successful, error_message, extracted_items_path =
-        extract_archive(extracted_archive_path, config)
-
-    -- If the extraction was not successful,
-    -- then return whether the extraction was successful,
-    -- the error message and the extracted items path
-    if not successful then
-        return successful, error_message, extracted_items_path
-    end
-
-    -- Remove the archive after extracting it successfully
-    fs.remove("file", Url(extracted_archive_path))
+    -- Create the extraction result
+    ---@type ExtractionResult
+    local extraction_result = {
+        archive_path = archive_path,
+        successful = successful,
+        extracted_items_path = extracted_items_path,
+        error_message = error_message,
+    }
 
     -- Return the result of the extraction
-    return successful, error_message, extracted_items_path
+    return extraction_result
+end
+
+-- Function to recursively extract archives
+---@param archive_path string The path to the archive
+---@param config Configuration The configuration object
+---@return ExtractionResult[] extraction_results The list of extraction results
+---@return string|nil extracted_items_path The path to the extracted items
+local function recursively_extract_archives(archive_path, config)
+    --
+
+    -- Initialise the table of extraction results
+    ---@type ExtractionResult[]
+    local list_of_extraction_results = {}
+
+    -- Get the list of archive files and directories,
+    -- the error message and the password
+    local archive_files, archive_directories, err, password =
+        get_archive_items(archive_path, config)
+
+    -- If there are no are no archive files and directories
+    if #archive_files == 0 and #archive_directories == 0 then
+        --
+
+        -- Add that the archive is empty if there is no error message
+        table.insert(list_of_extraction_results, {
+            archive_path = archive_path,
+            successful = false,
+            error_message = err or "Archive is empty",
+        })
+
+        -- Return the list of extraction results
+        return list_of_extraction_results
+    end
+
+    -- Get if the archive has only one file
+    local archive_has_only_one_file = #archive_files == 1
+        and #archive_directories == 0
+
+    -- Extract the given archive
+    local extraction_results = extract_archive(
+        archive_path,
+        config,
+        archive_has_only_one_file,
+        password
+    )
+
+    -- Add the extraction results to the list of extraction results
+    table.insert(list_of_extraction_results, extraction_results)
+
+    -- Get the extracted items path
+    local extracted_items_path = extraction_results.extracted_items_path
+
+    -- If the extraction of the archive isn't successful,
+    -- or if the extracted items path is nil,
+    -- or if the user does not want to extract archives recursively,
+    -- return the list of extraction results
+    if
+        not extraction_results.successful
+        or not extracted_items_path
+        or not config.extract_archives_recursively
+    then
+        return list_of_extraction_results, extracted_items_path
+    end
+
+    -- Get the url of the extracted items path
+    ---@type Url
+    local extracted_items_url = Url(extracted_items_path)
+
+    -- Initialise the base url for the extracted items
+    local base_url = extracted_items_url
+
+    -- Get the parent directory of the extracted items path
+    local parent_directory_url = extracted_items_url:parent()
+
+    -- If the parent directory doesn't exist,
+    -- then return the list of extraction results
+    if not parent_directory_url then return list_of_extraction_results end
+
+    -- If the archive has only one file
+    if archive_has_only_one_file then
+        --
+
+        -- Set the base url to the parent directory of the extracted items path
+        base_url = parent_directory_url
+    end
+
+    -- Iterate over the archive files
+    for _, file in ipairs(archive_files) do
+        --
+
+        -- Get the file extension of the file
+        local file_extension = file:match(file_extension_pattern)
+
+        -- If the file extension is not found, then skip the file
+        if not file_extension then goto continue end
+
+        -- If the file extension is not an archive file extension, skip the file
+        if not is_archive_file_extension(file_extension) then goto continue end
+
+        -- Otherwise, get the full url to the archive
+        local full_archive_url = base_url:join(file)
+
+        -- Get the full path to the archive
+        local full_archive_path = tostring(full_archive_url)
+
+        -- If the file is not an archive, skip the file
+        if not is_archive_file(full_archive_path) then goto continue end
+
+        -- Otherwise, recursively extract the archive
+        local archive_extraction_results, extracted_archive_path =
+            recursively_extract_archives(full_archive_path, config)
+
+        -- Merge the results with the existing list of extraction results
+        list_of_extraction_results =
+            merge_tables(list_of_extraction_results, archive_extraction_results)
+
+        -- If the archive has only one file,
+        -- update the extracted items path
+        -- to the extracted archive path
+        if archive_has_only_one_file then
+            extracted_items_path = extracted_archive_path
+        end
+
+        -- Remove the archive file after extracting it
+        fs.remove("file", full_archive_url)
+
+        -- The label the continue the loop
+        ::continue::
+    end
+
+    -- Return the list of extraction results and the extracted items path
+    return list_of_extraction_results, extracted_items_path
 end
 
 -- Function to handle the open command
----@param args Arguments
----@param config Configuration
----@param command_table CommandTable
----@return nil
+---@type CommandFunction
 local function handle_open(args, config, command_table)
     --
 
@@ -1636,13 +1933,12 @@ local function handle_open(args, config, command_table)
         -- If smart enter is wanted,
         -- calls the function to enter the directory
         -- and exit the function
-        if config.smart_enter then
+        if config.smart_enter or table_pop(args, "smart", false) then
             return enter_command(args, config, command_table)
+        end
 
         -- Otherwise, just exit the function
-        else
-            return
-        end
+        return
     end
 
     -- Otherwise, if the hovered item is not an archive,
@@ -1671,19 +1967,22 @@ local function handle_open(args, config, command_table)
     if not archive_path then return end
 
     -- Run the function to extract the archive
-    local extract_successful, err, extracted_items_path =
-        extract_archive(archive_path, config)
+    local extraction_results, extracted_items_path =
+        recursively_extract_archives(archive_path, config)
 
-    -- If the extraction of the archive isn't successful,
-    -- notify the user and exit the function
-    if not extract_successful then
-        return ya.notify(merge_tables(DEFAULT_NOTIFICATION_OPTIONS, {
-            content = "Failed to extract archive at: "
-                .. archive_path
-                .. "\nError: "
-                .. err,
-            level = "error",
-        }))
+    -- Iterate over the extraction results
+    for _, extraction_result in ipairs(extraction_results) do
+        --
+
+        -- If the extraction is not successful, notify the user
+        if not extraction_result.successful then
+            show_error(
+                "Failed to extract archive at: "
+                    .. extraction_result.archive_path
+                    .. "\nError: "
+                    .. extraction_result.error_message
+            )
+        end
     end
 
     -- If the extracted items path is nil,
@@ -1704,16 +2003,23 @@ local function handle_open(args, config, command_table)
     -- Enter the archive directory
     ya.manager_emit("cd", { extracted_items_path })
 
+    -- If the user doesn't want to skip single subdirectories on enter,
+    -- or one of the arguments passed is no skip,
+    -- then exit the function
+    if
+        not config.skip_single_subdirectory_on_enter
+        or table_pop(args, "no_skip", false)
+    then
+        return
+    end
+
     -- Calls the function to skip child directories
     -- with only a single directory inside
-    skip_single_child_directories(args, config, extracted_items_path)
+    skip_single_child_directories(config, Url(extracted_items_path))
 end
 
 -- Function to handle the enter command
----@param args Arguments
----@param config Configuration
----@param command_table CommandTable
----@return nil
+---@type CommandFunction
 local function handle_enter(args, config, command_table)
     --
 
@@ -1721,33 +2027,40 @@ local function handle_enter(args, config, command_table)
     local open_command = command_table[Commands.Open]
 
     -- If the hovered item is not a directory
-    if not hovered_item_is_dir() and config.smart_enter then
+    if not hovered_item_is_dir() then
         --
 
         -- If smart enter is wanted,
         -- call the function for the open command
         -- and exit the function
-        if config.smart_enter then
+        if config.smart_enter or table_pop(args, "smart", false) then
             return open_command(args, config, command_table)
+        end
 
         -- Otherwise, just exit the function
-        else
-            return
-        end
+        return
     end
 
     -- Otherwise, always emit the enter command,
     ya.manager_emit("enter", args)
 
-    -- Calls the function to skip child directories
+    -- If the user doesn't want to skip single subdirectories on enter,
+    -- or one of the arguments passed is no skip,
+    -- then exit the function
+    if
+        not config.skip_single_subdirectory_on_enter
+        or table_pop(args, "no_skip", false)
+    then
+        return
+    end
+
+    -- Otherwise, call the function to skip child directories
     -- with only a single directory inside
-    skip_single_child_directories(args, config, get_current_directory())
+    skip_single_child_directories(config, get_current_directory_url())
 end
 
 -- Function to handle the leave command
----@param args Arguments
----@param config Configuration
----@return nil
+---@type CommandFunction
 local function handle_leave(args, config)
     --
 
@@ -1757,12 +2070,16 @@ local function handle_leave(args, config)
     -- If the user doesn't want to skip single subdirectories on leave,
     -- or one of the arguments passed is no skip,
     -- then exit the function
-    if not config.skip_single_subdirectory_on_leave or args.no_skip then
+    if
+        not config.skip_single_subdirectory_on_leave
+        or table_pop(args, "no_skip", false)
+    then
         return
     end
 
     -- Otherwise, initialise the directory to the current directory
-    local directory = get_current_directory()
+    ---@type Url
+    local directory = get_current_directory_url()
 
     -- Start an infinite loop
     while true do
@@ -1777,14 +2094,15 @@ local function handle_leave(args, config)
         if #directory_items ~= 1 then break end
 
         -- Get the parent directory of the current directory
-        local parent_directory = Url(directory):parent()
+        ---@type Url|nil
+        local parent_directory = directory:parent()
 
         -- If the parent directory is nil,
         -- break the loop
         if not parent_directory then break end
 
         -- Otherwise, set the new directory to the parent directory
-        directory = tostring(parent_directory)
+        directory = parent_directory
     end
 
     -- Emit the change directory command to change to the directory variable
@@ -1793,7 +2111,7 @@ end
 
 -- Function to handle a Yazi command
 ---@param command string A Yazi command
----@param args Arguments
+---@param args Arguments The arguments passed to the plugin
 ---@return nil
 local function handle_yazi_command(command, args)
     --
@@ -1817,43 +2135,193 @@ local function handle_yazi_command(command, args)
 
         -- Emit the command with the hovered option
         ya.manager_emit(command, merge_tables(args, { hovered = true }))
-
-    -- Otherwise, exit the function
-    else
-        return
     end
 end
 
--- Function to handle the paste command
----@param args Arguments
----@param config Configuration
+-- Function to enter or open the created file
+---@param item_url Url The url of the item to create
+---@param is_directory boolean|nil Whether the item to create is a directory
+---@param args Arguments The arguments passed to the plugin
+---@param config Configuration The configuration object
 ---@return nil
-local function handle_paste(args, config)
+local function enter_or_open_created_item(item_url, is_directory, args, config)
     --
 
-    -- If the hovered item is a directory and smart paste is wanted
-    if hovered_item_is_dir() and (config.smart_paste or args.smart) then
+    -- If the item is a directory
+    if is_directory then
         --
 
-        -- Enter the directory
-        ya.manager_emit("enter", {})
+        -- If user does not want to enter the directory
+        -- after creating it, exit the function
+        if
+            not (
+                config.enter_directory_after_creation
+                or table_pop(args, "enter", false)
+            )
+        then
+            return
+        end
 
-        -- Paste the items inside the directory
-        ya.manager_emit("paste", args)
+        -- Otherwise, call the function change to the created directory
+        ya.manager_emit("cd", { tostring(item_url) })
 
-        -- Leave the directory
-        ya.manager_emit("leave", {})
+    -- Otherwise, the item is a file
+    else
+        --
 
-        -- Exit the function
-        return
+        -- If the user does not want to open the file
+        -- after creating it, exit the function
+        if
+            not (
+                config.open_file_after_creation
+                or table_pop(args, "open", false)
+            )
+        then
+            return
+        end
+
+        -- Otherwise, call the function to reveal the created file
+        ya.manager_emit("reveal", { tostring(item_url) })
+
+        -- Wait for Yazi to finish loading
+        wait_until_yazi_is_loaded()
+
+        -- Call the function to open the file
+        ya.manager_emit("open", { hovered = true })
+    end
+end
+
+-- Function to execute the create command
+---@param item_url Url The url of the item to create
+---@param args Arguments The arguments passed to the plugin
+---@param config Configuration The configuration object
+---@return nil
+local function execute_create(item_url, is_directory, args, config)
+    --
+
+    -- Get the parent directory of the file to create
+    local parent_directory_url = item_url:parent()
+
+    -- If the parent directory doesn't exist,
+    -- then show an error and exit the function
+    if not parent_directory_url then
+        return show_error(
+            "Parent directory of the item to create doesn't exist"
+        )
     end
 
-    -- Otherwise, just paste the items inside the current directory
-    ya.manager_emit("paste", args)
+    -- If the item to create is a directory
+    if is_directory then
+        --
+
+        -- Call the function to create the directory
+        local successful, error_message = fs.create("dir_all", item_url)
+
+        -- If the function is not successful,
+        -- show the error message and exit the function
+        if not successful then return show_error(tostring(error_message)) end
+
+    -- Otherwise, the item to create is a file
+    else
+        --
+
+        -- Otherwise, create the parent directory if it doesn't exist
+        if not fs.cha(parent_directory_url, false) then
+            --
+
+            -- Call the function to create the parent directory
+            local successful, error_message =
+                fs.create("dir_all", parent_directory_url)
+
+            -- If the function is not successful,
+            -- show the error message and exit the function
+            if not successful then
+                return show_error(tostring(error_message))
+            end
+        end
+
+        -- Otherwise, create the file
+        local successful, error_message = fs.write(item_url, "")
+
+        -- If the function is not successful,
+        -- show the error message and exit the function
+        if not successful then return show_error(tostring(error_message)) end
+    end
+
+    -- Call the function to enter or open the created item
+    enter_or_open_created_item(item_url, is_directory, args, config)
+end
+
+-- Function to handle the create command
+---@type CommandFunction
+local function handle_create(args, config)
+    --
+
+    -- Otherwise, get the user's input for the item to create
+    local user_input, event = get_user_input("Create:")
+
+    -- If the user did not confirm the input,
+    -- or the user input is nil,
+    -- exit the function
+    if not user_input or event ~= 1 then return end
+
+    -- Get the current working directory as a url
+    ---@type Url
+    local current_working_directory = get_current_directory_url()
+
+    -- Get whether the url ends with a path delimiter
+    local ends_with_path_delimiter = user_input:find("[/\\]$")
+
+    -- Get the whether the given item is a directory or not based
+    -- on the default conditions for a directory
+    local is_directory = ends_with_path_delimiter
+        or table_pop(args, "dir", false)
+
+    -- Get the url from the user's input
+    ---@type Url
+    local item_url = Url(user_input)
+
+    -- If the user does not want to use the default Yazi create behaviour
+    if
+        not (
+            config.use_default_create_behaviour
+            or table_pop(args, "default_behaviour", false)
+        )
+    then
+        --
+
+        -- Get the file extension from the user's input
+        local file_extension = user_input:match(file_extension_pattern)
+
+        -- Set the is directory variable to the is directory condition
+        -- or if the file extension exists
+        is_directory = is_directory or not file_extension
+    end
+
+    -- Get the full url of the item to create
+    local full_url = current_working_directory:join(item_url)
+
+    -- If the path to the item to create already exists,
+    -- and the user did not pass the force flag
+    if fs.cha(full_url, false) and not table_pop(args, "force", false) then
+        --
+
+        -- Get the user's confirmation for
+        -- whether they want to overwrite the item
+        local user_confirmation =
+            get_user_confirmation("The item already exists, overwrite? (y/N)")
+
+        -- If the user did not confirm the overwrite,
+        -- then exit the function
+        if not user_confirmation then return end
+    end
+
+    -- Call the function to execute the create command
+    return execute_create(full_url, is_directory, args, config)
 end
 
 -- Function to remove the F flag from the less command
----@param command string
+---@param command string The shell command containing the less command
 ---@return string command The command with the F flag removed
 ---@return boolean f_flag_found Whether the F flag was found
 local function remove_f_flag_from_less_command(command)
@@ -1889,7 +2357,7 @@ end
 -- Function to fix a command containing less.
 -- All this function does is remove
 -- the F flag from a command containing less.
----@param command string
+---@param command string The shell command containing the less command
 ---@return string command The fixed shell command
 local function fix_shell_command_containing_less(command)
     --
@@ -1927,7 +2395,7 @@ local function fix_shell_command_containing_less(command)
 end
 
 -- Function to fix the bat default pager command
----@param command string
+---@param command string The command containing the bat default pager command
 ---@return string command The fixed bat command
 local function fix_bat_default_pager_shell_command(command)
     --
@@ -1939,11 +2407,11 @@ local function fix_bat_default_pager_shell_command(command)
     -- when replacing the less command when it is quoted
     local modified_command, replacement_count = command:gsub(
         "("
-        .. bat_command_with_pager_pattern
-        .. "['\"]+%s*"
-        .. ")"
-        .. "less"
-        .. "(%s*['\"]+)",
+            .. bat_command_with_pager_pattern
+            .. "['\"]+%s*"
+            .. ")"
+            .. "less"
+            .. "(%s*['\"]+)",
         "%1" .. bat_default_pager_command_without_f_flag .. "%2"
     )
 
@@ -1994,11 +2462,8 @@ local function fix_shell_command(command)
 end
 
 -- Function to handle a shell command
----@param args Arguments
----@param _ nil
----@param exit_if_directory boolean|nil
----@return nil
-local function handle_shell(args, _, _, exit_if_directory)
+---@type CommandFunction
+local function handle_shell(args, _, _)
     --
 
     -- Get the first item of the arguments given
@@ -2017,22 +2482,15 @@ local function handle_shell(args, _, _, exit_if_directory)
     -- If no item group is returned, exit the function
     if not item_group then return end
 
-    -- If the exit if directory flag is not given,
-    -- and the arguments contain the
-    -- exit if directory flag
-    if not exit_if_directory and args.exit_if_directory then
-        --
-
-        -- Set the exit if directory flag to true
-        exit_if_directory = true
-    end
+    -- Get whether the exit if directory flag is passed
+    local exit_if_dir = table_pop(args, "exit_if_dir", false)
 
     -- If the item group is the selected items
     if item_group == ItemGroup.Selected then
         --
 
         -- If the exit if directory flag is passed
-        if exit_if_directory then
+        if exit_if_dir then
             --
 
             -- Initialise the number of files
@@ -2072,7 +2530,7 @@ local function handle_shell(args, _, _, exit_if_directory)
         -- If the exit if directory flag is passed,
         -- and the hovered item is a directory,
         -- then exit the function
-        if exit_if_directory and hovered_item_is_dir() then return end
+        if exit_if_dir and hovered_item_is_dir() then return end
 
         -- Replace the shell variable in the command
         -- with the quoted path of the hovered item
@@ -2091,9 +2549,124 @@ local function handle_shell(args, _, _, exit_if_directory)
     ya.manager_emit("shell", args)
 end
 
+-- Function to handle the paste command
+---@type CommandFunction
+local function handle_paste(args, config)
+    --
+
+    -- If the hovered item is not a directory or smart paste is not wanted
+    if
+        not hovered_item_is_dir()
+        or not (config.smart_paste or table_pop(args, "smart", false))
+    then
+        --
+
+        -- Just paste the items inside the current directory
+        -- and exit the function
+        return ya.manager_emit("paste", args)
+    end
+
+    -- Otherwise, enter the directory
+    ya.manager_emit("enter", {})
+
+    -- Paste the items inside the directory
+    ya.manager_emit("paste", args)
+
+    -- Leave the directory
+    ya.manager_emit("leave", {})
+end
+
+-- Function to execute the tab create command
+---@param state State The state object
+---@param args Arguments The arguments passed to the plugin
+---@return nil
+local execute_tab_create = ya.sync(function(state, args)
+    --
+
+    -- Get the hovered item
+    local hovered_item = cx.active.current.hovered
+
+    -- Get if the hovered item is a directory
+    local hovered_item_is_directory = hovered_item and hovered_item.cha.is_dir
+
+    -- If the hovered item is a directory,
+    -- and the user wants to create a tab
+    -- in the hovered directory
+    if
+        hovered_item_is_directory
+        and (state.config.smart_tab_create or table_pop(args, "smart", false))
+    then
+        --
+
+        -- Set the arguments to the url of the hovered item
+        args = { hovered_item.url }
+    end
+
+    -- Emit the command to create a new tab with the arguments
+    ya.manager_emit("tab_create", args)
+end)
+
+-- Function to handle the tab create command
+---@type CommandFunction
+local function handle_tab_create(args)
+    --
+
+    -- Call the function to execute the tab create command
+    execute_tab_create(args)
+end
+
+-- Function to execute the tab switch command
+---@param state State The state object
+---@param args Arguments The arguments passed to the plugin
+---@return nil
+local execute_tab_switch = ya.sync(function(state, args)
+    --
+
+    -- Get the tab index
+    local tab_index = args[1]
+
+    -- If no tab index is given, exit the function
+    if not tab_index then return end
+
+    -- If the user doesn't want to create tabs
+    -- when switching to a new tab,
+    -- or the tab index is not given,
+    -- then just call the tab switch command
+    -- and exit the function
+    if
+        not (state.config.smart_tab_switch or table_pop(args, "smart", false))
+    then
+        return ya.manager_emit("tab_switch", args)
+    end
+
+    -- Get the number of tabs currently open
+    local number_of_open_tabs = #cx.tabs
+
+    -- Iterate from the number of current open tabs
+    -- to the given tab number
+    for _ = number_of_open_tabs, tab_index do
+        --
+
+        -- Call the tab create command
+        ya.manager_emit("tab_create", { current = true })
+    end
+
+    -- Switch to the given tab index
+    ya.manager_emit("tab_switch", args)
+end)
+
+-- Function to handle the tab switch command
+---@type CommandFunction
+local function handle_tab_switch(args)
+    --
+
+    -- Call the function to execute the tab switch command
+    execute_tab_switch(args)
+end
+
 -- Function to do the wraparound for the arrow command
 ---@param _ any
----@param args Arguments
+---@param args Arguments The arguments passed to the plugin
 ---@return nil
 local wraparound_arrow = ya.sync(function(_, args)
     --
@@ -2125,9 +2698,7 @@ local wraparound_arrow = ya.sync(function(_, args)
 end)
 
 -- Function to handle the arrow command
----@param args Arguments
----@param config Configuration
----@return nil
+---@type CommandFunction
 local function handle_arrow(args, config)
     --
 
@@ -2144,8 +2715,8 @@ end
 
 -- Function to get the directory items in the parent directory
 ---@param _ any
----@param directories_only boolean
----@return string[]
+---@param directories_only boolean Whether to only get directories
+---@return string[] directory_items The list of paths to the directory items
 local get_parent_directory_items = ya.sync(function(_, directories_only)
     --
 
@@ -2180,10 +2751,10 @@ local get_parent_directory_items = ya.sync(function(_, directories_only)
 end)
 
 -- Function to execute the parent arrow command
----@param state any
----@param args Arguments
+---@param state State The state object
+---@param args Arguments The arguments passed to the plugin
 ---@return nil
-local execute_parent_arrow_command = ya.sync(function(state, args)
+local execute_parent_arrow = ya.sync(function(state, args)
     --
 
     -- Gets the parent directory
@@ -2196,8 +2767,20 @@ local execute_parent_arrow_command = ya.sync(function(state, args)
     -- Get the offset from the arguments given
     local offset = table.remove(args, 1)
 
-    -- If the offset is not a number, then exit the function
-    if type(offset) ~= "number" then return end
+    -- Get the type of the offset
+    local offset_type = type(offset)
+
+    -- If the offset is not a number,
+    -- then show an error that the offset is not a number
+    -- and exit the function
+    if offset_type ~= "number" then
+        return show_error(
+            string.format(
+                "The given offset is not a `number`, instead it is a `%s`",
+                offset_type
+            )
+        )
+    end
 
     -- Get the number of items in the parent directory
     local number_of_items = #parent_directory.files
@@ -2290,21 +2873,18 @@ local execute_parent_arrow_command = ya.sync(function(state, args)
 end)
 
 -- Function to handle the parent arrow command
----@param args Arguments
----@return nil
+---@type CommandFunction
 local function handle_parent_arrow(args)
     --
 
     -- Call the function to execute the parent arrow command
     -- with the arguments given
-    execute_parent_arrow_command(args)
+    execute_parent_arrow(args)
 end
 
 -- Function to handle the editor command
----@param args Arguments
----@param config Configuration
----@return nil
-local function handle_editor(args, config)
+---@type CommandFunction
+local function handle_editor(args, config, command_table)
     --
 
     -- Call the function to get the item group
@@ -2324,18 +2904,16 @@ local function handle_editor(args, config)
     handle_shell(
         merge_tables({
             editor .. " $@",
-            confirm = true,
             block = true,
+            exit_if_dir = true,
         }, args),
-        config
+        config,
+        command_table
     )
 end
 
 -- Function to handle the pager command
----@param args Arguments
----@param config Configuration
----@param command_table CommandTable
----@return nil
+---@type CommandFunction
 local function handle_pager(args, config, command_table)
     --
 
@@ -2358,37 +2936,35 @@ local function handle_pager(args, config, command_table)
     handle_shell(
         merge_tables({
             pager .. " $@",
-            confirm = true,
             block = true,
+            exit_if_dir = true,
         }, args),
         config,
-        command_table,
-        true
+        command_table
     )
 end
 
 -- Function to run the commands given
----@param command string
----@param args Arguments
----@param config Configuration
+---@param command string The command passed to the plugin
+---@param args Arguments The arguments passed to the plugin
+---@param config Configuration The configuration object
 ---@return nil
 local function run_command_func(command, args, config)
     --
 
     -- The command table
-    ---@enum CommandTable
+    ---@type CommandTable
     local command_table = {
         [Commands.Open] = handle_open,
         [Commands.Enter] = handle_enter,
         [Commands.Leave] = handle_leave,
-        [Commands.Rename] = function(_)
-            handle_yazi_command("rename", args)
-        end,
-        [Commands.Remove] = function(_)
-            handle_yazi_command("remove", args)
-        end,
-        [Commands.Paste] = handle_paste,
+        [Commands.Rename] = function(_) handle_yazi_command("rename", args) end,
+        [Commands.Remove] = function(_) handle_yazi_command("remove", args) end,
+        [Commands.Create] = handle_create,
         [Commands.Shell] = handle_shell,
+        [Commands.Paste] = handle_paste,
+        [Commands.TabCreate] = handle_tab_create,
+        [Commands.TabSwitch] = handle_tab_switch,
         [Commands.Arrow] = handle_arrow,
         [Commands.ParentArrow] = handle_parent_arrow,
         [Commands.Editor] = handle_editor,
@@ -2396,18 +2972,13 @@ local function run_command_func(command, args, config)
     }
 
     -- Get the function for the command
+    ---@type CommandFunction|nil
     local command_func = command_table[command]
 
     -- If the function isn't found, notify the user and exit the function
     if not command_func then
-        return ya.notify(merge_tables(DEFAULT_NOTIFICATION_OPTIONS, {
-            content = "Unknown command: " .. command,
-            level = "error",
-        }))
+        return show_error("Unknown command: " .. command)
     end
-
-    -- Parse the arguments and set it to the args variable
-    args = parse_args(args)
 
     -- Otherwise, call the function for the command
     command_func(args, config, command_table)
@@ -2415,7 +2986,7 @@ end
 
 -- The setup function to setup the plugin
 ---@param _ any
----@param opts Configuration|nil
+---@param opts Configuration|nil The options given to the plugin
 ---@return nil
 local function setup(_, opts)
     --
@@ -2424,20 +2995,24 @@ local function setup(_, opts)
     initialise_plugin(opts)
 end
 
--- The function to be called to use the plugin
+-- Function to be called to use the plugin
 ---@param _ any
----@param args string[]
+---@param job { args: Arguments } The job object given by Yazi
 ---@return nil
-local function entry(_, args)
+local function entry(_, job)
     --
 
-    -- Gets the command passed to the plugin
-    local command = args[1]
+    -- Get the arguments to the plugin
+    ---@type Arguments
+    local args = parse_number_arguments(job.args)
+
+    -- Get the command passed to the plugin
+    local command = table.remove(args, 1)
 
     -- If the command isn't given, exit the function
     if not command then return end
 
-    -- Gets the configuration object
+    -- Get the configuration object
     local config = get_config()
 
     -- If the configuration hasn't been initialised yet,
@@ -2450,7 +3025,7 @@ local function entry(_, args)
 end
 
 -- Returns the table required for Yazi to run the plugin
----@return table { setup: function, entry: function }
+---@return { setup: fun(): nil, entry: fun(): nil }
 return {
     setup = setup,
     entry = entry,

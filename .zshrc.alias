@@ -1,7 +1,16 @@
 alias ff="find * -type f | fzf > selected"
+alias fe='nvim $(fzf)' # Quick file search and edit
+alias fh='history | fzf' # Search through command history
+alias fd='cd $(find * -type d | fzf)' # Change directory with interactive search
+alias fps='ps aux | fzf' # Search through running processes
+alias fv='fzf --preview "bat --style=numbers --color=always --line-range :500 {}"' # Quick preview of files (requires bat)
+alias gb='git branch | fzf | xargs git checkout' # Git-specific fuzzy commands
+alias gl='git log --oneline | fzf --preview "git show --color=always {1}"'
+alias fk='ps aux | fzf | awk "{print \$2}" | xargs kill -9' # Kill process interactively
+alias fcd='cd $(find . -type d | fzf)' # Search and cd into subdirectories
 
-alias ytvc='yt-dlp -P "$HOME/videos/" "$(xclip -selection c -o 2>/dev/null)"'
-alias ytmc='yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xclip -selection c -o 2>/dev/null)"'
+alias ytvc='yt-dlp --write-subs -P "$HOME/videos/" "$(xclip -selection c -o 2>/dev/null)"'
+alias ytmc='yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xclip -selection c -o 2>/dev/null)"'
 alias ytv='yt-dlp -P "$HOME/videos/" '
 alias ytm='yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/"'
 alias ll='eza --icons --color=auto -alh'

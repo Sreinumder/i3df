@@ -62,8 +62,8 @@ bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screensho
 bindsym $mod+period exec "wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"
 bindsym $mod+Shift+p move workspace to output right
 bindsym $mod+$alt+shift+s exec shutdown now
-bindsym $mod+y exec 'yt-dlp -P "$HOME/videos/" "$(xclip -selection c -o 2>/dev/null)"'
-bindsym $mod+$alt+y exec  'yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xclip -selection c -o 2>/dev/null)"'
+bindsym $mod+y exec 'yt-dlp --write-subs -P "$HOME/videos/" "$(xclip -selection c -o 2>/dev/null)"'
+bindsym $mod+$alt+y exec  'yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xclip -selection c -o 2>/dev/null)"'
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 

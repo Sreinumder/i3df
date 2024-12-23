@@ -1,8 +1,37 @@
-if not vim.g.vscode then
-	require("nvchad.mappings")
-end
 local map = vim.keymap.set
 local nomap = vim.keymap.del
+if not vim.g.vscode then
+	map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
+	map("n", "<tab>", function()
+		require("nvchad.tabufline").next()
+	end, { desc = "buffer goto next" })
+	map("n", "<S-tab>", function()
+		require("nvchad.tabufline").prev()
+	end, { desc = "buffer goto prev" })
+	map("n", "<leader>xb", function()
+		require("nvchad.tabufline").close_buffer()
+	end, { desc = "buffer close" })
+	map("n", "<leader>th", function()
+		require("nvchad.term").new({ pos = "sp" })
+	end, { desc = "terminal new horizontal term" })
+	map("n", "<leader>tv", function()
+		require("nvchad.term").new({ pos = "vsp" })
+	end, { desc = "terminal new vertical term" })
+
+	map("t", "<A-x>", "<cmd>close<CR>", { desc = "close terminal" })
+	map({ "n", "t" }, "<A-?>", function()
+		require("nvchad.term").toggle({ pos = "vsp", id = "vtoggleTerm" })
+	end, { desc = "terminal toggleable vertical term" })
+	map({ "n", "t" }, "<A-/>", function()
+		require("nvchad.term").toggle({ pos = "sp", id = "htoggleTerm" })
+	end, { desc = "terminal toggleable horizontal term" })
+	map({ "n", "t" }, "<A-f>", function()
+		require("nvchad.term").toggle({ pos = "float", id = "ftoggleTerm" })
+	end, { desc = "terminal toggleable float term" })
+	map({ "n", "t" }, "<A-g>", function()
+		require("nvchad.term").toggle({ pos = "float", cmd = "lazygit", id = "lazygit" })
+	end, { desc = "toggleable lazygit" })
+end
 
 -- clever j k
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
@@ -189,6 +218,8 @@ map("c", "<C-A-K>", "\\(.*\\)", { desc = "kirby " })
 map("i", "<A-c>", "<esc>ciw", { desc = "change except the selection" })
 map("i", "<A-n>", "<esc>2f,Bct,", { desc = "change next csv" })
 map("i", "<A-p>", "<esc>F,Bct, ", { desc = "change prev csv" }) --   this, is, good, binding,
+
+map("t", "<C-<ESC>", "<C-\\><C-n>", { desc = "exit in terminal mode" })
 
 -- Automatically indent with i and A made by ycino
 vim.keymap.set("n", "i", function()
