@@ -5,6 +5,6 @@ move-mode.nvim
     2 then press m or any other key to enter Move mode
     3 now you can move freely using hjkl webge or 0^g_$ and the selection will move with your cursor
 
-- moves selection
-- may be anti pattern
+- no selection
+- might be anti pattern
 
