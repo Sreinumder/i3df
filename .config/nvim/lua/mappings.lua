@@ -11,26 +11,6 @@ if not vim.g.vscode then
 	map("n", "<leader>xb", function()
 		require("nvchad.tabufline").close_buffer()
 	end, { desc = "buffer close" })
-	map("n", "<leader>th", function()
-		require("nvchad.term").new({ pos = "sp" })
-	end, { desc = "terminal new horizontal term" })
-	map("n", "<leader>tv", function()
-		require("nvchad.term").new({ pos = "vsp" })
-	end, { desc = "terminal new vertical term" })
-
-	map("t", "<A-x>", "<cmd>close<CR>", { desc = "close terminal" })
-	map({ "n", "t" }, "<A-?>", function()
-		require("nvchad.term").toggle({ pos = "vsp", id = "vtoggleTerm" })
-	end, { desc = "terminal toggleable vertical term" })
-	map({ "n", "t" }, "<A-/>", function()
-		require("nvchad.term").toggle({ pos = "sp", id = "htoggleTerm" })
-	end, { desc = "terminal toggleable horizontal term" })
-	map({ "n", "t" }, "<A-f>", function()
-		require("nvchad.term").toggle({ pos = "float", id = "ftoggleTerm" })
-	end, { desc = "terminal toggleable float term" })
-	map({ "n", "t" }, "<A-g>", function()
-		require("nvchad.term").toggle({ pos = "float", cmd = "lazygit", id = "lazygit" })
-	end, { desc = "toggleable lazygit" })
 end
 
 -- clever j k

@@ -54,13 +54,13 @@ local options = {
 
 	term = {
 		winopts = { number = false, relativenumber = false },
-		sizes = { sp = 0.3, vsp = 0.2, ["bo sp"] = 0.3, ["bo vsp"] = 0.2 },
+		sizes = { sp = 0.48, vsp = 0.2, ["bo sp"] = 0.3, ["bo vsp"] = 0.2 },
 		float = {
 			relative = "editor",
 			row = 0.0,
 			col = 0.0,
 			width = 1.0,
-			height = 1.0,
+			height = 0.8,
 			border = "single",
 		},
 	},
@@ -75,7 +75,7 @@ local options = {
 	mason = { pkgs = {}, skip = {} },
 
 	colorify = {
-		enabled = true,
+		enabled = false,
 		mode = "virtual", -- fg, bg, virtual
 		virt_text = "󱓻 ",
 		highlight = { hex = true, lspvars = true },

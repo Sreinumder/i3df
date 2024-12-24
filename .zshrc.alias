@@ -1,4 +1,13 @@
-alias ff="find * -type f | fzf > selected"
+alias fw=' rg --line-number --with-filename . --color=always --field-match-separator ' '\
+         | fzf --ansi --preview bat --color=always {1} --highlight-line {2}" \
+           --preview-window ~8,+{2}-5 "'
+# alias fw=' rg --line-number --with-filename . --color=always --field-match-separator ' '\
+#          | fzf --ansi --preview bat --color=always {1} --highlight-line {2}" \
+#            --preview-window ~8,+{2}-5 "'
+alias fal='rg --color=always "$1" ~/i3df/.zshrc.alias | fzf --ansi' # Quick preview of files (requires bat)
+alias fvv='fzf --preview "bat --style=numbers --color=always --line-range :500 {}" | nvim' # open in nvim
+alias ff='find * -type f | fzf > selected'
+alias ff='find * -type f | fzf > selected'
 alias fe='nvim $(fzf)' # Quick file search and edit
 alias fh='history | fzf' # Search through command history
 alias fd='cd $(find * -type d | fzf)' # Change directory with interactive search
@@ -9,18 +18,20 @@ alias gl='git log --oneline | fzf --preview "git show --color=always {1}"'
 alias fk='ps aux | fzf | awk "{print \$2}" | xargs kill -9' # Kill process interactively
 alias fcd='cd $(find . -type d | fzf)' # Search and cd into subdirectories
 
+alias fQ='yay -Q | fzf'
+
 alias ytvc='yt-dlp --write-subs -P "$HOME/videos/" "$(xclip -selection c -o 2>/dev/null)"'
 alias ytmc='yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xclip -selection c -o 2>/dev/null)"'
 alias ytv='yt-dlp -P "$HOME/videos/" '
 alias ytm='yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/"'
 alias ll='eza --icons --color=auto -alh'
-alias ls='eza --icons=always --color=auto -h'
+alias l='eza --icons --color=auto -h'
+alias tree='tree -a -I .git'
 alias od="ouch decompress"
 alias oc="ouch   compress"
 # alias So='source ~/.zshrc'
 alias So='exec zsh'
-alias fcr="kill `ps -A | grep fcitx5 | awk '{print $1}'` && ( fcitx5 & )"
-alias ls='ls --color=auto'
+alias fcr='kill `ps -A | grep fcitx5 | awk '{print $1}'` && ( fcitx5 & )'
 alias grep='grep --color=auto'
 
 alias cona='nvim ~/.zshrc.alias'
@@ -54,23 +65,39 @@ alias Sp='sudo pacman -S'
 alias ys='yay -S'
 alias lg='lazygit'
 alias gi3='cd ~/i3df/; lazygit;'
-alias setclip="xclip -selection c"
-alias getclip="xclip -selection c -o"
-alias sc="xclip -selection c"
-alias gc="xclip -selection c -o"
+alias setclip='xclip -selection c'
+alias getclip='xclip -selection c -o'
+alias sc='xclip -selection c'
+alias gc='xclip -selection c -o'
 alias retroarch='(retroarch &)'
-alias DR="pkill dunst; ( dunst & ); sleep 1; notify-send -u low "low"; notify-send -u normal "normal"; notify-send -u critical "critical";" 
+alias DR='pkill dunst; ( dunst & ); sleep 1; notify-send -u low 'low"; notify-send -u normal "normal"; notify-send -u critical "critical";" 
 # alias sudo='mpv ~/i3df/scripts/notify/bell.mp3; sudo'
 
-alias RB="cd ~/FUTSALA/; source env/bin/activate; uvicorn backend.main:app --reload"
-alias RF="cd ~/FUTSALA/frontend; npm run dev"
-alias RC="cd ~/FUTSALA; nvim ."
-alias hql="harlequin"
-alias xrr="xrandr --output HDMI-1 --right-of eDP-1"
-alias xr0="xrandr -s 0"
-alias xrm=" xrandr --setmonitor HDMI-1~1 768/205x683/230+1366+0 HDMI-1;
-xrandr --setmonitor HDMI-1~2 768/205x683/230+1366+683 none"
-alias xro="xrandr --output HDMI-1 --mode 1366x768 --pos 1366x0 --rotate right"
-alias xrd="xrandr --delmonitor HDMI-1~1; xrandr --delmonitor HDMI-1~2"
-alias xr="xrd; xrm"
+alias RB='cd ~/FUTSALA/; source env/bin/activate; uvicorn backend.main:app --reload'
+alias RF='cd ~/FUTSALA/frontend; npm run dev'
+alias RC='cd ~/FUTSALA; nvim .'
+alias hql='harlequin'
+alias xrr='xrandr --output HDMI-1 --right-of eDP-1'
+alias xr0='xrandr -s 0'
+alias xrm='xrandr --setmonitor HDMI-1~1 768/205x683/230+1366+0 HDMI-1;
+           xrandr --setmonitor HDMI-1~2 768/205x683/230+1366+683 none'
+alias xro='xrandr --output HDMI-1 --mode 1366x768 --pos 1366x0 --rotate right'
+alias xrd='xrandr --delmonitor HDMI-1~1; xrandr --delmonitor HDMI-1~2'
+alias xr='xrd; xrm'
+
+# rg
+  # --field-match-separator ' ' - tell rg to separate the filename and linenumber with
+  # spaces to play well with fzf, (when recognizing index variables to use in the fzf
+  # preview command, fzf uses a default delimiter of space, see below)
+
+# fzf
+  # --preview window ~8,+{1}-5
+  #   this is a fzf feature
+  #   ~8 - show first 8 lines (header)
+  #   +{2} - fzf delimits the input piped in to it and provides access via index variables {n}. 
+  #   the default delimiter fzf uses is space but can be specified via --delimiter <delimiter>
+  #   pass the second index variable from bat (which is the line number)
+  #   the number is signed, you can show eg the +n row or the -n row (the nth row from the bottom)
+  #   -5 subtract 5 rows (go up 5 rows) so that you don't show the highlighted line as the first line
+  #   since you want to provide context by showing the rows above the highlighted line
 
