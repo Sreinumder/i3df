@@ -55,7 +55,7 @@ config.keys = {
 			local panes = tab:panes_with_info()
 			if #panes == 1 then
 				pane:split({
-					direction = "Down",
+					direction = "Right",
 					size = 0.4,
 				})
 			elseif not panes[1].is_zoomed then
