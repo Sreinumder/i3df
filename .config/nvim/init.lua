@@ -26,6 +26,7 @@ else
 		{ import = "plugins.treesitter" },
 		{ import = "plugins.git+others" },
 		{ import = "plugins.tools" },
+		{ import = "plugins.my-plugins" },
 	}
 	require("lazy").setup(plugins, lazy_config)
 	dofile(vim.g.base46_cache .. "defaults")
