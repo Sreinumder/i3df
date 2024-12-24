@@ -10,10 +10,10 @@ config.font = wezterm.font_with_fallback({
 })
 -- config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, --disable ligature
 -- config.font = wezterm.font_with_fallback { 'Fira Code', }
-config.enable_kitty_graphics=true
-config.font_size = 10.0
+config.enable_kitty_graphics = true
+config.font_size = 11.0
 config.line_height = 1.0
-config.hide_tab_bar_if_only_one_tab = true
+-- config.hide_tab_bar_if_only_one_tab = true
 config.use_dead_keys = false
 config.use_ime = false
 config.window_background_opacity = 0.9
@@ -45,6 +45,40 @@ wezterm.on("trigger-nvim-with-scrollback", function(window, pane)
 	wezterm.sleep_ms(1000)
 	os.remove(name)
 end)
+config.keys = {
+	{ key = "E", mods = "CTRL", action = act.EmitEvent("trigger-nvim-with-scrollback") },
+	{
+		key = "/",
+		mods = "ALT",
+		action = wezterm.action_callback(function(_, pane)
+			local tab = pane:tab()
+			local panes = tab:panes_with_info()
+			if #panes == 1 then
+				pane:split({
+					direction = "Down",
+					size = 0.4,
+				})
+			elseif not panes[1].is_zoomed then
+				panes[1].pane:activate()
+				tab:set_zoomed(true)
+			elseif panes[1].is_zoomed then
+				tab:set_zoomed(false)
+				panes[2].pane:activate()
+			end
+		end),
+	},
+}
 
-config.keys = { { key = "E", mods = "CTRL", action = act.EmitEvent("trigger-nvim-with-scrollback"), } }
+local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+local smart_splits = wezterm.plugin.require("https://github.com/mrjones2014/smart-splits.nvim")
+smart_splits.apply_to_config(config, {
+	direction_keys = { "h", "j", "k", "l" },
+	modifiers = {
+		move = "CTRL", -- modifier to use for pane movement, e.g. CTRL+h to move left
+		resize = "META", -- modifier to use for pane resize, e.g. META+h to resize to the left
+	},
+	log_level = "info",
+})
+bar.apply_to_config(config)
+
 return config
