@@ -1,3 +1,4 @@
+-- opens a seperate buffer for editing like comments or markdown code
 return {
 	"monaqa/nvim-treesitter-clipping",
 	dependencies = {

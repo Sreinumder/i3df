@@ -105,8 +105,8 @@ map({ "v", "x" }, "<A-p>", "p")
 map({ "v", "x" }, "<A-P>", "P")
 
 -- paste, delete or (add/join empty line) below and above
-map("n", "<leader>p", "m`o<ESC>p``", { desc = "paste below current line(jump)" })
-map("n", "<leader>P", "m`O<ESC>p``", { desc = "paste above current line(jump)" })
+map("n", "<leader>p", "m`o<ESC>p==``", { desc = "paste below current line(jump)" })
+map("n", "<leader>P", "m`O<ESC>p==``", { desc = "paste above current line(jump)" })
 map("n", "<A-a>", "printf('m`%so<ESC>``', v:count1)", { expr = true, desc = "insert line below" })
 map("n", "<A-i>", "printf('m`%sO<ESC>``', v:count1)", { expr = true, desc = "insert line above" })
 map("x", "<A-a>", "<esc>o<esc>gv", { desc = "insert line below" })
@@ -129,10 +129,10 @@ map("x", "<A-J>", '"cy"cPgv', { desc = "clone selection Down" })
 map("x", "<A-K>", '"cy"cgpgv', { desc = "clone selection Up" })
 
 -- move/clone selection to new line above or below
-map("x", "<leader><A-j>", '"bdo<esc>"bp^vg_', { desc = "move selection Down(v) to new line" })
-map("x", "<leader><A-k>", '"bdO<esc>"bp^vg_', { desc = "move selection Up(v) to new line" })
-map("x", "<leader><A-J>", '"byo<esc>"bp^vg_', { desc = "clone selection Down(v) to new line" })
-map("x", "<leader><A-K>", '"byO<esc>"bp^vg_', { desc = "clone selection Up(v) to new line" })
+map("x", "<leader><A-j>", '"bdo<esc>"bp==^vg_', { desc = "move selection Down(v) to new line" })
+map("x", "<leader><A-k>", '"bdO<esc>"bp==^vg_', { desc = "move selection Up(v) to new line" })
+map("x", "<leader><A-J>", '"byo<esc>"bp==^vg_', { desc = "clone selection Down(v) to new line" })
+map("x", "<leader><A-K>", '"byO<esc>"bp==^vg_', { desc = "clone selection Up(v) to new line" })
 
 -- move selection with vi motion of web(ge)/WEB(GE)/HML/gg/G
 map("n", "<A-v>", "vlh", { desc = "vi single char under cursor" })
