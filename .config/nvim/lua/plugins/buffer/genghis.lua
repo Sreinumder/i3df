@@ -60,7 +60,7 @@ return {
 			{ desc = "createNewFile" },
 		},
 		{
-			"<leader>ey",
+			"<leader>gm",
 			function()
 				require("genghis").duplicateFile()
 			end,
