@@ -45,6 +45,8 @@ wezterm.on("trigger-nvim-with-scrollback", function(window, pane)
 	wezterm.sleep_ms(1000)
 	os.remove(name)
 end)
+
+config.disable_default_key_bindings = false
 config.keys = {
 	{ key = "E", mods = "CTRL", action = act.EmitEvent("trigger-nvim-with-scrollback") },
 	{
@@ -55,26 +57,7 @@ config.keys = {
 			local panes = tab:panes_with_info()
 			if #panes == 1 then
 				pane:split({
-					direction = "Bottom",
-					size = 0.3,
-				})
-			elseif not panes[1].is_zoomed then
-				panes[1].pane:activate()
-				tab:set_zoomed(true)
-			elseif panes[1].is_zoomed then
-				tab:set_zoomed(false)
-				panes[2].pane:activate()
-			end
-		end),
-	},
-	{
-		key = "/",
-		mods = "SHIFT|ALT",
-		action = wezterm.action_callback(function(_, pane)
-			local tab = pane:tab()
-			local panes = tab:panes_with_info()
-			if #panes == 1 then
-				pane:split({
+					-- direction = "Bottom",
 					direction = "Right",
 					size = 0.5,
 				})
@@ -87,19 +70,94 @@ config.keys = {
 			end
 		end),
 	},
+	{ key = "=", mods = "CTRL", action = wezterm.action.IncreaseFontSize },
+	{ key = "-", mods = "CTRL", action = wezterm.action.DecreaseFontSize },
+	{
+		key = "Tab",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.DisableDefaultAssignment,
+	},
+	{
+		key = "Tab",
+		mods = "CTRL",
+		action = wezterm.action.DisableDefaultAssignment,
+	},
+	{ key = "Tab", mods = "ALT|SHIFT", action = act.ActivateTabRelative(-1) },
+	{ key = "Tab", mods = "ALT", action = act.ActivateTabRelative(1) },
+	{ key = "Q", mods = "ALT|SHIFT", action = wezterm.action.CloseCurrentTab({ confirm = true }) },
+	{ key = "W", mods = "ALT|SHIFT", action = wezterm.action.CloseCurrentPane({ confirm = true }) },
+	{ key = "V", mods = "SHIFT|ALT", action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "S", mods = "SHIFT|ALT", action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }) },
+	{
+		key = "%",
+		mods = "CTRL|SHIFT|ALT",
+		action = wezterm.action.SplitPane({
+			direction = "Right",
+			command = { args = { "lazygit" } },
+			size = { Percent = 50 },
+		}),
+	},
+	{
+		key = "t",
+		mods = "SHIFT|ALT",
+		action = act.SpawnTab("CurrentPaneDomain"),
+	},
 }
+for i = 1, 8 do -- CTRL+ALT + number to activate that tab
+	table.insert(config.keys, {
+		key = tostring(i),
+		mods = "ALT",
+		action = act.ActivateTab(i - 1),
+	})
+	table.insert(config.keys, {
+		key = tostring(i),
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.DisableDefaultAssignment,
+	})
+	-- F1 through F8 to activate that tab
+	table.insert(config.keys, {
+		key = "F" .. tostring(i),
+		action = act.ActivateTab(i - 1),
+	})
+end
 -- local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
 -- bar.apply_to_config(config)
+
 wezterm.plugin.require("https://github.com/yriveiro/wezterm-tabs").apply_to_config(config)
-
-config.disable_default_key_bindings = false
-
-local modal = wezterm.plugin.require("https://github.com/MLFlexer/modal.wezterm")
-modal.apply_to_config(config)
+config.colors = {
+	tab_bar = {
+		background = "#181f22",
+		active_tab = {
+			bg_color = "#262d30",
+			fg_color = "#eeeeee",
+			intensity = "Bold",
+			underline = "None",
+			italic = true,
+			strikethrough = false,
+		},
+		inactive_tab = {
+			bg_color = "#181f22",
+			fg_color = "#eeeeee",
+		},
+		inactive_tab_hover = {
+			bg_color = "#3b3052",
+			fg_color = "#eeeeee",
+			italic = false,
+		},
+		new_tab = {
+			bg_color = "#181f22",
+			fg_color = "#eeeeee",
+		},
+		new_tab_hover = {
+			bg_color = "#282f32",
+			fg_color = "#eeeeee",
+			italic = false,
+		},
+	},
+}
 
 local smart_splits = wezterm.plugin.require("https://github.com/mrjones2014/smart-splits.nvim")
 smart_splits.apply_to_config(config, {
-	-- direction_keys = { "LeftArrow", "DownArrow", "UpArrow", "RightArrow" },
 	direction_keys = { "h", "j", "k", "l" },
 	modifiers = {
 		move = "CTRL", -- modifier to use for pane movement, e.g. CTRL+h to move left
@@ -107,5 +165,9 @@ smart_splits.apply_to_config(config, {
 	},
 	log_level = "info",
 })
+
+-- local battery = wezterm.plugin.require("https://github.com/rootiest/battery.wez")
+-- battery.invert = true -- Optionally invert the color brightness
+-- battery.apply_to_config(config) -- Optionally apply the necessary config settings
 
 return config
