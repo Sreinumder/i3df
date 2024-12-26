@@ -197,12 +197,12 @@ vim.keymap.set("n", "A", function()
 end, { expr = true, silent = true })
 
 -- easier access for 67890:
-map({ "n", "v", "o", "i" }, "<A-`>", "5")
-map({ "n", "v", "o", "i" }, "<A-1>", "6")
-map({ "n", "v", "o", "i" }, "<A-2>", "7")
-map({ "n", "v", "o", "i" }, "<A-3>", "8")
-map({ "n", "v", "o", "i" }, "<A-4>", "9")
-map({ "n", "v", "o", "i" }, "<A-;>", "0")
+-- map({ "n", "v", "o", "i" }, "<A-`>", "5")
+-- map({ "n", "v", "o", "i" }, "<A-1>", "6")
+-- map({ "n", "v", "o", "i" }, "<A-2>", "7")
+-- map({ "n", "v", "o", "i" }, "<A-3>", "8")
+-- map({ "n", "v", "o", "i" }, "<A-4>", "9")
+-- map({ "n", "v", "o", "i" }, "<A-;>", "0")
 
 -- toggle options
 map("n", "<leader>,nn", ":set number!<CR>", { desc = "Toggle number" })
@@ -218,3 +218,7 @@ map("n", "<leader>,ct", function()
 		vim.cmd(":set bg=dark")
 	end
 end, { desc = "Toggle colorscheme bg" })
+
+-- look for changes
+vim.cmd([[command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis]])
+map("n", "<leader>do", ":DiffOrig<CR>", { desc = "diff with orig" })
