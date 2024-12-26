@@ -61,15 +61,17 @@ return {
 			end,
 			{ desc = "Remove workspace folder" },
 		},
-		-- {
-		-- 	mode = { "n", "x" },
-		-- 	"<leader>ca",
-		-- 	function()
-		-- 		vim.lsp.buf.code_action()
-		-- 	end,
-		-- 	{ desc = "Code action" },
-		-- },
-		-- map("n", "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,{ desc= "List workspace folders"})
+		{
+			mode = { "n", "x" },
+			"<leader>ca",
+			function()
+				vim.lsp.buf.code_action()
+			end,
+			{ desc = "Code action" },
+		},
+		-- {"<leader>wl", function()
+		-- 	print(vim.inspect(vim.lsp.buf.list|workspace_folders()))
+		-- end, { desc = "List workspace folders" }},
 	},
 	dependencies = { "saghen/blink.cmp" },
 	opts = {

@@ -1,11 +1,6 @@
+-- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/plugins/blink-cmp.lua
 return {
 	"saghen/blink.cmp",
-	event = "InsertEnter",
-	version = "*",
-	opts = {
-		sources = {
-			default = { "lsp", "path", "snippets", "buffer" },
-			cmdline = {},
-		},
-	},
+	enabled = true,
+	dependencies = { "L3MON4D3/LuaSnip" },
 }
