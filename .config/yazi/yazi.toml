@@ -5,7 +5,7 @@ prepend_previewers = [
 { mime = "audio/*",   run = "exifaudio"},
 { mime = "video/*", run = "mediainfo"},
 # { mime = "application/x-subrip", run = "mediainfo"},
-# { name = "*/", run = "eza-preview" },
+{ name = "*/", run = "eza-preview" },
 # { name = "*.zip", run = "ouch" },
 { mime = "application/zip",            run = "ouch" },
 { mime = "application/x-tar",           run = "ouch" },
