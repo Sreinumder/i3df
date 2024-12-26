@@ -19,16 +19,6 @@ map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, 
 map({ "n", "x" }, "gj", "j", { desc = "next line" })
 map({ "n", "x" }, "gk", "k", { desc = "prev line" })
 
--- Resize window using <ctrl> arrow keys
-map("n", "<C-Up>", "<cmd>resize   +2<cr>", { desc = "Increase Window    Height" })
-map("n", "<C-Down>", "<cmd>resize   -2<cr>", { desc = "Decrease Window    Height" })
-map("n", "<C-Left>", "<cmd>vertical resize   -2<cr>", { desc = "Decrease Window  Width" })
-map("n", "<C-Right>", "<cmd>vertical resize   +2<cr>", { desc = "Increase Window  Width" })
--- map("n", "<Up>", "<C-W>k", { desc = "Window up" })
--- map("n", "<Down>", "<C-W>j", { desc = "Window down" })
--- map("n", "<Left>", "<C-W>h", { desc = "Window left" })
--- map("n", "<Right>", "<C-W>l", { desc = "Window right" })
-
 --and HML to start mid end of line <A-HML> to high middle low part of screen
 map("n", "<leader>w", "<C-w>", { desc = "window control" }) -- split window vertically
 map({ "n", "x" }, "<leader>r", '"', { desc = "register select" }) -- <leader>ra for a register
@@ -118,21 +108,18 @@ map("x", "<A-m>", "<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^vg_", { desc = "inser
 map("n", "<A-n>", "JkJ", { desc = "join with prev and next line" })
 map("x", "<A-n>", ":j<cr>^mgk$JJgv", { desc = "join with prev and next line" })
 
--- comment and clone sentence
--- map("n", "<A-y>", 'gcc', { desc = "clone line Down(n)" })
-
 -- simple editing hacks
 -- clone sentences up and down
-map("n", "<A-J>", 'V"cy"cPgv<Esc>', { desc = "clone line Down" })
-map("n", "<A-K>", 'V"cy"cgpgv<Esc>', { desc = "clone line Up" })
-map("x", "<A-J>", '"cy"cPgv', { desc = "clone selection Down" })
-map("x", "<A-K>", '"cy"cgpgv', { desc = "clone selection Up" })
+map("n", "<A-J>", 'V"cy"cP==gv<Esc>', { desc = "clone line Down" })
+map("n", "<A-K>", 'V"cy"cgp==gv<Esc>', { desc = "clone line Up" })
+map("x", "<A-J>", '"cy"cP==gv', { desc = "clone selection Down" })
+map("x", "<A-K>", '"cy"cgp==gv', { desc = "clone selection Up" })
 
 -- move/clone selection to new line above or below
-map("x", "<leader><A-j>", '"bdo<esc>"bp==^vg_', { desc = "move selection Down(v) to new line" })
-map("x", "<leader><A-k>", '"bdO<esc>"bp==^vg_', { desc = "move selection Up(v) to new line" })
-map("x", "<leader><A-J>", '"byo<esc>"bp==^vg_', { desc = "clone selection Down(v) to new line" })
-map("x", "<leader><A-K>", '"byO<esc>"bp==^vg_', { desc = "clone selection Up(v) to new line" })
+map("x", "<leader><A-j>", '"bdo<esc>"bp==', { desc = "move selection Down(v) to new line" })
+map("x", "<leader><A-k>", '"bdO<esc>"bp==', { desc = "move selection Up(v) to new line" })
+map("x", "<leader><A-J>", '"byo<esc>"bp==', { desc = "clone selection Down(v) to new line" })
+map("x", "<leader><A-K>", '"byO<esc>"bp==', { desc = "clone selection Up(v) to new line" })
 
 -- move selection with vi motion of web(ge)/WEB(GE)/HML/gg/G
 map("n", "<A-v>", "vlh", { desc = "vi single char under cursor" })

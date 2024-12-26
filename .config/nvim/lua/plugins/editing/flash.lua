@@ -8,7 +8,7 @@ return {
 				autohide = true,
 				jump_labels = true,
 				multi_line = true,
-				label = { exclude = "hjkliardc" },
+				label = { exclude = "hjkliardcysp" },
 				keys = { "f", "t", "F", "T", ";", "," },
 				search = { wrap = false },
 				highlight = { backdrop = false },

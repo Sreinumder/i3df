@@ -55,8 +55,28 @@ config.keys = {
 			local panes = tab:panes_with_info()
 			if #panes == 1 then
 				pane:split({
+					direction = "Bottom",
+					size = 0.3,
+				})
+			elseif not panes[1].is_zoomed then
+				panes[1].pane:activate()
+				tab:set_zoomed(true)
+			elseif panes[1].is_zoomed then
+				tab:set_zoomed(false)
+				panes[2].pane:activate()
+			end
+		end),
+	},
+	{
+		key = "/",
+		mods = "SHIFT|ALT",
+		action = wezterm.action_callback(function(_, pane)
+			local tab = pane:tab()
+			local panes = tab:panes_with_info()
+			if #panes == 1 then
+				pane:split({
 					direction = "Right",
-					size = 0.4,
+					size = 0.5,
 				})
 			elseif not panes[1].is_zoomed then
 				panes[1].pane:activate()
@@ -68,17 +88,24 @@ config.keys = {
 		end),
 	},
 }
+-- local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+-- bar.apply_to_config(config)
+wezterm.plugin.require("https://github.com/yriveiro/wezterm-tabs").apply_to_config(config)
 
-local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+config.disable_default_key_bindings = false
+
+local modal = wezterm.plugin.require("https://github.com/MLFlexer/modal.wezterm")
+modal.apply_to_config(config)
+
 local smart_splits = wezterm.plugin.require("https://github.com/mrjones2014/smart-splits.nvim")
 smart_splits.apply_to_config(config, {
+	-- direction_keys = { "LeftArrow", "DownArrow", "UpArrow", "RightArrow" },
 	direction_keys = { "h", "j", "k", "l" },
 	modifiers = {
 		move = "CTRL", -- modifier to use for pane movement, e.g. CTRL+h to move left
-		resize = "META", -- modifier to use for pane resize, e.g. META+h to resize to the left
+		resize = "CTRL|SHIFT", -- modifier to use for pane resize, e.g. META+h to resize to the left
 	},
 	log_level = "info",
 })
-bar.apply_to_config(config)
 
 return config
