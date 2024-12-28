@@ -46,7 +46,8 @@ map("n", "<C-u>", "<C-u>zz", { desc = "Half page up" })
 map("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })
 map("x", "<", "<gv")
 map("x", ">", ">gv") -- Continuous visual shifting (does not exit Visual mode), `gv` means
-map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
+map("n", "gV", "`[v`]", { desc = "true" }) -- Reselect last paste
+-- map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
 -- map("n", "vih", "^vg_", { desc = "true" })
 -- map("n", "yih", "^yg_", { desc = "true" })
 map({ "o", "x" }, "i<space>", "iW") -- select WORD by i<space>

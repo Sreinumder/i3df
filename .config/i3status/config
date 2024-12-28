@@ -11,7 +11,7 @@ general {
 order += "wireless wlan0"
 # order += "ethernet eno16777736"
 order += "battery 0"
-order += "cpu_usage"
+# order += "cpu_usage"
 order += "volume master"
 order += "tztime localdate"
 order += "tztime localtime"
@@ -51,7 +51,7 @@ ethernet eno16777736 {
 }
 
 battery 0 {
-        format = "%status %percentage %remaining %emptytime"
+        format = "%status %percentage "
         format_down = "空"
         status_chr = "増"
         status_bat = "減"
@@ -62,8 +62,8 @@ battery 0 {
 }
 
 volume master {
-  format = "%volume "
-    format_muted = "  %volume "
+  format = "音%volume"
+    format_muted = "静%volume"
     device = "default"
     mixer = "Master"
     mixer_idx = 0

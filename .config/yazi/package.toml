@@ -1,18 +1,22 @@
 [plugin]
 deps = [
-  { use = "dedukun/relative-motions", rev = "df97039" },
-  { use = "dawsers/toggle-view", rev = "9ae57f9" },
-  { use = "hankertrix/augment-command", rev = "ddd9452" },
-  { use = "dedukun/bookmarks", rev = "35da107" },
-  { use = "Reledia/glow", rev = "c2ed51e" },
-  { use = "Sonico98/exifaudio", rev = "d794614" },
-  { use = "GrzegorzKozub/mdcat", rev = "d3d5089" },
-  { use = "Ape/mediainfo", rev = "df17c4f" },
-  { use = "yazi-rs/plugins:git", rev = "71c4fc2" },
-  { use = "yazi-rs/plugins:chmod", rev = "71c4fc2" },
-  { use = "imsi32/yatline", rev = "600ed1f" },
-  { use = "Lil-Dank/lazygit", rev = "c82794f" }
+{ use = "dedukun/relative-motions", rev = "df97039" },
+{ use = "dawsers/toggle-view", rev = "9ae57f9" },
+{ use = "hankertrix/augment-command", rev = "f0f2687" },
+{ use = "dedukun/bookmarks", rev = "35da107" },
+{ use = "Reledia/glow", rev = "c2ed51e" },
+{ use = "Sonico98/exifaudio", rev = "d794614" },
+{ use = "GrzegorzKozub/mdcat", rev = "d3d5089" },
+{ use = "Ape/mediainfo", rev = "df17c4f" },
+{ use = "yazi-rs/plugins:chmod", rev = "71c4fc2" },
+{ use = "imsi32/yatline", rev = "600ed1f" },
+{ use = "Lil-Dank/lazygit", rev = "c82794f" },
+{ use = "ahkohd/eza-preview", rev = "5ef05bc" },
+{ use = "boydaihungst/file-extra-metadata", rev = "fdea1c6" },
+{ use = "AnirudhG07/plugins-yazi:copy-file-contents", rev = "11167e1" },
+{ use = "boydaihungst/restore", rev = "ffc209e" },
 ]
+
 
 [flavor]
 deps = []

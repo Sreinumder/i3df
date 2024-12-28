@@ -4,18 +4,10 @@ return {
 	opts = {
 		modes = {
 			char = {
-				enable = true,
+				enable = false,
 				autohide = true,
-				jump_labels = true,
-				multi_line = true,
-				label = { exclude = "hjkliardcysp" },
-				keys = { "f", "t", "F", "T", ";", "," },
-				search = { wrap = false },
+				jump_labels = false,
 				highlight = { backdrop = false },
-				jump = {
-					register = false,
-					autojump = true,
-				},
 			},
 		},
 	},

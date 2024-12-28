@@ -6,15 +6,6 @@
 -- The type for the arguments
 ---@alias Arguments table<string|number, string|number|boolean>
 
--- The type for the input event
---
--- The event for the input function can be one of 3 values:
---     0: Unknown error
---     1: The user has confirmed the input
---     2: The user has cancelled the input
---     3: The user has changed the input (only if realtime is true)
----@alias InputEvent integer
-
 -- The type for the function to handle a command
 --
 -- Description of the function parameters:
@@ -54,9 +45,7 @@
 ---@field must_have_hovered_item boolean Whether to stop when no item is hovered
 ---@field skip_single_subdirectory_on_enter boolean Skip single subdir on enter
 ---@field skip_single_subdirectory_on_leave boolean Skip single subdir on leave
----@field ignore_hidden_items boolean Whether to ignore hidden items
 ---@field wraparound_file_navigation boolean Have wraparound navigation or not
----@field sort_directories_first boolean Informs the plugin if dirs are first
 
 -- The additional data passed to the function to initialise the configuration
 ---@class (exact) AdditionalData
@@ -68,28 +57,6 @@
 -- The type for the state
 ---@class (exact) State
 ---@field config Configuration
-
--- The type for the Command output
----@class (exact) CommandOutput
----@field stdout string
----@field stderr string
----@field status { success: boolean, code: number }
-
---- The type for the Url object
----@class (exact) Url
----@field frag string
----@field is_regular boolean
----@field is_search boolean
----@field is_archive boolean
----@field is_absolute boolean
----@field has_root boolean
----@field name fun(self): string|nil
----@field stem fun(self): string|nil
----@field join fun(self, url: Url|string): Url
----@field parent fun(self): Url|nil
----@field starts_with fun(self, url: Url|string): boolean
----@field ends_with fun(self, url: Url|string): boolean
----@field strip_prefix fun(self, url: Url|string): boolean
 
 -- The type for the extraction results
 ---@class (exact) ExtractionResult
@@ -154,37 +121,38 @@ local DEFAULT_CONFIG = {
     must_have_hovered_item = true,
     skip_single_subdirectory_on_enter = true,
     skip_single_subdirectory_on_leave = true,
-    ignore_hidden_items = false,
     wraparound_file_navigation = false,
-    sort_directories_first = true,
-}
-
--- The default notification options for this plugin
----@class (exact) NotificationOptions
----@field title string
----@field timeout number
----@field content string
----@field level "info" | "warn" | "error"
-local DEFAULT_NOTIFICATION_OPTIONS = {
-    title = "Augment Command Plugin",
-    timeout = 5,
 }
 
 -- The default input options for this plugin
----@class (exact) InputOptions
----@field position { x: number, y: number, w: number, h: number }
----@field title string
 local DEFAULT_INPUT_OPTIONS = {
     position = { "top-center", x = 0, y = 2, w = 50, h = 3 },
 }
 
 -- The default confirm options for this plugin
----@class (exact) ConfirmOptions
----@field pos { x: number, y: number, w: number, h: number }
----@field title string
----@field content string
 local DEFAULT_CONFIRM_OPTIONS = {
     pos = { "center", x = 0, y = 0, w = 50, h = 15 },
+}
+
+-- The default notification options for this plugin
+local DEFAULT_NOTIFICATION_OPTIONS = {
+    title = "Augment Command Plugin",
+    timeout = 5,
+}
+
+-- The tab configuration keys.
+-- The values are just dummy values
+-- so that I don't have to maintain two
+-- different types for the same thing.
+---@type tab.Config
+local TAB_CONFIG_KEYS = {
+    sort_by = "alphabetical",
+    sort_sensitive = false,
+    sort_reverse = false,
+    sort_dir_first = true,
+    sort_translit = false,
+    linemode = "none",
+    show_hidden = false,
 }
 
 -- The table of input options for the prompt
@@ -195,17 +163,17 @@ local INPUT_OPTIONS_TABLE = {
     [ItemGroup.None] = "(h/s)",
 }
 
--- The list of archive mime types
----@type string[]
+-- The table of archive mime types
+---@type table<string, boolean>
 local ARCHIVE_MIME_TYPES = {
-    "application/zip",
-    "application/gzip",
-    "application/tar",
-    "application/bzip",
-    "application/bzip2",
-    "application/7z-compressed",
-    "application/rar",
-    "application/xz",
+    ["application/zip"] = true,
+    ["application/gzip"] = true,
+    ["application/tar"] = true,
+    ["application/bzip"] = true,
+    ["application/bzip2"] = true,
+    ["application/7z-compressed"] = true,
+    ["application/rar"] = true,
+    ["application/xz"] = true,
 
     -- Bug in file(1) that classifies
     -- some zip archives as a data stream,
@@ -213,33 +181,32 @@ local ARCHIVE_MIME_TYPES = {
     --
     -- Link to bug report:
     -- https://bugs.astron.com/view.php?id=571
-    "application/octet-stream",
+    ["application/octet-stream"] = true,
 }
 
 -- The list of archive file extensions
----@type string[]
+---@type table<string, boolean>
 local ARCHIVE_FILE_EXTENSIONS = {
-    "7z",
-    "boz",
-    "bz",
-    "bz2",
-    "bzip2",
-    "cb7",
-    "cbr",
-    "cbz",
-    "cbt",
-    "cbz",
-    "gz",
-    "gzip",
-    "rar",
-    "s7z",
-    "tar",
-    "tbz",
-    "tbz2",
-    "tgz",
-    "txz",
-    "xz",
-    "zip",
+    ["7z"] = true,
+    boz = true,
+    bz = true,
+    bz2 = true,
+    bzip2 = true,
+    cb7 = true,
+    cbr = true,
+    cbt = true,
+    cbz = true,
+    gz = true,
+    gzip = true,
+    rar = true,
+    s7z = true,
+    tar = true,
+    tbz = true,
+    tbz2 = true,
+    tgz = true,
+    txz = true,
+    xz = true,
+    zip = true,
 }
 
 -- The list of mime type prefixes to remove
@@ -329,26 +296,6 @@ local function merge_tables(...)
     return new_table
 end
 
--- Function to check if a list contains a given value
----@param list any[] The list to check
----@param value any The value to check for
----@return boolean value_is_in_list Whether the value is in the list
-local function list_contains(list, value)
-    --
-
-    -- Iterate over all of the items in the list
-    for _, item in ipairs(list) do
-        --
-
-        -- If the item is equal to the given value,
-        -- then return true
-        if item == value then return true end
-    end
-
-    -- Otherwise, return false if the item isn't in the list
-    return false
-end
-
 -- Function to split a string into a list
 ---@param given_string string The string to split
 ---@param separator string The character to split the string by
@@ -385,9 +332,16 @@ local function string_trim(string)
     return string:match("^%s*(.-)%s*$")
 end
 
+-- Function to get a value from a table
+-- and return the default value if the key doesn't exist
+---@param table table The table to get the value from
+---@param key string|number The key to get the value from
+---@param default any The default value to return if the key doesn't exist
+local function table_get(table, key, default) return table[key] or default end
+
 -- Function to pop a key from a table
 ---@param table table The table to pop from
----@param key string The key to pop
+---@param key string|number The key to pop
 ---@param default any The default value to return if the key doesn't exist
 ---@return any value The value of the key or the default value
 local function table_pop(table, key, default)
@@ -464,8 +418,8 @@ end
 -- Function to get the user's confirmation
 -- TODO: Remove the `ya.input` version once `ya.confirm` is stable
 ---@param prompt string The prompt to show to the user
----@param title string The title of the confirmation prompt
----@param content string The content of the confirmation prompt
+---@param title string|ui.Line The title of the confirmation prompt
+---@param content string|ui.Text The content of the confirmation prompt
 ---@return boolean confirmation Whether the user has confirmed or not
 local function get_user_confirmation(prompt, title, content)
     --
@@ -700,7 +654,8 @@ local function is_archive_mime_type(mime_type)
     local standardised_mime_type = standardise_mime_type(mime_type)
 
     -- Get if the mime type is an archive
-    local is_archive = list_contains(ARCHIVE_MIME_TYPES, standardised_mime_type)
+    local is_archive =
+        table_get(ARCHIVE_MIME_TYPES, standardised_mime_type, false)
 
     -- Return if the mime type is an archive
     return is_archive
@@ -723,7 +678,7 @@ local function is_archive_file_extension(file_extension)
     file_extension = string_trim(file_extension)
 
     -- Get if the file extension is an archive
-    local is_archive = list_contains(ARCHIVE_FILE_EXTENSIONS, file_extension)
+    local is_archive = table_get(ARCHIVE_FILE_EXTENSIONS, file_extension, false)
 
     -- Return if the file extension is an archive file extension
     return is_archive
@@ -828,6 +783,27 @@ local get_paths_of_selected_items = ya.sync(function(_, quote)
 
     -- Return the list of paths of the selected items
     return paths_of_selected_items
+end)
+
+-- Function to get the tab configuration
+---@type fun(_): tab.Config
+local get_tab_config = ya.sync(function(_)
+    --
+
+    -- Create the table to store the tab configuration
+    local tab_config = {}
+
+    -- Iterate over the tab configuration keys
+    for key, _ in pairs(TAB_CONFIG_KEYS) do
+        --
+
+        -- Set the key in the table to the value
+        -- from the state
+        tab_config[key] = cx.active.pref[key]
+    end
+
+    -- Return the tab configuration
+    return tab_config
 end)
 
 -- Function to get if Yazi is loading
@@ -968,12 +944,12 @@ end
 
 -- Function to get all the items in the given directory
 ---@param directory_url Url The url to the directory
----@param ignore_hidden_items boolean Whether to ignore hidden items
+---@param get_hidden_items boolean Whether to get hidden items
 ---@param directories_only boolean|nil Whether to only get directories
 ---@return Url[] directory_items The list of urls to the directory items
 local function get_directory_items(
     directory_url,
-    ignore_hidden_items,
+    get_hidden_items,
     directories_only
 )
     --
@@ -992,10 +968,10 @@ local function get_directory_items(
     for _, item in ipairs(directory_contents) do
         --
 
-        -- If the ignore hidden items flag is passed
+        -- If the get hidden items flag is set to false
         -- and the item is a hidden item,
         -- then continue the loop
-        if ignore_hidden_items and item.cha.is_hidden then goto continue end
+        if not get_hidden_items and item.cha.is_hidden then goto continue end
 
         -- If the directories only flag is passed
         -- and the item is not a directory,
@@ -1014,14 +990,16 @@ local function get_directory_items(
 end
 
 -- Function to skip child directories with only one directory
----@param config Configuration The configuration object
 ---@param initial_directory_url Url The url of the initial directory
 ---@return nil
-local function skip_single_child_directories(config, initial_directory_url)
+local function skip_single_child_directories(initial_directory_url)
     --
 
     -- Initialise the directory variable to the initial directory given
     local directory = initial_directory_url
+
+    -- Get the tab configuration
+    local tab_config = get_tab_config()
 
     -- Start an infinite loop
     while true do
@@ -1029,7 +1007,7 @@ local function skip_single_child_directories(config, initial_directory_url)
 
         -- Get all the items in the current directory
         local directory_items =
-            get_directory_items(directory, config.ignore_hidden_items)
+            get_directory_items(directory, tab_config.show_hidden)
 
         -- If the number of directory items is not 1,
         -- then break out of the loop.
@@ -1042,6 +1020,10 @@ local function skip_single_child_directories(config, initial_directory_url)
         -- Get the cha object of the directory item
         -- and don't follow symbolic links
         local directory_item_cha = fs.cha(directory_item_url, false)
+
+        -- If the cha object of the directory item is nil
+        -- then break the loop
+        if not directory_item_cha then break end
 
         -- If the directory item is not a directory,
         -- break the loop
@@ -1122,7 +1104,7 @@ local function retry_extractor(
         local output, err = extractor_function(password, config)
 
         -- If there is no output
-        -- then return false, the error code as a string,
+        -- then return false, the error as a string,
         -- nil for the output, and nil for the password
         if not output then return false, tostring(err), nil, nil end
 
@@ -1628,19 +1610,35 @@ local function move_extracted_items_to_archive_parent_directory(
         -- Set the only one item in archive variable to true
         only_one_item_in_archive = true
 
+        -- Get the name of the first extracted item
+        local first_extracted_item_name = first_extracted_item_url:name()
+
+        -- If the first extracted item name is nil,
+        -- then clean up the temporary directory
+        -- and exit the function
+        if not first_extracted_item_name then
+            return clean_up_temporary_directory(
+                temporary_directory_url,
+                "dir_all",
+                move_successful,
+                "Failed to get a name for the extracted item.",
+                extracted_items_path
+            )
+        end
+
         -- Set the target url to the parent directory of the archive
         -- joined with the file name of the extracted item
-        target_url = parent_directory_url:join(first_extracted_item_url:name())
+        target_url = parent_directory_url:join(first_extracted_item_name)
     end
 
     -- Get a unique name for the target url
-    target_url = fs.unique_name(target_url)
+    local unique_target_url = fs.unique_name(target_url)
 
-    -- If the target url is nil somehow,
+    -- If the unique target url is nil somehow,
     -- clean up the temporary directory and
     -- return the move successful variable,
     -- the error message and the extracted item path
-    if not target_url then
+    if not unique_target_url then
         return clean_up_temporary_directory(
             temporary_directory_url,
             "dir_all",
@@ -1649,6 +1647,9 @@ local function move_extracted_items_to_archive_parent_directory(
             extracted_items_path
         )
     end
+
+    -- Otherwise, set the target url to the unique target url
+    target_url = unique_target_url
 
     -- Set the extracted items path to the target path
     extracted_items_path = tostring(target_url)
@@ -2048,7 +2049,7 @@ local function handle_open(args, config, command_table)
 
     -- Calls the function to skip child directories
     -- with only a single directory inside
-    skip_single_child_directories(config, Url(extracted_items_path))
+    skip_single_child_directories(Url(extracted_items_path))
 end
 
 -- Function to handle the enter command
@@ -2089,7 +2090,7 @@ local function handle_enter(args, config, command_table)
 
     -- Otherwise, call the function to skip child directories
     -- with only a single directory inside
-    skip_single_child_directories(config, get_current_directory_url())
+    skip_single_child_directories(get_current_directory_url())
 end
 
 -- Function to handle the leave command
@@ -2114,13 +2115,16 @@ local function handle_leave(args, config)
     ---@type Url
     local directory = get_current_directory_url()
 
+    -- Get the tab configuration
+    local tab_config = get_tab_config()
+
     -- Start an infinite loop
     while true do
         --
 
         -- Get all the items in the current directory
         local directory_items =
-            get_directory_items(directory, config.ignore_hidden_items)
+            get_directory_items(directory, tab_config.show_hidden)
 
         -- If the number of directory items is not 1,
         -- then break out of the loop.
@@ -2551,7 +2555,7 @@ local function handle_shell(args, _, _)
                 local item_cha = fs.cha(Url(item), false)
 
                 -- If the item isn't a directory
-                if not item_cha.is_dir then
+                if not (item_cha or {}).is_dir then
                     --
 
                     -- Increment the number of files
@@ -2633,24 +2637,26 @@ local execute_tab_create = ya.sync(function(state, args)
     -- Get the hovered item
     local hovered_item = cx.active.current.hovered
 
-    -- Get if the hovered item is a directory
-    local hovered_item_is_directory = hovered_item and hovered_item.cha.is_dir
-
-    -- If the hovered item is a directory,
-    -- and the user wants to create a tab
-    -- in the hovered directory
+    -- If the hovered item is nil,
+    -- or if the hovered item is not a directory,
+    -- or if the user doesn't want to smartly
+    -- create a tab in the hovered directory
     if
-        hovered_item_is_directory
-        and (state.config.smart_tab_create or table_pop(args, "smart", false))
+        not hovered_item
+        or not hovered_item.cha.is_dir
+        or not state.config.smart_tab_create
+        or not table_pop(args, "smart", false)
     then
         --
 
-        -- Set the arguments to the url of the hovered item
-        args = { hovered_item.url }
+        -- Emit the command to create a new tab with the arguments
+        -- and exit the function
+        return ya.manager_emit("tab_create", args)
     end
 
-    -- Emit the command to create a new tab with the arguments
-    ya.manager_emit("tab_create", args)
+    -- Otherwise, emit the command to create a new tab
+    -- with the hovered item's url
+    ya.manager_emit("tab_create", { hovered_item.url })
 end)
 
 -- Function to handle the tab create command
@@ -2839,12 +2845,15 @@ local execute_parent_arrow = ya.sync(function(state, args)
     -- to the current cursor index
     local new_cursor_index = parent_directory.cursor
 
+    -- Get whether the user wants to sort directories first
+    local sort_directories_first = cx.active.pref.sort_dir_first
+
     -- If wraparound file navigation is wanted
     if state.config.wraparound_file_navigation then
         --
 
         -- If the user sorts their directories first
-        if state.config.sort_directories_first then
+        if sort_directories_first then
             --
 
             -- Get the directories in the parent directory

@@ -11,6 +11,7 @@ export FCITX5_UI=gtk
 export GLFW_IM_MODULE=ibus
 export EDITOR=nvim
 
+
 source ~/.zshrc.alias
 # bindkey -v
 # start of z4h config Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
@@ -231,8 +232,23 @@ if [[ -o zle ]]; then
     [[ "${+functions[compdef]}" -ne 0 ]] && \compdef __zoxide_z_complete z
 fi
 
-# =============================================================================
-#
-# To initialize zoxide, add this to your configuration (usually ~/.zshrc):
-#
-# eval "$(zoxide init zsh)"
+alias zz='z "$_"'
+
+# Set FZF default command to use ripgrep
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+
+# Set FZF default options with bottom preview
+export FZF_DEFAULT_OPTS="
+--height 95% 
+--layout=reverse 
+--border=rounded 
+--prompt='  ' 
+--pointer='▶' 
+--marker='✓' 
+--header='ctrl-c:cancel / ctrl-q:exit / ctrl-s:select' 
+--header-first 
+--bind='ctrl-u:preview-half-page-up'
+--bind='ctrl-d:preview-half-page-down'
+--bind='ctrl-s:toggle-sort'
+--preview-window='down:45%:border-rounded'
+"

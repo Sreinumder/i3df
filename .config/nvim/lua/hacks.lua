@@ -109,6 +109,7 @@ map("n", "<leader>rS", "!!sh<cr>", { desc = "bash filter replace" })
 
 -- niche visual selection hacks
 map("x", "<A-x>", '<esc>"_x`<"_xv`>h', { desc = "delete surrounding of visual mode" })
+map("x", "<A-X>", '<esc>"_dd`<"_ddv`>h', { desc = "delete surrounding lines of visual mode" })
 map("x", "<A-c>", '"bdo<esc>"bpk"_dd', { desc = "delete except the selection of current line" })
 
 -- -- increase/decrease and shift visual selection

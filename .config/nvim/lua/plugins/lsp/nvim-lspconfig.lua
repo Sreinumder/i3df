@@ -1,6 +1,7 @@
 return {
 	"neovim/nvim-lspconfig",
 	event = "UIEnter",
+	enabled = false,
 	keys = {
 		{
 			"<leader>ds",
@@ -77,7 +78,7 @@ return {
 	opts = {
 		servers = {
 			lua_ls = {},
-			clangd = {},
+			-- clangd = {},
 			-- css={}.
 			-- emmet-language-server = {},
 		},

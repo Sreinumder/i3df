@@ -1,21 +1,23 @@
 local wezterm = require("wezterm")
+
 local config = wezterm.config_builder()
 config.color_scheme = "Everblush (Gogh)"
 -- config.color_scheme = 'AdventureTime'
 -- config.font = wezterm.font 'Fira Code'
 -- config.font = wezterm.font 'Iosevka Nerd Font'
 config.font = wezterm.font_with_fallback({
-	"Iosevka Nerd Font",
+	-- "Iosevka Nerd Font",
+	"JetBrains Mono",
 	-- "Monotty",
 })
 -- config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, --disable ligature
 -- config.font = wezterm.font_with_fallback { 'Fira Code', }
 config.enable_kitty_graphics = true
 config.font_size = 11.0
-config.line_height = 1.0
+config.line_height = 0.9
 -- config.hide_tab_bar_if_only_one_tab = true
 config.use_dead_keys = false
-config.use_ime = false
+config.use_ime = true
 config.window_background_opacity = 0.9
 config.warn_about_missing_glyphs = false
 config.window_padding = {
@@ -70,8 +72,6 @@ config.keys = {
 			end
 		end),
 	},
-	{ key = "=", mods = "CTRL", action = wezterm.action.IncreaseFontSize },
-	{ key = "-", mods = "CTRL", action = wezterm.action.DecreaseFontSize },
 	{
 		key = "Tab",
 		mods = "CTRL|SHIFT",
@@ -82,38 +82,25 @@ config.keys = {
 		mods = "CTRL",
 		action = wezterm.action.DisableDefaultAssignment,
 	},
-	{ key = "Tab", mods = "ALT|SHIFT", action = act.ActivateTabRelative(-1) },
 	{ key = "Tab", mods = "ALT", action = act.ActivateTabRelative(1) },
-	{ key = "Q", mods = "ALT|SHIFT", action = wezterm.action.CloseCurrentTab({ confirm = true }) },
-	{ key = "W", mods = "ALT|SHIFT", action = wezterm.action.CloseCurrentPane({ confirm = true }) },
+	{ key = "Tab", mods = "SHIFT|ALT", action = act.ActivateTabRelative(-1) },
+	{ key = "Q", mods = "SHIFT|ALT", action = wezterm.action.CloseCurrentTab({ confirm = true }) },
+	{ key = "W", mods = "SHIFT|ALT", action = wezterm.action.CloseCurrentPane({ confirm = true }) },
 	{ key = "V", mods = "SHIFT|ALT", action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	{ key = "S", mods = "SHIFT|ALT", action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }) },
-	{
-		key = "%",
-		mods = "CTRL|SHIFT|ALT",
-		action = wezterm.action.SplitPane({
-			direction = "Right",
-			command = { args = { "lazygit" } },
-			size = { Percent = 50 },
-		}),
-	},
-	{
-		key = "t",
-		mods = "SHIFT|ALT",
-		action = act.SpawnTab("CurrentPaneDomain"),
-	},
+	{ key = "t", mods = "SHIFT|ALT", action = act.SpawnTab("CurrentPaneDomain") },
 }
-for i = 1, 8 do -- CTRL+ALT + number to activate that tab
+for i = 1, 7 do -- CTRL+ALT + number to activate that tab
 	table.insert(config.keys, {
 		key = tostring(i),
-		mods = "ALT",
+		mods = "ALT|SHIFT",
 		action = act.ActivateTab(i - 1),
 	})
-	table.insert(config.keys, {
-		key = tostring(i),
-		mods = "CTRL|SHIFT",
-		action = wezterm.action.DisableDefaultAssignment,
-	})
+	-- table.insert(config.keys, {
+	-- 	key = tostring(i),
+	-- 	mods = "CTRL|SHIFT",
+	-- 	action = wezterm.action.DisableDefaultAssignment,
+	-- })
 	-- F1 through F8 to activate that tab
 	table.insert(config.keys, {
 		key = "F" .. tostring(i),
@@ -169,5 +156,6 @@ smart_splits.apply_to_config(config, {
 -- local battery = wezterm.plugin.require("https://github.com/rootiest/battery.wez")
 -- battery.invert = true -- Optionally invert the color brightness
 -- battery.apply_to_config(config) -- Optionally apply the necessary config settings
+--
 
 return config

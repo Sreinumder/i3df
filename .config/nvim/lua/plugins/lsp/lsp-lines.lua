@@ -14,9 +14,9 @@ return {
 		},
 	},
 	config = function(_, opts)
-		vim.diagnostic.config({
-			virtual_text = false,
-		})
+		-- vim.diagnostic.config({
+		-- 	virtual_text = false,
+		-- })
 		require("lsp_lines").setup(opts)
 		-- vim.diagnostic.config({ virtual_text = false })
 	end,

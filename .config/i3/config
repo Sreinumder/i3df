@@ -73,7 +73,7 @@ bindsym $mod+Return exec warp-terminal
 bindsym $mod+z exec zeditor
 bindsym $mod+x exec emacs
 bindsym $mod+g exec "ezterm -e retroarch"
-bindsym $mod+space exec wezterm
+bindsym $mod+Ctrl+space exec wezterm
 # bindsym ctrl+$mod+space exec warp-terminal
 bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md
 bindsym $mod+ctrl+f exec zen-browser

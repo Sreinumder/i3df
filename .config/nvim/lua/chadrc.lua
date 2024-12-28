@@ -22,12 +22,12 @@ local options = {
 			enabled = true,
 			theme = "default",
 			separator_style = "block",
-			order = { "git", "file", "%=", "lsp_msg", "%=", "diagnostics", "macro", "lsp", "cwd" },
+			order = { "file", "git", "%=", "lsp_msg", "%=", "macro", "diagnostics", "lsp", "cwd" },
 			modules = {
 				macro = function()
 					local reg = vim.fn.reg_recording()
 					if reg == "" then
-						return "   "
+						return " "
 					end -- not recording
 					return "rec @" .. reg .. " "
 				end,
