@@ -97,13 +97,12 @@
 #   the number is signed, you can show eg the +n row or the -n row (the nth row from the bottom)
 #   -5 subtract 5 rows (go up 5 rows) so that you don't show the highlighted line as the first line
 #   since you want to provide context by showing the rows above the highlighted line
-mkcdir ()
-{
+mkcd () {
   mkdir -p -- "$1" &&
     cd -P -- "$1"
   }
 
-fman() {
+  fman() {
     man -k . | fzf -q "$1" --prompt='man> '  --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r man | col -bx | bat -l man -p --color always' | tr -d '()' | awk '{printf "%s ", $2} {print $1}' | xargs -r man
   }
 
@@ -174,36 +173,36 @@ fman() {
 
 # absolutely game changer bindings 
 function displayFZFFiles {
-    echo $(fzf --preview 'bat --color=always --style=header,grid --line-range :400 {}')
+  echo $(fzf --preview 'bat --color=always --style=header,grid --line-range :400 {}')
 }
 
 function ff {
-    selection=$(displayFZFFiles);
-    if [ -z "$selection" ]; then
-        return;
-    else
-        nvim $selection;
-    fi;
+  selection=$(displayFZFFiles);
+  if [ -z "$selection" ]; then
+    return;
+  else
+    nvim $selection;
+  fi;
 }
 
 # Function to open nvim at specific line using fzf with bat preview
 function fw() {
-    local selected=$(rg --line-number \
-                      --no-heading \
-                      --color=always \
-                      --smart-case \
-                      . 2> /dev/null |
-        fzf --delimiter ':' \
-            --ansi \
-            --prompt 'Rg> ' \
-            --preview 'bat --style=numbers --color=always --highlight-line {2} {1}' \
-            --preview-window 'down,45%,+{2}+3/3,~3')
-    
-    if [[ -n "$selected" ]]; then
-        local file="${${(s/:/)selected}[1]}"
-        local line="${${(s/:/)selected}[2]}"
-        
+  local selected=$(rg --line-number \
+    --no-heading \
+    --color=always \
+    --smart-case \
+    . 2> /dev/null |
+    fzf --delimiter ':' \
+    --ansi \
+    --prompt 'Rg> ' \
+    --preview 'bat --style=numbers --color=always --highlight-line {2} {1}' \
+    --preview-window 'down,45%,+{2}+3/3,~3')
+
+  if [[ -n "$selected" ]]; then
+    local file="${${(s/:/)selected}[1]}"
+    local line="${${(s/:/)selected}[2]}"
+
         # Open nvim at the specific line
         nvim "$file" "+$line"
-    fi
+  fi
 }

@@ -6,8 +6,8 @@ config.color_scheme = "Everblush (Gogh)"
 -- config.font = wezterm.font 'Fira Code'
 -- config.font = wezterm.font 'Iosevka Nerd Font'
 config.font = wezterm.font_with_fallback({
-	-- "Iosevka Nerd Font",
 	"JetBrains Mono",
+	"Iosevka Nerd Font",
 	-- "Monotty",
 })
 -- config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, --disable ligature
@@ -16,6 +16,7 @@ config.enable_kitty_graphics = true
 config.font_size = 11.0
 config.line_height = 0.9
 -- config.hide_tab_bar_if_only_one_tab = true
+config.tab_bar_at_bottom = true
 config.use_dead_keys = false
 config.use_ime = true
 config.window_background_opacity = 0.9
@@ -25,6 +26,15 @@ config.window_padding = {
 	right = 0,
 	top = 0,
 	bottom = 0,
+}
+config.window_frame = {
+	font = wezterm.font_with_fallback({
+		"JetBrains Mono",
+		"Iosevka Nerd Font",
+	}),
+	font_size = 9.0,
+	active_titlebar_bg = "#333333",
+	inactive_titlebar_bg = "#333333",
 }
 
 local io = require("io")
@@ -73,6 +83,23 @@ config.keys = {
 		end),
 	},
 	{
+		key = "F2",
+		mods = "CTRL",
+		action = act.PromptInputLine({
+			description = "Enter new name for tab",
+			action = wezterm.action_callback(function(window, pane, line)
+				if line then
+					window:active_tab():set_title(line)
+				end
+			end),
+		}),
+	},
+	{
+		key = "f",
+		mods = "ALT",
+		action = wezterm.action.TogglePaneZoomState,
+	},
+	{
 		key = "Tab",
 		mods = "CTRL|SHIFT",
 		action = wezterm.action.DisableDefaultAssignment,
@@ -107,10 +134,9 @@ for i = 1, 7 do -- CTRL+ALT + number to activate that tab
 		action = act.ActivateTab(i - 1),
 	})
 end
--- local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
--- bar.apply_to_config(config)
+local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+bar.apply_to_config(config)
 
-wezterm.plugin.require("https://github.com/yriveiro/wezterm-tabs").apply_to_config(config)
 config.colors = {
 	tab_bar = {
 		background = "#181f22",
@@ -142,20 +168,5 @@ config.colors = {
 		},
 	},
 }
-
-local smart_splits = wezterm.plugin.require("https://github.com/mrjones2014/smart-splits.nvim")
-smart_splits.apply_to_config(config, {
-	direction_keys = { "h", "j", "k", "l" },
-	modifiers = {
-		move = "CTRL", -- modifier to use for pane movement, e.g. CTRL+h to move left
-		resize = "CTRL|SHIFT", -- modifier to use for pane resize, e.g. META+h to resize to the left
-	},
-	log_level = "info",
-})
-
--- local battery = wezterm.plugin.require("https://github.com/rootiest/battery.wez")
--- battery.invert = true -- Optionally invert the color brightness
--- battery.apply_to_config(config) -- Optionally apply the necessary config settings
---
 
 return config

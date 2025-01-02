@@ -1,6 +1,6 @@
 return {
 	"smoka7/hydra.nvim",
-  keys = {"<leader>,o"},
+	keys = { "<leader>,o" },
 	config = function()
 		local Hydra = require("hydra")
 		local hint = [[

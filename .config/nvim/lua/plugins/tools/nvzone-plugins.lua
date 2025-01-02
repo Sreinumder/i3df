@@ -1,5 +1,4 @@
 return {
-  "nvzone/volt",
-  { "nvzone/showkeys", cmd = "ShowkeysToggle"},
-	{"nvzone/typr", cmd = {"Typr", "TyprStats"}},
+	"nvzone/volt",
+	{ "nvzone/typr", cmd = { "Typr", "TyprStats" } },
 }

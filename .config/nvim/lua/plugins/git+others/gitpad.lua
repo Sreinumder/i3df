@@ -1,31 +1,31 @@
 return {
 	"yujinyuz/gitpad.nvim",
+	opts = {
+		title = "gitpad",
+		dir = "~/notes/gitpad",
+		window_type = "split",
+		split_win_opts = {
+			split = "right",
+		},
+	},
 	keys = {
 		{
-			"<leader>pp",
+			"<localleader>np",
 			function()
 				require("gitpad").toggle_gitpad() -- or require('gitpad').toggle_gitpad({ title = 'Project notes' })
 			end,
 			desc = "gitpad project",
 		},
 		{
-			"<leader>pb",
+			"<localleader>nb",
 			function()
 				require("gitpad").toggle_gitpad_branch() -- or require('gitpad').toggle_gitpad_branch({ title = 'Branch notes' })
 			end,
 			desc = "gitpad branch",
 		},
-		{
-			"<leader>pvs",
-			function()
-				require("gitpad").toggle_gitpad_branch({ window_type = "split", split_win_opts = { split = "right" } })
-			end,
-			desc = "gitpad branch vertical split",
-		},
-
 		-- Daily notes
 		{
-			"<leader>pd",
+			"<localleader>nd",
 			function()
 				local date_filename = "daily-" .. os.date("%Y-%m-%d.md")
 				require("gitpad").toggle_gitpad({ filename = date_filename }) -- or require('gitpad').toggle_gitpad({ filename = date_filename, title = 'Daily notes' })
@@ -34,7 +34,7 @@ return {
 		},
 		-- Per file notes
 		{
-			"<leader>pf",
+			"<localleader>nf",
 			function()
 				local filename = vim.fn.expand("%:p") -- or just use vim.fn.bufname()
 				if filename == "" then

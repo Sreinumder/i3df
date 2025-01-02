@@ -7,43 +7,22 @@ return {
 		local mc = require("multicursor-nvim")
 		local M = {
 			{
-				mode = { "n", "v" },
-				"<C-A-k>",
+				mode = { "v" },
+				"<localleader><localleader>",
 				function()
-					mc.lineAddCursor(-1)
+					mc.lineAddCursor(0)
 				end,
 			},
 			{
 				mode = { "n", "v" },
-				"<C-A-j>",
-				function()
-					mc.lineAddCursor(1)
-				end,
-			},
-			{
-				mode = { "n", "v" },
-				"<C-A-S-K>",
-				function()
-					mc.lineSkipCursor(-1)
-				end,
-			},
-			{
-				mode = { "n", "v" },
-				"<C-A-S-J>",
-				function()
-					mc.lineSkipCursor(1)
-				end,
-			},
-			{
-				mode = { "n", "v" },
-				"<C-A-p>",
+				"<C-A-3>",
 				function()
 					mc.matchAddCursor(-1)
 				end,
 			}, -- Add or skip adding a new cursor by matching word/selection
 			{
 				mode = { "n", "v" },
-				"<C-A-p>",
+				"<C-A-S-3>",
 				function()
 					mc.matchSkipCursor(-1)
 				end,
@@ -67,13 +46,6 @@ return {
 
 			-- You can also add cursors with any motion you prefer:
 			-- {mode="n", "<right>", function() mc.addCursor("w") end},
-			{
-				mode = "n",
-				"<leader><right>",
-				function()
-					mc.skipCursor("w")
-				end,
-			},
 
 			-- Rotate the main cursor.
 			{ mode = { "n", "v" }, "<C-A-h>", mc.prevCursor },
@@ -86,7 +58,7 @@ return {
 			{ mode = "n", "<c-leftmouse>", mc.handleMouse },
 
 			-- Easy way to add and remove cursors using the main cursor.
-			{ mode = { "n", "v" }, "<c-q>", mc.toggleCursor },
+			{ mode = { "n", "v" }, ";;", mc.toggleCursor },
 
 			-- Clone every cursor and disable the originals.
 			{ mode = { "n", "v" }, "<leader><c-q>", mc.duplicateCursors },

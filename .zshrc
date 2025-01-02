@@ -10,6 +10,7 @@ export SDL_IM_MODULE=fcitx
 export FCITX5_UI=gtk
 export GLFW_IM_MODULE=ibus
 export EDITOR=nvim
+export QT_STYLE_OVERRIDE=kvantum
 
 
 source ~/.zshrc.alias

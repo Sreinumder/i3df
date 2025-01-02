@@ -4,7 +4,7 @@ return {
 	-- branch = "dev", -- IMPORTANT!
 	keys = {
 		{
-			"<leader>xx",
+			"<leader>tx",
 			"<cmd>Trouble diagnostics toggle<cr>",
 			desc = "Diagnostics (Trouble)",
 		},

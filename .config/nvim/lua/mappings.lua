@@ -8,7 +8,7 @@ if not vim.g.vscode then
 	map("n", "<S-tab>", function()
 		require("nvchad.tabufline").prev()
 	end, { desc = "buffer goto prev" })
-	map("n", "<leader>xb", function()
+	map("n", "<leader>xx", function()
 		require("nvchad.tabufline").close_buffer()
 	end, { desc = "buffer close" })
 end
@@ -19,44 +19,43 @@ map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, 
 map({ "n", "x" }, "gj", "j", { desc = "next line" })
 map({ "n", "x" }, "gk", "k", { desc = "prev line" })
 
+map({ "n", "x" }, "<A-n>", ";", { desc = "Down" })
+map({ "n", "x" }, "<A-p>", ",", { desc = "Up" })
+
 --and HML to start mid end of line <A-HML> to high middle low part of screen
 map("n", "<leader>w", "<C-w>", { desc = "window control" }) -- split window vertically
 map({ "n", "x" }, "<leader>r", '"', { desc = "register select" }) -- <leader>ra for a register
 map("n", "ygG", "<cmd>%y+<CR>", { desc = "yank all" })
 map({ "n", "v", "o" }, "H", "^", { desc = "Beg of line" })
-map("n", "<A-H>", "H", { desc = "Default H" })
 map({ "n", "v", "o" }, "M", "gM", { desc = "Mid of Line" })
-map("n", "<A-M>", "M", { desc = "Default M" })
 map({ "n", "v", "o" }, "L", "g_", { desc = "End of Line" })
+map("n", "<A-H>", "H", { desc = "Default H" })
+map("n", "<A-M>", "M", { desc = "Default M" })
 map("n", "<A-L>", "L", { desc = "Default L" })
 map("x", "$", "g_", { desc = "to last non-white char" })
 map("x", "g_", "$")
 
 -- pain saver
 map("n", "<leader>", "<NOP>", { desc = "" })
-map("n", "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and Clear hlsearch" })
 map(
 	"n",
-	"<leader>nh",
+	"<Esc>",
 	"<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
 	{ desc = "Redraw / Clear hlsearch / Diff Update" }
 )
 map("x", "J", "j", { desc = "Disable annoying J " })
 map("n", "<C-u>", "<C-u>zz", { desc = "Half page up" })
 map("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })
-map("x", "<", "<gv")
-map("x", ">", ">gv") -- Continuous visual shifting (does not exit Visual mode), `gv` means
-map("n", "gV", "`[v`]", { desc = "true" }) -- Reselect last paste
--- map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
+-- map("x", "<", "<gv")
+-- map("x", ">", ">gv") -- Continuous visual shifting (does not exit Visual mode), `gv` means
+-- map("n", "gV", "`[v`]", { desc = "true" }) -- Reselect last paste
+map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
 -- map("n", "vih", "^vg_", { desc = "true" })
 -- map("n", "yih", "^yg_", { desc = "true" })
 map({ "o", "x" }, "i<space>", "iW") -- select WORD by i<space>
 -- others
 map("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy nvim" })
 map({ "n", "x" }, "<leader>*", "*``cgn", { desc = "replace word" })
-for _, quote in ipairs({ '"', "'", "`" }) do
-	vim.keymap.set({ "x", "o" }, "a" .. quote, "2i" .. quote)
-end
 
 -- cd to things
 map("n", "<leader>cdh", ":cd ..<CR>", { desc = "cd .." })
@@ -64,7 +63,7 @@ map("n", "<leader>cdf", "<cmd>lcd %:p:h<cr><cmd>pwd<cr>", { desc = "change dir" 
 map("n", "<leader>cdp", "<cmd>lcd ~/.config/nvim/lua/plugins<cr>", { desc = "change dir to nvim config" })
 map("n", "<leader>cdr", "<cmd>lcd ~<cr>", { desc = "change dir to ~" })
 map("n", "<leader>cdn", "<cmd>lcd ~/notes<cr>", { desc = "change dir to notes" })
-vim.keymap.set("n", "<leader>cdg", function()
+map("n", "<leader>cdg", function()
 	local git_root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel"))
 	if vim.fn.isdirectory(git_root) == 1 then
 		vim.cmd("cd " .. git_root)
@@ -106,8 +105,8 @@ map("n", "<A-A>", '<esc>j"_ddk', { desc = "delete the line below" })
 map("n", "<A-I>", '<esc>k"_dd', { desc = "delete the line above" })
 map("n", "<A-m>", "o<esc>kO<esc>j", { desc = "insert new line below and above" })
 map("x", "<A-m>", "<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^vg_", { desc = "insert new line below and above" })
-map("n", "<A-n>", "JkJ", { desc = "join with prev and next line" })
-map("x", "<A-n>", ":j<cr>^mgk$JJgv", { desc = "join with prev and next line" })
+map("n", "<A-M>", "JkJ", { desc = "join with prev and next line" })
+map("x", "<A-M>", ":j<cr>^mgk$JJgv", { desc = "join with prev and next line" })
 
 -- simple editing hacks
 -- clone sentences up and down
@@ -184,9 +183,6 @@ map({ "i", "c" }, "<C-E>", "<END>")
 map("c", "<C-A-K>", "\\(.*\\)", { desc = "kirby " })
 
 map("i", "<A-c>", "<esc>ciw", { desc = "change except the selection" })
-map("i", "<A-n>", "<esc>2f,Bct,", { desc = "change next csv" })
-map("i", "<A-p>", "<esc>F,Bct, ", { desc = "change prev csv" }) --   this, is, good, binding,
-
 map("t", "<C-<ESC>", "<C-\\><C-n>", { desc = "exit in terminal mode" })
 
 -- Automatically indent with i and A made by ycino
@@ -206,13 +202,13 @@ end, { expr = true, silent = true })
 -- map({ "n", "v", "o", "i" }, "<A-;>", "0")
 
 -- toggle options
-map("n", "<leader>,nn", ":set number!<CR>", { desc = "Toggle number" })
-map("n", "<leader>,nr", ":set relativenumber!<CR>", { desc = "Toggle relative number" })
-map("n", "<leader>,w", ":set wrap!<CR>", { desc = "Toggle wrap" })
-map("n", "<leader>,sp", ":set spell!<CR>", { desc = "Toggle spell" })
-map("n", "<leader>,cl", ":set cursorline!<CR>", { desc = "Toggle cursorline" })
-map("n", "<leader>,ii", ":set list!<CR>", { desc = "Toggle invisible char" })
-map("n", "<leader>,ct", function()
+map({ "n", "x" }, ",n", ":set number!<CR>", { desc = "Toggle number" })
+map({ "n", "x" }, ",r", ":set relativenumber!<CR>", { desc = "Toggle relative number" })
+map({ "n", "x" }, ",w", ":set wrap!<CR>", { desc = "Toggle wrap" })
+map({ "n", "x" }, ",sp", ":set spell!<CR>", { desc = "Toggle spell" })
+map({ "n", "x" }, ",cl", ":set cursorline!<CR>", { desc = "Toggle cursorline" })
+map({ "n", "x" }, ",ii", ":set list!<CR>", { desc = "Toggle invisible char" })
+map({ "n", "x" }, ",ct", function()
 	if vim.opt.background:get() == "dark" then
 		vim.cmd(":set bg=light")
 	else
@@ -222,4 +218,4 @@ end, { desc = "Toggle colorscheme bg" })
 
 -- look for changes
 vim.cmd([[command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis]])
-map("n", "<leader>do", ":DiffOrig<CR>", { desc = "diff with orig" })
+map("n", "<leader>sc", ":DiffOrig<CR>", { desc = "unsaved changes diff" })

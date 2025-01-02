@@ -4,7 +4,7 @@ return {
 	event = "UIEnter",
 	keys = {
 		{ mode = "n", "<leader>bb", "<cmd>FzfLua buffers<CR>", { desc = "find buffers" } },
-		{ mode = "n", "?", "<cmd>FzfLua blines<CR>", { desc = "find buffers" } },
+		{ mode = "n", "?", "<cmd>FzfLua blines previewer=false<CR>", { desc = "find buffers" } },
 		{
 			mode = "n",
 			"<leader>ff",

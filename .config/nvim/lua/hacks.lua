@@ -79,25 +79,25 @@ map(
 -- map("n", "<leader>ttd", "viw\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>", { desc = "dictionary autodetect -> en" })
 map(
 	"n",
-	"<leader>ttt",
+	"<loaclleader>tt",
 	"^vg_\"ty:vnew <CR>:.!trans '<C-r>t' | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
 	{ desc = "dictionary autodetect -> ??" }
 )
 map(
 	"n",
-	"<leader>ttd",
+	"<loaclleader>td",
 	"viw\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
 	{ desc = "dictionary autodetect -> ??" }
 )
 map(
 	"x",
-	"<leader>ttt",
+	"<loaclleader>tt",
 	"\"ty:vnew <CR>:.!trans '<C-r>t' | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
 	{ desc = "translate autodetect -> ??" }
 )
 map(
 	"x",
-	"<leader>ttd",
+	"<loaclleader>td",
 	"\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
 	{ desc = "dictionary autodetect -> ??" }
 )

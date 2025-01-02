@@ -4,11 +4,20 @@ return {
 	opts = {
 		modes = {
 			char = {
-				enable = false,
+				enabled = false,
 				autohide = true,
 				jump_labels = false,
 				highlight = { backdrop = false },
 			},
+			search = {
+				enabled = true,
+				jump_labels = false,
+			},
+		},
+		rainbow = {
+			enabled = false,
+			-- number between 1 and 9
+			shade = 5,
 		},
 	},
 	keys = {
@@ -47,7 +56,7 @@ return {
 			desc = "Treesitter Search",
 		},
 		{
-			"<A-f>",
+			"<A-s>",
 			mode = { "c" },
 			function()
 				require("flash").toggle()
@@ -61,6 +70,15 @@ return {
 				require("flash").jump({ pattern = vim.fn.expand("<cword>") })
 			end,
 			desc = "Toggle Flash Search",
+		},
+		{
+			"<leader>mj",
+			mode = { "n", "x" },
+			function()
+				require("flash").jump({
+					pattern = vim.fn.expand("<cword>"),
+				})
+			end,
 		},
 		-- { "tj", mode = { "n" }, function()
 		--   require("flash").jump({
