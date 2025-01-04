@@ -49,6 +49,7 @@
   alias N='nvim ~/notes'
   alias Nc='nvim ~/notes/code/'
   alias n='nvim'
+  alias nnp='nvim --cmd "let g:pluginless = 1"'
   alias nv='neovide'
   alias v='vim'
   alias b='btop'

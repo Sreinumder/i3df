@@ -2,15 +2,6 @@ local map = vim.keymap.set
 local nomap = vim.keymap.del
 if not vim.g.vscode then
 	map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
-	map("n", "<tab>", function()
-		require("nvchad.tabufline").next()
-	end, { desc = "buffer goto next" })
-	map("n", "<S-tab>", function()
-		require("nvchad.tabufline").prev()
-	end, { desc = "buffer goto prev" })
-	map("n", "<leader>xx", function()
-		require("nvchad.tabufline").close_buffer()
-	end, { desc = "buffer close" })
 end
 
 -- clever j k
@@ -54,15 +45,15 @@ map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true"
 -- map("n", "yih", "^yg_", { desc = "true" })
 map({ "o", "x" }, "i<space>", "iW") -- select WORD by i<space>
 -- others
-map("n", "<leader>L", ":Lazy<CR>", { desc = "Lazy nvim" })
+map("n", "<leader>L", "<cmd>Lazy<CR>", { desc = "Lazy nvim" })
 map({ "n", "x" }, "<leader>*", "*``cgn", { desc = "replace word" })
 
 -- cd to things
-map("n", "<leader>cdh", ":cd ..<CR>", { desc = "cd .." })
-map("n", "<leader>cdf", "<cmd>lcd %:p:h<cr><cmd>pwd<cr>", { desc = "change dir" })
-map("n", "<leader>cdp", "<cmd>lcd ~/.config/nvim/lua/plugins<cr>", { desc = "change dir to nvim config" })
-map("n", "<leader>cdr", "<cmd>lcd ~<cr>", { desc = "change dir to ~" })
-map("n", "<leader>cdn", "<cmd>lcd ~/notes<cr>", { desc = "change dir to notes" })
+map("n", "<leader>cdh", "<cmd>cd ..<CR>", { desc = "cd .." })
+map("n", "<leader>cdf", "<cmd>lcd %:p:h<cr><cmd>pwd<cr>", { desc = "cd to buf" })
+map("n", "<leader>cdp", "<cmd>lcd ~/.config/nvim/lua/plugins<cr>", { desc = "cd to conn" })
+map("n", "<leader>cdr", "<cmd>lcd ~<cr>", { desc = "cd to ~" })
+map("n", "<leader>cdn", "<cmd>lcd ~/notes<cr>", { desc = "cd to notes" })
 map("n", "<leader>cdg", function()
 	local git_root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel"))
 	if vim.fn.isdirectory(git_root) == 1 then
@@ -106,7 +97,7 @@ map("n", "<A-I>", '<esc>k"_dd', { desc = "delete the line above" })
 map("n", "<A-m>", "o<esc>kO<esc>j", { desc = "insert new line below and above" })
 map("x", "<A-m>", "<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^vg_", { desc = "insert new line below and above" })
 map("n", "<A-M>", "JkJ", { desc = "join with prev and next line" })
-map("x", "<A-M>", ":j<cr>^mgk$JJgv", { desc = "join with prev and next line" })
+map("x", "<A-M>", "<cmd>j<cr>^mgk$JJgv", { desc = "join with prev and next line" })
 
 -- simple editing hacks
 -- clone sentences up and down
@@ -136,15 +127,17 @@ map("x", "<A-g><A-e>", '"bdge"bp`[v`]', { desc = "move selection with ge" })
 map("x", "<A-g><A-E>", '"bdgE"bp`[v`]', { desc = "move selection with gE" })
 map("x", "<A-g><A-g>", '"bdgg"bp`[v`]', { desc = "move selection with gg" })
 map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
+map("x", "<A-{>", '"bd{"bp`[v`]', { desc = "move selection with {" })
+map("x", "<A-}>", '"bd}"bp`[v`]', { desc = "move selection with }" })
 
 -- simple hacks
 -- map("n", "<leader>ql", "<cmd>lopen<cr>", { desc = "Location List" })
 -- map("n", "<leader>qf", "<cmd>copen<cr>", { desc = "Quickfix List" })
-map("n", "<leader>ww", ":w<cr>", { silent = true, desc = "save this buffer" })
+map("n", "<leader>ww", "<cmd>w<cr>", { silent = true, desc = "save this buffer" })
 map("n", "<leader>qq", "<cmd>q!<cr>", { silent = true, desc = "quit current window" })
 map("n", "<leader>sa", "<cmd>wqa!<cr>", { silent = true, desc = "write and quit all" })
-map("n", "<leader>qw", ":wq<cr>", { silent = true, desc = "save buffer" })
-map("n", "<leader>wa", ":wa<cr>", { silent = true, desc = "save all buffer" })
+map("n", "<leader>qw", "<cmd>wq<cr>", { silent = true, desc = "save buffer" })
+map("n", "<leader>wa", "<cmd>wa<cr>", { silent = true, desc = "save all buffer" })
 map("n", "<leader>qa", "<cmd>qa!<cr>", { silent = true, desc = "quit nvim" }) -- Quit all opened buffers
 map("n", "[l", "<cmd>lprevious<cr>zv", { silent = true, desc = "previous location item" }) -- Navigation in the location and quickfix list
 map("n", "]l", "<cmd>lnext<cr>zv", { silent = true, desc = "next location item" })
@@ -202,12 +195,12 @@ end, { expr = true, silent = true })
 -- map({ "n", "v", "o", "i" }, "<A-;>", "0")
 
 -- toggle options
-map({ "n", "x" }, ",n", ":set number!<CR>", { desc = "Toggle number" })
-map({ "n", "x" }, ",r", ":set relativenumber!<CR>", { desc = "Toggle relative number" })
-map({ "n", "x" }, ",w", ":set wrap!<CR>", { desc = "Toggle wrap" })
-map({ "n", "x" }, ",sp", ":set spell!<CR>", { desc = "Toggle spell" })
-map({ "n", "x" }, ",cl", ":set cursorline!<CR>", { desc = "Toggle cursorline" })
-map({ "n", "x" }, ",ii", ":set list!<CR>", { desc = "Toggle invisible char" })
+map({ "n", "x" }, ",n", "<cmd>set number!<CR>", { desc = "Toggle number" })
+map({ "n", "x" }, ",r", "<cmd>set relativenumber!<CR>", { desc = "Toggle relative number" })
+map({ "n", "x" }, ",w", "<cmd>set wrap!<CR>", { desc = "Toggle wrap" })
+map({ "n", "x" }, ",sp", "<cmd>set spell!<CR>", { desc = "Toggle spell" })
+map({ "n", "x" }, ",cl", "<cmd>set cursorline!<CR>", { desc = "Toggle cursorline" })
+map({ "n", "x" }, ",ii", "<cmd>set list!<CR>", { desc = "Toggle invisible char" })
 map({ "n", "x" }, ",ct", function()
 	if vim.opt.background:get() == "dark" then
 		vim.cmd(":set bg=light")
@@ -218,4 +211,4 @@ end, { desc = "Toggle colorscheme bg" })
 
 -- look for changes
 vim.cmd([[command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis]])
-map("n", "<leader>sc", ":DiffOrig<CR>", { desc = "unsaved changes diff" })
+map("n", "<leader>sc", "<cmd>DiffOrig<CR>", { desc = "unsaved changes diff" })

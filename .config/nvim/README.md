@@ -1,1 +1,3 @@
-<h1 align="center">NvChad for Rise</h1>
+<h1 align="center">Rise's PDE</h1>
+
+This is always WIP.

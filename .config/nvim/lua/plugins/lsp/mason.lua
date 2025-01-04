@@ -2,7 +2,7 @@ return {
 	"williamboman/mason.nvim",
 	cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate" },
 	keys = {
-		{ "<leader>M", ":Mason<CR>", { desc = "Lazy nvim" } },
+		{ "<leader>M", "<cmd>Mason<CR>", { desc = "Lazy nvim" } },
 	},
 	opts = {
 		PATH = "skip",

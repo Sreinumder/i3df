@@ -12,7 +12,7 @@ export GLFW_IM_MODULE=ibus
 export EDITOR=nvim
 export QT_STYLE_OVERRIDE=kvantum
 
-
+bindkey -v
 source ~/.zshrc.alias
 # bindkey -v
 # start of z4h config Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.

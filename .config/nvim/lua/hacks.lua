@@ -30,8 +30,8 @@ map("n", "<leader>eo", function()
 	end
 end, { desc = "Open current file in file manager" })
 
-map("n", "<A-.>", ":<Up><CR>", { desc = "last command" })
-map("n", "g<leader>gx", '"gya":lua vim.ui.open("https://www.github.com/"..<C-r>g)<CR>', { desc = "open in github" })
+map("n", "<A-.>", "<cmd>Up><CR>", { desc = "last command" })
+map("n", "g<leader>gx", '"gya"<cmd>lua vim.ui.open("https://www.github.com/"..<C-r>g)<CR>', { desc = "open in github" })
 
 -- bash hack for sorting/shuffling/sequencing csv with <A-o> in normal or insert mode
 -- map( "<leader>vrl", /g"<CR>kgJ', "n", 'i<enter><esc>!!shuf -i 1-10 -n 10 -r  | sed -z "s/\\n/, )

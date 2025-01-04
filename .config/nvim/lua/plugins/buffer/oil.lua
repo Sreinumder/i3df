@@ -87,26 +87,26 @@ return {
 			end,
 		},
 		float = {
-			border = vim.g.borderStyle,
-			override = function(conf)
-				local height = 0.85
-				local width = 0.6
-				conf.row = math.floor((1 - height) / 2 * vim.o.lines)
-				conf.col = math.floor((1 - width) / 2 * vim.o.columns)
-				conf.height = math.floor(vim.o.lines * height)
-				conf.width = math.floor(vim.o.columns * width)
-				return conf
-			end,
-			preview_split = "below",
-
-			-- FIX display relative path of directory, not absolute one
-			get_win_title = function(winid)
-				local bufnr = vim.api.nvim_win_get_buf(winid)
-				local absPath = vim.api.nvim_buf_get_name(bufnr):gsub("^oil://", "")
-				local cwd = vim.uv.cwd() or ""
-				local relPath = "." .. absPath:sub(#cwd + 1)
-				local title = vim.startswith(absPath, cwd) and relPath or absPath:gsub(vim.env.HOME, "~")
-				return " " .. title .. " "
+			enable = true,
+			quit_on_focus_loss = true,
+			-- Make the neovim window appear in the center of the screen
+			open_win_config = function()
+				local screen_w = vim.opt.columns:get()
+				local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
+				local window_w = screen_w * WIDTH_RATIO
+				local window_h = screen_h * HEIGHT_RATIO
+				local window_w_int = math.floor(window_w)
+				local window_h_int = math.floor(window_h)
+				local center_x = (screen_w - window_w) / 2
+				local center_y = ((vim.opt.lines:get() - window_h) / 2) - vim.opt.cmdheight:get()
+				return {
+					border = "rounded",
+					relative = "editor",
+					row = center_y,
+					col = center_x,
+					width = window_w_int,
+					height = window_h_int,
+				}
 			end,
 		},
 		preview = {

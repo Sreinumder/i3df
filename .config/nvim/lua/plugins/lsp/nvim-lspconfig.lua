@@ -1,7 +1,6 @@
 return {
 	"neovim/nvim-lspconfig",
 	event = "UIEnter",
-	enabled = false,
 	keys = {
 		{
 			"<leader>ds",

@@ -16,6 +16,4 @@ return {
 			desc = "toggle mini.cursorword",
 		},
 	},
-	opts = {},
 }
--- mini

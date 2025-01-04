@@ -47,11 +47,11 @@ return {
 			mode = "n",
 			body = "<leader>,v",
 			heads = {
-				{ "H", "<C-v>h:VBox<CR>" },
-				{ "J", "<C-v>j:VBox<CR>" },
-				{ "K", "<C-v>k:VBox<CR>" },
-				{ "L", "<C-v>l:VBox<CR>" },
-				{ "f", ":VBox<CR>", { mode = "v" } },
+				{ "H", "<C-v>h<cmd>VBox<CR>" },
+				{ "J", "<C-v>j<cmd>VBox<CR>" },
+				{ "K", "<C-v>k<cmd>VBox<CR>" },
+				{ "L", "<C-v>l<cmd>VBox<CR>" },
+				{ "f", "<cmd>VBox<CR>", { mode = "v" } },
 				{ "<Esc>", nil, { exit = true } },
 			},
 		})

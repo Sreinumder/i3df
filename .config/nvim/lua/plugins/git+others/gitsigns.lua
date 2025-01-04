@@ -2,8 +2,6 @@ return {
 	"lewis6991/gitsigns.nvim",
 	event = "UIEnter",
 	keys = {
-		-- local gitsigns = require('gitsigns')
-		{ "<localleader>h", desc = "gitsigns hunk" },
 		{
 			"]c",
 			function()
@@ -107,7 +105,7 @@ return {
 			{ desc = "reset_buffer" },
 		},
 		{
-			"<localleader>tb",
+			",b",
 			function()
 				require("gitsigns").toggle_current_line_blame()
 			end,
@@ -134,7 +132,7 @@ return {
 			end,
 			{ desc = "diffthis~" },
 		},
-		{ mode = { "o", "x" }, "ic", ":<C-U>Gitsigns select_hunk<CR>", { desc = "hunk txtobj" } }, -- Text object
+		{ mode = { "o", "x" }, "ic", "<cmd>C-U>Gitsigns select_hunk<CR>", { desc = "hunk txtobj" } }, -- Text object
 	},
 	opts = function()
 		local M = {

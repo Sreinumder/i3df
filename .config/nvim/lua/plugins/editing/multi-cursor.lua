@@ -1,6 +1,3 @@
--- it is well working
--- it is well working
--- it is well working
 return {
 	"jake-stewart/multicursor.nvim",
 	keys = function()

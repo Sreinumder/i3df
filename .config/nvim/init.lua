@@ -18,20 +18,22 @@ if vim.g.started_by_firenvim == true then --firenvim
 elseif vim.g.vscode then --vscode
 	require("vscode")
 else
-	local plugins = {
-		{ import = "nvchad.plugins" },
-		{ import = "plugins.ui" },
-		{ import = "plugins.lsp" },
-		{ import = "plugins.note" },
-		{ import = "plugins.buffer" },
-		{ import = "plugins.editing" },
-		{ import = "plugins.essential" },
-		{ import = "plugins.treesitter" },
-		{ import = "plugins.git+others" },
-		{ import = "plugins.tools" },
-		{ import = "plugins.my-plugins" },
-	}
-	require("lazy").setup(plugins, lazy_config)
+	if vim.g.pluginless ~= 1 then
+		local plugins = {
+			{ import = "nvchad.plugins" },
+			{ import = "plugins.ui" },
+			{ import = "plugins.lsp" },
+			{ import = "plugins.note" },
+			{ import = "plugins.buffer" },
+			{ import = "plugins.editing" },
+			{ import = "plugins.essential" },
+			{ import = "plugins.treesitter" },
+			{ import = "plugins.git+others" },
+			{ import = "plugins.tools" },
+			{ import = "plugins.my-plugins" },
+		}
+		require("lazy").setup(plugins, lazy_config)
+	end
 	dofile(vim.g.base46_cache .. "defaults")
 	dofile(vim.g.base46_cache .. "statusline")
 	require("options")

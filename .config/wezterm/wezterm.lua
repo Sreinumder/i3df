@@ -15,7 +15,7 @@ config.font = wezterm.font_with_fallback({
 config.enable_kitty_graphics = true
 config.font_size = 11.0
 config.line_height = 0.9
--- config.hide_tab_bar_if_only_one_tab = true
+config.hide_tab_bar_if_only_one_tab = false
 config.tab_bar_at_bottom = true
 config.use_dead_keys = false
 config.use_ime = true
@@ -104,6 +104,11 @@ config.keys = {
 		mods = "CTRL|SHIFT",
 		action = wezterm.action.DisableDefaultAssignment,
 	},
+	-- {
+	-- 	key = "h",
+	-- 	mods = "CTRL",
+	-- 	action = wezterm.action.DisableDefaultAssignment,
+	-- },
 	{
 		key = "Tab",
 		mods = "CTRL",
@@ -111,29 +116,30 @@ config.keys = {
 	},
 	{ key = "Tab", mods = "ALT", action = act.ActivateTabRelative(1) },
 	{ key = "Tab", mods = "SHIFT|ALT", action = act.ActivateTabRelative(-1) },
-	{ key = "Q", mods = "SHIFT|ALT", action = wezterm.action.CloseCurrentTab({ confirm = true }) },
-	{ key = "W", mods = "SHIFT|ALT", action = wezterm.action.CloseCurrentPane({ confirm = true }) },
+	-- { key = "Q", mods = "SHIFT|ALT", action = wezterm.action.CloseCurrentTab({ confirm = true }) },
+	{ key = "Q", mods = "SHIFT|ALT", action = wezterm.action.CloseCurrentPane({ confirm = true }) },
 	{ key = "V", mods = "SHIFT|ALT", action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	{ key = "S", mods = "SHIFT|ALT", action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }) },
 	{ key = "t", mods = "SHIFT|ALT", action = act.SpawnTab("CurrentPaneDomain") },
 }
-for i = 1, 7 do -- CTRL+ALT + number to activate that tab
-	table.insert(config.keys, {
-		key = tostring(i),
-		mods = "ALT|SHIFT",
-		action = act.ActivateTab(i - 1),
-	})
-	-- table.insert(config.keys, {
-	-- 	key = tostring(i),
-	-- 	mods = "CTRL|SHIFT",
-	-- 	action = wezterm.action.DisableDefaultAssignment,
-	-- })
-	-- F1 through F8 to activate that tab
-	table.insert(config.keys, {
-		key = "F" .. tostring(i),
-		action = act.ActivateTab(i - 1),
-	})
-end
+-- for i = 1, 7 do -- CTRL+ALT + number to activate that tab
+-- 	table.insert(config.keys, {
+-- 		key = tostring(i),
+-- 		mods = "ALT|SHIFT",
+-- 		action = act.ActivateTab(i - 1),
+-- 	})
+-- 	-- table.insert(config.keys, {
+-- 	-- 	key = tostring(i),
+-- 	-- 	mods = "CTRL|SHIFT",
+-- 	-- 	action = wezterm.action.DisableDefaultAssignment,
+-- 	-- })
+-- 	-- F1 through F8 to activate that tab
+-- 	table.insert(config.keys, {
+-- 		key = "F" .. tostring(i),
+-- 		action = act.ActivateTab(i - 1),
+-- 	})
+-- end
+
 local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
 bar.apply_to_config(config)
 
