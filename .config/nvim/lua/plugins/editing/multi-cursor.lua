@@ -4,12 +4,40 @@ return {
 		local mc = require("multicursor-nvim")
 		local M = {
 			{
-				mode = { "v" },
-				"<localleader><localleader>",
+				mode = { "n", "v" },
+				"<C-A-k>",
 				function()
-					mc.lineAddCursor(0)
+					mc.lineAddCursor(-1)
 				end,
 			},
+			{
+				mode = { "n", "v" },
+				"<C-A-j>",
+				function()
+					mc.lineAddCursor(1)
+				end,
+			},
+			{
+				mode = { "n", "v" },
+				"<C-A-K>",
+				function()
+					mc.lineSkipCursor(-1)
+				end,
+			},
+			{
+				mode = { "n", "v" },
+				"<C-A-J>",
+				function()
+					mc.lineSkipCursor(1)
+				end,
+			},
+			-- {
+			-- 	mode = { "v" },
+			-- 	"<localleader><localleader>",
+			-- 	function()
+			-- 		mc.lineAddCursor(0)
+			-- 	end,
+			-- },
 			{
 				mode = { "n", "v" },
 				"<C-A-3>",
@@ -45,7 +73,7 @@ return {
 			-- {mode="n", "<right>", function() mc.addCursor("w") end},
 
 			-- Rotate the main cursor.
-			{ mode = { "n", "v" }, "<C-A-h>", mc.prevCursor },
+			{ mode = { "n", "v" }, "<C-A-,>", mc.prevCursor },
 			{ mode = { "n", "v" }, "<C-A-l>", mc.nextCursor },
 
 			-- Delete the main cursor.

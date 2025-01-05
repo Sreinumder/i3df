@@ -109,4 +109,3 @@ treesj.lua
 outline
 -------
 <leader>to to open jumplist of functions or classes or whatever is releant in the file
-

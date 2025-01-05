@@ -7,13 +7,13 @@ return {
 	},
 	keys = {
 		{
-			"<leader>c",
+			"<localleader>c",
 			"<Plug>(ts-clipping-clip)",
 			desc = "Clip",
 			mode = { "n" },
 		},
 		{
-			"<leader>c",
+			"<localleader>c",
 			"<Plug>(ts-clipping-select)",
 			desc = "Clip Select",
 			mode = { "x", "o" },

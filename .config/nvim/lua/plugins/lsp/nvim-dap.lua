@@ -3,7 +3,7 @@ return {
 	dependencies = {
 		"jbyuki/one-small-step-for-vimkind",
 	},
-	lazy = false,
+	lazy = true,
 	keys = function()
 		local widgets = require("dap.ui.widgets")
 		local dap = require("dap")

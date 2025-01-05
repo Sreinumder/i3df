@@ -1,7 +1,7 @@
 return {
 	"HiPhish/rainbow-delimiters.nvim",
-	-- event = "UIEnter",
-	lazy = false,
+	event = "BufEnter",
+	-- lazy = false,
 	config = function()
 		-- This module contains a number of default definitions
 		local rainbow_delimiters = require("rainbow-delimiters")
@@ -21,13 +21,13 @@ return {
 				lua = 210,
 			},
 			highlight = {
-				"RainbowDelimiterRed",
-				"RainbowDelimiterYellow",
-				"RainbowDelimiterBlue",
-				"RainbowDelimiterOrange",
 				"RainbowDelimiterGreen",
-				"RainbowDelimiterViolet",
+				"RainbowDelimiterBlue",
+				"RainbowDelimiterYellow",
 				"RainbowDelimiterCyan",
+				"RainbowDelimiterOrange",
+				"RainbowDelimiterRed",
+				"RainbowDelimiterViolet",
 			},
 		}
 	end,
