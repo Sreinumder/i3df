@@ -7,6 +7,17 @@ return {
 	keys = function()
 		local widgets = require("dap.ui.widgets")
 		local dap = require("dap")
+		dap.configurations.lua = {
+			{
+				type = "nlua",
+				request = "attach",
+				name = "Attach to running Neovim instance",
+			},
+		}
+
+		dap.adapters.nlua = function(callback, config)
+			callback({ type = "server", host = config.host or "127.0.0.1", port = config.port or 8086 })
+		end
 		local M = {
 			{ "<leader>db", dap.toggle_breakpoint, { noremap = true } },
 			{ "<leader>dc", dap.continue, { noremap = true } },
@@ -33,19 +44,5 @@ return {
 			},
 		}
 		return M
-	end,
-	config = function()
-		local dap = require("dap")
-		dap.configurations.lua = {
-			{
-				type = "nlua",
-				request = "attach",
-				name = "Attach to running Neovim instance",
-			},
-		}
-
-		dap.adapters.nlua = function(callback, config)
-			callback({ type = "server", host = config.host or "127.0.0.1", port = config.port or 8086 })
-		end
 	end,
 }

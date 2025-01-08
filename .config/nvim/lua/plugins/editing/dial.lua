@@ -50,22 +50,24 @@ return {
 				AGN({ "==", "!=" }, false),
 				AGN({ "<", ">=" }, false),
 				AGN({ ">", "<=" }, false),
-				AGN({ "+=", "-=", "*=", "/=" }, false),
+        AGN({ "+=", "-=" }, false),
+				AGN({ "*=", "/=" }, false),
 				AGN({ "++", "--" }, false),
 			},
 			word = {
 				AGN({ "yes", "no" }),
 				AGN({ "left", "right" }),
-				AGN({ "up", "down" }),
+        AGN({ "up", "down" }),
+				AGN({ "mini.cycle", "when" }),
 				AGN({ "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth" }),
 				AGN({ "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth", "Tenth" }),
 			},
-			character = { augend.constant.alias.alpha, augend.constant.alias.Alpha }, -- a b c  A B C
+			alpha = { augend.constant.alias.alpha, augend.constant.alias.Alpha }, -- a b c  A B C
 			quote = { augend.paren.alias.quote }, -- 'rose'
 			parenthesis = { augend.paren.alias.brackets },
 			date = {
 				augend.date.alias["%Y/%m/%d"], -- date (2024/04/23, etc.)
-				augend.date.alias["%d/%m/%Y"], -- date (24/04/2024, etc.)
+        augend.date.alias["%d/%m/%Y"], -- date (24/04/2024, etc.)
 				-- augend.date.alias["%Y-%m-%d"], -- date (2024-04-23, etc.)
 				-- augend.date.alias["%d-%m-%Y"], -- date (24-04-2024, etc.)
 				-- augend.date.alias["%Y-%m-%d"], -- date (2024-04-23, etc.)
@@ -97,9 +99,10 @@ return {
 				augend.date.alias["%H:%M"],
 			},
 			notes = {
-				AGN({ "- [ ]", "- [x]" }),
-				AGN({ "*", "**", "***", "****", "*****", "******", "*******" }),
-				AGN({ "# ", "## ", "### ", "#### ", "##### ", "###### ", "#######" }),
+        AGN({ "- [ ]", "- [x]" }, false),
+				AGN({ "=====", "-----" }, false),
+				AGN({ "*", "**", "***", "****", "*****", "******", "*******" }, false),
+				AGN({ "# ", "## ", "### ", "#### ", "##### ", "###### " }, false),
 				-- AGN({"┘","┐","c", "└", "┌"}, false),
 				-- AGN({"e","─","│"}, false),
 				-- AGN({"◄", "h","►", "▼","▲"}, false),
@@ -123,15 +126,15 @@ return {
 		local arga = { "increment", "decrement" }
 		local argb = { "normal", "gnormal", "visual", "gvisual" }
 		local group =
-			{ "default", "number", "date", "time", "word", "character", "logical", "parenthesis", "quote", "notes" }
+			{ "default", "number", "date", "time", "word", "alpha", "logical", "parenthesis", "quote", "notes" }
 		local keymaps = {
 			{ "<C-a>", "<C-x>", "g<C-a>", "g<C-x>" },
 			-- {"<leader>ii",  "<leader>uu",  "g<leader>ii",  "g<leader>uu"},-- "default
-			{ "<leader>in", "<leader>un", "g<leader>in", "g<leader>un" }, -- "number"
+			{ "<leader>iu", "<leader>uu", "g<leader>iu", "g<leader>uu" }, -- "number"
 			{ "<leader>id", "<leader>ud", "g<leader>id", "g<leader>ud" }, -- "date",
 			{ "<leader>it", "<leader>ut", "g<leader>it", "g<leader>ut" }, -- "time",
 			{ "<leader>iw", "<leader>uw", "g<leader>iw", "g<leader>uw" }, -- "word",
-			{ "<leader>ia", "<leader>ua", "g<leader>ia", "g<leader>ua" }, -- "character
+			{ "<leader>ia", "<leader>ua", "g<leader>ia", "g<leader>ua" }, -- "alpha
 			{ "<leader>il", "<leader>ul", "g<leader>il", "g<leader>ul" }, -- "logical
 			{ "<leader>ip", "<leader>up", "g<leader>ip", "g<leader>up" }, -- "parenthesis
 			{ "<leader>iq", "<leader>uq", "g<leader>iq", "g<leader>uq" }, -- "quote",

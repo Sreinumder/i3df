@@ -15,10 +15,18 @@ return {
 						a = { "@conditional.outer", "@loop.outer" },
 						i = { "@conditional.inner", "@loop.inner" },
 					}),
-					c = spec_treesitter({ a = "@call.outer", i = "@call.inner" }),
+					C = spec_treesitter({ a = "@call.outer", i = "@call.inner" }),
 					-- m = spec_treesitter({ a = "@property.outer", i = "@property.inner" }),
 				},
-				n_lines = 50,
+				mappings = {
+					around_next = "an",
+					inside_next = "in",
+					around_last = "al",
+					inside_last = "il",
+					goto_left = "g[",
+					goto_right = "g]",
+				},
+				n_lines = 200,
 			}
 			return M
 		end,
@@ -26,7 +34,7 @@ return {
 	{
 		"chrisgrieser/nvim-various-textobjs",
 		keys = function()
-			function delete_indentation()
+			function delete_indentation() -- dsi
 				require("various-textobjs").indentation("outer", "outer")
 				local indentationFound = vim.fn.mode():find("V")
 				if not indentationFound then
@@ -38,7 +46,7 @@ return {
 				vim.cmd(tostring(endBorderLn) .. " delete") -- delete first so line index is not shifted
 				vim.cmd(tostring(startBorderLn) .. " delete")
 			end
-			function yank_surrounding()
+			function yank_surrounding() --ysii
 				local startPos = vim.api.nvim_win_get_cursor(0)
 
 				-- identify start- and end-border
@@ -64,13 +72,47 @@ return {
 				vim.api.nvim_win_set_cursor(0, startPos)
 			end
 			local n = {
+				{ mode = { "o", "x" }, "g;", '<cmd>lua require("various-textobjs").lastChange()<CR>' },
 				{ mode = { "o", "x" }, "ih", '<cmd>lua require("various-textobjs").lineCharacterwise("inner")<CR>' },
 				{ mode = { "o", "x" }, "ah", '<cmd>lua require("various-textobjs").lineCharacterwise("outer")<CR>' },
+				{ mode = { "o", "x" }, "ik", '<cmd>lua require("various-textobjs").key("inner")<CR>' },
+				{ mode = { "o", "x" }, "in", '<cmd>lua require("various-textobjs").number("inner")<CR>' },
+				{ mode = { "o", "x" }, "an", '<cmd>lua require("various-textobjs").number("outer")<CR>' },
+				{ mode = { "o", "x" }, "im", '<cmd>lua require("various-textobjs").number("inner")<CR>' },
+				{ mode = { "o", "x" }, "am", '<cmd>lua require("various-textobjs").number("outer")<CR>' },
 				{ mode = { "o", "x" }, "ij", '<cmd>lua require("various-textobjs").column()<CR>' },
 				{ mode = { "o", "x" }, "IR", '<cmd>lua require("various-textobjs").restOfIndentation()<CR>' },
-				{ mode = { "o", "x" }, "ii", '<cmd>lua require("various-textobjs").indentation("inner")<CR>' },
-				{ mode = { "o", "x" }, "ai", '<cmd>lua require("various-textobjs").indentation("outer")<CR>' },
-				{ mode = { "o", "x" }, "im", '<cmd>lua require("various-textobjs").indentation("outer")<CR>' },
+				{
+					mode = { "o", "x" },
+					"ii",
+					"<cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>",
+					{ desc = "inner-inner indentation textobj" },
+				},
+				{
+					mode = { "o", "x" },
+					"ai",
+					function()
+						local ft = vim.bo.filetype -- Get the current buffer's filetype
+						if ft == "python" or ft == "python2" then
+							require("various-textobjs").indentation("outer", "inner")
+						else
+							require("various-textobjs").indentation("outer", "outer")
+						end
+					end,
+					{ desc = "outer-inner indentation textobj" },
+				},
+				-- {
+				-- 	mode = { "o", "x" },
+				-- 	"iI",
+				-- 	"<cmd>lua require('various-textobjs').indentation('inner', 'outer')<CR>",
+				-- 	{ desc = "inner-inner indentation textobj" },
+				-- },
+				-- {
+				-- 	mode = { "o", "x" },
+				-- 	"aI",
+				-- 	"<cmd>lua require('various-textobjs').indentation('outer', 'outer')<CR>",
+				-- 	{ desc = "outer-outer indentation textobj" },
+				-- },
 				{ "dsi", "<cmd>lua delete_indentation()<CR>", { desc = "Delete Surrounding Indentation" } },
 				{ "ysii", "<cmd>lua yank_surrounding()<CR>", { desc = "Yank surrounding indentation" } },
 

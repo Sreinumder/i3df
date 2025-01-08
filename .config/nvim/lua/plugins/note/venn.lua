@@ -20,7 +20,7 @@ return {
 		"smoka7/hydra.nvim",
 	},
 	keys = {
-		{ mode = { "n", "v" }, "<leader>,v" },
+		{ mode = { "n", "v" }, ",v" },
 	},
 	config = function()
 		local Hydra = require("hydra")

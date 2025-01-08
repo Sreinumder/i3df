@@ -13,6 +13,7 @@ local lazy_config = require("lazy-config")
 
 require("abbrev")
 require("filetype")
+require("globals")
 if vim.g.started_by_firenvim == true then --firenvim
 	require("firenvim")
 elseif vim.g.vscode then --vscode

@@ -16,10 +16,10 @@ function toggle_todo()
 	vim.api.nvim_set_current_line(new_line)
 end
 
-map("n", "<leader><leader>t", toggle_todo, { noremap = true, silent = true })
-map("n", "<leader>to", "o- [ ] ", { desc = "markdown todo below" })
-map("n", "<leader>tO", "O- [ ] ", { desc = "markdown todo below" })
-map("n", "<leader>tc", "cc- [ ] ", { desc = "markdown todo change" })
+map("n", "<localleader>tt", toggle_todo, { noremap = true, silent = true })
+map("n", "<localleader>to", "o- [ ] ", { desc = "markdown todo below" })
+map("n", "<localleader>tO", "O- [ ] ", { desc = "markdown todo below" })
+map("n", "<localleader>tc", "cc- [ ] ", { desc = "markdown todo change" })
 
 map("n", "<leader>eo", function()
 	local file_path = vim.fn.expand("%:p")

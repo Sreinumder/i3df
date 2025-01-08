@@ -19,8 +19,10 @@ return {
 	keys = {
 		{ "<Tab>", "<Cmd>BufferNext<CR>", { desc = "buffer next" } },
 		{ "<S-Tab>", "<Cmd>BufferPrevious<CR>", { desc = "buffer prev" } },
-		{ "<C-Tab>", "<Cmd>BufferMoveNext<CR>", { desc = "buffer move right" } },
-		{ "<C-S-Tab>", "<Cmd>BufferMovePrevious<CR>", { desc = "buffer move left" } },
+		{ "<C-Tab>", "<Cmd>BufferNext<CR>", { desc = "buffer right" } },
+		{ "<C-S-Tab>", "<Cmd>BufferPrevious<CR>", { desc = "buffer left" } },
+		{ "<C-A-Tab>", "<Cmd>BufferMoveNext<CR>", { desc = "buffer move right" } },
+		{ "<C-A-S-Tab>", "<Cmd>BufferMovePrevious<CR>", { desc = "buffer move left" } },
 		{ "<A-w>", "<Cmd>BufferWipeout<CR>", { desc = "buffer close" } },
 		{ "<A-W>", "<Cmd>BufferRestore<CR>", { desc = "buffer restore" } },
 		{ "<leader><tab>", "<Cmd>BufferPick<CR>", { desc = "buffer pick" } },

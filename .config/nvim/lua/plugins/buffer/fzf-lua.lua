@@ -21,11 +21,14 @@ return {
 						vim.cmd("cd " .. selected[1])
 					end,
 				},
+				preview = "eza --icons --color=auto -alh {}",
 			})
 		end
 		vim.api.nvim_create_user_command("Z", zoxide_query, {})
-		local function get_treesitter_nodes()
+
+		local function get_treesitter_nodes(query_s)
 			local bufnr = vim.api.nvim_get_current_buf()
+			local bufname = vim.api.nvim_buf_get_name(bufnr)
 			local language_tree = vim.treesitter.get_parser(bufnr)
 			local syntax_tree = language_tree:parse()[1]
 			local root = syntax_tree:root()
@@ -54,21 +57,20 @@ return {
 					preview = preview:sub(1, 47) .. "..."
 				end
 
-				local display = string.format(
-					"%-20s │ %s:%d │ %s",
-					node_type,
-					vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":t"),
-					start_row + 1,
-					preview
-				)
+				local display = string.format("%-23s │ %d: %s", node_type, start_row + 1, preview)
 
-				table.insert(nodes, {
-					display = display,
-					node_type = node_type,
-					start_row = start_row,
-					start_col = start_col,
-					preview = preview,
-				})
+				if query_s == nil or node_type == query_s then
+					table.insert(nodes, {
+						display = display,
+						node_type = node_type,
+						start_row = start_row,
+						start_col = start_col,
+						end_row = end_row,
+						end_col = end_col,
+						preview = preview,
+						bufname = bufname,
+					})
+				end
 
 				-- Count nodes per line for better jumping
 				line_counts[start_row] = (line_counts[start_row] or 0) + 1
@@ -82,8 +84,8 @@ return {
 			return nodes
 		end
 
-		local function jump_to_treesitter_node()
-			local nodes = get_treesitter_nodes()
+		local function jump_to_treesitter_node(query_s)
+			local nodes = get_treesitter_nodes(query_s)
 			if #nodes == 0 then
 				vim.notify("No treesitter nodes found", vim.log.levels.WARN)
 				return
@@ -92,7 +94,6 @@ return {
 			local displays = vim.tbl_map(function(node)
 				return node.display
 			end, nodes)
-
 			require("fzf-lua").fzf_exec(displays, {
 				prompt = "TS Nodes> ",
 				actions = {
@@ -121,17 +122,41 @@ return {
 						end
 					end,
 				},
-				winopts = {
-					preview = {
-						hidden = "hidden",
-					},
-				},
+				-- preview = {
+				-- 	type = "cmd",
+				-- 	fn = function(selected)
+				-- 		for _, node in ipairs(nodes) do
+				-- 			if node.display == selected[1] then
+				-- 				cmd = "bat --line-range "
+				-- 					.. node.start_row
+				-- 					-- .. ":"
+				-- 					-- .. node.start_col
+				-- 					-- .. ":"
+				-- 					-- .. node.end_row
+				-- 					-- .. ":"
+				-- 					-- .. node.end_col
+				-- 					.. " "
+				-- 					.. node.bufname
+				-- 				print(cmd)
+				-- 				return cmd
+				-- 			end
+				-- 		end
+				-- 	end,
+				-- },
 			})
 		end
 		vim.api.nvim_create_user_command("TSJump", jump_to_treesitter_node, {})
 		local M = {
 			{ mode = "n", "<leader>z", zoxide_query, { desc = "Zoxide directory jump" } },
 			{ mode = "n", "<leader>tj", jump_to_treesitter_node, { desc = "Jump to Treesitter node" } },
+			-- {
+			-- 	mode = "n",
+			-- 	"<leader>tc",
+			-- 	jump_to_treesitter_node("function_call"),
+			-- 	{ desc = "Jump to Treesitter node" },
+			-- },
+			-- { mode = "n", "<leader>ta", jump_to_treesitter_node("arguments"), { desc = "Jump to Treesitter node" } },
+
 			{ mode = "n", "<leader>f?", "<cmd>FzfLua builtin<CR>", { desc = "find fzflua-commands" } },
 			-- find files faster
 			{ mode = "n", "<leader>f<tab>", "<cmd>FzfLua buffers<CR>", { desc = "find buffers" } },
@@ -175,7 +200,8 @@ return {
 			{ mode = "n", "<leader>f/", "<cmd>FzfLua search_history<CR>", { desc = "search_history" } },
 			{ mode = "n", "<leader>:", "<cmd>FzfLua command_history<cr>", { desc = "command_history" } },
 			{ mode = "n", "<leader>/", "<cmd>FzfLua search_history<CR>", { desc = "search_history" } },
-			{ mode = "n", "<leader>ft", "<cmd>FzfLua tags<cr>", { desc = "tags" } },
+			-- { mode = "n", "<leader>ft", "<cmd>FzfLua tags<cr>", { desc = "tags" } },
+			{ mode = "n", "<leader>ft", "<cmd>FzfLua treesitter<cr>", { desc = "treesitter" } },
 			{ mode = "n", "<leader>fk", "<cmd>FzfLua keymaps<cr>", { desc = "keymaps" } },
 			{ mode = "n", "<leader>fm", "<cmd>FzfLua marks<CR>", { desc = "find marks" } },
 			{ mode = "n", "<leader>fr", "<cmd>FzfLua register<CR>", { desc = "find register" } },
@@ -237,6 +263,30 @@ return {
 			width = 1.00, -- window width
 		},
 		oldfiles = { include_current_session = true },
+		keymap = {
+			-- builtin = {
+			-- 	["ctrl-?"] = "toggle-help",
+			-- 	["ctrl-f"] = "toggle-fullscreen",
+			-- 	-- Only valid with the 'builtin' previewer
+			-- 	["ctrl-g"] = "toggle-preview-wrap",
+			-- 	["ctrl-j"] = "toggle-preview",
+			-- 	["ctrl-h"] = "toggle-preview-ccw",
+			-- 	["ctrl-l"] = "toggle-preview-cw",
+			-- 	["ctrl-d"] = "preview-page-down",
+			-- 	["ctrl-u"] = "preview-page-up",
+			-- 	["<S-left>"] = "preview-page-reset",
+			-- },
+			fzf = {
+				["ctrl-q"] = "select-all+accept",
+				["ctrl-d"] = "preview-page-down",
+				["ctrl-u"] = "preview-page-up",
+				["alt-a"] = "toggle-all",
+				-- ["ctrl-g"] = "toggle-preview-wrap",
+				-- ["ctrl-j"] = "toggle-preview",
+				-- ["ctrl-h"] = "toggle-preview-ccw",
+				-- ["ctrl-l"] = "toggle-preview-cw",
+			},
+		},
 		previewers = {
 			builtin = {
 				extensions = {

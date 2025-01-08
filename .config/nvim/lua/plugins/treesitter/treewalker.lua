@@ -15,10 +15,10 @@ return {
 			{ mode = { "x" }, "<C-j>", "<ESC><cmd>Treewalker Down<CR>mtgv't", { noremap = true } },
 			{ mode = { "x" }, "<C-k>", "<ESC><cmd>Treewalker Up<CR>mtgv't", { noremap = true } },
 			{ mode = { "x" }, "<C-l>", "<ESC><cmd>Treewalker Right<CR>mtgv't>", { noremap = true } },
-			-- { "<A-h>", ":TSTextobjectSwapPrevious @parameter.inner<CR>", { noremap = true, silent = true } },
 			{ "<leader><C-A-j>", "<cmd>Treewalker SwapDown<cr>", { noremap = true, silent = true } },
 			{ "<leader><C-A-k>", "<cmd>Treewalker SwapUp<cr>", { noremap = true, silent = true } },
-			-- { "<A-l>", ":TSTextobjectSwapNext @parameter.inner<CR>", { noremap = true, silent = true } },
+			-- { "<leader>gh", ":TSTextobjectSwapPrevious @parameter.inner<CR>", { noremap = true, silent = true } },
+			-- { "<leader>gl", ":TSTextobjectSwapNext @parameter.inner<CR>", { noremap = true, silent = true } },
 		},
 	},
 	{

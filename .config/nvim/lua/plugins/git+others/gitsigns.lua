@@ -132,7 +132,7 @@ return {
 			end,
 			{ desc = "diffthis~" },
 		},
-		{ mode = { "o", "x" }, "ic", "<cmd>C-U>Gitsigns select_hunk<CR>", { desc = "hunk txtobj" } }, -- Text object
+		{ mode = { "o", "x" }, "ic", ":<C-U>Gitsigns select_hunk<CR>", { desc = "hunk txtobj" } }, -- Text object
 	},
 	opts = function()
 		local M = {
