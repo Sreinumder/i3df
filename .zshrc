@@ -239,6 +239,7 @@ alias zz='z "$_"'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 
 # Set FZF default options with bottom preview
+# --header='ctrl-c:cancel / ctrl-q:exit / ctrl-s:select' 
 export FZF_DEFAULT_OPTS="
 --height 95% 
 --layout=reverse 
@@ -246,10 +247,13 @@ export FZF_DEFAULT_OPTS="
 --prompt='  ' 
 --pointer='▶' 
 --marker='✓' 
---header='ctrl-c:cancel / ctrl-q:exit / ctrl-s:select' 
 --header-first 
 --bind='ctrl-u:preview-half-page-up'
 --bind='ctrl-d:preview-half-page-down'
 --bind='ctrl-s:toggle-sort'
---preview-window='down:45%:border-rounded'
+--bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
+--bind 'ctrl-y:execute(readlink -f {} | xclip -selection clipboard)'
+--bind 'ctrl-alt-y:execute-silent(xclip -selection clipboard {})'
+--preview-window='right:45%:border-rounded'
 "
+# --bind='alt-p:change-preview(stat {})'

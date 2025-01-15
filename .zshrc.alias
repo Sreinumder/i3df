@@ -1,87 +1,85 @@
-# alias fw=' rg --line-number --with-filename . --color=always --field-match-separator ' '\
-#   | fzf --ansi --preview bat --color=always {1} --highlight-line {2}" \
-#   --preview-window ~8,+{2}-5 "'
-  # alias fw=' rg --line-number --with-filename . --color=always --field-match-separator ' '\
-  #          | fzf --ansi --preview bat --color=always {1} --highlight-line {2}" \
-  #            --preview-window ~8,+{2}-5 "'
-  alias fal='rg --color=always "$1" ~/i3df/.zshrc.alias | fzf --ansi' # Quick preview of files (requires bat)
-  alias fh='history | fzf' # Search through command history
-  alias fd='cd $(find * -type d | fzf)' # Change directory with interactive search
-  alias fps='ps aux | fzf' # Search through running processes
-  alias fv='fzf --preview "bat --style=numbers --color=always --line-range :500 {}"' # Quick preview of files (requires bat)
-  alias gb='git branch | fzf | xargs git checkout' # Git-specific fuzzy commands
-  alias gl='git log --oneline | fzf --preview "git show --color=always {1}"'
-  alias fk='ps aux | fzf | awk "{print \$2}" | xargs kill -9' # Kill process interactively
-  alias fcd='cd $(find . -type d | fzf)' # Search and cd into subdirectories
+bbq() {
+  curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"'
+}
+fal() {
+  rg -e "^\s*alias" ~/i3df/.zshrc.alias | fzf
+}
+alias fd='cd $(find * -type d | fzf)' # Change directory with interactive search
+alias fps='ps aux | fzf' # Search through running processes
+alias fv='fzf --preview "bat --style=numbers --color=always --line-range :500 {}"' # Quick preview of files (requires bat)
+alias gb='git branch | fzf | xargs git checkout' # Git-specific fuzzy commands
+alias gl='git log --oneline | fzf --preview "git show --color=always {1}"'
+alias fk='ps aux | fzf | awk "{print \$2}" | xargs kill -9' # Kill process interactively
+alias fcd='cd $(find . -type d | fzf)' # Search and cd into subdirectories
 
-  alias fQ='yay -Q | fzf'
+alias fQ='yay -Q | fzf'
 
-  alias feh='feh --scale-down'
-  alias ytvc='yt-dlp --write-subs -P "$HOME/videos/" "$(xclip -selection c -o 2>/dev/null)"'
-  alias ytmc='yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xclip -selection c -o 2>/dev/null)"'
-  alias ytv='yt-dlp -P "$HOME/videos/" '
-  alias ytm='yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/"'
-  alias ll='eza --icons --color=auto -alh'
-  alias l='eza --icons --color=auto -h'
-  alias tree='tree -a -I .git'
-  alias od="ouch decompress"
-  alias oc="ouch   compress"
-  # alias So='source ~/.zshrc'
-  alias So='exec zsh'
-  alias fcr='kill `ps -A | grep fcitx5 | awk '{print $1}'` && ( fcitx5 & )'
-  alias grep='grep --color=auto'
+alias feh='feh --scale-down'
+alias ytvc='yt-dlp --write-subs -P "$HOME/videos/" "$(xclip -selection c -o 2>/dev/null)"'
+alias ytmc='yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xclip -selection c -o 2>/dev/null)"'
+alias ytv='yt-dlp -P "$HOME/videos/" '
+alias ytm='yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/"'
+alias ll='eza --icons --color=auto -alh'
+alias l='eza --icons --color=auto -h'
+alias tree='tree -a -I .git'
+alias od="ouch decompress"
+alias oc="ouch   compress"
+# alias So='source ~/.zshrc'
+alias So='exec zsh'
+alias fcr='kill `ps -A | grep fcitx5 | awk '{print $1}'` && ( fcitx5 & )'
+alias grep='grep --color=auto'
 
-  alias cona='nvim ~/.zshrc.alias'
-  alias conb='nvim ~/.bashrc'
-  alias cond='cd ~/i3df/.config/dunst; nvim dunstrc'
-  alias cone='cd ~/.config/doom/; nvim .'
-  alias coni='cd ~/i3df/.config/i3/; nvim config'
-  alias conm='nvim ~/.config/mimeapps.list'
-  alias conn='cd ~/i3df/.config/nvim/lua/plugins/; yazi'
-  alias conq='cd ~/.config/qutebrowser; yazi .'
-  alias cons='cd ~/i3df/scripts; yazi .'
-  alias conw='nvim ~/i3df/.config/wezterm/wezterm.lua'
-  alias con.='yazi ~/.config/'
-  alias cony='cd ~/.config/yazi/; nvim .'
-  alias conz='nvim ~/.zshrc'
+alias cona='nvim ~/.zshrc.alias'
+alias conb='nvim ~/.bashrc'
+alias cond='cd ~/i3df/.config/dunst; nvim dunstrc'
+alias cone='cd ~/.config/doom/; nvim .'
+alias coni='cd ~/i3df/.config/i3/; nvim config'
+alias conm='nvim ~/.config/mimeapps.list'
+alias conn='cd ~/i3df/.config/nvim/lua/plugins/; yazi'
+alias conq='cd ~/.config/qutebrowser; yazi .'
+alias cons='cd ~/i3df/scripts; yazi .'
+alias conw='nvim ~/i3df/.config/wezterm/wezterm.lua'
+alias con.='yazi ~/.config/'
+alias cony='cd ~/.config/yazi/; nvim .'
+alias conz='nvim ~/.zshrc'
 
-  alias Nha='nvim ~/notes/hobby/anime/'
-  alias N='nvim ~/notes'
-  alias Nc='nvim ~/notes/code/'
-  alias n='nvim'
-  alias nnp='nvim --cmd "let g:pluginless = 1"'
-  alias nv='neovide'
-  alias v='vim'
-  alias b='btop'
-  alias py='python'
-  alias py3='python3'
-  alias pya='source env/bin/activate'
-  alias pyi='pip install -r requirements.txt'
-  alias pyenv='python3 -m venv;'
-  alias pyenvi='python3 -m venv env; pya; pyi;'
-  alias Sp='sudo pacman -S'
-  alias ys='yay -S'
-  alias lg='lazygit'
-  alias gi3='cd ~/i3df/; lazygit;'
-  alias setclip='xclip -selection c'
-  alias getclip='xclip -selection c -o'
-  alias sc='xclip -selection c'
-  alias gc='xclip -selection c -o'
-  alias retroarch='(retroarch &)'
-  alias DR='pkill dunst; ( dunst & ); sleep 1; notify-send -u low 'low"; notify-send -u normal "normal"; notify-send -u critical "critical";" 
-  # alias sudo='mpv ~/i3df/scripts/notify/bell.mp3; sudo'
+alias Nha='nvim ~/notes/hobby/anime/'
+alias N='nvim ~/notes'
+alias Nc='nvim ~/notes/code/'
+alias n='nvim'
+alias nnp='nvim --cmd "let g:pluginless = 1"'
+alias nv='neovide'
+alias v='vim'
+alias b='btop'
+alias py='python'
+alias py3='python3'
+alias pya='source env/bin/activate'
+alias pyi='pip install -r requirements.txt'
+alias pyenv='python3 -m venv;'
+alias pyenvi='python3 -m venv env; pya; pyi;'
+alias Sp='sudo pacman -S'
+alias ys='yay -S'
+alias lg='lazygit'
+alias gi3='cd ~/i3df/; lazygit;'
+alias setclip='xclip -selection c'
+alias getclip='xclip -selection c -o'
+alias sc='xclip -selection c'
+alias gc='xclip -selection c -o'
+alias retroarch='(retroarch &)'
+alias DR='pkill dunst; ( dunst & ); sleep 1; notify-send -u low 'low"; notify-send -u normal "normal"; notify-send -u critical "critical";" 
+# alias sudo='mpv ~/i3df/scripts/notify/bell.mp3; sudo'
 
-  alias RB='cd ~/FUTSALA/; source env/bin/activate; uvicorn backend.main:app --reload'
-  alias RF='cd ~/FUTSALA/frontend; npm run dev'
-  alias RC='cd ~/FUTSALA; nvim .'
-  alias hql='harlequin'
-  alias xrr='xrandr --output HDMI-1 --right-of eDP-1'
-  alias xr0='xrandr -s 0'
-  alias xrm='xrandr --setmonitor HDMI-1~1 768/205x683/230+1366+0 HDMI-1;
-  xrandr --setmonitor HDMI-1~2 768/205x683/230+1366+683 none'
-  alias xro='xrandr --output HDMI-1 --mode 1366x768 --pos 1366x0 --rotate right'
-  alias xrd='xrandr --delmonitor HDMI-1~1; xrandr --delmonitor HDMI-1~2'
-  alias xr='xrd; xrm'
+alias RB='cd ~/FUTSALA/; source env/bin/activate; uvicorn backend.main:app --reload'
+alias RF='cd ~/FUTSALA/frontend; npm run dev'
+alias RC='cd ~/FUTSALA; nvim .'
+alias hql='harlequin'
+alias xrr='xrandr --output HDMI-1 --right-of eDP-1'
+alias xr0='xrandr -s 0'
+alias xrm='xrandr --setmonitor HDMI-1~1 768/205x683/230+1366+0 HDMI-1;
+xrandr --setmonitor HDMI-1~2 768/205x683/230+1366+683 none'
+alias xro='xrandr --output HDMI-1 --mode 1366x768 --pos 1366x0 --rotate right'
+alias xrd='xrandr --delmonitor HDMI-1~1; xrandr --delmonitor HDMI-1~2'
+alias xr='xrd; xrm'
 
 # rg
 # --field-match-separator ' ' - tell rg to separate the filename and linenumber with
@@ -202,8 +200,6 @@ function fw() {
   if [[ -n "$selected" ]]; then
     local file="${${(s/:/)selected}[1]}"
     local line="${${(s/:/)selected}[2]}"
-
-        # Open nvim at the specific line
-        nvim "$file" "+$line"
+    nvim "$file" "+$line"
   fi
 }
