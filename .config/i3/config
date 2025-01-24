@@ -196,6 +196,7 @@ bindsym $mod+Shift+r reload
 bindsym $mod+Ctrl+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+b exec "blueman-manager"
 
 # resize window (you can also use the mouse for that)
 bindsym $mod+Shift+h resize shrink width 10 px or 10 ppt
@@ -205,7 +206,7 @@ bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 #
 # bindsym $mod+r mode "resize"
 
-# Define Vim mode
+# Define Vim mod
 # mode "music" {
 #     bindsym --release comma exec --no-startup-id xdotool key exclam
 #     bindsym --release period exec --no-startup-id xdotool key Left

@@ -254,6 +254,7 @@ export FZF_DEFAULT_OPTS="
 --bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
 --bind 'ctrl-y:execute(readlink -f {} | xclip -selection clipboard)'
 --bind 'ctrl-alt-y:execute-silent(xclip -selection clipboard {})'
---preview-window='right:45%:border-rounded'
+--preview-window 'right,50%,border-left,<50(down,40%,border-bottom)'
 "
+# --preview-window='right:45%:border-rounded'
 # --bind='alt-p:change-preview(stat {})'
