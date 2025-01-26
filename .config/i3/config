@@ -73,6 +73,7 @@ floating_modifier $mod
 bindsym $mod+Return exec warp-terminal
 bindsym $mod+z exec zeditor
 bindsym $mod+x exec emacs
+bindsym $mod+$alt+n exec neovide
 bindsym $mod+g exec "ezterm -e retroarch"
 bindsym $mod+Ctrl+space exec wezterm
 # bindsym ctrl+$mod+space exec warp-terminal
