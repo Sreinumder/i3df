@@ -3,7 +3,7 @@
 [manager]
 
 prepend_keymap = [
-{ on = ["d", "u"], run = "plugin restore", desc = "Restore last deleted files/folders" },
+{ on = ["<A-u>"], run = "plugin restore", desc = "Restore last deleted files/folders" },
 { on = "<A-y>", run = ["plugin copy-file-contents"], desc = "Copy contents of file"},
 { on = "<Tab>", run = "spot", desc = "Spot hovered file" },
 { on = [ "g", "l" ], run  = "plugin lazygit",         desc = "run lazygit"},
@@ -47,13 +47,7 @@ prepend_keymap = [
 { on = [ "b", "d" ], run = "plugin bookmarks --args=delete", desc = "Delete a bookmark" },
 { on = [ "b", "D" ], run = "plugin bookmarks --args=delete_all", desc = "Delete all bookmarks" },
 
-# https://github.com/dawsers/toggle-view.yazi
-{ on = "<C-1>", run = "plugin --sync toggle-view --args=parent", desc = "Toggle parent" },
-{ on = "<C-2>", run = "plugin --sync toggle-view --args=current", desc = "Toggle current" },
-{ on = "<C-3>", run = "plugin --sync toggle-view --args=preview", desc = "Toggle preview" },
-
 # # https://github.com/mikavilpas/easyjump.yazi
 # { on   = "i", run = "plugin searchjump", desc = "searchjump mode" },
 # { on   = "i", run = "plugin searchjump --args='autocd'", desc = "searchjump mode(auto cd select folder)"},
-
   ]
