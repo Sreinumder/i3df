@@ -1,0 +1,39 @@
+[doing]
+command=~/i3df/scripts/doing.sh show
+interval=1
+
+[playing]
+command=~/i3df/scripts/playing.sh
+interval=5
+
+[connection]
+command=~/i3df/scripts/wifi.sh
+interval=5
+
+# [cpu_usage]
+# label=脳 
+# command=echo $(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')%
+# interval=5
+
+[brightness]
+command=~/i3df/scripts/brightness.sh
+interval=10
+
+[volume]
+command=~/i3df/scripts/pactl.sh
+interval=1
+format_muted="静音"
+
+[battery]
+command=~/i3df/scripts/battery.sh
+interval=10
+
+[tzdate]
+# label=日付
+command=date '+%y年%m月%d日'
+interval=60
+
+[tztime]
+# label=時間
+command=date '+%H時%M分'
+interval=60
