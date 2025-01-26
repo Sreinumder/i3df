@@ -1,6 +1,7 @@
 export PATH=$PATH:/var/lib/flatpak/exports/bin
 export PATH=$PATH:~/.config/emacs/bin
 export MANPAGER="nvim +Man!"
+export SCRIPT_DIR="~/i3df/scripts/"
 export QT_STYLE_OVERRIDE=adwaita-dark # dark mode
 [[ $- != *i* ]] && return
 export GTK_IM_MODULE=fcitx
@@ -11,6 +12,52 @@ export FCITX5_UI=gtk
 export GLFW_IM_MODULE=ibus
 export EDITOR=nvim
 export QT_STYLE_OVERRIDE=kvantum
+
+# export GREEN="#7CB342"
+# export BLUE="#2196F3"
+# export YELLOW="#FFEB3B"
+# export RED="#F44336"
+# export PURPLE="#9C27B0"
+# export CYAN="#00BCD4"
+# export ORANGE="#FF5722"
+# export TEAL="#009688"
+# export LIGHT_GRAY="#B0BEC5"
+# export DARK_GRAY="#455A64"
+#
+# # Muted Soothing Color Palette
+# export GREEN="#A5D6A7"
+# export BLUE="#64B5F6"
+# export YELLOW="#FFF176"
+# export RED="#EF9A9A"
+# export PURPLE="#B39DDB"
+# export CYAN="#80DEEA"
+# export ORANGE="#FFAB91"
+# export TEAL="#80CBC4"
+# export LIGHT_GRAY="#CFD8DC"
+# export DARK_GRAY="#607D8B"
+# export PINK="#F48FB1"
+# export BROWN="#BCAAA4"
+# export INDIGO="#9FA8DA"
+# export LIME="#DCE775"
+# export AMBER="#FFD54F"
+#
+# Muted with Slightly Higher Contrast Color Palette
+export GREENER="#7CB342"
+export GREEN="#81C784"
+export BLUE="#42A5F5"
+export YELLOW="#FFEB3B"
+export RED="#EF5350"
+export PURPLE="#AB47BC"
+export CYAN="#26C6DA"
+export ORANGE="#FF7043"
+export TEAL="#26A69A"
+export LIGHT_GRAY="#B0BEC5"
+export DARK_GRAY="#455A64"
+export PINK="#F06292"
+export BROWN="#A1887F"
+export INDIGO="#5C6BC0"
+export LIME="#D4E157"
+export AMBER="#FFC107"
 
 bindkey -v
 source ~/.zshrc.alias
@@ -107,8 +154,6 @@ export FZF_CTRL_R_OPTS="
 export FZF_ALT_C_OPTS="
   --walker-skip .git,node_modules,target
   --preview 'tree -C {}'"
-
-source /home/rose/.config/broot/launcher/bash/br
 
 # shellcheck shell=bash
 
@@ -232,8 +277,6 @@ if [[ -o zle ]]; then
 
     [[ "${+functions[compdef]}" -ne 0 ]] && \compdef __zoxide_z_complete z
 fi
-
-alias zz='z "$_"'
 
 # Set FZF default command to use ripgrep
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
