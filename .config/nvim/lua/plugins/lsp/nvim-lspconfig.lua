@@ -1,8 +1,11 @@
 return {
 	"neovim/nvim-lspconfig",
-	enabled = false,
+	dependencies = { "saghen/blink.cmp" },
+	enabled = true,
+	lazy = false,
 	event = "UIEnter",
 	keys = {
+		{ "<leader>K", "K", { desc = "default K" } },
 		{
 			"<leader>ds",
 			function()
@@ -41,13 +44,12 @@ return {
 			{ desc = "Go to type definition" },
 		},
 		{
-			"gi",
+			"<leader>gi",
 			function()
 				vim.lsp.buf.implementation()
 			end,
 			{ desc = "Go to implementation" },
 		},
-		{ "<Leader>gi", "gi" },
 		{
 			"<leader>wi",
 			function()
@@ -64,30 +66,89 @@ return {
 		},
 		{
 			mode = { "n", "x" },
-			"<leader>ca",
+			"<leader>ac",
 			function()
 				vim.lsp.buf.code_action()
 			end,
 			{ desc = "Code action" },
 		},
 		-- {"<leader>wl", function()
-		-- 	print(vim.inspect(vim.lsp.buf.list|workspace_folders()))
-		-- end, { desc = "List workspace folders" }},
-	},
-	dependencies = { "saghen/blink.cmp" },
-	opts = {
-		servers = {
-			lua_ls = {},
-			-- clangd = {},
-			-- css={}.
-			-- emmet-language-server = {},
+			-- 	print(vim.inspect(vim.lsp.buf.list|workspace_folders()))
+			-- end, { desc = "List workspace folders" }},
 		},
-	},
-	config = function(_, opts)
-		local lspconfig = require("lspconfig")
-		for server, config in pairs(opts.servers) do
-			config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-			lspconfig[server].setup(config)
-		end
-	end,
-}
+		opts = {
+			servers = {
+				lua_ls = {},
+				pyright = {},
+				-- clangd = {},
+				-- css={}.
+				emmet_ls = {},
+			},
+		},
+		config = function()
+			local lspconfig = require("lspconfig")
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+			lspconfig.lua_ls.setup({
+				capabilities = capabilities,
+				settings = {
+					Lua = {
+						runtime = { version = "LuaJIT" },
+						diagnostics = { globals = { "vim" } }, -- Recognize the `vim` global (Neovim-specific)
+						workspace = {
+							library = vim.api.nvim_get_runtime_file("", true),
+							checkThirdParty = false,
+						},
+					},
+				},
+			})
+			lspconfig.emmet_ls.setup({
+				filetypes = {
+					"html",
+					"css",
+					"javascript",
+					"typescript",
+					"javascriptreact",
+					"typescriptreact",
+					"vue",
+					"svelte",
+				},
+				init_options = {
+					html = {
+						options = {
+							["bem.enabled"] = true,
+						},
+					},
+				},
+			})
+			lspconfig.pyright.setup({
+				settings = {
+					python = {
+						analysis = {
+							typeCheckingMode = "basic", -- Options: off, basic, strict
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
+						},
+					},
+				},
+			})
+			lspconfig.ts_ls.setup({
+				capabilities = capabilities,
+				filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }, -- Supports JS/TS/React
+				cmd = { "typescript-language-server", "--stdio" },
+				on_attach = function(client, bufnr)
+					client.server_capabilities.documentFormattingProvider = false
+					client.server_capabilities.documentRangeFormattingProvider = false
+				end,
+			})
+			lspconfig.eslint.setup({
+				capabilities = capabilities,
+				on_attach = function(client, bufnr)
+					-- Automatically fix problems on save
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						command = "EslintFixAll",
+					})
+				end,
+			})
+		end,
+	}

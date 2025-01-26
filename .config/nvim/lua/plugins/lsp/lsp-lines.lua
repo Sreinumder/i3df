@@ -5,7 +5,7 @@ return {
 	-- event = { "LspAttach" },
 	keys = {
 		{
-			"<Leader>,l",
+			"<Leader>,ll",
 			function()
 				require("lsp_lines").toggle()
 			end,

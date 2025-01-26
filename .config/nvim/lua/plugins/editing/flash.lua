@@ -4,13 +4,15 @@ return {
 	opts = {
 		modes = {
 			char = {
-				enabled = false,
-				autohide = true,
+				enabled = true,
+				autohide = false,
 				jump_labels = false,
 				highlight = { backdrop = false },
+				-- to something else, e.g., { [";"] = "L", [","] = H }
+				keys = { "f", "F", "t", "T", [";"] = "<A-n>", [","] = "<A-p>"},
 			},
 			search = {
-				enabled = false,
+				enabled = true,
 				jump_labels = false,
 			},
 		},

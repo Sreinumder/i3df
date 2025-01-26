@@ -1,6 +1,5 @@
 return {
 	"gbprod/substitute.nvim",
-	dependencies = { "gbprod/yanky.nvim" },
 	event = { "UIEnter" },
 	keys = {
 		{ "s", mode = { "n", "x" } },

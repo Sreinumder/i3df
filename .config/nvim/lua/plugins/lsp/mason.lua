@@ -15,4 +15,10 @@ return {
 		},
 		max_concurrent_installers = 10,
 	},
+	config = function()
+		require('mason').setup()
+		require('mason-lspconfig').setup({
+			ensure_installed = { 'pyright' },
+		})
+	end,
 }

@@ -44,10 +44,3 @@ return {
     end
 }
 
--- │         ooooo                     │
--- │     ooo ooooo                     │
--- │      o  ooooo                     │
--- │         ooooo                     │
--- │o     o  ooooo                    o│
--- │ooo oooo ooooooooooo  o o o  oooo o│
--- └───────────────────────────────────┘

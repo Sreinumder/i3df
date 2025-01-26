@@ -1,5 +1,6 @@
 return {
 	"mfussenegger/nvim-dap",
+  enabled = false,
 	dependencies = {
 		"jbyuki/one-small-step-for-vimkind",
 	},
@@ -43,6 +44,5 @@ return {
 				end,
 			},
 		}
-		return M
 	end,
 }

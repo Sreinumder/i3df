@@ -1,4 +1,5 @@
 return {
-	"NMAC427/guess-indent.nvim",
-	event = "BufEnter",
+  "NMAC427/guess-indent.nvim",
+  lazy = false,
+  opts = {},
 }

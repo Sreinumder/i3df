@@ -1,11 +1,11 @@
 return {
 	"yujinyuz/gitpad.nvim",
 	opts = {
-		title = "gitpad",
+		title = "Note",
 		dir = "~/notes/gitpad",
-		window_type = "split",
+		-- window_type = "spliting",
 		split_win_opts = {
-			split = "right",
+			split = "Down",
 		},
 	},
 	keys = {

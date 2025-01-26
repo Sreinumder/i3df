@@ -4,17 +4,17 @@ return {
 	ft = { "html", "css", "js", "config", "conf" },
 	keys = {
 		{
-			"<leader>ccc",
+			"<leader>acp",
 			":CccPick<CR>",
 			{ desc = "ccc pick" },
 		},
 		{
-			"<leader>c<C-a>",
+			"<leader>a<C-a>",
 			":CccConvert<CR>",
 			{ desc = "ccc convert" },
 		},
 		{
-			",cc",
+			"<leader>,cc",
 			":CccHighlighterToggle<CR>",
 			{ desc = "ccc toggle" },
 		},

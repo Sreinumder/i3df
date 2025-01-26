@@ -1,14 +1,12 @@
 local map = vim.keymap.set
 
-function toggle_todo()
+function ToggleTodo()
 	local line = vim.api.nvim_get_current_line()
 	local new_line
 
-	if line:match("^%s*-%s*%[ %]") then
-		-- Unchecked to checked
+	if line:match("^%s*-%s*%[ %]") then -- Unchecked to checked
 		new_line = line:gsub("^(%s*-%s*)%[ %]", "%1[x]")
-	elseif line:match("^%s*-%s*%[x%]") then
-		-- Checked to unchecked
+	elseif line:match("^%s*-%s*%[x%]") then -- Checked to unchecked
 		new_line = line:gsub("^(%s*-%s*)%[x%]", "%1[ ]")
 	else
 		return
@@ -16,7 +14,7 @@ function toggle_todo()
 	vim.api.nvim_set_current_line(new_line)
 end
 
-map("n", "<localleader>tt", toggle_todo, { noremap = true, silent = true })
+map("n", "<localleader>tt", ToggleTodo, { noremap = true, silent = true })
 map("n", "<localleader>to", "o- [ ] ", { desc = "markdown todo below" })
 map("n", "<localleader>tO", "O- [ ] ", { desc = "markdown todo below" })
 map("n", "<localleader>tc", "cc- [ ] ", { desc = "markdown todo change" })
@@ -30,7 +28,6 @@ map("n", "<leader>eo", function()
 	end
 end, { desc = "Open current file in file manager" })
 
-map("n", "<A-.>", "<cmd>Up><CR>", { desc = "last command" })
 map("n", "g<leader>gx", '"gya"<cmd>lua vim.ui.open("https://www.github.com/"..<C-r>g)<CR>', { desc = "open in github" })
 
 -- bash hack for sorting/shuffling/sequencing csv with <A-o> in normal or insert mode
@@ -50,28 +47,7 @@ map(
 map(
 	"x",
 	"<A-o>",
-	'<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" |  | sed -z "s/\\n/, /g"<C-Left><C-Left><C-Left><C-Left><C-Left><C-Left>'
-)
-
-map(
-	"x",
-	"<leader>oso",
-	'<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | sort -g | sed -z "s/\\n/, /g"<CR>kJxJhxgv'
-)
-map(
-	"x",
-	"<leader>osr",
-	'<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | sort -gr | sed -z "s/\\n/, /g"<CR>kJxJhxgv'
-)
-map(
-	"x",
-	"<leader>oss",
-	'<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | shuf | sed -z "s/\\n/, /g"<CR>kJxJhxgv'
-)
-map(
-	"x",
-	"<leader>on",
-	'<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" | wc -l<CR>kJxJhx'
+	'o<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" |  | sed -z "s/\\n/, /g"<C-Left><C-Left><C-Left><C-Left><C-Left><C-Left>'
 )
 
 -- https://aur.archlinux.org/packages/python-translate-shell
@@ -104,6 +80,7 @@ map(
 
 -- bash filter trans
 map("n", "<leader>rt", '"tyy"tp"tp0d}k!!trans -t  -b<C-Left><Left>', { desc = "translate filter append" })
+
 if vim.fn.has("win32") ~= 0 then
   map("n", "<leader>rs", '"byy"bp"bp0d}k!!powershell<cr>', { desc = "bash filter append" })
   map("n", "<leader>rS", "!!powershell<cr>", { desc = "bash filter replace" })
@@ -112,10 +89,8 @@ else
   map("n", "<leader>rS", "!!sh<cr>", { desc = "bash filter replace" })
 end
 
--- niche visual selection hacks
-map("x", "<A-x>", '<esc>"_x`<"_xv`>h', { desc = "delete surrounding of visual mode" })
-map("x", "<A-X>", '<esc>"_dd`<"_ddv`>h', { desc = "delete surrounding lines of visual mode" })
-map("x", "<A-c>", '"bdo<esc>"bpk"_dd', { desc = "delete except the selection of current line" })
+map("n", "<leader>xx", ":lua <C-r><C-l><cr>", { desc = "lua execute" })
+map("x", "<leader>xx", "lua <C-r><C-l><cr>", { desc = "lua execute" })
 
 -- -- increase/decrease and shift visual selection
 -- map("x", "<C-l>", "loho", { desc = "change vi range" })
@@ -127,9 +102,9 @@ map("x", "<A-c>", '"bdo<esc>"bpk"_dd', { desc = "delete except the selection of 
 -- map("x", "<C-S-j>", "jojo", { desc = "shift vi range" })
 -- map("x", "<C-S-k>", "koko", { desc = "shift vi range" })
 
--- -- Comment
+-- Comment
+-- hsl(0 0% 20%)
 map("n", "<C-/>", "gcc", { desc = "toggle comment", remap = true })
-map("v", "<C-/>", "gc", { desc = "toggle comment", remap = true })
-
--- comment and clone sentence
-map("v", "<leader><C-/>", '"cyygcc"cp', { desc = "toggle comment", remap = true })
+map("x", "<C-/>", "gc", { desc = "toggle comment", remap = true })
+map("n", "<leader>c", "gc", { desc = "toggle comment", remap = true })
+map("x", "<leader>c", "gc", { desc = "toggle comment", remap = true })
