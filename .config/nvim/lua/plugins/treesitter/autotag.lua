@@ -19,8 +19,5 @@ return {
         enable_close = true
       }
     }
-  },
-  -- config = function()
-  --   -- print("hello autotag!")
-  -- end,
+  }
 }

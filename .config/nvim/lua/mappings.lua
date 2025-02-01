@@ -31,21 +31,14 @@ map(
 	{ desc = "Redraw / Clear hlsearch / Diff Update" }
 )
 map("x", "J", "j", { desc = "Disable annoying J " })
-map("n", "<C-u>", "<C-u>zz", { desc = "Half page up" })
-map("n", "<C-d>", "<C-d>zz", { desc = "Half page down" })
 map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
 map("n", "<leader>gv", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
 map({ "o", "x" }, "i<space>", "iW") -- select WORD by i<space>
--- others
 map("n", "<leader>L", "<cmd>Lazy<CR>", { desc = "Lazy nvim" })
-map({ "n", "x" }, "<leader>*", "*``cgn", { desc = "replace word" })
 
 -- cd to things
 map("n", "<leader>dh", "<cmd>cd ..<CR>", { desc = "cd .." })
 map("n", "<leader>df", "<cmd>lcd %:p:h<cr><cmd>pwd<cr>", { desc = "cd to buf" })
-map("n", "<leader>dp", "<cmd>lcd ~/.config/nvim/lua/plugins<cr>", { desc = "cd to conn" })
-map("n", "<leader>dr", "<cmd>lcd ~<cr>", { desc = "cd to ~" })
-map("n", "<leader>dn", "<cmd>lcd ~/notes<cr>", { desc = "cd to notes" })
 map("n", "<leader>dg", function()
 	local git_root = vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel"))
 	if vim.fn.isdirectory(git_root) == 1 then
@@ -55,10 +48,11 @@ map("n", "<leader>dg", function()
 	end
 end, { desc = "Change directory to Git repository root" })
 
--- vim default register to clipboard. usage: copy from vim to other: yy<leader><leader> <C-v>(in browser)
-map({"n", "x"}, "<leader><leader>", function() vim.fn.setreg('+', vim.fn.getreg('"')) end, {desc = 'vim reg to clipboard'})
+-- vim <-> clipbaord
 -- clipboard to vim default register. usage: copy from browser to vim: <C-c>(in browser) <S-Space>p in vim
-map({"n", "x"}, "<S-Space>", function() vim.fn.setreg('"', vim.fn.getreg('+')) end, {desc = 'clipboard to vim reg'})
+map({"n", "x"}, "<", function() vim.fn.setreg('"', vim.fn.getreg('+')) end, {desc = 'clipboard to vim reg'})
+-- vim default register to clipboard. usage: copy from vim to other: yy<leader><leader> <C-v>(in browser)
+map({"n", "x"}, ">", function() vim.fn.setreg('+', vim.fn.getreg('"')) end, {desc = 'vim reg to clipboard'})
 
 -- delete with x d or D and cut with alt + x + d + D
 map({ "n", "x" }, "x", '"_x')
@@ -88,7 +82,6 @@ map("n", "<leader>P", "m`O<ESC>p==``", { desc = "paste above current line(jump)"
 map("n", "<A-a>", "printf('m`%so<ESC>``', v:count1)", { expr = true, desc = "insert line below" })
 map("n", "<A-i>", "printf('m`%sO<ESC>``', v:count1)", { expr = true, desc = "insert line above" })
 
--- simple editing hacks
 -- clone sentences up and down
 map("n", "<A-J>", 'V"cy"cP==gv<Esc>', { desc = "clone line Down" })
 map("n", "<A-K>", 'V"cy"cgp==gv<Esc>', { desc = "clone line Up" })
@@ -111,12 +104,9 @@ map("x", "<A-g><A-g>", '"bdgg"bp`[v`]', { desc = "move selection with gg" })
 map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
 
 -- simple hacks
--- map("n", "<leader>ql", "<cmd>lopen<cr>", { desc = "Location List" })
--- map("n", "<leader>qf", "<cmd>copen<cr>", { desc = "Quickfix List" })
 map("n", "<C-s>", "<cmd>w<cr>", { silent = true, desc = "save this buffer" })
 map("n", "<leader>qq", "<cmd>q!<cr>", { silent = true, desc = "quit current window" })
 map("n", "<leader>sa", "<cmd>wqa!<cr>", { silent = true, desc = "write and quit all" })
-map("n", "<leader>qw", "<cmd>wq<cr>", { silent = true, desc = "save buffer" })
 map("n", "<leader>wa", "<cmd>wa<cr>", { silent = true, desc = "save all buffer" })
 map("n", "<leader>qa", "<cmd>qa!<cr>", { silent = true, desc = "quit nvim" }) -- Quit all opened buffers
 
@@ -127,21 +117,12 @@ map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 map("i", "<c-u>", "<Esc>viw~ea", { desc = "toggle case" })
 map("i", "<c-t>", "<Esc>b~lea", { desc = "change word case to title" })
-map("i", "<C-k>", function() -- capitalize word
-	local line = vim.fn.getline(".")
-	local col = vim.fn.getpos(".")[3]
-	local substring = line:sub(1, col - 1)
-	local result = vim.fn.matchstr(substring, [[\v<(\k(<)@!)*$]])
-	return "<C-w>" .. result:upper()
-end, { expr = true })
 map("i", "<C-l>", '<C-r>=expand("%:p:h") . "/" <CR>', { desc = "write file path" })
 
 map({ "i", "c", "t" }, "<A-h>", "<Left>", { desc = "Insert mode left" })
 map({ "i", "c", "t" }, "<A-j>", "<Down>", { desc = "Insert mode down" })
 map({ "i", "c", "t" }, "<A-k>", "<Up>", { desc = "Insert mode up" })
 map({ "i", "c", "t" }, "<A-l>", "<Right>", { desc = "Insert mode Right" })
-map({ "i", "c" }, "<C-A>", "<HOME>")
-map({ "i", "c" }, "<C-E>", "<END>")
 map("c", "<C-A-K>", "\\(.*\\)", { desc = "kirby " })
 
 map("t", "<C-<ESC>", "<C-\\><C-n>", { desc = "exit in terminal mode" })

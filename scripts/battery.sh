@@ -27,4 +27,6 @@ fi
 # Output the battery status with percentage
 echo "$status $battery_percentage%"
 # echo "$battery_percentage%"
-# echo "$color"
+# echo "Red"
+# echo "$status $battery_percentage%\n$battery_percentage%"\n$color"
+# echo "$RED"

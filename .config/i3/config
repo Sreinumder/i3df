@@ -1,5 +1,28 @@
-set $mod Mod4
+# if you dont know what are you doing
+# First super / start = mod(m)
+# | mod+c           | open this config               |
+# | mod+ctrl+space  | start terminal (wezterm)       |
+# | mod+ctrl+f      | start zen-browser              |
+# | mod+d           | dmenu to search/open programs  |
+# | mod+w           | close the program              |
+# | mod+hjkl        | for window focus change        |
+# | mod+alt+hjkl    | for moving window              |
+# | mod+shift+hjkl  | for resizing window            |
+# | mod+1...9       | switching workspace to 123...9 |
+# | mod+Tab/S-Tab   | next/prev workspace            |
+# | mod+Shift+1...9 | moving window to 1...9         |
+# | mod+f           | toggle full screen mode        |
+# | mod+shift+f     | toggle floating mode           |
+# | mod+shift+space | switching keyboard (fcitx5)    |
+# | mod+i           | toggle i3bar (status bar)      |
+# | mod+ctrl+i      | toggle i3bar (invisible/kill)  |
+# | mod+toggle+i    | toggle current window titlebar |
+
+# keybind variables mod = start/super alt = alt
+set $mod Mod4  
 set $alt Mod1
+
+# basically autostart
 exec --no-startup-id xrdb -merge $HOME/.Xresources # for dark mode for applications
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -10,9 +33,11 @@ exec --no-startup-id fcitx5
 exec --no-startup-id dunst
 exec --no-startup-id feh --bg-fill $HOME/wallpaper/scooter.jpg --bg-fill ~/wallpaper/crow.png --bg-fill ~/wallpaper/sky.jpg
 exec --no-startup-id wezterm
+# set $refresh_i3status killall -SIGUSR1 i3status
 
-set $refresh_i3status killall -SIGUSR1 i3status
-# media --------------------------------------------------
+floating_modifier $mod
+
+# Audio, Brightness & Screenshot ---------------------------
 # 1. Audio --------------------------------------------------
 bindsym $mod+XF86AudioLowerVolume exec pavucontrol
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3status

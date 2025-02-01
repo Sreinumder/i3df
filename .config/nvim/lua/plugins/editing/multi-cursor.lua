@@ -115,7 +115,7 @@ return {
 				end,
 			},
 
-			{ mode = "n", "<leader>gv", mc.restoreCursors }, -- bring back cursors if you accidentally clear them
+			{ mode = "n", ";gv", mc.restoreCursors }, -- bring back cursors if you accidentally clear them
 			{ mode = "n", "<leader>ga", mc.alignCursors }, -- Align cursor columns.
 
 			-- Split visual selections by regex.

@@ -1,6 +1,5 @@
 return {
 	"folke/flash.nvim",
-	event = "VeryLazy",
 	opts = {
 		modes = {
 			char = {
@@ -8,8 +7,14 @@ return {
 				autohide = false,
 				jump_labels = false,
 				highlight = { backdrop = false },
-				-- to something else, e.g., { [";"] = "L", [","] = H }
 				keys = { "f", "F", "t", "T", [";"] = "<A-n>", [","] = "<A-p>"},
+        char_actions = function(motion)
+            return {
+              -- clever-f style
+              [motion:lower()] = "next",
+              [motion:upper()] = "prev",
+            }
+          end,
 			},
 			search = {
 				enabled = true,
@@ -17,7 +22,7 @@ return {
 			},
 		},
 		rainbow = {
-			enabled = false,
+			enabled = true,
 			-- number between 1 and 9
 			shade = 5,
 		},

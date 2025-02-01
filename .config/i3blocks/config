@@ -4,11 +4,11 @@ interval=1
 
 [playing]
 command=~/i3df/scripts/playing.sh
-interval=5
+interval=1
 
 [connection]
 command=~/i3df/scripts/wifi.sh
-interval=5
+interval=1
 
 # [cpu_usage]
 # label=脳 
@@ -17,7 +17,7 @@ interval=5
 
 [brightness]
 command=~/i3df/scripts/brightness.sh
-interval=10
+interval=1
 
 [volume]
 command=~/i3df/scripts/pactl.sh
@@ -27,13 +27,14 @@ format_muted="静音"
 [battery]
 command=~/i3df/scripts/battery.sh
 interval=10
+# color=#ef5350
 
 [tzdate]
 # label=日付
 command=date '+%y年%m月%d日'
-interval=60
+interval=30
 
 [tztime]
 # label=時間
 command=date '+%H時%M分'
-interval=60
+interval=6

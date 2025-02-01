@@ -3,7 +3,6 @@ local map = vim.keymap.set
 function ToggleTodo()
 	local line = vim.api.nvim_get_current_line()
 	local new_line
-
 	if line:match("^%s*-%s*%[ %]") then -- Unchecked to checked
 		new_line = line:gsub("^(%s*-%s*)%[ %]", "%1[x]")
 	elseif line:match("^%s*-%s*%[x%]") then -- Checked to unchecked
@@ -28,16 +27,7 @@ map("n", "<leader>eo", function()
 	end
 end, { desc = "Open current file in file manager" })
 
-map("n", "g<leader>gx", '"gya"<cmd>lua vim.ui.open("https://www.github.com/"..<C-r>g)<CR>', { desc = "open in github" })
-
--- bash hack for sorting/shuffling/sequencing csv with <A-o> in normal or insert mode
--- map( "<leader>vrl", /g"<CR>kgJ', "n", 'i<enter><esc>!!shuf -i 1-10 -n 10 -r  | sed -z "s/\\n/, )
-map(
-	"n",
-	"<A-o>",
-	'i<enter><enter><Up><esc>!! | sed -z "s/\\n/, /g"<Home><Right><Right>',
-	{ desc = "genearate comma seperated seq or shuf or any bash output" }
-)
+-- bash hack for sorting/shuffling/sequencing csv with <A-o> in insert or visual mode
 map(
 	"i",
 	"<A-o>",
@@ -55,25 +45,24 @@ map(
 -- map("n", "<leader>ttd", "viw\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>", { desc = "dictionary autodetect -> en" })
 map(
 	"n",
-	"<loaclleader>tt",
+	"<leader>tr",
 	"^vg_\"ty:vnew <CR>:.!trans '<C-r>t' | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
 	{ desc = "dictionary autodetect -> ??" }
 )
 map(
 	"n",
-	"<loaclleader>td",
+	"<leader>td",
 	"viw\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
 	{ desc = "dictionary autodetect -> ??" }
 )
 map(
 	"x",
-	"<loaclleader>tt",
+	"<leader>tr",
 	"\"ty:vnew <CR>:.!trans '<C-r>t' | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
 	{ desc = "translate autodetect -> ??" }
 )
 map(
-	"x",
-	"<loaclleader>td",
+	"x", "<leader>td",
 	"\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
 	{ desc = "dictionary autodetect -> ??" }
 )
@@ -91,20 +80,3 @@ end
 
 map("n", "<leader>xx", ":lua <C-r><C-l><cr>", { desc = "lua execute" })
 map("x", "<leader>xx", "lua <C-r><C-l><cr>", { desc = "lua execute" })
-
--- -- increase/decrease and shift visual selection
--- map("x", "<C-l>", "loho", { desc = "change vi range" })
--- map("x", "<C-h>", "holo", { desc = "change vi range" })
--- map("x", "<C-j>", "joko", { desc = "change vi range" })
--- map("x", "<C-k>", "kojo", { desc = "change vi range" })
--- map("x", "<C-S-l>", "lolo", { desc = "shift vi range" })
--- map("x", "<C-S-h>", "hoho", { desc = "shift vi range" })
--- map("x", "<C-S-j>", "jojo", { desc = "shift vi range" })
--- map("x", "<C-S-k>", "koko", { desc = "shift vi range" })
-
--- Comment
--- hsl(0 0% 20%)
-map("n", "<C-/>", "gcc", { desc = "toggle comment", remap = true })
-map("x", "<C-/>", "gc", { desc = "toggle comment", remap = true })
-map("n", "<leader>c", "gc", { desc = "toggle comment", remap = true })
-map("x", "<leader>c", "gc", { desc = "toggle comment", remap = true })

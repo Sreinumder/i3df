@@ -1,30 +1,23 @@
 return {
 	"gbprod/substitute.nvim",
-	event = { "UIEnter" },
 	keys = {
-		{ "s", mode = { "n", "x" } },
-		{ "S", mode = { "n", "x" } },
-		{ "<A-s>", mode = { "n", "x" } },
+		{ mode ="n", "s", function() require("substitute").operator() end, { noremap = true } },
+		{ mode ="n", "ss", function() require("substitute").line() end, { noremap = true } },
+		{ mode ="n", "S", function() require("substitute").eol() end, { noremap = true } },
+		{ mode ="x", "s", function() require("substitute").visual() end, { noremap = true } },
+		{ mode ="n", "<A-s>", function() require("substitute.exchange").operator() end, { noremap = true } },
+		{ mode ="n", "<A-s><A-s>", function() require("substitute.exchange").line() end, { noremap = true } },
+		{ mode ="x", "<A-s>", function() require("substitute.exchange").visual() end, { noremap = true } },
+		{ mode ="n", "<A-s>c", function() require("substitute.exchange").cancel() end, { noremap = true } },
+		{ mode ="n", "<A-S>", function() require("substitute.range").operator() end, { noremap = true } },
+		{ mode ="x", "<A-S>", function() require("substitute.range").visual() end, { noremap = true } },
+		{ mode ="n", "<A-S>sr", function() require("substitute.range").word() end, { noremap = true } },
 	},
-	config = function()
-		require("substitute").setup({
-			yank_substituted_text = false,
-			preserve_cursor_position = false,
-			highlight_substituted_text = { enabled = true, timer = vim.g.change_hl_duration },
-			range = { cursor_position = "end" },
-			exchange = { preserve_cursor_position = true },
-		})
-		local keymap = vim.keymap
-		keymap.set("n", "s", require("substitute").operator, { noremap = true })
-		keymap.set("n", "ss", require("substitute").line, { noremap = true })
-		keymap.set("n", "S", require("substitute").eol, { noremap = true })
-		keymap.set("x", "s", require("substitute").visual, { noremap = true })
-		keymap.set("n", "<A-s>", require("substitute.exchange").operator, { noremap = true })
-		keymap.set("n", "<A-s><A-s>", require("substitute.exchange").line, { noremap = true })
-		keymap.set("x", "<A-s>", require("substitute.exchange").visual, { noremap = true })
-		keymap.set("n", "<A-s>c", require("substitute.exchange").cancel, { noremap = true })
-		keymap.set("n", "<A-S>", require("substitute.range").operator, { noremap = true })
-		keymap.set("x", "<A-S>", require("substitute.range").visual, { noremap = true })
-		keymap.set("n", "<A-S>sr", require("substitute.range").word, { noremap = true })
-	end,
+	opts = {
+		yank_substituted_text = false,
+		preserve_cursor_position = false,
+		highlight_substituted_text = { enabled = true, timer = vim.g.change_hl_duration },
+		range = { cursor_position = "end" },
+		exchange = { preserve_cursor_position = true },
+	},
 }

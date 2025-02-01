@@ -1,39 +1,43 @@
 local options = {
 	base46 = {
 		theme = "everblush",
-		transparency = true,
-		theme_toggle = { "everblush", "one_light" },
-	},
+    hl_override = {
+      -- Override or add custom highlight groups
+      CursorLine = {
+        bg = "#1e2227", -- Dark gray background
+        underline = false, -- Add an underline
+        italic = false, -- Make the text italic
+      },
+    },
+    transparency = true,
+    theme_toggle = { "everblush", "one_light" },
+  },
 
-	ui = {
-		cmp = {
-			icons_left = false, -- only for non-atom styles!
-			lspkind_text = true,
-			style = "default", -- default/flat_light/flat_dark/atom/atom_colored
-			format_colors = {
-				tailwind = false, -- will work for css lsp too
-				icon = "󱓻",
-			},
-		},
+  ui = {
+    cmp = {
+      icons_left = false, -- only for non-atom styles!
+      lspkind_text = true,
+      style = "default", -- default/flat_light/flat_dark/atom/atom_colored
+      format_colors = {
+        tailwind = false, -- will work for css lsp too
+        icon = "󱓻",
+      },
+    },
 
-		telescope = { style = "borderless" }, -- borderless / bordered
+    telescope = { style = "borderless" }, -- borderless / bordered
 
-		statusline = {
-			enabled = true,
-			theme = "default",
-			separator_style = "block",
-			order = { "file", "git", "arrow", "%=", "macro", "%=", "lsp_msg", "diagnostics", "lsp", "cwd" },
-			modules = {
-				macro = function()
-					local reg = vim.fn.reg_recording()
-					if reg == "" then
-						return " "
-					end -- not recording
-					return "rec @" .. reg .. " "
-				end,
-        arrow = function()
-          local statusline = require('arrow.statusline')
-          return " "..statusline.text_for_statusline_with_icons() -- Same, but with an bow and arrow icon ;D
+    statusline = {
+      enabled = true,
+      theme = "default",
+      separator_style = "block",
+      order = { "file", "git", "%=", "macro", "%=", "lsp_msg", "diagnostics", "lsp", "cwd" },
+      modules = {
+        macro = function()
+          local reg = vim.fn.reg_recording()
+          if reg == "" then
+            return " "
+          end -- not recording
+          return "rec @" .. reg .. " "
         end,
         curs = function()
           local row, col = vim.api.nvim_win_get_cursor(0).unpack()

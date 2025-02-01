@@ -7,7 +7,8 @@
 -- SUCHANA: sucahna
 return {
 	"folke/todo-comments.nvim",
-	dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
+  enabled = false,
+	dependencies = { "nvim-lua/plenary.nvim" },
 	keys = {
 		{
 			"]t",

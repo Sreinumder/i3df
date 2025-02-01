@@ -101,8 +101,8 @@ z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
 z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock  # load a plugin
 
 # Define key bindings.
-z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
-z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
+# z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
+# z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
 
 z4h bindkey undo Ctrl+/ Shift+Tab  # undo the last command line change
 z4h bindkey redo Alt+U             # redo the last undone command line change
@@ -128,6 +128,7 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
 # end of z4h default
+#
 # yazi y
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd

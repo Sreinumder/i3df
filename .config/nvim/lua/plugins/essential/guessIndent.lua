@@ -1,5 +1,5 @@
 return {
   "NMAC427/guess-indent.nvim",
-  lazy = false,
+  cmd = "GuessIndent",
   opts = {},
 }

@@ -2,9 +2,6 @@ return {
 	"chrishrb/gx.nvim",
 	keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" } } },
 	cmd = { "Browse" },
-	init = function()
-		vim.g.netrw_nogx = 1 -- disable netrw gx
-	end,
 	dependencies = { "nvim-lua/plenary.nvim" }, -- Required for Neovim < 0.10.0
 	opts = {
 		-- open_browser_args = { "--background" }, -- specify any arguments, such as --background for macOS' "open".
@@ -35,4 +32,7 @@ return {
 			git_remote_push = false, -- use the push url for git issue linking,
 		},
 	},
+  config = function()
+    vim.g.netrw_nogx = 1 -- disable netrw gx
+  end,
 }

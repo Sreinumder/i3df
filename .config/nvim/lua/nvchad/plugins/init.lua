@@ -1,5 +1,5 @@
 return {
-	"nvim-lua/plenary.nvim",
+	-- "nvim-lua/plenary.nvim",
 	{
 		"nvchad/base46",
 		event = "UIEnter",
@@ -15,11 +15,11 @@ return {
 			require("nvchad")
       vim.keymap.set({ "n", "x" }, "<leader>,ct", function()
         require('base46').toggle_theme()
-      end, {desc = "transparency toggle"})
+      end, {desc = "theme toggle"})
       vim.keymap.set({ "n", "x" }, "<leader>,tt", function()
         require('base46').toggle_transparency()
       end, {desc = "transparency toggle"})
     end,
   },
-  "nvzone/volt",
+  -- "nvzone/volt",
 }

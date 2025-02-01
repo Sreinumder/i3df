@@ -8,6 +8,7 @@ config.color_scheme = "Everblush (Gogh)"
 config.font = wezterm.font_with_fallback({
 	"JetBrains Mono",
 	"Iosevka Nerd Font",
+	"Nepali",
 	-- "Monotty",
 })
 -- config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, --disable ligature
@@ -176,3 +177,4 @@ config.colors = {
 }
 
 return config
+-- i am a nepali software developer

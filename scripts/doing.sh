@@ -59,7 +59,7 @@ case "$1" in
         ;;
     "show")
         if [ "$TOTAL_LINES" -le 1 ]; then
-            echo "$DOING_FILE_INDEX全部終わった"
+            echo "$DOING_FILE_INDEX.0全部終わったよ"
             exit 0
         fi
         # If the flag is 0, exit early and echo ""
@@ -95,6 +95,19 @@ case "$1" in
         fi
         DOING_FILE="$HOME/.doing/do-$DOING_FILE_INDEX"
         sed -i "1s/^.*$/$DOING_FILE_INDEX/" "$DOING_PATH/do"
+        ;;
+    "add")
+        if [ -z "$2" ]; then
+            echo "nothin or no 2nd argument was provided"
+            exit 0
+        fi
+        # triming the starting and ending whitespace of the $2 here
+        TASK=$(echo "$2" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        # append $2 to the doing file
+        echo "$TASK" >> "$DOING_FILE"
+        ;;
+    "edit")
+        nvim "$DOING_FILE"
         ;;
     "done")
         if [ ! -f "$DONE_FILE" ]; then

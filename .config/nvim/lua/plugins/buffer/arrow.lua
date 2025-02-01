@@ -4,8 +4,6 @@ return {
   keys = {
     ",",
     "m",
-    -- {"<leader>p", function() require("arrow.persist").previous() end, {desc = "arrow previous"}},
-    -- {"<leader>n", function() require("arrow.persist").next() end, {desc = "arrow next"}},
     {"<C-m>", function() require("arrow.persist").toggle() end, {desc = "arrow toggle"}},
   },
   opts = {

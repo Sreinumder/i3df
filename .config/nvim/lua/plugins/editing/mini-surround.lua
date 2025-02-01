@@ -20,9 +20,9 @@ return {
 			add = "gs", -- Add surrounding in Normal and Visual modes
 			delete = "ds", -- Delete surrounding
       replace = "cs", -- Change surrounding
-			find = "msn", -- Find surrounding next
-			find_left = "msl", -- Find surrounding last
-			highlight = "msh", -- Highlight surrounding
+			find = "", -- Find surrounding next
+			find_left = "", -- Find surrounding last
+			highlight = "", -- Highlight surrounding
 			-- update_n_lines = "ysu", -- Update `n_lines`
 			suffix_last = "l", -- Suffix to search with "prev" method
 			suffix_next = "n", -- Suffix to search with "next" method

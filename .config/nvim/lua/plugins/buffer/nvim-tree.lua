@@ -1,7 +1,9 @@
 return {
   "nvim-tree/nvim-tree.lua",
   keys = {
-    { "<A-z>" , "<cmd>NvimTreeToggle<CR>", {desc = "toggle nvimTree"}}
+    { "<A-z>", function()
+      require("nvim-tree.api").tree.toggle({ find_file = true, focus = false, })
+    end, {desc = "toggle nvimTree"}}
   },
   opts = {
     sort = {

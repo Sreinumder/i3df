@@ -2,7 +2,7 @@ return {
 	'saghen/blink.cmp',
 	version = '*',
 	enabled = true,
-	event = "VeryLazy",
+	-- event = "VeryLazy",
 	dependencies = {},
 	opts = {
 		keymap = { preset = 'super-tab' }, -- enter default

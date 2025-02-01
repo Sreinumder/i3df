@@ -3,6 +3,7 @@
 [manager]
 
 prepend_keymap = [
+{ on = "<A-e>",     run = "quit",               desc = "Quit the process" },
 { on = ["<A-u>"], run = "plugin restore", desc = "Restore last deleted files/folders" },
 { on = "<A-y>", run = ["plugin copy-file-contents"], desc = "Copy contents of file"},
 { on = "<Tab>", run = "spot", desc = "Spot hovered file" },

@@ -1,9 +1,9 @@
 return {
 	"echasnovski/mini.files",
-	lazy = false,
+	lazy = true,
 	keys = {
 		{
-			"<A-Space>",
+			"<leader><leader>",
 			function()
 				if not require("mini.files").close() then
 					require("mini.files").open()

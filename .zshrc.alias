@@ -1,3 +1,4 @@
+alias stow='stow --ignore \.git'
 alias n='nvim'
 alias nv='neovide'
 alias v='vim'
@@ -9,6 +10,7 @@ function cbb() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[
 function bbq() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"' |  cowsay -f ~/.cowsay-cows/walter-white.cow }
 function fal() { rg -e "^\s*alias" ~/i3df/.zshrc.alias | fzf }
 
+alias doo='~/i3df/scripts/doing.sh'
 alias ffc='fc-list | fzf'
 alias fd='cd $(find * -type d | fzf)' # Change directory with interactive search
 alias fps='ps aux | fzf' # Search through running processes

@@ -3,7 +3,7 @@ return {
 	dependencies = { "saghen/blink.cmp" },
 	enabled = true,
 	lazy = false,
-	event = "UIEnter",
+	-- event = "InsertEnter",
 	keys = {
 		{ "<leader>K", "K", { desc = "default K" } },
 		{

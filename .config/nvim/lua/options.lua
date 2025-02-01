@@ -1,6 +1,7 @@
 local o = vim.opt
 local g = vim.g
 
+o.formatoptions:remove "o"
 if not vim.g.vscode then
 	-- require("nvchad.oions")
 	-- Numbers

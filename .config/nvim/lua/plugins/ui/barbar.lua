@@ -2,10 +2,9 @@ return {
 	"romgrk/barbar.nvim",
 	-- event = "UIEnter",
 	dependencies = {
-		"lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
-		"nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
+		"nvim-tree/nvim-web-devicons",
 	},
-	init = function()
+	config = function()
 		vim.g.barbar_auto_setup = false
 	end,
 	opts = {
