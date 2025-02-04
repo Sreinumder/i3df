@@ -1,9 +1,9 @@
 # if you dont know what are you doing
 # First super / start = mod(m)
 # | mod+c           | open this config               |
+# | mod+d           | dmenu to search/open programs  |
 # | mod+ctrl+space  | start terminal (wezterm)       |
 # | mod+ctrl+f      | start zen-browser              |
-# | mod+d           | dmenu to search/open programs  |
 # | mod+w           | close the program              |
 # | mod+hjkl        | for window focus change        |
 # | mod+alt+hjkl    | for moving window              |
@@ -16,11 +16,14 @@
 # | mod+shift+space | switching keyboard (fcitx5)    |
 # | mod+i           | toggle i3bar (status bar)      |
 # | mod+ctrl+i      | toggle i3bar (invisible/kill)  |
-# | mod+toggle+i    | toggle current window titlebar |
+# | mod+shift+i     | toggle current window titlebar |
 
 # keybind variables mod = start/super alt = alt
 set $mod Mod4  
 set $alt Mod1
+
+# setting font
+font pango:Isoveka NF 12
 
 # basically autostart
 exec --no-startup-id xrdb -merge $HOME/.Xresources # for dark mode for applications
@@ -215,16 +218,16 @@ bindsym $mod+Shift+9 move container to workspace number $ws9  , workspace number
 bindsym $mod+Shift+0 move container to workspace number $ws10 , workspace number $ws10
 
 # move focused container to workspace
-bindsym $mod+ctrl+Shift+1 move container to workspace number $ws1
-bindsym $mod+ctrl+Shift+2 move container to workspace number $ws2
-bindsym $mod+ctrl+Shift+3 move container to workspace number $ws3
-bindsym $mod+ctrl+Shift+4 move container to workspace number $ws4
-bindsym $mod+ctrl+Shift+5 move container to workspace number $ws5
-bindsym $mod+ctrl+Shift+6 move container to workspace number $ws6
-bindsym $mod+ctrl+Shift+7 move container to workspace number $ws7
-bindsym $mod+ctrl+Shift+8 move container to workspace number $ws8
-bindsym $mod+ctrl+Shift+9 move container to workspace number $ws9
-bindsym $mod+ctrl+Shift+0 move container to workspace number $ws10
+bindsym $mod+alt+Shift+1 move container to workspace number $ws1
+bindsym $mod+alt+Shift+2 move container to workspace number $ws2
+bindsym $mod+alt+Shift+3 move container to workspace number $ws3
+bindsym $mod+alt+Shift+4 move container to workspace number $ws4
+bindsym $mod+alt+Shift+5 move container to workspace number $ws5
+bindsym $mod+alt+Shift+6 move container to workspace number $ws6
+bindsym $mod+alt+Shift+7 move container to workspace number $ws7
+bindsym $mod+alt+Shift+8 move container to workspace number $ws8
+bindsym $mod+alt+Shift+9 move container to workspace number $ws9
+bindsym $mod+alt+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
 bindsym $mod+Shift+r reload
@@ -239,26 +242,13 @@ bindsym $mod+Shift+h resize shrink width 10 px or 10 ppt
 bindsym $mod+Shift+l resize grow width 10 px or 10 ppt
 bindsym $mod+Shift+j resize grow height 10 px or 10 ppt
 bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
-#
-# bindsym $mod+r mode "resize"
-
-# Define Vim mod
-# mode "music" {
-#     bindsym --release comma exec --no-startup-id xdotool key exclam
-#     bindsym --release period exec --no-startup-id xdotool key Left
-#     bindsym --release h exec --no-startup-id xdotool key Left
-#     bindsym $mod+Escape mode "default"
-#     bindsym $alt+Escape mode "default"
-# }
-# bindsym $mod+Escape mode "music"
-# bindsym $alt+Escape mode "music"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
   bar {
-    # below not installed
+# below not installed
     status_command i3blocks
-    # status_command i3status
-    # status_command i3status-rs
+# status_command i3status
+# status_command i3status-rs
     height 15
     font pango:Isoveka NF 9,  Noto Sans Mono CJK JP 10
     tray_padding 1
@@ -266,8 +256,8 @@ bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 
     colors {
 #         separator  #1f222d
-          # background #1f222d
-          # statusline #81a1c1
+# background #1f222d
+# statusline #81a1c1
 #
 #         #                   border  background text
 #         focused_workspace  #1f222d #1f222d    #81a1c1
@@ -293,17 +283,13 @@ bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 ##STOP THEMING WM
 
 bindsym $mod+i bar mode toggle
-# bindsym $mod+ctrl+i bar mode invisible
 bindsym $mod+ctrl+i bar mode invisible
-# bindsym $mod+shift+i exec i3-msg for_window [class="^.*"] border pixel 0
+bindsym $mod+shift+i exec ~/i3df/scripts/i3_toggle_title.sh
 
 # gaps
-# for_window [class="^.*"] border pixel 2
+for_window [class="^.*"] border pixel 2
 gaps inner 0
 gaps outer 0
 
 for_window [class=Eog|nsxiv|feh|Vlc|pavucontrol|Xarchiver] floating enable
 for_window [class=Eog|nsxiv|feh|Vlc|File-roller|Xarchiver] focus
-font pango:Isoveka NF 9,  Noto Sans Mono CJK JP 10
-# for_window [window_type="normal"] border normal
-set $mod Mod4

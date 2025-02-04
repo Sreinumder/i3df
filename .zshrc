@@ -12,6 +12,7 @@ export FCITX5_UI=gtk
 export GLFW_IM_MODULE=ibus
 export EDITOR=nvim
 export QT_STYLE_OVERRIDE=kvantum
+echo -ne '\e]12;yellow\a'
 
 # export GREEN="#7CB342"
 # export BLUE="#2196F3"
@@ -280,25 +281,26 @@ if [[ -o zle ]]; then
 fi
 
 # Set FZF default command to use ripgrep
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+# export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 
 # Set FZF default options with bottom preview
+# --header-first 
 # --header='ctrl-c:cancel / ctrl-q:exit / ctrl-s:select' 
 export FZF_DEFAULT_OPTS="
+--cycle
 --height 95% 
+--prompt='  ' 
 --layout=reverse 
 --border=rounded 
---prompt='  ' 
---pointer='▶' 
 --marker='✓' 
---header-first 
+--pointer='▶' 
 --bind='ctrl-u:preview-half-page-up'
 --bind='ctrl-d:preview-half-page-down'
 --bind='ctrl-s:toggle-sort'
 --bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
 --bind 'ctrl-y:execute(readlink -f {} | xclip -selection clipboard)'
 --bind 'ctrl-alt-y:execute-silent(xclip -selection clipboard {})'
---preview-window 'right,50%,border-left,<50(down,40%,border-bottom)'
 "
+# --preview-window 'right,50%,border-left,<50(down,40%,border-bottom)'
 # --preview-window='right:45%:border-rounded'
 # --bind='alt-p:change-preview(stat {})'

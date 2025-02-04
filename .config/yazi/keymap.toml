@@ -6,7 +6,7 @@ prepend_keymap = [
 { on = "<A-e>",     run = "quit",               desc = "Quit the process" },
 { on = ["<A-u>"], run = "plugin restore", desc = "Restore last deleted files/folders" },
 { on = "<A-y>", run = ["plugin copy-file-contents"], desc = "Copy contents of file"},
-{ on = "<Tab>", run = "spot", desc = "Spot hovered file" },
+# { on = "<Tab>", run = "spot", desc = "Spot hovered file" },
 { on = [ "g", "l" ], run  = "plugin lazygit",         desc = "run lazygit"},
 { on = [ "f", "W" ], run  = "plugin fg",              desc = "find file by content (fuzzy match)"},
 { on = [ "f", "w" ], run  = "plugin fg --args='rg'",  desc = "find file by content (ripgrep match)"},
@@ -15,7 +15,7 @@ prepend_keymap = [
 { on = [ "+" ], run = "plugin eza-preview --args='--inc-level'", desc = "Increment tree level" },
 { on = [ "-" ], run = "plugin eza-preview --args='--dec-level'", desc = "Decrement tree level" },
 { on = [ "$" ], run = "plugin eza-preview --args='--toggle-follow-symlinks'", desc = "Toggle tree follow symlinks" },
-{ on = "<A-g>", run = '''shell 'dragon-drop -x -i -T "$1"' --confirm''', desc = "dragon give"}, 
+{ on = "<A-g>", run = '''shell 'dragon-drop -x -i -T "$@"' --confirm''', desc = "dragon give"}, 
 { on = "<A-t>", run  = "plugin --sync smart-tab", desc = "Create a tab and enter the hovered directory"},
 { on = "!"    , run  = 'shell "$SHELL" --block --confirm', desc = "Open shell here"},
 { on = "1", run = "plugin relative-motions --args=1", desc = "Move in relative steps" },
@@ -27,13 +27,13 @@ prepend_keymap = [
 { on = "7", run = "plugin relative-motions --args=7", desc = "Move in relative steps" },
 { on = "8", run = "plugin relative-motions --args=8", desc = "Move in relative steps" },
 { on = "9", run = "plugin relative-motions --args=9", desc = "Move in relative steps" },
-{ on = "0", run = "plugin relative-motions --args=0", desc = "Move in relative steps" },
+# { on = "0", run = "plugin relative-motions --args=0", desc = "Move in relative steps" },
   ]
 
 
   [tasks]
 
-  keymap = [
+prepend_keymap = [
 {on  = "<A-g>", run = '''shell 'dragon-drop -x -i -T "$1"' --confirm''', desc = "dragon give"}, 
 
 # https://github.com/yazi-rs/plugins/tree/main/chmod.yazi

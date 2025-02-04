@@ -1,8 +1,7 @@
 local o = vim.opt
 local g = vim.g
 
-o.formatoptions:remove "o"
-if not vim.g.vscode then
+if not g.vscode then
 	-- require("nvchad.oions")
 	-- Numbers
 	o.wrap = true -- enable line wrappingo.number           = true
@@ -20,7 +19,7 @@ if not vim.g.vscode then
 	o.shortmess:append("sI") -- disable nvim intro
 else
 	-- o.shortmess:append("c")
-	vim.g.neovim_log_level = 0 -- Disable logging output from Neovim
+	g.neovim_log_level = 0 -- Disable logging output from Neovim
 end
 
 -- o.laststatus = 3
@@ -56,8 +55,8 @@ o.cursorline = true -- highlight the current cursor line
 -- o.cursorcolumn  = true -- highlight the current cursor column
 -- o.cursorlineo = "number"
 --setlocal cc        = 80
--- vim.g.cc          = 80
-vim.g.colorcolumn = 80 -- turn on termguicolors for nightfly colorscheme to work
+-- g.cc          = 80
+g.colorcolumn = 80 -- turn on termguicolors for nightfly colorscheme to work
 o.background = "dark" -- colorschemes that can be light or dark will be made dark
 o.signcolumn = "yes" -- show sign column so that text doesn't shift
 o.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
@@ -80,14 +79,14 @@ o.foldcolumn = "1" -- '0' is not bad
 o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 o.foldlevelstart = 99
 o.foldenable = true
-vim.g.netrw_banner = 0 -- disable that anoying Netrw banner
-vim.g.netrw_browser_split = 4 -- open in a prior windowvim.cmd("let g:netrw_liststyle = 3") -- tree view
-vim.g.matchup_matchparen_offscreen = { method = "popup" }
+g.netrw_banner = 0 -- disable that anoying Netrw banner
+g.netrw_browser_split = 4 -- open in a prior windowvim.cmd("let g:netrw_liststyle = 3") -- tree view
+g.matchup_matchparen_offscreen = { method = "popup" }
 
 -- Disable sql omni completion, it is broken.
-vim.g.loaded_sql_completion = 1
-vim.g.nvim_ghost_server_port = 4001
-vim.g.nvim_ghost_autostart = 0
+g.loaded_sql_completion = 1
+g.nvim_ghost_server_port = 4001
+g.nvim_ghost_autostart = 0
 
 o.listchars = {
 	tab = "▸┊",
@@ -98,13 +97,13 @@ o.listchars = {
 }
 
 -- plugin parameters
-vim.g.preserve_cursor_pos = true
-vim.g.change_hl_duration = 500
+g.preserve_cursor_pos = true
+g.change_hl_duration = 500
 
 -- disable some default providers
-vim.g.loaded_node_provider = 0
-vim.g.loaded_python3_provider = 0
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_ruby_provider = 0
+g.loaded_node_provider = 0
+g.loaded_python3_provider = 0
+g.loaded_perl_provider = 0
+g.loaded_ruby_provider = 0
 
-vim.g.neovide_transparency = 0.8
+g.neovide_transparency = 0.8

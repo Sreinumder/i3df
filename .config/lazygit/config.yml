@@ -1,3 +1,29 @@
+theme:
+  # Background color
+  backgroundColor: 'black'
+
+  # Text colors
+  textColor: 'white'
+  headingColor: 'cyan'
+
+  # Highlight color for selected items
+  selectedColor: 'yellow'
+
+  # Git status colors
+  addedColor: 'green'
+  modifiedColor: 'yellow'
+  removedColor: 'red'
+  stagedColor: 'blue'
+
+  # Diff colors
+  diff:
+    addedLineColor: 'green'
+    removedLineColor: 'red'
+    unchangedLineColor: 'white'
+
+  # Other UI elements
+  panelBorderColor: 'gray'
+  scrollBarColor: 'blue'
 keybinding:
   universal:
     quit: q
@@ -18,10 +44,10 @@ keybinding:
     toggleRangeSelect: v
     rangeSelectDown: <s-down>
     rangeSelectUp: <s-up>
-    prevBlock: <left>
-    nextBlock: <right>
-    prevBlock-alt: h
-    nextBlock-alt: l
+    prevBlock: h
+    nextBlock: l
+    prevBlock-alt: <left>
+    nextBlock-alt: <right>
     nextBlock-alt2: <tab>
     prevBlock-alt2: <backtab>
     jumpToBlock:

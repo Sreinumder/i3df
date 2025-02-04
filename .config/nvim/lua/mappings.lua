@@ -48,13 +48,13 @@ map("n", "<leader>dg", function()
 	end
 end, { desc = "Change directory to Git repository root" })
 
--- vim <-> clipbaord
+-- clipboard management
 -- clipboard to vim default register. usage: copy from browser to vim: <C-c>(in browser) <S-Space>p in vim
 map({"n", "x"}, "<", function() vim.fn.setreg('"', vim.fn.getreg('+')) end, {desc = 'clipboard to vim reg'})
 -- vim default register to clipboard. usage: copy from vim to other: yy<leader><leader> <C-v>(in browser)
 map({"n", "x"}, ">", function() vim.fn.setreg('+', vim.fn.getreg('"')) end, {desc = 'vim reg to clipboard'})
 
--- delete with x d or D and cut with alt + x + d + D
+-- delete with x d or D and cut with alt + x, alt + d, alt + D, alt + c
 map({ "n", "x" }, "x", '"_x')
 map({ "n", "x" }, "X", '"_X')
 map({ "n", "x" }, "d", '"_d')
@@ -140,6 +140,10 @@ map({ "n", "x" }, "<leader>,ii", "<cmd>set list!<CR>", { desc = "Toggle invisibl
 -- 	end
 -- end, { desc = "Toggle colorscheme bg" })
 
--- look for changes
+-- ========================
+-- Diff mappings
+-- ========================
 vim.cmd([[command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis]])
 map("n", "<leader>sc", "<cmd>DiffOrig<CR>", { desc = "unsaved changes diff" })
+map('n', '<leader><leader>dt', ':windo diffthis<CR>', { noremap = true })
+map('n', '<leader><leader>do', ':windo diffoff<CR>', { noremap = true })

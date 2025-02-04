@@ -1,4 +1,3 @@
--- jump to stuff
 return {
 	"echasnovski/mini.bracketed",
 	keys = { "[", "]" },

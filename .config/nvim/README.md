@@ -1,5 +1,30 @@
-fjiejfieji
 # Always work in progress
+
+To install neovim (0.10) and requirements:
+* Windows
+```powershell
+winget install neovim fzf fd git;
+```
+* Arch-linux
+```bash
+pacman -S neovim fzf fd git gcc;
+```
+or use package-manager of your linux distro.
+
+Clone this repo and make backup if already exist
+Windows:
+```powershell
+mv ~/AppData/local/nvim ~/nvim_backup
+git clone https://www.github.com/Sreinumder/nvim ~/AppData/local/nvim
+```
+
+Linux:
+```powershell
+mv ~/.config/nvim ~/nvim_backup
+git clone https://www.github.com/Sreinumder/nvim ~/.config/nvim
+```
+
+Now run `nvim`. It will attempt to clone all the plugin repositories.
 
 # Keymaps for My Config
 ## Summary
@@ -29,7 +54,7 @@ Below is the explanation
 | Mode           | Layer               | Description                      | Plugin                                                                   |
 |----------------|---------------------|----------------------------------|--------------------------------------------------------------------------|
 | normal/visual  | None                | Character-wise-move              | builtin                                                                  |
-| normal/visual  | H/L                 | Non-whitespace-start/end of line | builtin                                                                  |
+| normal/visual  | H/L                 | Non-whitespace-start/end of line | keybinding                                                               |
 | normal/visual  | J/K                 | Default Join and Keywordprg      | builtin                                                                  |
 | normal/visual  | alt                 | Move line                        | **[mini.move](https://github.com/echasnovski/mini.move)**                |
 | visual         | Space + alt         | Move selection(new line)         | keybinding                                                               |

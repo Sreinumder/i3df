@@ -10,5 +10,5 @@ CURRENT_BORDER=$(i3-msg -t get_tree | jq ".. | objects | select(.id==$WIN_ID) | 
 if [[ "$CURRENT_BORDER" == "\"normal\"" ]]; then
     i3-msg "[con_id=$WIN_ID] border pixel 0"
 else
-    i3-msg "[con_id=$WIN_ID] border normal"
+    i3-msg "[con_id=$WIN_ID] border normal "
 fi

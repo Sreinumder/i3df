@@ -2,6 +2,7 @@ vim.g.base46_cache = vim.fn.stdpath("data") .. "/base46/"
 vim.g.mapleader = " "
 vim.g.maplocalleader = ";"
 
+vim.cmd("autocmd BufEnter * set formatoptions-=cro")
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
@@ -29,14 +30,10 @@ else
 			{ import = "nvchad.plugins" },
 			{ import = "plugins.ui" },
 			{ import = "plugins.lsp" },
-			{ import = "plugins.note" },
 			{ import = "plugins.buffer" },
 			{ import = "plugins.editing" },
 			{ import = "plugins.essential" },
 			{ import = "plugins.treesitter" },
-			{ import = "plugins.git+others" },
-			{ import = "plugins.tools" },
-			{ import = "plugins.my-plugins" },
 		}
 		require("lazy").setup(plugins, lazy_config)
 	end
