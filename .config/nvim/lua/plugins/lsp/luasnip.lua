@@ -7,8 +7,12 @@
 return {
 	"L3MON4D3/LuaSnip",
 	enabled = true,
+  dependencies = {
+    'rafamadriz/friendly-snippets',
+  },
 	opts = function(_, opts)
 		local ls = require("luasnip")
+    require("luasnip/loaders/from_vscode").load({ paths = { "~/.local/share/nvim/site/pack/packer/start/friendly-snippets/snippets" } })
 
 		local s = ls.snippet
 		local t = ls.text_node

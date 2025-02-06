@@ -14,9 +14,9 @@ function ToggleTodo()
 end
 
 map("n", "<localleader>tt", ToggleTodo, { noremap = true, silent = true })
-map("n", "<localleader>to", "o- [ ] ", { desc = "markdown todo below" })
-map("n", "<localleader>tO", "O- [ ] ", { desc = "markdown todo below" })
-map("n", "<localleader>tc", "cc- [ ] ", { desc = "markdown todo change" })
+map("n", "<localleader>to", "o- [ ] ", { desc = "hack markdown todo below" })
+map("n", "<localleader>tO", "O- [ ] ", { desc = "hack markdown todo below" })
+map("n", "<localleader>tc", "cc- [ ] ", { desc = "hack markdown todo change" })
 
 map("n", "<leader>eo", function()
 	local file_path = vim.fn.expand("%:p")
@@ -25,14 +25,14 @@ map("n", "<leader>eo", function()
 	else
 		vim.fn.jobstart({ "thunar", file_path }, { detach = true })
 	end
-end, { desc = "Open current file in file manager" })
+end, { desc = "hack buffer in file manager" })
 
 -- bash hack for sorting/shuffling/sequencing csv with <A-o> in insert or visual mode
 map(
 	"i",
 	"<A-o>",
 	'<enter><enter><Up><esc>!! | sed -z "s/\\n/, /g"<Home><Right><Right>',
-	{ desc = "genearate comma seperated seq or shuf or any bash output" }
+	{ desc = "hack genearate comma seperated seq or shuf or any bash output" }
 )
 map(
 	"x",
@@ -47,36 +47,36 @@ map(
 	"n",
 	"<leader>tr",
 	"^vg_\"ty:vnew <CR>:.!trans '<C-r>t' | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
-	{ desc = "dictionary autodetect -> ??" }
+	{ desc = "hack dictionary autodetect -> ??" }
 )
 map(
 	"n",
 	"<leader>td",
 	"viw\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
-	{ desc = "dictionary autodetect -> ??" }
+	{ desc = "hack dictionary autodetect -> ??" }
 )
 map(
 	"x",
 	"<leader>tr",
 	"\"ty:vnew <CR>:.!trans '<C-r>t' | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
-	{ desc = "translate autodetect -> ??" }
+	{ desc = "hack translate autodetect -> ??" }
 )
 map(
 	"x", "<leader>td",
 	"\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
-	{ desc = "dictionary autodetect -> ??" }
+	{ desc = "hack dictionary autodetect -> ??" }
 )
 
 -- bash filter trans
-map("n", "<leader>rt", '"tyy"tp"tp0d}k!!trans -t  -b<C-Left><Left>', { desc = "translate filter append" })
+map("n", "<leader>rt", '"tyy"tp"tp0d}k!!trans -t  -b<C-Left><Left>', { desc = "hack translate filter append" })
 
 if vim.fn.has("win32") ~= 0 then
-  map("n", "<leader>rs", '"byy"bp"bp0d}k!!powershell<cr>', { desc = "bash filter append" })
-  map("n", "<leader>rS", "!!powershell<cr>", { desc = "bash filter replace" })
+  map("n", "<leader>rs", '"byy"bp"bp0d}k!!powershell<cr>', { desc = "hack bash filter append" })
+  map("n", "<leader>rS", "!!powershell<cr>", { desc = "hack bash filter replace" })
 else
-  map("n", "<leader>rs", '"byy"bp"bp0d}k!!sh<cr>', { desc = "bash filter append" })
-  map("n", "<leader>rS", "!!sh<cr>", { desc = "bash filter replace" })
+  map("n", "<leader>rs", '"byy"bp"bp0d}k!!sh<cr>', { desc = "hack bash filter append" })
+  map("n", "<leader>rS", "!!sh<cr>", { desc = "hack bash filter replace" })
 end
 
-map("n", "<leader>xx", ":lua <C-r><C-l><cr>", { desc = "lua execute" })
-map("x", "<leader>xx", "lua <C-r><C-l><cr>", { desc = "lua execute" })
+map("n", "<leader>xx", ":lua <C-r><C-l><cr>", { desc = "hack lua execute" })
+map("x", "<leader>xx", "lua <C-r><C-l><cr>", { desc = "hack lua execute" })

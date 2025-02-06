@@ -31,8 +31,8 @@ end
 -- o.mouse = "a"
 
 -- o.signcolumn = "yes"
--- o.splitbelow = true
--- o.splitright = true
+o.splitbelow = true
+o.splitright = true
 -- o.timeoutlen = 400
 o.undofile = true
 --
@@ -51,7 +51,7 @@ vim.env.PATH = table.concat({ vim.fn.stdpath("data"), "mason", "bin" }, sep) .. 
 
 -- o.rulerformat   = ""
 o.cmdheight = 0 -- sets cmdline height
-o.cursorline = true -- highlight the current cursor line
+o.cursorline = false -- highlight the current cursor line
 -- o.cursorcolumn  = true -- highlight the current cursor column
 -- o.cursorlineo = "number"
 --setlocal cc        = 80
@@ -96,9 +96,6 @@ o.listchars = {
 	precedes = "❮",
 }
 
--- plugin parameters
-g.preserve_cursor_pos = true
-g.change_hl_duration = 500
 
 -- disable some default providers
 g.loaded_node_provider = 0

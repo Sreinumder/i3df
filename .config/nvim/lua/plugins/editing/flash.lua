@@ -17,7 +17,7 @@ return {
           end,
 			},
 			search = {
-				enabled = true,
+				enabled = false,
 				jump_labels = false,
 			},
 		},
@@ -79,7 +79,7 @@ return {
 			desc = "Toggle Flash Search",
 		},
 		{
-			"<leader>mj",
+			";*",
 			mode = { "n", "x" },
 			function()
 				require("flash").jump({

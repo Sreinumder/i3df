@@ -7,7 +7,7 @@ return {
   },
   opts = function()
     local spec_treesitter = require("mini.ai").gen_spec.treesitter
-    local M = {
+    return {
       custom_textobjects = {
         F = spec_treesitter({ a = "@function.outer", i = "@function.inner" }),
         o = spec_treesitter({
@@ -15,6 +15,8 @@ return {
           i = { "@conditional.inner", "@loop.inner" },
         }),
         C = spec_treesitter({ a = "@call.outer", i = "@call.inner" }),
+        t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
+        u = { "%f[%d]%d+" }, -- number
         -- m = spec_treesitter({ a = "@property.outer", i = "@property.inner" }),
       },
       mappings = {
@@ -27,6 +29,5 @@ return {
       },
       n_lines = 200,
     }
-    return M
   end,
 }

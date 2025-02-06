@@ -4,31 +4,32 @@ if not vim.g.vscode then
 end
 
 -- clever j k
-map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
-map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
-map({ "n", "x" }, "gj", "j", { desc = "next line" })
-map({ "n", "x" }, "gk", "k", { desc = "prev line" })
-map({ "n", "x" }, "<A-n>", ";", { desc = "Down" })
-map({ "n", "x" }, "<A-p>", ",", { desc = "Up" })
+map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Basic Down", expr = true, silent = true })
+map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Basic Up", expr = true, silent = true })
+map({ "n", "x" }, "gj", "j", { desc = "Basic next line" })
+map({ "n", "x" }, "gk", "k", { desc = "Basic prev line" })
+map({ "n", "x" }, "<A-n>", ";", { desc = "Basic Down" })
+map({ "n", "x" }, "<A-p>", ",", { desc = "Basic Up" })
 
-map("n", "<leader>w", "<C-w>", { desc = "window control" }) -- split window vertically
-map({ "n", "x" }, "<leader>r", '"', { desc = "register select" }) -- <leader>ra for a register
-map({ "n", "v", "o" }, "H", "^", { desc = "Beg of line" })
-map({ "n", "v", "o" }, "M", "gM", { desc = "Mid of Line" })
-map({ "n", "v", "o" }, "L", "g_", { desc = "End of Line" })
+map("n", "<leader>w", "<C-w>", { desc = "Basic window control" }) -- split window vertically
+map({ "n", "x" }, "<leader>r", '"', { desc = "Basic register select" }) -- <leader>ra for a register
+map({ "n", "x" }, "<leader>rr", '"+', { desc = "Basic register +" }) -- <leader>ra for a register
+map({ "n", "v", "o" }, "H", "^", { desc = "Basic Beg of line" })
+map({ "n", "v", "o" }, "M", "gM", { desc = "Basic Mid of Line" })
+map({ "n", "v", "o" }, "L", "g_", { desc = "Basic End of Line" })
 --and HML to start mid end of line <A-HML> to high middle low part of screen
 map("n", "<A-H>", "H", { desc = "Default H" })
 map("n", "<A-M>", "M", { desc = "Default M" })
 map("n", "<A-L>", "L", { desc = "Default L" })
-map("x", "$", "g_", { desc = "to last non-white char" })
+map("x", "$", "g_", { desc = "Default last non-white char" })
 map("x", "g_", "$")
 
 -- pain saver
 map(
 	"n",
 	"<Esc>",
-	"<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-	{ desc = "Redraw / Clear hlsearch / Diff Update" }
+	"<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-l><CR>",
+	{ desc = "Basic Redraw / Clear hlsearch / Diff Update" }
 )
 map("x", "J", "j", { desc = "Disable annoying J " })
 map("n", "gV", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "true" }) -- Reselect last paste
@@ -46,13 +47,13 @@ map("n", "<leader>dg", function()
 	else
 		print("Not inside a Git repository")
 	end
-end, { desc = "Change directory to Git repository root" })
+end, { desc = "cd to Git repository root" })
 
 -- clipboard management
 -- clipboard to vim default register. usage: copy from browser to vim: <C-c>(in browser) <S-Space>p in vim
-map({"n", "x"}, "<", function() vim.fn.setreg('"', vim.fn.getreg('+')) end, {desc = 'clipboard to vim reg'})
+map({"n", "x"}, "<", function() vim.fn.setreg('"', vim.fn.getreg('+')) end, {desc = 'hack clipboard to vim reg'})
 -- vim default register to clipboard. usage: copy from vim to other: yy<leader><leader> <C-v>(in browser)
-map({"n", "x"}, ">", function() vim.fn.setreg('+', vim.fn.getreg('"')) end, {desc = 'vim reg to clipboard'})
+map({"n", "x"}, ">", function() vim.fn.setreg('+', vim.fn.getreg('"')) end, {desc = 'hack vim reg to clipboard'})
 
 -- delete with x d or D and cut with alt + x, alt + d, alt + D, alt + c
 map({ "n", "x" }, "x", '"_x')
@@ -104,28 +105,27 @@ map("x", "<A-g><A-g>", '"bdgg"bp`[v`]', { desc = "move selection with gg" })
 map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
 
 -- simple hacks
-map("n", "<C-s>", "<cmd>w<cr>", { silent = true, desc = "save this buffer" })
-map("n", "<leader>qq", "<cmd>q!<cr>", { silent = true, desc = "quit current window" })
-map("n", "<leader>sa", "<cmd>wqa!<cr>", { silent = true, desc = "write and quit all" })
-map("n", "<leader>wa", "<cmd>wa<cr>", { silent = true, desc = "save all buffer" })
-map("n", "<leader>qa", "<cmd>qa!<cr>", { silent = true, desc = "quit nvim" }) -- Quit all opened buffers
+map("n", "<C-s>", "<cmd>w<cr>", { silent = true, desc = "hack save this buffer" })
+map("n", "<leader>qq", "<cmd>q!<cr>", { silent = true, desc = "hack quit current window" })
 
 -- insert mode hack
 -- Add undo break-points
-map("i", ",", ",<c-g>u")
-map("i", ".", ".<c-g>u")
-map("i", ";", ";<c-g>u")
-map("i", "<c-u>", "<Esc>viw~ea", { desc = "toggle case" })
-map("i", "<c-t>", "<Esc>b~lea", { desc = "change word case to title" })
-map("i", "<C-l>", '<C-r>=expand("%:p:h") . "/" <CR>', { desc = "write file path" })
+map("i", ",", ",<c-g>u", {desc = "Insert-mode"})
+map("i", ".", ".<c-g>u", {desc = "Insert-mode"})
+map("i", ";", ";<c-g>u", {desc = "Insert-mode"})
+map("i", "<C-l>", '<C-r>=expand("%:p:h") . "/" <CR>', { desc = "Insert-mode file path" })
 
-map({ "i", "c", "t" }, "<A-h>", "<Left>", { desc = "Insert mode left" })
-map({ "i", "c", "t" }, "<A-j>", "<Down>", { desc = "Insert mode down" })
-map({ "i", "c", "t" }, "<A-k>", "<Up>", { desc = "Insert mode up" })
-map({ "i", "c", "t" }, "<A-l>", "<Right>", { desc = "Insert mode Right" })
-map("c", "<C-A-K>", "\\(.*\\)", { desc = "kirby " })
 
-map("t", "<C-<ESC>", "<C-\\><C-n>", { desc = "exit in terminal mode" })
+map({ "i", "c", "t" }, "<A-:>", "<Esc>", { desc = "Insert-mode Escape" })
+map({ "i", "c", "t" }, "<C-a>", "<Home>", { desc = "Insert-mode Home" })
+map({ "i", "c", "t" }, "<C-e>", "<End>", { desc = "Insert-mode End" })
+map({ "i", "c", "t" }, "<A-h>", "<Left>", { desc = "Insert-mode left" })
+map({ "i", "c", "t" }, "<A-j>", "<Down>", { desc = "Insert-mode down" })
+map({ "i", "c", "t" }, "<A-k>", "<Up>", { desc = "Insert-mode up" })
+map({ "i", "c", "t" }, "<A-l>", "<Right>", { desc = "Insert-mode Right" })
+map("c", "<C-A-K>", "\\(.*\\)", { desc = "Cmd-mode catching group/kirby " })
+
+map("t", "<C-<ESC>", "<C-\\><C-n>", { desc = "terminal exit" })
 
 -- toggle options
 map({ "n", "x" }, "<leader>,wr", "<cmd>set wrap!<CR>", { desc = "Toggle wrap" })
@@ -144,6 +144,6 @@ map({ "n", "x" }, "<leader>,ii", "<cmd>set list!<CR>", { desc = "Toggle invisibl
 -- Diff mappings
 -- ========================
 vim.cmd([[command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis]])
-map("n", "<leader>sc", "<cmd>DiffOrig<CR>", { desc = "unsaved changes diff" })
-map('n', '<leader><leader>dt', ':windo diffthis<CR>', { noremap = true })
-map('n', '<leader><leader>do', ':windo diffoff<CR>', { noremap = true })
+map("n", "<leader>sc", "<cmd>DiffOrig<CR>", { desc = "diff unsaved changes" })
+-- map('n', '<leader><leader>dt', ':windo diffthis<CR>', { noremap = true })
+-- map('n', '<leader><leader>do', ':windo diffoff<CR>', { noremap = true })

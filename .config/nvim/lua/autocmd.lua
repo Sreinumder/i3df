@@ -1,5 +1,6 @@
 local autocmd = vim.api.nvim_create_autocmd
 
+
 autocmd({ "UIEnter", "BufReadPost", "BufNewFile" }, {
 	group = vim.api.nvim_create_augroup("NvFilePost", { clear = true }),
 	callback = function(args)
@@ -25,14 +26,6 @@ autocmd({ "UIEnter", "BufReadPost", "BufNewFile" }, {
 	end,
 })
 
-autocmd("Filetype", {
-	pattern = "*",
-	callback = function()
-		vim.opt_local.fo:remove({ "c", "r", "o" })
-	end,
-	desc = "disable comment in newline",
-})
-
 autocmd("BufReadPost", {
 	pattern = "*",
 	callback = function()
@@ -49,7 +42,7 @@ autocmd("BufReadPost", {
 })
 
 -- https://www.reddit.com/r/neovim/comments/1ehidxy/you_can_remove_padding_around_neovim_instance/
-vim.api.nvim_create_autocmd({ "UIEnter", "ColorScheme" }, {
+autocmd({ "UIEnter", "ColorScheme" }, {
 	callback = function()
 		local normal = vim.api.nvim_get_hl(0, { name = "Normal" })
 		if not normal.bg then
@@ -58,35 +51,20 @@ vim.api.nvim_create_autocmd({ "UIEnter", "ColorScheme" }, {
 		io.write(string.format("\027]11;#%06x\027\\", normal.bg))
 	end,
 })
-vim.api.nvim_create_autocmd("UILeave", {
+autocmd("UILeave", {
 	callback = function()
 		io.write("\027]111\027\\")
 	end,
 })
 
 -- comment for .conf files
-vim.api.nvim_create_autocmd("BufWinEnter", {
+autocmd("BufWinEnter", {
 	pattern = "*.conf",
 	command = "setlocal filetype=conf | setlocal commentstring=#%s",
 })
 
--- get current buffer absolute path
-vim.api.nvim_create_user_command("QuickLook", function()
-	local path = vim.fn.expand("%:p")
-	require("core.utils").open_file_with_quicklook(path)
-end, { nargs = 0, force = true })
-
--- -- yank highlight
--- vim.api.nvim_create_autocmd("TextYankPost", {
--- 	group = vim.api.nvim_create_augroup("yank_highlight", { clear = true }),
--- 	desc = "Highlight on yank",
--- 	callback = function()
--- 		vim.highlight.on_yank({ higroup = "IncSearch", Timeout = 700,  priority = 250 })
--- 	end,
--- })
-
 -- Execute command and stay in the command-line window
-vim.api.nvim_create_autocmd("CmdwinEnter", {
+autocmd("CmdwinEnter", {
 	group = vim.api.nvim_create_augroup("mariasolos/execute_cmd_and_stay", { clear = true }),
 	desc = "Execute command and stay in the command-line window",
 	callback = function(args)
@@ -125,6 +103,23 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 	end,
 })
 
+-- Custom highlight for yank and paste
+vim.api.nvim_create_autocmd("TextYankPost", {
+  pattern = "*",
+  callback = function()
+    vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
+  end,
+})
+
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  pattern = "*",
+  callback = function()
+    if vim.fn.pumvisible() == 0 then
+      vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
+    end
+  end,
+})
+
 -- local lastplace = vim.api.nvim_create_augroup("LastPlace", {})
 -- vim.api.nvim_clear_autocmds({ group = lastplace })
 -- vim.api.nvim_create_autocmd("BufReadPost", {
@@ -150,14 +145,14 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.api.nvim_create_user_command('Messages', function()
-  scratch_buffer = vim.api.nvim_create_buf(false, true)
-  vim.bo[scratch_buffer].filetype = 'vim'
-  local messages = vim.split(vim.fn.execute('messages', 'silent'), '\n')
-  vim.api.nvim_buf_set_text(scratch_buffer, 0, 0, 0, 0, messages)
-  vim.cmd('vertical sbuffer ' .. scratch_buffer)
-  vim.opt_local.wrap = true
-  vim.bo.buflisted = false
-  vim.bo.bufhidden = 'wipe'
-  vim.keymap.set('n', 'q', '<cmd>close<CR>', { buffer = scratch_buffer })
+vim.api.nvim_create_user_command("Messages", function()
+	scratch_buffer = vim.api.nvim_create_buf(false, true)
+	vim.bo[scratch_buffer].filetype = "vim"
+	local messages = vim.split(vim.fn.execute("messages", "silent"), "\n")
+	vim.api.nvim_buf_set_text(scratch_buffer, 0, 0, 0, 0, messages)
+	vim.cmd("vertical sbuffer " .. scratch_buffer)
+	vim.opt_local.wrap = true
+	vim.bo.buflisted = false
+	vim.bo.bufhidden = "wipe"
+	vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = scratch_buffer })
 end, {})

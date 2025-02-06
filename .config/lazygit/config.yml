@@ -1,29 +1,26 @@
-theme:
-  # Background color
-  backgroundColor: 'black'
-
-  # Text colors
-  textColor: 'white'
-  headingColor: 'cyan'
-
-  # Highlight color for selected items
-  selectedColor: 'yellow'
-
-  # Git status colors
-  addedColor: 'green'
-  modifiedColor: 'yellow'
-  removedColor: 'red'
-  stagedColor: 'blue'
-
-  # Diff colors
-  diff:
-    addedLineColor: 'green'
-    removedLineColor: 'red'
-    unchangedLineColor: 'white'
-
-  # Other UI elements
-  panelBorderColor: 'gray'
-  scrollBarColor: 'blue'
+gui:
+ theme:
+   activeBorderColor:
+     - '#89b4fa'
+     - bold
+   inactiveBorderColor:
+     - '#a6adc8'
+   optionsTextColor:
+     - '#89b4fa'
+   selectedLineBgColor:
+     - '#313244'
+   selectedRangeBgColor:
+     - '#313244'
+   cherryPickedCommitBgColor:
+     - '#45475a'
+   cherryPickedCommitFgColor:
+     - '#89b4fa'
+   unstagedChangesColor:
+     - '#f38ba8'
+   defaultFgColor:
+     - '#cdd6f4'
+   searchingActiveBorderColor:
+     - '#f9e2af'
 keybinding:
   universal:
     quit: q

@@ -6,17 +6,17 @@ return {
 		{
 			"<leader>acp",
 			":CccPick<CR>",
-			{ desc = "ccc pick" },
+			 desc = "ccc pick" ,
 		},
 		{
 			"<leader>a<C-a>",
 			":CccConvert<CR>",
-			{ desc = "ccc convert" },
+			 desc = "ccc convert" ,
 		},
 		{
 			"<leader>,cc",
 			":CccHighlighterToggle<CR>",
-			{ desc = "ccc toggle" },
+			 desc = "ccc toggle" ,
 		},
 	},
 	opts = {

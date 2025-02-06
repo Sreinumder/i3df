@@ -5,11 +5,14 @@ return {
   build = ":TSUpdate",
   opts = {
     ensure_installed = {
-      "c",
       "lua",
-      "luadoc",
       "vim",
       "vimdoc",
+      "c",
+      "cpp",
+      "html",
+      "python",
+      "luadoc",
       "query",
       "markdown",
       "markdown_inline",

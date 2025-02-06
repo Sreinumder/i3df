@@ -9,7 +9,7 @@ return {
 					require("mini.files").open()
 				end
 			end,
-			{ desc = "mini.file" },
+			 desc = "mini.file" ,
 		},
 		{
 			"-",
@@ -19,7 +19,7 @@ return {
 				print(parent_directory)
 				require("mini.files").open(parent_directory)
 			end,
-			{ desc = "mini.file" },
+			 desc = "mini.file" ,
 		},
 	},
 	opts = function()

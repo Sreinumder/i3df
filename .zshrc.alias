@@ -11,10 +11,9 @@ function bbq() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[
 function fal() { rg -e "^\s*alias" ~/i3df/.zshrc.alias | fzf }
 
 alias doo='~/i3df/scripts/doing.sh'
-alias ffc='fc-list | fzf'
-alias fd='cd $(find * -type d | fzf)' # Change directory with interactive search
+alias font-list='fc-list | fzf'
+alias fdir='cd $(find * -type d | fzf)' # Change directory with interactive search
 alias fps='ps aux | fzf' # Search through running processes
-alias fv='fzf --preview "bat --style=numbers --color=always --line-range :500 {}"' # Quick preview of files (requires bat)
 alias gb='git branch | fzf | xargs git checkout' # Git-specific fuzzy commands
 alias gl='git log --oneline | fzf --preview "git show --color=always {1}"'
 alias fk='ps aux | fzf | awk "{print \$2}" | xargs kill -9' # Kill process interactively
@@ -200,7 +199,7 @@ function fw() {
     . 2> /dev/null |
     fzf --delimiter ':' \
     --ansi \
-    --prompt 'Rg> ' \
+    --prompt 'rg> ' \
     --preview 'bat --style=numbers --color=always --highlight-line {2} {1}' \
     --preview-window 'down,45%,+{2}+3/3,~3')
 
@@ -218,7 +217,7 @@ function fwa() {
     . 2> /dev/null |
     fzf --delimiter ':' \
     --ansi \
-    --prompt 'Rg> ' \
+    --prompt 'rga> ' \
     --preview 'bat --style=numbers --color=always --highlight-line {2} {1}' \
     --preview-window 'down,45%,+{2}+3/3,~3')
 

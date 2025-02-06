@@ -12,7 +12,6 @@ export FCITX5_UI=gtk
 export GLFW_IM_MODULE=ibus
 export EDITOR=nvim
 export QT_STYLE_OVERRIDE=kvantum
-echo -ne '\e]12;yellow\a'
 
 # export GREEN="#7CB342"
 # export BLUE="#2196F3"

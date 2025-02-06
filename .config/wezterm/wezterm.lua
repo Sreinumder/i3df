@@ -1,6 +1,6 @@
 local wezterm = require("wezterm")
-
 local config = wezterm.config_builder()
+
 config.color_scheme = "Everblush (Gogh)"
 -- config.color_scheme = 'AdventureTime'
 -- config.font = wezterm.font 'Fira Code'
@@ -145,6 +145,7 @@ local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm"
 bar.apply_to_config(config)
 
 config.colors = {
+  -- cursor_bg = '#52ad70',
 	tab_bar = {
 		background = "#181f22",
 		active_tab = {
@@ -177,4 +178,3 @@ config.colors = {
 }
 
 return config
--- i am a nepali software developer

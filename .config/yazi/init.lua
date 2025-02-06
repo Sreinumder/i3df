@@ -1,5 +1,3 @@
-local catppuccin_theme = require("yatline-catppuccin"):setup("mocha") -- or "latte" | "frappe" | "macchiato"
-require("yatline"):setup({ theme = catppuccin_theme })
 require("relative-motions"):setup({ show_numbers = "relative-absolute", show_motion = true })
 require("folder-rules"):setup()
 require("git"):setup()

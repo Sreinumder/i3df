@@ -1,19 +1,16 @@
 [plugin]
 deps = [
-{ use = "dedukun/relative-motions", rev = "df97039" },
+{ use = "dedukun/relative-motions", rev = "0d9c8cf" },
 { use = "dawsers/toggle-view", rev = "9ae57f9" },
-{ use = "hankertrix/augment-command", rev = "f0f2687" },
-{ use = "dedukun/bookmarks", rev = "35da107" },
-{ use = "Reledia/glow", rev = "c2ed51e" },
+{ use = "hankertrix/augment-command", rev = "e4b7497" },
+{ use = "dedukun/bookmarks", rev = "202e450" },
+{ use = "Reledia/glow", rev = "5ce76dc" },
 { use = "Sonico98/exifaudio", rev = "d794614" },
 { use = "GrzegorzKozub/mdcat", rev = "d3d5089" },
 { use = "Ape/mediainfo", rev = "df17c4f" },
-{ use = "yazi-rs/plugins:chmod", rev = "71c4fc2" },
-{ use = "imsi32/yatline", rev = "600ed1f" },
-{ use = "Lil-Dank/lazygit", rev = "c82794f" },
 { use = "ahkohd/eza-preview", rev = "5ef05bc" },
 { use = "boydaihungst/file-extra-metadata", rev = "fdea1c6" },
-{ use = "AnirudhG07/plugins-yazi:copy-file-contents", rev = "11167e1" },
+{ use = "AnirudhG07/plugins-yazi:copy-file-contents", rev = "9c309b5" },
 { use = "boydaihungst/restore", rev = "ffc209e" },
 ]
 

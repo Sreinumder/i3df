@@ -2,9 +2,9 @@ return {
   "otavioschwanck/arrow.nvim",
   enabled = true,
   keys = {
-    ",",
-    "m",
-    {"<C-m>", function() require("arrow.persist").toggle() end, {desc = "arrow toggle"}},
+    {",", desc = "arrow buffer"},
+    {"m", desc = "arrow mark"},
+    -- {"<C-m>", function() require("arrow.persist").toggle() end, {desc = "arrow toggle"}},
   },
   opts = {
     show_icons = true,

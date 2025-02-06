@@ -8,70 +8,70 @@ return {
 			function()
 				require("genghis").copyFilepathWithTilde()
 			end,
-			desc = "󰝰 Absolute path",
+			desc = "genghis: Absolute path",
 		},
 		{
 			"<leader>yr",
 			function()
 				require("genghis").copyRelativePath()
 			end,
-			desc = "󰝰 Relative path",
+			desc = "genghis: Relative path",
 		},
 		{
 			"<leader>yn",
 			function()
 				require("genghis").copyFilename()
 			end,
-			desc = "󰈔 Name of file",
+			desc = "genghis: Name of file",
 		},
 		{
 			"<leader>yp",
 			function()
 				require("genghis").copyDirectoryPath()
 			end,
-			desc = "󰝰 Parent path",
+			desc = "genghis: Parent path",
 		},
 		{
 			"<leader>er",
 			function()
 				require("genghis").renameFile()
 			end,
-			{ desc = "renameFile" },
+			 desc = "genghis: renameFile" ,
 		},
 		{
 			"<leader>em",
 			function()
 				require("genghis").moveAndRenameFile()
 			end,
-			{ desc = "moveAndRenameFile" },
+			 desc = "genghis: moveAndRenameFile" ,
 		},
 		{
 			"<leader>ec",
 			function()
 				require("genghis").moveToFolderInCwd()
 			end,
-			{ desc = "moveToFolderInCwd" },
+			 desc = "genghis: moveToFolderInCwd" ,
 		},
 		{
 			"<leader>en",
 			function()
 				require("genghis").createNewFile()
 			end,
-			{ desc = "createNewFile" },
+			 desc = "genghis: createNewFile" ,
 		},
 		{
 			"<leader>gm",
 			function()
 				require("genghis").duplicateFile()
 			end,
-			{ desc = "duplicateFile" },
+			 desc = "genghis: duplicateFile" ,
 		},
 		{
 			"<leader>edf",
 			function()
 				require("genghis").trashFile()
 			end,
-			{ desc = "trashFile" },
+			 desc = "genghis: trashFile" ,
 		},
 		{
 			"<leader>em",
@@ -79,14 +79,14 @@ return {
 			function()
 				require("genghis").moveSelectionToNewFile()
 			end,
-			{ desc = " move selection to new file" },
+			 desc = "genghis: move selection to new file" ,
 		},
 		{
 			"<leader>ex",
 			function()
 				require("genghis").chmodx()
 			end,
-			{ desc = "chmodx" },
+			 desc = "genghis: chmodx" ,
 		},
 	},
 }

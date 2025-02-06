@@ -6,6 +6,12 @@
 return {
 	"monaqa/dial.nvim",
 	event = "InsertEnter",
+  keys = {
+    {"<leader>i"},
+    {"<leader>u"},
+    {"g<leader>i"},
+    {"g<leader>u"},
+  },
   enabled = true,
 	config = function()
 		local augend = require("dial.augend")

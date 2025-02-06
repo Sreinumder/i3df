@@ -2,30 +2,29 @@ return {
 	"neovim/nvim-lspconfig",
 	dependencies = { "saghen/blink.cmp" },
 	enabled = true,
-	lazy = false,
-	-- event = "InsertEnter",
+	event = { "BufReadPre", "BufNewFile" },
 	keys = {
-		{ "<leader>K", "K", { desc = "default K" } },
+		{ "<leader>K", "K",  desc = "default K"  },
 		{
 			"<leader>ds",
 			function()
 				vim.diagnostic.setloclist()
 			end,
-			{ desc = "LSP diagnostic loclist" },
+			 desc = "LSP diagnostic loclist" ,
 		},
 		{
 			"gr",
 			function()
 				vim.lsp.buf.references()
 			end,
-			{ desc = "Show references" },
+			 desc = "Show references" ,
 		},
 		{
 			"gd",
 			function()
 				vim.lsp.buf.definition()
 			end,
-			{ desc = "Go to lsp definition" },
+			 desc = "Go to lsp definition" ,
 		},
 		{ "<Leader>gd", "gd" },
 		{
@@ -33,7 +32,7 @@ return {
 			function()
 				vim.lsp.buf.declaration()
 			end,
-			{ desc = "Go to lsp declaration" },
+			 desc = "Go to lsp declaration" ,
 		},
 		{ "<Leader>gD", "gD" },
 		{
@@ -41,28 +40,28 @@ return {
 			function()
 				vim.lsp.buf.type_definition()
 			end,
-			{ desc = "Go to type definition" },
+			 desc = "Go to type definition" ,
 		},
 		{
 			"<leader>gi",
 			function()
 				vim.lsp.buf.implementation()
 			end,
-			{ desc = "Go to implementation" },
+			 desc = "Go to implementation" ,
 		},
 		{
 			"<leader>wi",
 			function()
 				vim.lsp.buf.add_workspace_folder()
 			end,
-			{ desc = "Insert workspace folder" },
+			 desc = "Insert workspace folder" ,
 		},
 		{
 			"<leader>wr",
 			function()
 				vim.lsp.buf.remove_workspace_folder()
 			end,
-			{ desc = "Remove workspace folder" },
+			 desc = "Remove workspace folder" ,
 		},
 		{
 			mode = { "n", "x" },
@@ -70,11 +69,11 @@ return {
 			function()
 				vim.lsp.buf.code_action()
 			end,
-			{ desc = "Code action" },
+			 desc = "Code action" ,
 		},
 		-- {"<leader>wl", function()
 			-- 	print(vim.inspect(vim.lsp.buf.list|workspace_folders()))
-			-- end, { desc = "List workspace folders" }},
+			-- end,  desc = "List workspace folders" },
 		},
 		opts = {
 			servers = {
