@@ -1,187 +1,97 @@
+notARepository: 'quit'
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+os:
+  editPreset: nvim
 gui:
- theme:
-   activeBorderColor:
-     - '#89b4fa'
-     - bold
-   inactiveBorderColor:
-     - '#a6adc8'
-   optionsTextColor:
-     - '#89b4fa'
-   selectedLineBgColor:
-     - '#313244'
-   selectedRangeBgColor:
-     - '#313244'
-   cherryPickedCommitBgColor:
-     - '#45475a'
-   cherryPickedCommitFgColor:
-     - '#89b4fa'
-   unstagedChangesColor:
-     - '#f38ba8'
-   defaultFgColor:
-     - '#cdd6f4'
-   searchingActiveBorderColor:
-     - '#f9e2af'
+  showBottomLine: false
+  theme:
+    activeBorderColor:
+      - magenta
+    selectedLineBgColor:
+      - black
+    selectedRangeBgColor:
+      - black
+    unstagedChangesColor:
+      - yellow
+  border: rounded
+  nerdFontsVersion: '3'
 keybinding:
   universal:
-    quit: q
-    quit-alt1: <c-c>
-    return: <esc>
-    quitWithoutChangingDirectory: Q
-    togglePanel: <tab>
-    prevItem: <up>
-    nextItem: <down>
-    prevItem-alt: k
-    nextItem-alt: j
-    prevPage: ','
-    nextPage: .
-    scrollLeft: H
-    scrollRight: L
     gotoTop: g
     gotoBottom: G
-    toggleRangeSelect: v
-    rangeSelectDown: <s-down>
-    rangeSelectUp: <s-up>
-    prevBlock: h
-    nextBlock: l
-    prevBlock-alt: <left>
-    nextBlock-alt: <right>
-    nextBlock-alt2: <tab>
-    prevBlock-alt2: <backtab>
-    jumpToBlock:
-      - "1"
-      - "2"
-      - "3"
-      - "4"
-      - "5"
-    nextMatch: "n"
-    prevMatch: "N"
-    startSearch: /
-    optionMenu: <disabled>
-    optionMenu-alt1: '?'
-    select: <space>
-    goInto: <enter>
-    confirm: <enter>
-    confirmInEditor: <a-enter>
-    remove: d
-    new: "n"
-    edit: e
-    openFile: o
-    scrollUpMain: <pgup>
-    scrollDownMain: <pgdown>
-    scrollUpMain-alt1: K
-    scrollDownMain-alt1: J
-    scrollUpMain-alt2: <c-u>
-    scrollDownMain-alt2: <c-d>
-    executeShellCommand: ':'
-    createRebaseOptionsMenu: m
-
-    # 'Files' appended for legacy reasons
-    pushFiles: P
-
-    # 'Files' appended for legacy reasons
-    pullFiles: p
-    refresh: R
-    createPatchOptionsMenu: <c-p>
-    nextTab: ']'
-    prevTab: '['
-    nextScreenMode: +
-    prevScreenMode: _
-    undo: z
-    redo: <c-z>
-    filteringMenu: <c-s>
-    diffingMenu: W
-    diffingMenu-alt: <c-e>
-    copyToClipboard: <c-o>
-    openRecentRepos: <c-r>
-    submitEditorText: <enter>
-    extrasMenu: '@'
-    toggleWhitespaceInDiffView: <c-w>
-    increaseContextInDiffView: '}'
-    decreaseContextInDiffView: '{'
-    increaseRenameSimilarityThreshold: )
-    decreaseRenameSimilarityThreshold: (
-    openDiffTool: <c-t>
-  status:
-    checkForUpdate: u
-    recentRepos: <enter>
-    allBranchesLogGraph: a
-  files:
-    commitChanges: c
-    commitChangesWithoutHook: w
-    amendLastCommit: A
-    commitChangesWithEditor: C
-    findBaseCommitForFixup: <c-f>
-    confirmDiscard: x
-    ignoreFile: i
-    refreshFiles: r
-    stashAllChanges: s
-    viewStashOptions: S
-    toggleStagedAll: a
-    viewResetOptions: D
-    fetch: f
-    toggleTreeView: '`'
-    openMergeTool: M
-    openStatusFilter: <c-b>
-    copyFileInfoToClipboard: "y"
-  branches:
-    createPullRequest: o
-    viewPullRequestOptions: O
-    copyPullRequestURL: <c-y>
-    checkoutBranchByName: c
-    forceCheckoutBranch: F
-    rebaseBranch: r
-    renameBranch: R
-    mergeIntoCurrentBranch: M
-    viewGitFlowOptions: i
-    fastForward: f
-    createTag: T
-    pushTag: P
-    setUpstream: u
-    fetchRemote: f
-    sortOrder: s
-  worktrees:
-    viewWorktreeOptions: w
   commits:
-    squashDown: s
-    renameCommit: r
-    renameCommitWithEditor: R
     viewResetOptions: <
-    markCommitAsFixup: f
-    createFixupCommit: F
-    squashAboveCommits: S
-    moveDownCommit: <c-j>
-    moveUpCommit: <c-k>
-    amendToCommit: A
-    resetCommitAuthor: a
-    pickCommit: p
-    revertCommit: t
-    cherryPickCopy: C
-    pasteCommits: V
-    markCommitAsBaseForRebase: B
-    tagCommit: T
-    checkoutCommit: <space>
-    resetCherryPick: <c-R>
-    copyCommitAttributeToClipboard: "y"
-    openLogMenu: <c-l>
-    openInBrowser: o
-    viewBisectOptions: b
-    startInteractiveRebase: i
-  amendAttribute:
-    resetAuthor: a
-    setAuthor: A
-    addCoAuthor: c
   stash:
     popStash: <
-    renameStash: r
-  commitFiles:
-    checkoutCommitFile: c
-  main:
-    toggleSelectHunk: a
-    pickBothHunks: b
-    editSelectHunk: E
-  submodules:
-    init: i
-    update: u
-    bulkMenu: b
-  commitMessage:
-    commitMenu: <c-o>
+customCommands:
+  - key: "<c-r>"
+    command: "gh pr create --fill --web"
+    context: "global"
+    loadingText: "Creating pull request on GitHub"
+  # https://github.com/jesseduffield/lazygit/wiki/Custom-Commands-Compendium#conventional-commit
+  - key: "<c-v>"
+    context: "global"
+    description: "Create new conventional commit"
+    prompts:
+      - type: "menu"
+        key: "Type"
+        title: "Type of change"
+        options:
+          - name: "feat"
+            description: "A new feature"
+            value: "feat"
+          - name: "fix"
+            description: "A bug fix"
+            value: "fix"
+          - name: "refactor"
+            description: "A code change that neither fixes a bug nor adds a feature"
+            value: "refactor"
+          - name: "chore"
+            description: "Other changes that don't modify src or test files"
+            value: "chore"
+          - name: "perf"
+            description: "A code change that improves performance"
+            value: "perf"
+          - name: "docs"
+            description: "Documentation only changes"
+            value: "docs"
+          - name: "build"
+            description: "Changes that affect the build system or external dependencies"
+            value: "build"
+          - name: "ci"
+            description: "Changes to CI configuration files and scripts"
+            value: "ci"
+          - name: "revert"
+            description: "Reverts a previous commit"
+            value: "revert"
+          - name: "style"
+            description: "Changes that do not affect the meaning of the code"
+            value: "style"
+          - name: "test"
+            description: "Adding missing tests or correcting existing tests"
+            value: "test"
+      - type: "input"
+        title: "Scope"
+        key: "Scope"
+        initialValue: ""
+      - type: "menu"
+        key: "Breaking"
+        title: "Breaking change"
+        options:
+          - name: "no"
+            value: ""
+          - name: "yes"
+            value: "!"
+      - type: "input"
+        title: "message"
+        key: "Message"
+        initialValue: ""
+      - type: "confirm"
+        key: "Confirm"
+        title: "Commit"
+        body: "Are you sure you want to commit?"
+    command: "git commit --message '{{.Form.Type}}{{ if .Form.Scope }}({{ .Form.Scope }}){{ end }}{{.Form.Breaking}}: {{.Form.Message}}'"
+    loadingText: "Creating conventional commit..."
