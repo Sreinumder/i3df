@@ -1,7 +1,7 @@
 local map = vim.keymap.set
-local nomap = vim.keymap.del
-if not vim.g.vscode then
-end
+-- local nomap = vim.keymap.del
+-- if not vim.g.vscode then
+-- end
 
 -- clever j k
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Basic Down", expr = true, silent = true })

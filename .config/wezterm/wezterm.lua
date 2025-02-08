@@ -72,7 +72,7 @@ config.keys = {
 				pane:split({
 					-- direction = "Bottom",
 					direction = "Right",
-					size = 0.5,
+					size = 0.40,
 				})
 			elseif not panes[1].is_zoomed then
 				panes[1].pane:activate()
@@ -105,11 +105,11 @@ config.keys = {
 		mods = "CTRL|SHIFT",
 		action = wezterm.action.DisableDefaultAssignment,
 	},
-	-- {
-	-- 	key = "h",
-	-- 	mods = "CTRL",
-	-- 	action = wezterm.action.DisableDefaultAssignment,
-	-- },
+	{
+		key = "l",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.DisableDefaultAssignment,
+	},
 	{
 		key = "Tab",
 		mods = "CTRL",
@@ -123,23 +123,6 @@ config.keys = {
 	{ key = "S", mods = "SHIFT|ALT", action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }) },
 	{ key = "t", mods = "SHIFT|ALT", action = act.SpawnTab("CurrentPaneDomain") },
 }
--- for i = 1, 7 do -- CTRL+ALT + number to activate that tab
--- 	table.insert(config.keys, {
--- 		key = tostring(i),
--- 		mods = "ALT|SHIFT",
--- 		action = act.ActivateTab(i - 1),
--- 	})
--- 	-- table.insert(config.keys, {
--- 	-- 	key = tostring(i),
--- 	-- 	mods = "CTRL|SHIFT",
--- 	-- 	action = wezterm.action.DisableDefaultAssignment,
--- 	-- })
--- 	-- F1 through F8 to activate that tab
--- 	table.insert(config.keys, {
--- 		key = "F" .. tostring(i),
--- 		action = act.ActivateTab(i - 1),
--- 	})
--- end
 
 local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
 bar.apply_to_config(config)

@@ -54,14 +54,14 @@ return {
 			end,
 			desc = "Remote Flash",
 		},
-		{
-			"S",
-			mode = { "o", "x" },
-			function()
-				require("flash").treesitter_search()
-			end,
-			desc = "Treesitter Search",
-		},
+		-- {
+		-- 	"S",
+		-- 	mode = { "o"},
+		-- 	function()
+		-- 		require("flash").treesitter_search()
+		-- 	end,
+		-- 	desc = "Treesitter Search",
+		-- },
 		{
 			"<A-s>",
 			mode = { "c" },

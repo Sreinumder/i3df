@@ -1,6 +1,7 @@
 local options = {
 	base46 = {
-    theme = "everblush",
+    -- theme = "everblush",
+    theme = "onedark",
 		hl_override = {
 			CursorLine = {
 				bg = "#1e2227", -- Dark gray background

@@ -40,10 +40,11 @@ else
 	dofile(vim.g.base46_cache .. "defaults")
 	dofile(vim.g.base46_cache .. "statusline")
 	require("options")
-	require("mappings")
-	require("hacks")
+	-- require("mappings")
+  -- require("hacks")
 end
 vim.schedule(function()
 	require("mappings")
+  require("hacks")
 	require("autocmd")
 end)
