@@ -1,19 +1,17 @@
 return {
 	"folke/which-key.nvim",
-  event = "InsertEnter",
-  keys = {
-    { "<leader>,wk", function()
-      local wk = require("which-key")
-      if wk.is_open then
-        wk.is_open = false -- Close the which-key window
-        vim.cmd("silent! WhichKey!")
-      else
-        wk.is_open = true -- Open the which-key window
-        vim.cmd("WhichKey")
-      end
-    end, { noremap = true}},
-  },
-  -- event = "UIEnter",
+  event = "UIEnter",
   cmd = "WhichKey",
-  opts = {},
+  opts = {
+    preset = "helix",
+  },
+  keys = {
+    {
+      "<leader>w<space>",
+      function()
+        require("which-key").show({ keys = "<c-w>", loop = true })
+      end,
+      desc = "Window Hydra Mode (which-key)",
+    },
+  },
 }

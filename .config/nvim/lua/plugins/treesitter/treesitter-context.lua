@@ -1,6 +1,7 @@
 return {
 	"nvim-treesitter/nvim-treesitter-context",
 	-- event = "UIEnter",
+  cmd = "TSContextToggle",
 	opts = {
 		multiwindow = false, -- Enable multiwindow support.
 		max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
@@ -17,11 +18,11 @@ return {
 	},
 	keys = {
 		{
-			";gc",
+			";c",
 			function()
 				require("treesitter-context").go_to_context(vim.v.count1)
 			end,
-			{ silent = true, desc = "go to context" },
+			silent = true, desc = "jump to context" ,
 		},
 		{ "<leader>,co", "<cmd>TSContextToggle<cr>", { silent = true, desc = "go to context" } },
 	},

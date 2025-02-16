@@ -3,13 +3,10 @@
 
 -- If you're a dotfiles scavenger, definitely watch this video (you're welcome)
 -- https://youtu.be/FmHhonPjvvA?si=8NrcRWu4GGdmTzee
-
 return {
 	"L3MON4D3/LuaSnip",
-	enabled = true,
-  dependencies = {
-    'rafamadriz/friendly-snippets',
-  },
+  event = "InsertEnter",
+  dependencies = { 'rafamadriz/friendly-snippets'},
 	opts = function(_, opts)
 		local ls = require("luasnip")
     require("luasnip/loaders/from_vscode").load({ paths = { "~/.local/share/nvim/site/pack/packer/start/friendly-snippets/snippets" } })

@@ -6,9 +6,7 @@ return {
 	"gregorias/coerce.nvim",
 	-- event = 'VeryLazy',
 	dependencies = { "gregorias/coop.nvim" },
-	keys = {
-		{ "go", mode = { "v", "n" } },
-	},
+	keys = { { "go", mode = { "v", "n" }, desc = "change-case" }},
 	config = function()
 		require("coerce").setup({
 			keymap_registry = require("coerce.keymap").keymap_registry(),

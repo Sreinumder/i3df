@@ -2,7 +2,6 @@ return {
 	"folke/trouble.nvim",
 	enabled = false,
 	dependencies = { "nvim-tree/nvim-web-devicons" },
-	-- branch = "dev", -- IMPORTANT!
 	keys = {
 		{
 			"<leader>tx",

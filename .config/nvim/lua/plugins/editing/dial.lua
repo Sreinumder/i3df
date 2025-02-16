@@ -160,7 +160,7 @@ return {
 				-- vim.print(mode[math.floor(i/4)+1] .. " " .. keymaps[j][i%4+1] .. " " .. arga[i%2+1] .. " " .. argb[math.floor(i/2)+1] .. " " .. group[j])
 				vim.keymap.set(mode[math.floor(i / 4) + 1], keymaps[j][i % 4 + 1], function()
 					require("dial.map").manipulate(arga[i % 2 + 1], argb[math.floor(i / 2) + 1], group[j])
-				end)
+				end, {desc = group[j]})
 			end
 		end
 	end,

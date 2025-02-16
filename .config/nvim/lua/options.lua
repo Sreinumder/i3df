@@ -17,41 +17,29 @@ if not g.vscode then
 	o.smartcase = true -- iif you include mixed case in your search, assumes you want case-sensitive
 	-- o.ruler = false
 	o.shortmess:append("sI") -- disable nvim intro
+	o.cmdheight = 0 -- sets cmdline height
 else
+	o.cmdheight = 3 -- sets cmdline height
 	-- o.shortmess:append("c")
 	g.neovim_log_level = 0 -- Disable logging output from Neovim
+	require('vim.treesitter.highlighter').disable = true
 end
 
--- o.laststatus = 3
--- o.showmode = false
 
--- o.fillchars = { eob = " " }
--- o.ignorecase = true
--- o.smartcase = true
--- o.mouse = "a"
 
--- o.signcolumn = "yes"
 o.splitbelow = true
 o.splitright = true
--- o.timeoutlen = 400
 o.undofile = true
---
--- interval for writing swap file to disk, also used by gitsigns
 o.updatetime = 250
-
--- go to previous/next line with h,l,left arrow and right arrow
--- when cursor reaches end/beginning of line
--- o.whichwrap:append "<>[]hl"
 
 local is_windows = vim.fn.has("win32") ~= 0
 local sep = is_windows and "\\" or "/"
 local delim = is_windows and ";" or ":"
 vim.env.PATH = table.concat({ vim.fn.stdpath("data"), "mason", "bin" }, sep) .. delim .. vim.env.PATH
--- o.clipboard:append("unnamedplus") -- use system clipboard as default register
 
+-- o.clipboard:append("unnamedplus") -- use system clipboard as default register
 -- o.rulerformat   = ""
-o.cmdheight = 0 -- sets cmdline height
-o.cursorline = false -- highlight the current cursor line
+o.cursorline = true -- highlight the current cursor line
 -- o.cursorcolumn  = true -- highlight the current cursor column
 -- o.cursorlineo = "number"
 --setlocal cc        = 80

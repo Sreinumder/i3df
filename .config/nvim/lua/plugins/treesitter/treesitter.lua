@@ -9,6 +9,7 @@ return {
       "vim",
       "vimdoc",
       "c",
+      "go",
       "cpp",
       "html",
       "python",

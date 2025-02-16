@@ -10,7 +10,9 @@ return {
 	opts = {
 		-- Add custom surroundings to be used on top of builtin ones. For more
 		-- information with examples, see `:h MiniSurround.config`.
-		custom_surroundings = nil,
+		custom_surroundings ={
+      ['<CR>'] = { output = { left = '\n ', right = ' \n' } },
+    },
 
 		-- Duration (in ms) of highlight when calling `MiniSurround.highlight()`
 		highlight_duration = vim.g.change_hl_duration,

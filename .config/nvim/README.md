@@ -1,6 +1,7 @@
 # Always work in progress
 
 To install neovim (0.10) and requirements:
+Note: you need atleast one c complier (zig, gcc, clang, cc) to properly install treesitter grammers.
 * Windows (powershell)
 ```powershell
 winget install neovim fzf fd git;
@@ -32,7 +33,7 @@ Now run `nvim`. It will attempt to clone all the plugin repositories.
 - hjkl for basic char movement and alt + h or alt + jkl for moving line/selection.
 - H and L for jumping to start and end of line. M for middle of the lineand similarly other layers for multicursor, cloning, treesitter jump to next/prev, child/parent node.
 - alt + d for cutting d for deleting. similarly, c and alt + c.
-- \< and \> for syncing vim and clipboard register
+- \, and \< for syncing vim and clipboard register
 - To paste from clipboard, press < and then [p]aste.
 - To copy to clipboard, first cop[y] the thing then press >
 

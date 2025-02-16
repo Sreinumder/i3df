@@ -30,6 +30,10 @@ sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/ya
     ```
 
 * Swap escape<->caps
+
+Tue Feb 11 02:18:10 PM +0545 2025
+this is not working for electron app (VScodium)
+found solution inside VScodium anyway
 cat /etc/X11/xorg.conf.d/00-keyboard.conf
     ```
         Section "InputClass"
@@ -40,6 +44,8 @@ cat /etc/X11/xorg.conf.d/00-keyboard.conf
                 Option "XkbOptions" "caps:swapescape, terminate:ctrl_alt_bksp"
         EndSection
     ```
+
+    Trying Xmodmap
 
 * Brighness and media binding
 ** Installed brightnessctl
@@ -95,3 +101,13 @@ for syncing ~/i3df directory with file system
 ```sh
   stow . --adopt
 ```
+* multi-gesture touchpad
+    Use libinput-gestures from AUR as posted.
+
+    comment out the pinch in / out lines in libinput-gestures.conf
+
+    enable MOZ_USE_XINPUT2 in /etc/security/pam_env.conf
+
+` MOZ_USE_XINPUT2 DEFAULT=0 OVERRIDE=1 `
+
+<!--as discussed on this page : https://superuser.com/questions/1151161/enable-touch-scrolling-in-firefox/1689302?r=Saves_UserSavesList#1689302 -->

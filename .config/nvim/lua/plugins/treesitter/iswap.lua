@@ -1,5 +1,6 @@
 return {
   "mizlan/iswap.nvim",
+  enabled = false,
   keys = {
     {"<leader>sh", "<cmd>ISwapWithLeft<CR>", desc="Swap Node Left"},
     {"<leader>sl", "<cmd>ISwapWithRight<CR>", desc="Swap Node Right"},

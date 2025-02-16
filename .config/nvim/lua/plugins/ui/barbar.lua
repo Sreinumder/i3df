@@ -14,6 +14,7 @@ return {
 		separator = { left = " ", right = "" },
 		modified = { button = "●" },
 		pinned = { button = "", filename = true },
+    icons = { git = { enabled = true} },
 		-- …etc.
 	},
 	keys = {
@@ -25,16 +26,16 @@ return {
 		{ "<C-A-Tab>", "<Cmd>BufferMoveNext<CR>",  desc = "buffer move right"  },
 		{ "<C-A-S-Tab>", "<Cmd>BufferMovePrevious<CR>",  desc = "buffer move left"  },
 		{ "<A-w>", "<Cmd>BufferWipeout<CR>",  desc = "buffer close"  },
-    { ";wec", "<Cmd>BufferCloseAllButCurrent<CR>",  desc = "close except this"  },
+    { ";we", "<Cmd>BufferCloseAllButCurrent<CR>",  desc = "close except this"  },
 		{ ";wh", "<Cmd>BufferCloseBuffersLeft<CR>",  desc = "close left"  },
 		{ ";wl", "<Cmd>BufferCloseBuffersRight<CR>",  desc = "close right"  },
 		{ "<A-W>", "<Cmd>BufferRestore<CR>",  desc = "buffer restore"  },
 		{ "<leader><tab>", "<Cmd>BufferPick<CR>",  desc = "buffer pick"  },
 		{ "<leader><A-w>", "<Cmd>BufferPickDelete<CR>",  desc = "buffer pick delete"  },
-		{ "<leader>1", "<Cmd>BufferGoto 1<CR>",  desc = "goto tab 1"  },
-		{ "<leader>2", "<Cmd>BufferGoto 2<CR>",  desc = "goto tab 2"  },
-		{ "<leader>3", "<Cmd>BufferGoto 3<CR>",  desc = "goto tab 3"  },
-		{ "<leader>4", "<Cmd>BufferGoto 4<CR>",  desc = "goto tab 4"  },
+		-- { "<leader>1", "<Cmd>BufferGoto 1<CR>",  desc = "buffer 1"  },
+		-- { "<leader>2", "<Cmd>BufferGoto 2<CR>",  desc = "buffer 2"  },
+		-- { "<leader>3", "<Cmd>BufferGoto 3<CR>",  desc = "buffer 3"  },
+		-- { "<leader>4", "<Cmd>BufferGoto 4<CR>",  desc = "buffer 4"  },
 		--            :BufferCloseAllButCurrent
 		--            :BufferCloseAllButVisible
 		--            :BufferCloseAllButPinned

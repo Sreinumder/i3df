@@ -1,10 +1,9 @@
 return {
 	"williamboman/mason.nvim",
   dependencies = { "williamboman/mason-lspconfig.nvim"},
-  -- event = "UIEnter",
 	cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate" },
 	keys = {
-		{ "<leader>M", "<cmd>Mason<CR>",  desc = "Lazy nvim"  },
+		{ "<leader>M", "<cmd>Mason<CR>",  desc = "Mason Menu"  },
 	},
 	opts = {
 		PATH = "skip",

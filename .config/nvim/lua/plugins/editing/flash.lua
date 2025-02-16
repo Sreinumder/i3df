@@ -36,10 +36,10 @@ return {
 			function()
 				require("flash").jump()
 			end,
-			desc = "Flash",
+			desc = "Flash Jump",
 		},
 		{
-			"R",
+			"ir",
 			mode = { "x", "o" },
 			function()
 				require("flash").treesitter()
@@ -71,14 +71,6 @@ return {
 			desc = "Toggle Flash Search",
 		},
 		{
-			"<A-8>",
-			mode = { "n" },
-			function()
-				require("flash").jump({ pattern = vim.fn.expand("<cword>") })
-			end,
-			desc = "Toggle Flash Search",
-		},
-		{
 			";*",
 			mode = { "n", "x" },
 			function()
@@ -86,6 +78,7 @@ return {
 					pattern = vim.fn.expand("<cword>"),
 				})
 			end,
+      desc = "current word flash"
 		},
 		-- { "tj", mode = { "n" }, function()
 		--   require("flash").jump({

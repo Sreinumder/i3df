@@ -12,6 +12,7 @@ export FCITX5_UI=gtk
 export GLFW_IM_MODULE=ibus
 export EDITOR=nvim
 export QT_STYLE_OVERRIDE=kvantum
+export QT_QPA_PLATFORMTHEME=qt5ct
 
 # export GREEN="#7CB342"
 # export BLUE="#2196F3"
@@ -293,6 +294,7 @@ export FZF_DEFAULT_OPTS="
 --border=rounded 
 --marker='✓' 
 --pointer='▶' 
+--bind 'alt-k:up,alt-j:down'
 --bind='ctrl-u:preview-half-page-up'
 --bind='ctrl-d:preview-half-page-down'
 --bind='ctrl-s:toggle-sort'

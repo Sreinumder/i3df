@@ -1,8 +1,9 @@
 return {
 	"mfussenegger/nvim-lint",
 	-- event = { "BufReadPre", "BufNewFile" },
+  enabled = false,
   keys = {
-		{ "<leader>,li", function()
+		{ "<leader>ll", function()
 			require("lint").try_lint()
 		end,  desc = "Trigger linting for current file" }
   },

@@ -15,9 +15,7 @@ return {
           i = { "@conditional.inner", "@loop.inner" },
         }),
         C = spec_treesitter({ a = "@call.outer", i = "@call.inner" }),
-        t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
         u = { "%f[%d]%d+" }, -- number
-        -- m = spec_treesitter({ a = "@property.outer", i = "@property.inner" }),
       },
       mappings = {
         around_next = "an",

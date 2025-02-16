@@ -2,7 +2,6 @@ return {
 	"kevinhwang91/nvim-bqf",
   event = "FileType qf",
   keys = {
-    -- {"<A-q>", "<cmd>BqfToggle<CR>", desc = "bqf-toggle"},
     {"<leader>qf", "<cmd>copen<CR>", desc = "quickfix-op"},
   },
   opts = {},
