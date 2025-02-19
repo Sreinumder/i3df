@@ -283,24 +283,33 @@ fi
 # Set FZF default command to use ripgrep
 # export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 
+
+export BAT_THEME="OneHalfLight"
 # Set FZF default options with bottom preview
 # --header-first 
 # --header='ctrl-c:cancel / ctrl-q:exit / ctrl-s:select' 
+# --marker='✓' 
+# --pointer='▶' 
 export FZF_DEFAULT_OPTS="
+--color=bg+:#f0f0f0,bg:#ffffff,spinner:#007acc,hl:#d75f5f,fg:#2c2c2c,fg+:#2c2c2c,header:#007acc,info:#005f87,pointer:#005f87,marker:#d75f5f,prompt:#005f87,hl+:#af005f
 --cycle
 --height 95% 
 --prompt='  ' 
 --layout=reverse 
 --border=rounded 
---marker='✓' 
---pointer='▶' 
+--marker='x' 
+--pointer='>' 
+--bind ctrl-f:page-down
+--bind 'alt-d:jump'
+--bind 'alt-a:toggle-all'
 --bind 'alt-k:up,alt-j:down'
+--bind 'alt-h:toggle,alt-l:accept'
 --bind='ctrl-u:preview-half-page-up'
 --bind='ctrl-d:preview-half-page-down'
 --bind='ctrl-s:toggle-sort'
 --bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
---bind 'ctrl-y:execute(readlink -f {} | xclip -selection clipboard)'
---bind 'ctrl-alt-y:execute-silent(xclip -selection clipboard {})'
+--bind 'ctrl-y:execute(readlink -f {} | xsel -b)'
+--bind 'ctrl-alt-y:execute-silent(xsel -b <<< "{}")'
 "
 # --preview-window 'right,50%,border-left,<50(down,40%,border-bottom)'
 # --preview-window='right:45%:border-rounded'

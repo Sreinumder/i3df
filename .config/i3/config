@@ -34,7 +34,7 @@ exec --no-startup-id autotiling
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
-exec --no-startup-id feh --bg-fill $HOME/wallpaper/scooter.jpg --bg-fill ~/wallpaper/crow.png --bg-fill ~/wallpaper/sky.jpg
+exec --no-startup-id feh --bg-fill $HOME/wallpaper/scooter.jpg --bg-fill ~/wallpaper/view.jpg --bg-fill ~/wallpaper/ground.jpg
 exec --no-startup-id wezterm
 # set $refresh_i3status killall -SIGUSR1 i3status
 
@@ -52,6 +52,8 @@ bindsym shift+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @D
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym $mod+m exec wezterm -e yazi $HOME/Music/
+bindsym $mod+// exec xfce4-terminal --drop-down
+
 
 # 2. Brighness --------------------------------------------------
 bindsym $alt+XF86MonBrightnessUp    exec brightnessctl set +50
@@ -133,6 +135,7 @@ bindsym $mod+w kill
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id dmenu_run -m 0 -fn 'Iosevka Nerd Font-11'
+
 
 # change focus
 bindsym $mod+h focus left
@@ -291,5 +294,5 @@ for_window [class="^.*"] border pixel 2
 gaps inner 0
 gaps outer 0
 
-for_window [class=Eog|nsxiv|feh|Vlc|pavucontrol|Xarchiver] floating enable
-for_window [class=Eog|nsxiv|feh|Vlc|File-roller|Xarchiver] focus
+for_window [class=Eog|dropdown|nsxiv|feh|Vlc|pavucontrol|Xarchiver] floating enable
+for_window [class=Eog|dropdown|nsxiv|feh|Vlc|File-roller|Xarchiver] focus

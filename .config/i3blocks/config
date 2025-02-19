@@ -1,6 +1,6 @@
-[doing]
-command=~/i3df/scripts/doing.sh show
-interval=1
+# [doing]
+# command=~/i3df/scripts/doing.sh show
+# interval=1
 
 [playing]
 command=~/i3df/scripts/playing.sh

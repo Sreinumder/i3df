@@ -213,12 +213,18 @@ return {
 			-- oldfiles = { include_current_session = true },
 			keymap = {
 				fzf = {
-					["ctrl-q"] = "select-all+accept",
-					["ctrl-d"] = "preview-page-down",
-					["ctrl-u"] = "preview-page-up",
-					["alt-a"] = "toggle-all",
+					["ctrl-q"]      = "select-all+accept",
+					["ctrl-d"]      = "preview-page-down",
+					["ctrl-u"]      = "preview-page-up",
+					["alt-a"]       = "toggle-all",
 				},
 			},
+      -- files = {
+      --     actions = {
+      --       ["enter"]       = "file_edit",
+      --       ["alt-enter"] = "file_edit_or_qf"
+      --     }
+      -- },
 			git = {
 				files = {
 					prompt = "GitFiles❯ ",

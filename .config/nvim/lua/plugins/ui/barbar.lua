@@ -43,4 +43,7 @@ return {
 		--            :BufferCloseBuffersLeft
 		--            :BufferCloseBuffersRight
 	},
+  init = function()
+      vim.api.nvim_set_hl(0, 'BufferCurrent', { fg = '#000000' })
+  end,
 }

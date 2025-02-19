@@ -18,7 +18,7 @@ return {
 
     { mode = { "n", "v" }, ";s", "<cmd>lua require('multicursor-nvim').toggleCursor()<CR>", desc = "pause/add cursor"},
     { mode = { "n", "v" }, ";;s", "<cmd>lua require('multicursor-nvim').duplicateCursors()<CR>", desc = "pause all mc + clone them"},
-    { mode = "n", ";<esc>",
+    { mode = "n", ";<A-;>",
       function()
         if not require("multicursor-nvim").cursorsEnabled() then
           require("multicursor-nvim").enableCursors()
