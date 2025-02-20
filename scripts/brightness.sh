@@ -1,17 +1,21 @@
 #!/bin/bash
 
-# Get the current brightness level
-BRIGHTNESS_PATH="/sys/class/backlight/intel_backlight/brightness"
-MAX_BRIGHTNESS_PATH="/sys/class/backlight/intel_backlight/max_brightness"
+# Get the current brightness percentage using brightnessctl
+CURRENT_BRIGHTNESS=$(brightnessctl get)
+MAX_BRIGHTNESS=$(brightnessctl max)
 
-# Check if the paths exist (handle different backlight drivers)
-if [ -f "$BRIGHTNESS_PATH" ] && [ -f "$MAX_BRIGHTNESS_PATH" ]; then
-    CURRENT_BRIGHTNESS=$(cat $BRIGHTNESS_PATH)
-    MAX_BRIGHTNESS=$(cat $MAX_BRIGHTNESS_PATH)
-    
-    # Calculate brightness as a percentage
-    PERCENTAGE=$(( 100 * CURRENT_BRIGHTNESS / MAX_BRIGHTNESS ))
-    
-    # Output the current brightness percentage
-    echo "明 $PERCENTAGE%"
-fi
+# Calculate brightness as a percentage
+PERCENTAGE=$(( 100 * CURRENT_BRIGHTNESS / MAX_BRIGHTNESS ))
+
+# Handle mouse scroll events using BLOCK_BUTTON (4 for scroll up, 5 for scroll down)
+case $BLOCK_BUTTON in
+    4) # Scroll up - Increase brightness by 1%
+        brightnessctl set +1% > /dev/null
+        ;;
+    5) # Scroll down - Decrease brightness by 1%
+        brightnessctl set 1%- > /dev/null
+        ;;
+esac
+
+# Output the current brightness percentage
+echo "明 $PERCENTAGE%"

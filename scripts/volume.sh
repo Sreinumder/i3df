@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# Get default sink
 sink=$(pactl get-default-sink)
 
 # List all ports for the current sink
@@ -13,7 +15,7 @@ port2=$(echo "$ports" | head -n 2 | tail -n 1)
 
 # Check for mouse scroll events using BLOCK_BUTTON (4 for scroll up, 5 for scroll down)
 case $BLOCK_BUTTON in
-    1) # Left click - Increase volume
+    1) # Left click - Toggle mute
         pactl set-sink-mute @DEFAULT_SINK@ toggle
         ;;
     3) # Right-click - Toggle port
@@ -37,8 +39,9 @@ volume=$(pactl list sinks | grep -E '^[[:space:]]*Volume' | head -n 1 | awk '{pr
 # Check if volume is muted
 muted=$(pactl list sinks | grep -E '^[[:space:]]*Mute' | awk '{print $2}')
 
+# Output with color based on mute status
 if [ "$muted" == "yes" ]; then
-    echo "静 $volume"
+    echo "<span color='#e06c75'>静 $volume</span>"  # Red for mute
 else
     echo "音 $volume"
 fi

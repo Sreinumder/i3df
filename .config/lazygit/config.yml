@@ -2,26 +2,18 @@ notARepository: 'quit'
 git:
   paging:
     colorArg: always
-    pager: delta --paging=never
+    pager: delta --paging=never --line-numbers
 os:
-  edit: 'nvim {{filename}}'
-  editCommand: 'nvim'
-  editCommandTemplate: '{{editor}} --server /tmp/nvim-server.pipe --remote-tab "$(pwd)/{{filename}}"'
   editPreset: nvim
+# panels:
+#   files:
+#     default: "list"
 gui:
-  editor: "nvim {{.Path}}"
-  # returnImmediately: true
-  # quitOnTopLevelReturn: true
-  showBottomLine: false
+  # showBottomLine: false
   theme:
+    showFileTree: false
     selectedLineBgColor:
       - '#eaeaeb'
-  #   activeBorderColor:
-  #     - magenta
-  #   selectedRangeBgColor:
-  #     - black
-  #   unstagedChangesColor:
-  #     - yellow
   border: rounded
   nerdFontsVersion: '3'
 keybinding:

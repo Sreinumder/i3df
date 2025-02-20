@@ -18,16 +18,18 @@ interval=1
 [brightness]
 command=~/i3df/scripts/brightness.sh
 interval=1
+markup=pango
 
 [volume]
-command=~/i3df/scripts/pactl.sh
+command=~/i3df/scripts/volume.sh
 interval=1
 format_muted="静音"
+markup=pango
 
 [battery]
 command=~/i3df/scripts/battery.sh
-interval=10
-# color=#ef5350
+interval=1
+markup=pango
 
 [tzdate]
 # label=日付

@@ -1,19 +1,57 @@
-[plugin]
-deps = [
-{ use = "dedukun/relative-motions", rev = "0d9c8cf" },
-{ use = "dawsers/toggle-view", rev = "9ae57f9" },
-{ use = "hankertrix/augment-command", rev = "e4b7497" },
-{ use = "dedukun/bookmarks", rev = "202e450" },
-{ use = "Reledia/glow", rev = "5ce76dc" },
-{ use = "Sonico98/exifaudio", rev = "d794614" },
-{ use = "GrzegorzKozub/mdcat", rev = "d3d5089" },
-{ use = "Ape/mediainfo", rev = "df17c4f" },
-{ use = "ahkohd/eza-preview", rev = "5ef05bc" },
-{ use = "boydaihungst/file-extra-metadata", rev = "fdea1c6" },
-{ use = "AnirudhG07/plugins-yazi:copy-file-contents", rev = "9c309b5" },
-{ use = "boydaihungst/restore", rev = "ffc209e" },
-]
+[[plugin.deps]]
+use = "dedukun/relative-motions"
+rev = "0d9c8cf"
+hash = "561ad872c77b95360c2657c5e8d395ed"
 
+[[plugin.deps]]
+use = "dawsers/toggle-view"
+rev = "9ae57f9"
+hash = "9d291f6cecb1f1f5542fc18177d5c107"
+
+[[plugin.deps]]
+use = "hankertrix/augment-command"
+rev = "e4b7497"
+hash = "20445adbcb89554211735884eb4f6f1a"
+
+[[plugin.deps]]
+use = "dedukun/bookmarks"
+rev = "202e450"
+hash = "9e2f6f7381542d3adb3080b394b431b4"
+
+[[plugin.deps]]
+use = "Sonico98/exifaudio"
+rev = "d794614"
+hash = "a8e15d3c21c02a5af41d46ed04778a02"
+
+[[plugin.deps]]
+use = "GrzegorzKozub/mdcat"
+rev = "d3d5089"
+hash = "40c20e6c1085d1f45309b9f148bf4f6e"
+
+[[plugin.deps]]
+use = "Ape/mediainfo"
+rev = "df17c4f"
+hash = "74c2b0063f30c6b4e4ede533f9ca03f2"
+
+[[plugin.deps]]
+use = "ahkohd/eza-preview"
+rev = "5ef05bc"
+hash = "72355a6c8b7c8de6ed4dda0f98f86fee"
+
+[[plugin.deps]]
+use = "boydaihungst/file-extra-metadata"
+rev = "fdea1c6"
+hash = "8fd3b7f3607be6a8a3ef7b7692e923ce"
+
+[[plugin.deps]]
+use = "AnirudhG07/plugins-yazi:copy-file-contents"
+rev = "9c309b5"
+hash = "27c50e6bc15c09096505b805b238ade0"
+
+[[plugin.deps]]
+use = "boydaihungst/restore"
+rev = "ffc209e"
+hash = "4b2069c1c73aa22f0d5c1548e32027a8"
 
 [flavor]
 deps = []

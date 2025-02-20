@@ -120,12 +120,14 @@ map("c", "<C-A-K>", "\\(.*\\)", { desc = "Cmd-mode catching group/kirby " })
 map("t", "<C-<ESC>", "<C-\\><C-n>", { desc = "terminal exit" })
 
 -- easier commenting
-map({"n","x"}, "<leader>/", "gcc", { remap = true, silent = true, desc = "comment"  })
-map({"n","x"}, "<C-/>", "gcc", { remap = true, silent = true, desc = "comment"  })
-map({"n","x"}, "<leader>c", "gc", { remap = true, silent = true, desc = "comment"  })
-map({"n","x"}, "<leader>cv", "gcgc", { remap = true, silent = true, desc = "comment toggle comment body"})
-map("n", "<leader>co", "Ox<ESC>gcc$xa", { remap = true, silent = true, desc = "comment above" })
-map("n", "<leader>ca", "ox<ESC>gcc$xkJA", { remap = true, silent = true, desc = "comment at end" })
+map({"n","x"}, "<leader>/", "gcc",          { remap = true, silent = true, desc = "comment"  })
+map({"n","x"}, "<C-/>", "gcc",              { remap = true, silent = true, desc = "comment"  })
+map({"n","x"}, "<leader>c", "gc",           { remap = true, silent = true, desc = "comment"  })
+map({"n","x"}, "<leader>cv", "gcgc",        { remap = true, silent = true, desc = "comment toggle comment body"})
+map("n", "<leader>co", "Ox<ESC>gcc$xa",     { remap = true, silent = true, desc = "comment above" })
+map("n", "<leader>ca", "Vox<ESC>gcc$xkJA",  { remap = true, silent = true, desc = "comment at end" })
+map("n", "<leader>cl", 'V"cy"cPgccgv<Esc>', { remap = true, silent = true, desc = "comment clone below" })
+map("n", "<leader>cx", 'V"cy"cpgccgv<Esc>', { remap = true, silent = true, desc = "comment clone above" })
 
 -- ========================
 -- Diff mappings

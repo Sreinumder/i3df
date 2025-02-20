@@ -1,6 +1,5 @@
 [plugin]
 prepend_previewers = [
-{ name = "*.md", run = "mdcat" },
 # { mime = "text/plain", run = "mdcat" },
 { mime = "audio/*",   run = "exifaudio"},
 { mime = "video/*", run = "mediainfo"},

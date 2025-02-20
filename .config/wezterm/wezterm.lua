@@ -36,7 +36,7 @@ config.window_frame = {
     "JetBrains Mono",
     "Iosevka Nerd Font",
   }),
-  font_size = 9.0,
+  font_size = 7.0,
   active_titlebar_bg = "#333333",
   inactive_titlebar_bg = "#333333",
 }

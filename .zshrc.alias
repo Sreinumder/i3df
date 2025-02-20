@@ -266,3 +266,19 @@ function find_git_root() {
 alias fgr='$(find_git_root)'
 alias tree='eza --git --ignore-glob=.git --tree -al '
 alias gittree='eza --git --tree --git-ignore -al "$(find_git_root || echo /dev/null)"'
+
+function rm-restore() {
+# List trashed files with trash-cli and pipe to fzf for interactive selection
+selected_file=$(trash-list | fzf --preview 'echo {}' --preview-window=down:3)
+
+# Check if any file was selected
+if [ -z "$selected_file" ]; then
+  echo "No file selected. Exiting."
+  exit 0
+fi
+
+# Restore the selected file
+trash-restore <<< "$selected_file"
+
+echo "File restored: $selected_file"
+}

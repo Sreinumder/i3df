@@ -23,7 +23,7 @@ set $mod Mod4
 set $alt Mod1
 
 # setting font
-font pango:Isoveka NF 12
+font pango:Jetbrains Mono 12
 
 # basically autostart
 exec --no-startup-id xrdb -merge $HOME/.Xresources # for dark mode for applications
@@ -34,10 +34,7 @@ exec --no-startup-id autotiling
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
-exec --no-startup-id feh --bg-fill $HOME/wallpaper/scooter.jpg --bg-fill ~/wallpaper/view.jpg --bg-fill ~/wallpaper/ground.jpg
-exec --no-startup-id wezterm
-# set $refresh_i3status killall -SIGUSR1 i3status
-
+exec --no-startup-id feh --bg-fill $HOME/wallpaper/goldenratio.jpeg --bg-fill ~/wallpaper/view.jpg --bg-fill ~/wallpaper/ground.jpg
 floating_modifier $mod
 
 # Audio, Brightness & Screenshot ---------------------------
@@ -134,7 +131,7 @@ bindsym $mod+ctrl+c exec codium
 bindsym $mod+w kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run -m 0 -fn 'Iosevka Nerd Font-11'
+bindsym $mod+d exec --no-startup-id dmenu_run -m 0 -fn 'Jetbrains Mono-11'
 
 
 # change focus
@@ -253,7 +250,7 @@ bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 # status_command i3status
 # status_command i3status-rs
     height 15
-    font pango:Isoveka NF 9,  Noto Sans Mono CJK JP 10
+    font pango:Jetbrains Mono 9,  Noto Sans Mono CJK JP 10
     tray_padding 1
     strip_workspace_numbers yes
 

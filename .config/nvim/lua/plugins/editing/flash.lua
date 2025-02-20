@@ -88,4 +88,10 @@ return {
 		--   })
 		-- end, desc = "Toggle Flash Search" },
 	},
+  init = function()
+    vim.api.nvim_set_hl(0, 'FlashLabel', {fg = '#000000', bg = '#4078f2' })
+    vim.api.nvim_set_hl(0, 'FlashMatch', {fg = '#fafafa', bg = '#4078f2'})
+    vim.api.nvim_set_hl(0, 'FlashCurrent', {fg = '#fafafa', bg = '#4078f2'})
+    vim.api.nvim_set_hl(0, 'FlashCursor', {fg = '#fafafa', bg = '#4078f2'})
+  end,
 }
