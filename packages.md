@@ -12,9 +12,10 @@ I3 side
 - i3 (consumes way less ram than gnome)
 - autotiling (i3-script for autotiling duh)
 
-Essential
+Essential-cli
 =========
 - trash-cli (makes rm move things to trashbin)
+- bc (calculator)
 
 Editor
 ======
@@ -81,3 +82,5 @@ Misc
 - jq (for filtering json)
 - curl (for web requests)
 - wget (for downloading non-interactively)
+- iw (show / manipulate wireless devices and their configuration)
+- ethtool (ethernet-speed)

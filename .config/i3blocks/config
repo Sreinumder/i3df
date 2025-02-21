@@ -10,6 +10,16 @@ interval=1
 command=~/i3df/scripts/wifi.sh
 interval=1
 
+[cpu]
+command=~/i3df/scripts/cpu.sh
+interval=1
+markup=pango
+
+[ram]
+command=~/i3df/scripts/ram.sh
+interval=1
+markup=pango
+
 # [cpu_usage]
 # label=脳 
 # command=echo $(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')%
