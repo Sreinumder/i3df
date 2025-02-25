@@ -40,35 +40,19 @@ map(
 	'o<esc>a<Enter><esc>gvo<esc>i<Enter><esc>^"_d0vg_!sed "s/, */\\n/g"| grep -v "^$" |  | sed -z "s/\\n/, /g"<C-Left><C-Left><C-Left><C-Left><C-Left><C-Left>'
 )
 
--- https://aur.archlinux.org/packages/python-translate-shell
--- map("n", "<leader>ttt", "^vg_\"ty:vnew <CR>:.!trans <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>", { desc = "translate autodetect -> en" })
--- map("n", "<leader>ttd", "viw\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<CR>", { desc = "dictionary autodetect -> en" })
+-- https://aur.archlinux.org/packages/translate-shell
 map(
 	"n",
-	"<leader>tr",
-	"^vg_\"ty:vnew <CR>:.!trans '<C-r>t' | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
-	{ desc = "dictionary autodetect -> ??" }
-)
-map(
-	"n",
-	"<leader>td",
-	"viw\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
+	"<leader>tt",
+	"^vg_\"ty:vnew <CR>:.!trans '<C-r>t' | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right>",
 	{ desc = "dictionary autodetect -> ??" }
 )
 map(
 	"x",
-	"<leader>tr",
-	"\"ty:vnew <CR>:.!trans '<C-r>t' | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
+	"<leader>tt",
+	"\"ty:vnew <CR>:.!trans '<C-r>t' | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right>",
 	{ desc = "translate autodetect -> ??" }
 )
-map(
-	"x", "<leader>td",
-	"\"ty:vnew <CR>:.!trans -d <C-r>t | sed 's/\\x1b\\[[0-9;]*m//g'<Home><C-Right> -t en",
-	{ desc = "dictionary autodetect -> ??" }
-)
-
--- bash filter trans
-map("n", "<leader>rt", '"tyy"tp"tp0d}k!!trans -t  -b<C-Left><Left>', { desc = "translate filter append" })
 
 if vim.fn.has("win32") ~= 0 then
   map("n", "<leader>rs", '"byy"bp"bp0d}k!!powershell<cr>', { desc = "bash filter append" })
@@ -79,4 +63,4 @@ else
 end
 
 map("n", "<leader>xx", ":lua <C-r><C-l><cr>", { desc = "lua execute" })
-map("x", "<leader>xx", "lua <C-r><C-l><cr>", { desc = "lua execute" })
+-- map("x", "<leader>xx", ":lua <C-r><C-l><cr>", { desc = "lua execute" })

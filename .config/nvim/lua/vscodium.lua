@@ -23,6 +23,7 @@ map("n", ";ho", function() require("vscode").action("gitlens.openOnlyChangedFile
 
 map("n", "]x", function() require("vscode").action("editor.action.marker.nextInFiles") end, {desc = "mark next"})
 map("n", "[x", function() require("vscode").action("editor.action.marker.prevInFiles") end, {desc = "mark prev"})
+map("n", "<leader>e", function() require("vscode").action("workbench.view.explorer") end, {desc = "explorer"})
 
 -- map("n", "<A-w>", function()
 --   require("vscode").action("workbench.action.closeWindow")

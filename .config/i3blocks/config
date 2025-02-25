@@ -20,10 +20,11 @@ command=~/i3df/scripts/ram.sh
 interval=1
 markup=pango
 
-# [cpu_usage]
-# label=脳 
-# command=echo $(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')%
-# interval=5
+[cur_window]
+command=~/i3df/scripts/current_window_ram_cpu.sh
+interval=1
+markup=pango
+
 
 [brightness]
 command=~/i3df/scripts/brightness.sh

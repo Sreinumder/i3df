@@ -16,8 +16,8 @@ return {
     { mode = { "n", "v" }, "<C-A-d>", "<cmd>lua require('multicursor-nvim').deleteCursor()<CR>", desc = "Delete the main cursor."},
     { mode = "n", "<c-leftmouse>", "<cmd>lua require('multicursor-nvim').handleMouse()<CR>", desc = "Add and remove cursors with mouse"},
 
-    { mode = { "n", "v" }, ";s", "<cmd>lua require('multicursor-nvim').toggleCursor()<CR>", desc = "pause/add cursor"},
-    { mode = { "n", "v" }, ";;s", "<cmd>lua require('multicursor-nvim').duplicateCursors()<CR>", desc = "pause all mc + clone them"},
+    { mode = { "n", "v" }, ";s", "<cmd>lua require('multicursor-nvim').toggleCursor()<CR>", desc = "pause and add cursor"},
+    { mode = { "n", "v" }, ";<A-s>", "<cmd>lua require('multicursor-nvim').duplicateCursors()<CR>", desc = "pause all mc + clone them"},
     { mode = "n", ";<A-;>",
       function()
         if not require("multicursor-nvim").cursorsEnabled() then

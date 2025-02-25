@@ -5,7 +5,12 @@ alias nv='neovide'
 alias v='vim'
 alias hx='helix'
 alias rm='trash-put'
-
+alias myip="curl http://ipecho.net/plain; echo"
+alias t="tgpt"
+alias ts="tgpt -s"
+alias tm="tgpt -m" # multiline
+alias tc="tgpt -c" # code
+alias ti="tgpt --image"
 function cdj() { curl -s https://icanhazdadjoke.com/ }
 function cbb() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"' }
 function bbq() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"' |  cowsay -f ~/.cowsay-cows/walter-white.cow }
@@ -33,7 +38,6 @@ alias od="ouch decompress"
 alias oc="ouch   compress"
 # alias So='source ~/.zshrc'
 alias So='exec zsh'
-alias fcr='kill `ps -A | grep fcitx5 | awk '{print $1}'` && ( fcitx5 & )'
 alias grep='grep --color=auto'
 
 alias cona='nvim ~/i3df/.zshrc.alias'
@@ -268,17 +272,23 @@ alias tree='eza --git --ignore-glob=.git --tree -al '
 alias gittree='eza --git --tree --git-ignore -al "$(find_git_root || echo /dev/null)"'
 
 function rm-restore() {
-# List trashed files with trash-cli and pipe to fzf for interactive selection
-selected_file=$(trash-list | fzf --preview 'echo {}' --preview-window=down:3)
+  # List trashed files with trash-cli and pipe to fzf for interactive selection
+  selected_file=$(trash-list | fzf --preview 'echo {}' --preview-window=down:3)
 
-# Check if any file was selected
-if [ -z "$selected_file" ]; then
-  echo "No file selected. Exiting."
-  exit 0
-fi
+  # Check if any file was selected
+  if [ -z "$selected_file" ]; then
+    echo "No file selected. Exiting."
+    exit 0
+  fi
 
-# Restore the selected file
-trash-restore <<< "$selected_file"
+  # Restore the selected file
+  trash-restore <<< "$selected_file"
 
-echo "File restored: $selected_file"
+  echo "File restored: $selected_file"
+}
+
+function no() { # nvim oldfiles
+  local file
+  file=$(nvim --cmd 'lua for _, v in ipairs(vim.v.oldfiles) do print(v) end' --cmd qa | fzf)
+  [ -n "$file" ] && nvim "$file"
 }

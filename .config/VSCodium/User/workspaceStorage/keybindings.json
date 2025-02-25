@@ -1,0 +1,241 @@
+[
+  // next in fFtT
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+n",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<A-n>"
+  },
+  // prev in fFtT
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+p",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<A-p>"
+  },
+  // toggle split-join
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+m",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<A-m>"
+  },
+  // register delete aka cut
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+d",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<A-d>"
+  },
+  // register delete-char
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+x",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<A-x>"
+  },
+
+  // for exchange operator
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+s",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<A-s>"
+  },
+
+  // end of the line in insert mode with <C-a> and <C-e>
+
+  // for moving lines and moving inside insert mode, pass to nvim
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+h",
+    "when": "editorTextFocus ",
+    "args": "<A-h>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+j",
+    "when": "editorTextFocus ",
+    "args": "<A-j>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+k",
+    "when": "editorTextFocus ",
+    "args": "<A-k>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+l",
+    "when": "editorTextFocus ",
+    "args": "<A-l>"
+  },
+
+  // for <escaping> from modes
+  {
+    "command": "vscode-neovim.send",
+    "key": "alt+;",
+    "when": "editorTextFocus",
+    "args": "<A-;>"
+  },
+
+  // for cloning line passing to nvim
+  {
+    "command": "vscode-neovim.send",
+    "key": "shift+alt+h",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<S-A-h>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "shift+alt+j",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<S-A-j>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "shift+alt+k",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<S-A-k>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "shift+alt+l",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<S-A-l>"
+  },
+
+  // for multicursor plugin
+  {
+    "command": "vscode-neovim.send",
+    "key": "ctrl+alt+h",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<C-A-h>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "ctrl+alt+l",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<C-A-l>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "ctrl+alt+j",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<C-A-j>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "ctrl+alt+k",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<C-A-k>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "ctrl+shift+alt+h",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<C-S-A-h>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "ctrl+shift+alt+j",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<C-S-A-j>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "ctrl+shift+alt+k",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<C-S-A-k>"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "ctrl+shift+alt+l",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "<C-S-A-l>"
+  },
+  {
+    "key": "alt+t",
+    "command": "toggleSearchEditorWholeWord",
+    "when": "inSearchEditor && searchInputBoxFocus"
+  },
+  {
+    "key": "ctrl+shift+w",
+    "command": "-workbench.action.closeWindow"
+  },
+  {
+    "key": "ctrl+w q",
+    "command": "-workbench.action.closeActiveEditor",
+    "when": "!editorTextFocus && !filesExplorerFocus && !searchViewletFocus && !terminalFocus && neovim.mode != 'cmdline'"
+  },
+  {
+    "key": "alt+b",
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+  {
+    "key": "ctrl+shift+g",
+    "command": "-workbench.view.scm",
+    "when": "workbench.scm.active"
+  },
+
+  // use hjkl in breadcrumbs!! ctrl-shift-.
+  {
+    "key": "alt+o",
+    "command":"breadcrumbs.focusAndSelect",
+    "when": "editorTextFocus && neovim.mode != insert && neovim.mode != visual",
+  },
+  {
+    "key": "alt+l",
+    "command": "breadcrumbs.focusNext",
+    "when": "breadcrumbsActive"
+  },
+  {
+    "key": "alt+h",
+    "command": "breadcrumbs.focusPrevious",
+    "when": "breadcrumbsActive"
+  },
+
+  // easier access
+  {
+    // universal tab close
+    "key": "alt+w",
+    "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "key": "alt+w",
+    "command": "-toggleSearchEditorWholeWord",
+    "when": "inSearchEditor && searchInputBoxFocus"
+  }, //remove default
+  {
+    // terminal
+    "key": "alt+/",
+    "command": "workbench.action.terminal.toggleTerminal",
+    "when": "terminal.active"
+  },
+  {
+    // full-size terminal toggle
+    "key": "alt+shift+/",
+    "command": "workbench.action.toggleMaximizedPanel",
+    "when": "panelAlignment == 'center' || panelPosition != 'bottom' && panelPosition != 'top'"
+  },
+  {
+    // explorer
+    "key": "alt+e",
+    "command": "workbench.view.explorer",
+    "when": "viewContainer.workbench.view.explorer.enabled"
+  },
+  {
+    "key": "alt+i",
+    "command": "workbench.action.toggleStatusbarVisibility"
+  },
+  {
+    "key": "shift+alt+q",
+    "command": "workbench.action.terminal.kill",
+    "when": "terminalHasBeenCreated || terminalIsOpen || terminalProcessSupported"
+  },
+  {
+    "key": "shift+alt+s",
+    "command": "workbench.action.terminal.split",
+    "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
+  },
+]

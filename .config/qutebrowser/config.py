@@ -1,6 +1,8 @@
 config.load_autoconfig()
-config.set('fonts.default_family', 'Iosevka Nerd Font')
 config.set('content.javascript.clipboard', 'access-paste')
+config.set('content.autoplay', 'False') # Disable video autoplay
+# c.content.javascript.enabled = False  # Disable globally
+# c.content.javascript.clipboard = "access"  # Allow clipboard access
 for mode in ["normal", "caret"]:
     config.bind("gs", "spawn --userscript yomichad", mode=mode)
     config.bind("gS", "spawn --userscript yomichad --prefix-search", mode=mode)
@@ -9,13 +11,13 @@ config.set("colors.webpage.bg", "grey")
 
 config.bind("xs", "config-cycle statusbar.show always never")
 config.bind("xt", "config-cycle tabs.show always never")
-config.bind(
-    "xx",
-    "config-cycle tabs.show always never;; config-cycle statusbar.show always never",
-)
+config.bind("xx", "config-cycle tabs.show always never;; config-cycle statusbar.show always never")
 config.bind("Alt+o", "cmd-set-text -s :open -b")
 config.bind("Alt+O", "cmd-set-text -s :open -w")
-config.bind('X', " hint links spawn mpv {hint-url}")
+config.bind(",v", "spawn mpv {url}")  # Open video links in MPV
+config.bind(",y", "hint links yank")  # Copy link URLs to clipboard
+config.bind('<Tab>', 'tab-next', mode='normal')
+config.bind('<Shift-Tab>', 'tab-prev', mode='normal')
 
 
 c.url.searchengines = {
@@ -59,7 +61,7 @@ c.fonts.downloads = "12pt JetBrains Mono"
 c.fonts.completion.entry = "12pt JetBrains Mono"
 c.fonts.completion.category = "bold 12pt JetBrains Mono"
 
-c.content.blocking.method = 'adblock'
+# c.content.blocking.method = 'adblock'
 c.content.blocking.adblock.lists = [
         "https://github.com/uBlockOrigin/uAssets/raw/master/filters/legacy.txt",
         "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters.txt",

@@ -42,6 +42,8 @@ settings:
     global: 200
   content.javascript.clipboard:
     global: access-paste
+  content.javascript.enabled:
+    global: true
   content.media.audio_capture:
     http://localhost:8501: true
   content.register_protocol_handler:

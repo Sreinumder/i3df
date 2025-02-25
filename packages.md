@@ -33,6 +33,8 @@ Browser
 =======
 - zen-browser-bin (pretty browser but too much ram consuming)
 - qutebrowser (browser with dedicated vim-binding)
+- chromium (actually ram hog lol)
+- dillo (fast browser)
 
 Explorer
 ========
@@ -77,6 +79,14 @@ Package Managers
 - cargo (RUST)
 - python-pipx (python)
 
+Helpers/wiki
+============
+- teal-deer (tldr for binaries)
+- arch-wiki-docs
+- tgpt (llm in shell)
+
+
+
 Misc
 ====
 - jq (for filtering json)
@@ -84,3 +94,4 @@ Misc
 - wget (for downloading non-interactively)
 - iw (show / manipulate wireless devices and their configuration)
 - ethtool (ethernet-speed)
+- fastfetch (system info tool)

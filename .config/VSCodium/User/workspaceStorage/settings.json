@@ -1,0 +1,73 @@
+{
+  "editor.fontFamily": "'JetBrains Mono', 'Iosevka Nerd Font', 'Droid Sans Mono', 'monospace', monospace",
+  "extensions.experimental.affinity": { "asvetliakov.vscode-neovim": 1 },
+  "vscode-neovim.ctrlKeysForNormalMode": ["a", "c", "d", "h", "i", "j", "k", "l", "m", "o", "r", "t", "u", "v", "w", "x", "y", "z", "/","]",
+    "right",
+    "left",
+    "up",
+    "down",
+    "backspace",
+    "delete"
+  ],
+
+  // for better cursor handling
+  "editor.cursorSmoothCaretAnimation": "off",
+  "editor.cursorBlinking": "solid",
+  "editor.lineNumbers": "relative",  // relative lines ftw
+
+  // clutter removal + personal preference
+  "editor.minimap.enabled": false,
+  "zenMode.hideLineNumbers": false,
+  "workbench.sideBar.location": "right",
+  "workbench.activityBar.location": "bottom",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/build": true
+  },
+  "editor.guides.highlightActiveIndentation": false,
+  "editor.guides.indentation": true,
+  "gitlens.advanced.messages": {
+    "suppressGitDisabledWarning": true
+  },
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb",
+    "*.sqlite": "${capture}.${extname}-*",
+    "*.db": "${capture}.${extname}-*",
+    "*.sqlite3": "${capture}.${extname}-*",
+    "*.db3": "${capture}.${extname}-*",
+    "*.sdb": "${capture}.${extname}-*",
+    "*.s3db": "${capture}.${extname}-*"
+  },
+  "git.openRepositoryInParentFolders": "always",
+  "tabnine.experimentalAutoImports": true,
+  "explorer.confirmDelete": false,
+  "keyboard.dispatch": "keyCode",
+  "vscode-neovim.logOutputToConsole": true,
+  "vscode-neovim.ctrlKeysForInsertMode": [
+    "r", // for register selection
+    "w" // for deleting a word
+  ],
+  "window.customTitleBarVisibility": "auto",
+  "window.commandCenter": false,
+  "workbench.editor.pinnedTabsOnSeparateRow": true,
+  "workbench.tree.enableStickyScroll": false,
+  "editor.renderWhitespace": "none",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.statusBar.visible": false,
+  "window.menuBarVisibility": "toggle",
+  "workbench.colorTheme": "Atom One Half Light",
+  "workbench.editor.alwaysShowEditorActions": true,
+  "terminal.integrated.fontFamily": "'Iosevka Nerd Font','JetBrains Mono',  'Droid Sans Mono', 'monospace', monospace",
+  "terminal.integrated.fontLigatures.enabled": true,
+}

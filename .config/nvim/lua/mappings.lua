@@ -1,15 +1,13 @@
 local map = vim.keymap.set
--- local nomap = vim.keymap.del
--- if not vim.g.vscode then
--- end
 
 -- clever j k
-map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", {desc = "Down", expr = true, silent = true})
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 map({ "n", "x" }, "gj", "j", { desc = "next line" })
 map({ "n", "x" }, "gk", "k", { desc = "prev line" })
 map({ "n", "x" }, "<A-n>", ";", { desc = "Down" })
 map({ "n", "x" }, "<A-p>", ",", { desc = "Up" })
+map({ "n", "x" }, ";;", ":", { desc = "colon" })
 
 map("n", "<leader>w", "<C-w>", { desc = "window control" }) -- split window vertically
 map({ "n", "v", "o" }, "H", "^", { desc = "Beg of line" })
@@ -19,12 +17,7 @@ map("x", "$", "g_", { desc = "Default last non-white char" })
 map("x", "g_", "$")
 
 -- pain saver
-map(
-	"n",
-	"<Esc>",
-	"<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-l><CR>",
-	{ desc = "Redraw / Clear hlsearch / Diff Update" }
-)
+map("n", "<Esc>", "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-l><CR>", { desc = "Redraw / Clear hlsearch / Diff Update" })
 map("x", "J", "j", { desc = "Disable annoying J " })
 map("n", "<leader>gv", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "reselect last paste" })
 map("n", "<leader>v", "V", {  desc = "Line select" })
@@ -96,9 +89,10 @@ map("x", "<A-L>", '"bd$"bp`[v`]', { desc = "move selection with L" })
 map("x", "<A-g><A-g>", '"bdgg"bp`[v`]', { desc = "move selection with gg" })
 map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
 
+map('x', 'g/', '<Esc>/\\%V')
 -- simple hacks
 map("n", "<C-s>", "<cmd>w<cr>", { silent = true, desc = "hack save this buffer" })
-map("n", "<leader>qq", "<cmd>q!<cr>", { silent = true, desc = "hack quit current window" })
+-- use ZZ ZQ
 
 -- insert mode hack
 -- Add undo break-points
@@ -108,13 +102,14 @@ map("i", ";", ";<c-g>u", {desc = "Insert-mode"})
 map("i", "<C-l>", '<C-r>=expand("%:p:h") . "/" <CR>', { desc = "Insert-mode file path" })
 
 
-map({ "i", "c", "t" }, "<A-;>", "<Esc>", { desc = "Insert-mode Escape" })
+map({ "x", "i", "c", "t" }, "<A-;>", "<Esc>", { desc = "Insert-mode Escape" })
 map({ "i", "c", "t" }, "<C-a>", "<Home>", { desc = "Insert-mode Home" })
 map({ "i", "c", "t" }, "<C-e>", "<End>", { desc = "Insert-mode End" })
 map({ "i", "c", "t" }, "<A-h>", "<Left>", { desc = "Insert-mode left" })
 map({ "i", "c", "t" }, "<A-j>", "<Down>", { desc = "Insert-mode down" })
 map({ "i", "c", "t" }, "<A-k>", "<Up>", { desc = "Insert-mode up" })
 map({ "i", "c", "t" }, "<A-l>", "<Right>", { desc = "Insert-mode Right" })
+map("i", "<c-z>", [[<c-g>u<Esc>[s1z=\`\]a<c-g>u]], { noremap = true, desc = "Fix last spelling mistake in insert mode" }) 
 map("c", "<C-A-K>", "\\(.*\\)", { desc = "Cmd-mode catching group/kirby " })
 
 map("t", "<C-<ESC>", "<C-\\><C-n>", { desc = "terminal exit" })
@@ -126,12 +121,9 @@ map({"n","x"}, "<leader>c", "gc",           { remap = true, silent = true, desc 
 map({"n","x"}, "<leader>cv", "gcgc",        { remap = true, silent = true, desc = "comment toggle comment body"})
 map("n", "<leader>co", "Ox<ESC>gcc$xa",     { remap = true, silent = true, desc = "comment above" })
 map("n", "<leader>ca", "Vox<ESC>gcc$xkJA",  { remap = true, silent = true, desc = "comment at end" })
-map("n", "<leader>cl", 'V"cy"cPgccgv<Esc>', { remap = true, silent = true, desc = "comment clone below" })
-map("n", "<leader>cx", 'V"cy"cpgccgv<Esc>', { remap = true, silent = true, desc = "comment clone above" })
+map("n", "<leader>cl", 'V"cy"cPgccgv<Esc>', { remap = true, silent = true, desc = "comment and clone below" })
+map("n", "<leader>cx", 'V"cy"cpgccgv<Esc>', { remap = true, silent = true, desc = "comment and clone above" })
 
--- ========================
--- Diff mappings
--- ========================
 vim.cmd([[command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis]])
 -- map("n", "<leader>sc", "<cmd>DiffOrig<CR>", { desc = "diff unsaved changes" }) -- this is <C-k> + d in vscode
 -- map('n', '<leader><leader>dt', ':windo diffthis<CR>', { noremap = true })

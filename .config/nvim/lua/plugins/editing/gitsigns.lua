@@ -1,6 +1,6 @@
 return {
   "lewis6991/gitsigns.nvim",
-  event = "CursorMoved",
+  event = {"CursorMoved", "UIEnter"},
   keys = {
     {
       mode = {"n", "x"},
