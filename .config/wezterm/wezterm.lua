@@ -1,13 +1,8 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
--- config.color_scheme = "Everblush (Gogh)"
--- config.color_scheme = "Builtin Solarized Light"
--- config.color_scheme = "Rosé Pine Dawn (base16)"
-config.color_scheme = "OneHalfLight"
--- config.color_scheme = 'AdventureTime'
--- config.font = wezterm.font 'Fira Code'
--- config.font = wezterm.font 'Iosevka Nerd Font'
+-- config.color_scheme = "OneHalfLight"
+config.color_scheme = "Everblush"
 config.font = wezterm.font_with_fallback({
   "JetBrains Mono",
   "Iosevka Nerd Font",
@@ -64,6 +59,12 @@ end)
 
 config.disable_default_key_bindings = false
 config.keys = {
+  -- { key = "ctrl-space", mods = "NONE", action = wezterm.action.SendString("copied" .. "\n") }, -- Enter copy mode
+  -- { key = "esc", mods = "NONE", action = wezterm.action.SendString("insert\n") }, -- Exit copy mode
+  -- { key = "ctrl-shift-space", mods = "NONE", action = wezterm.action.SendString("pasted" .. "\n") }, -- Paste mode
+  -- { key = "ctrl-f", mods = "NONE", action = wezterm.action.SendString("/\n") }, -- Search mode
+  -- { key = "ctrl-g", mods = "NONE", action = wezterm.action.SendString("n\\") }, -- Find next
+  -- { key = "alt-ctrl-g", mods = "NONE", action = wezterm.action.SendString("?\n") }, -- Find previous
   { key = "E", mods = "CTRL", action = act.EmitEvent("trigger-nvim-with-scrollback") },
   {
     key = "/",
@@ -100,7 +101,7 @@ config.keys = {
   },
   {
     key = "f",
-    mods = "ALT",
+    mods = "ALT|SHIFT",
     action = wezterm.action.TogglePaneZoomState,
   },
   {
@@ -144,13 +145,13 @@ bar.apply_to_config(config,{
   },
   modules = {
     -- tabs = {
-    --   active_tab_fg = 4,
-    --   inactive_tab_fg = 6,
-    -- },
-    workspace = {enabled = false,},
-    leader = {enabled = false,},
-    pane = {enabled = false,},
-    username = { enabled = false,
+      --   active_tab_fg = 4,
+      --   inactive_tab_fg = 6,
+      -- },
+      workspace = {enabled = false,},
+      leader = {enabled = false,},
+      pane = {enabled = false,},
+      username = { enabled = false,
     },
     hostname = {enabled = false,},
     clock = {enabled = false,},
@@ -163,39 +164,75 @@ bar.apply_to_config(config,{
   },
 })
 
-config.colors = {
-  cursor_bg = '#52ad70',
-  background = "#fafafa", -- Light background
-  foreground = "black", -- Dark text for contrast
-  tab_bar = {
+local colorscheme = os.getenv("COLORSCHEME")
+if colorscheme == "light" then
+  config.colors = {
+    cursor_bg = '#52ad70',
     background = "#fafafa", -- Light background
-    active_tab = {
-      bg_color = "#cccccc", -- Slightly darker than background for contrast
-      fg_color = "#2c2c2c", -- Dark foreground
-      intensity = "Bold",
-      underline = "None",
-      italic = true,
-      strikethrough = false,
-    },
-    inactive_tab = {
-      bg_color = "#f0f0f0", -- Light gray
-      fg_color = "#5c5c5c", -- Medium gray for text contrast
-    },
-    inactive_tab_hover = {
-      bg_color = "#dedede", -- Subtle hover effect
-      fg_color = "#2c2c2c",
-      italic = false,
-    },
-    new_tab = {
-      bg_color = "#f0f0f0",
-      fg_color = "#5c5c5c",
-    },
-    new_tab_hover = { 
-      bg_color = "#dedede",
-      fg_color = "#2c2c2c",
-      italic = false,
-    },
+    foreground = "black", -- Dark text for contrast
+    tab_bar = {
+      background = "#fafafa", -- Light background
+      active_tab = {
+        bg_color = "#cccccc", -- Slightly darker than background for contrast
+        fg_color = "#2c2c2c", -- Dark foreground
+        intensity = "Bold",
+        underline = "None",
+        italic = true,
+        strikethrough = false,
+      },
+      inactive_tab = {
+        bg_color = "#f0f0f0", -- Light gray
+        fg_color = "#5c5c5c", -- Medium gray for text contrast
+      },
+      inactive_tab_hover = {
+        bg_color = "#dedede", -- Subtle hover effect
+        fg_color = "#2c2c2c",
+        italic = false,
+      },
+      new_tab = {
+        bg_color = "#f0f0f0",
+        fg_color = "#5c5c5c",
+      },
+      new_tab_hover = { 
+        bg_color = "#dedede",
+        fg_color = "#2c2c2c",
+        italic = false,
+      },
+    }
   }
-}
+else
+  config.colors = {
+    cursor_bg = '#52ad70',
+    -- tab_bar = {
+      --   background = "#fafafa", -- Light background
+      --   active_tab = {
+        --     bg_color = "#cccccc", -- Slightly darker than background for contrast
+        --     fg_color = "#2c2c2c", -- Dark foreground
+        --     intensity = "Bold",
+        --     underline = "None",
+        --     italic = true,
+        --     strikethrough = false,
+        --   },
+        --   inactive_tab = {
+          --     bg_color = "#f0f0f0", -- Light gray
+          --     fg_color = "#5c5c5c", -- Medium gray for text contrast
+          --   },
+          --   inactive_tab_hover = {
+            --     bg_color = "#dedede", -- Subtle hover effect
+            --     fg_color = "#2c2c2c",
+            --     italic = false,
+            --   },
+            --   new_tab = {
+              --     bg_color = "#f0f0f0",
+              --     fg_color = "#5c5c5c",
+              --   },
+              --   new_tab_hover = { 
+                --     bg_color = "#dedede",
+                --     fg_color = "#2c2c2c",
+                --     italic = false,
+                --   },
+                -- }
+              }
+            end
 
-return config
+            return config

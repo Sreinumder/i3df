@@ -1,6 +1,7 @@
 return {
     "kawre/leetcode.nvim",
-    lazy = false,
+    enabled = false,
+    lazy = true,
     build = ":TSUpdate html",
     dependencies = {
         "ibhagwan/fzf-lua",

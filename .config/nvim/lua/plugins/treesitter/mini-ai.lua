@@ -16,6 +16,7 @@ return {
         }),
         C = spec_treesitter({ a = "@call.outer", i = "@call.inner" }),
         u = { "%f[%d]%d+" }, -- number
+        x = {"[%w_]+"},
       },
       mappings = {
         around_next = "an",

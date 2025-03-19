@@ -1,7 +1,7 @@
 return {
   "SunnyTamang/select-undo.nvim",
-  enabled = false,
-  lazy = false,
-  -- keys = {{mode = {"x"}, "gu", desc = "select-undo"}},
-  opts = {}
+  enabled = true,
+  lazy = true,
+  keys = {{mode = {"x"}, "gu", "<cmd>SelectUndo<CR>", desc = "select-undo"}},
+  opts = { mapping = 'gu' } -- Set to false to disable mapping
 }

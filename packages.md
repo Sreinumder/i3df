@@ -1,6 +1,10 @@
-terminal
+Terminal
 ========
 - wezterm
+
+Shell
+=====
+- ZSH (with z4h setup + vi-mode)
 
 Gui side
 ========
@@ -22,7 +26,7 @@ Editor
 - neovim (good text-editor)
 - vscodium-bin (everything works well with neovim plugin)
 
-git
+Git
 =========
 - git
 - github-cli
@@ -34,24 +38,27 @@ Browser
 - zen-browser-bin (pretty browser but too much ram consuming)
 - qutebrowser (browser with dedicated vim-binding)
 - chromium (actually ram hog lol)
-- dillo (fast browser)
+- dillo (fastest browser, only takes like 40 mb ram at idle but no js ofcourse.)
 
 Explorer
 ========
 - thunar
 - yazi
+- filezilla?
 
 Language
 ========
 - fcitx5 (multiple Language keyboard support)
 - fcitx5-mozc (japanese support)
 - fcitx5-configtool (qt frontend config editor)
+- sdcv (dictionary)
 
 Media
 =====
 - network-manager-applet (for wifi applet in corner)
 - feh (wallpaper / image previewer)
 - mpv (video player)
+- mpv-mpris (show playback info to playerctl)
 - flameshot (screenshot)
 - brightnessctl
 - playerctl
@@ -84,8 +91,11 @@ Helpers/wiki
 - teal-deer (tldr for binaries)
 - arch-wiki-docs
 - tgpt (llm in shell)
+- translate-shell (translates)
 
-
+Recorder
+========
+- obs-studio
 
 Misc
 ====
@@ -95,3 +105,6 @@ Misc
 - iw (show / manipulate wireless devices and their configuration)
 - ethtool (ethernet-speed)
 - fastfetch (system info tool)
+- udiskie (daemon to mount usb on connection)
+- exiftool (reads music metadata + image renderer for yazi musics)
+- xbindkeys ( xbindkeys + xdotool poor man's ahk for linux)

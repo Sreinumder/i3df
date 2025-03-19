@@ -70,6 +70,19 @@ else
     status="未充電"  # Not Charging
 fi
 
+case $BLOCK_BUTTON in
+  1)
+# wifi_toggle() {
+    if iwconfig wlan0 | grep "Interface doesn't exist"; then
+        echo "Enabling WiFi..."
+        sudo nmcli radio wifi on
+    else
+        echo "Disabling WiFi..."
+        sudo nmcli radio wifi off
+    fi
+    ;;
+  # }
+esac
 # Save the current battery state to the file
 echo "last_battery_percentage=$battery_percentage" > "$NOTIFICATION_STATE_FILE"
 echo "last_battery_status=$battery_status" >> "$NOTIFICATION_STATE_FILE"

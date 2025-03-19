@@ -1,8 +1,8 @@
 return {
 	defaults = { lazy = true },
-	install = { colorscheme = { "nvchad" } },
-
+	install = {colorscheme = { "nvchad" }},
 	ui = {
+    border = "single",
 		icons = {
 			ft = "",
 			lazy = "󰂠 ",

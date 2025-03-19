@@ -1,23 +1,18 @@
 local options = {
 	base46 = {
-    theme = "one_light",
-    -- theme = "github_light",
-    -- theme = "rosepine-dawn",
-    -- theme = "penumbra_light",
-    -- theme = "nano-light",
-    -- theme = "onedark",
-    -- theme = "everblush",
+    -- theme = "one_light",
+    theme = "everblush",
 		hl_override = {
 			-- CursorLine = {
 			-- 	bg = "#1e2227", -- Dark gray background
 			-- 	underline = false, -- Add an underline
 			-- 	italic = false, -- Make the text italic
 			-- },
-			--    CurSearch = { bg = "#607D8B" },
+			-- CurSearch = { bg = "#607D8B" },
 			-- Search = { bg = "#607D8B" },
 			-- IncSearch = { bg = "#607D8B" },
 		},
-		transparency = true,
+		transparency = false,
 		theme_toggle = { "everblush", "one_light" },
 	},
   lsp = { signature = true },

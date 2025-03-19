@@ -1,12 +1,12 @@
 config.load_autoconfig()
 config.set('content.javascript.clipboard', 'access-paste')
-config.set('content.autoplay', 'False') # Disable video autoplay
+config.set('content.autoplay', False) # Disable video autoplay
 # c.content.javascript.enabled = False  # Disable globally
 # c.content.javascript.clipboard = "access"  # Allow clipboard access
 for mode in ["normal", "caret"]:
     config.bind("gs", "spawn --userscript yomichad", mode=mode)
     config.bind("gS", "spawn --userscript yomichad --prefix-search", mode=mode)
-# config.set("colors.webpage.darkmode.enabled", False)
+config.set("colors.webpage.darkmode.enabled", True)
 config.set("colors.webpage.bg", "grey")
 
 config.bind("xs", "config-cycle statusbar.show always never")
@@ -21,24 +21,24 @@ config.bind('<Shift-Tab>', 'tab-prev', mode='normal')
 
 
 c.url.searchengines = {
-    "DEFAULT": "https://duckduckgo.com/?q={}&ia=web",
-    "!dd": "https://thefreedictionary.com/{}",
-    "!cmk": "https://comick.io/search?q={}",
-    "!fb": "https://www.facebook.com/s.php?q={}",
-    "!gh": "https://github.com/search?o=desc&q={}&s=stars",
-    "!gist": "https://gist.github.com/search?q={}",
-    "!gi": "https://www.google.com/search?tbm=isch&q={}&tbs=imgo:1",
-    "!ig": "https://www.instagram.com/explore/tags/{}",
-    "!m": "https://www.google.com/maps/search/{}",
-    # "!p": "https://pry.sh/{}",
-    "!r": "https://www.reddit.com/search?q={}",
-    "!t": "https://www.thesaurus.com/browse/{}",
-    "!tw": "https://twitter.com/search?q={}",
-    "!mal": "https://myanimelist.net/search/all?q={}&cat=all",
-    "!w": "https://en.wikipedia.org/wiki/{}",
-    "!yt": "https://www.youtube.com/results?search_query={}",
-    "!ji": "https://jisho.org/search/{}",
-}
+        "DEFAULT": "https://duckduckgo.com/?q={}&ia=web",
+        "!dd": "https://thefreedictionary.com/{}",
+        "!cmk": "https://comick.io/search?q={}",
+        "!fb": "https://www.facebook.com/s.php?q={}",
+        "!gh": "https://github.com/search?o=desc&q={}&s=stars",
+        "!gist": "https://gist.github.com/search?q={}",
+        "!gi": "https://www.google.com/search?tbm=isch&q={}&tbs=imgo:1",
+        "!ig": "https://www.instagram.com/explore/tags/{}",
+        "!m": "https://www.google.com/maps/search/{}",
+        # "!p": "https://pry.sh/{}",
+        "!r": "https://www.reddit.com/search?q={}",
+        "!t": "https://www.thesaurus.com/browse/{}",
+        "!tw": "https://twitter.com/search?q={}",
+        "!mal": "https://myanimelist.net/search/all?q={}&cat=all",
+        "!w": "https://en.wikipedia.org/wiki/{}",
+        "!yt": "https://www.youtube.com/results?search_query={}",
+        "!ji": "https://jisho.org/search/{}",
+        }
 
 # Set the default font to JetBrains Mono
 c.fonts.default_family = ["JetBrains Mono"]
@@ -81,23 +81,41 @@ c.content.blocking.adblock.lists = [
         "https://github.com/uBlockOrigin/uAssets/raw/master/filters/unbreak.txt"]
 
 # color-scheme
-one_light = {
-    'background': '#fafafa',
-    'foreground': '#383a42',
-    'current_line': '#e5e9f0',
-    'comment': '#a0a1a7',
-    'cyan': '#0184bc',
-    'violet': '#b48ead',
-    'green': '#50a14f',
-    'orange': '#c18401',
-    'pink': '#d33682',
-    'purple': '#a626a4',
-    'red': '#e45649',
-    'yellow': '#986801',
-    'magenta': '#b48ead',  # Added magenta
-    'blue': '#4078f2',
-    'highlight': '#add8ff',
-}
+one_light = colorscheme = {
+        'background': '#111',
+        'foreground': '#ffffff',
+        'current_line': '#333',
+        'comment': '#808080',
+        'cyan': '#00FFFF',
+        'violet': '#800080',
+        'green': '#008000',
+        'orange': '#FFA500',
+        'pink': '#FFC0CB',
+        'purple': '#800080',
+        'red': '#FF0000',
+        'yellow': '#FFFF00',
+        'magenta': '#FF00FF',
+        'blue': '#0000FF',
+        'highlight': '#C9E4CA',
+        }
+# one_light = colorscheme = {
+#     'background': '#fafafa',
+#     'foreground': '#383a42',
+#     'current_line': '#e5e9f0',
+#     'comment': '#a0a1a7',
+#     'cyan': '#0184bc',
+#     'violet': '#b48ead',
+#     'green': '#50a14f',
+#     'orange': '#c18401',
+#     'pink': '#d33682',
+#     'purple': '#a626a4',
+#     'red': '#e45649',
+#     'yellow': '#986801',
+#     'magenta': '#b48ead',  # Added magenta
+#     'blue': '#4078f2',
+#     'highlight': '#add8ff',
+# }
+
 c.colors.completion.category.bg = one_light['background']
 c.colors.completion.category.border.bottom = one_light['background']
 c.colors.completion.category.border.top = one_light['background']

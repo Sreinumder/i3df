@@ -2,7 +2,7 @@
 
 A [Yazi][yazi-link] plugin that enhances Yazi's default commands.
 This plugin is inspired by the
-[Yazi tips page](https://yazi-rs.github.io/docs/tips),
+[Yazi tips page][yazi-tips-page],
 the [bypass.yazi](https://github.com/Rolv-Apneseth/bypass.yazi) plugin
 and the [fast-enter.yazi](https://github.com/ourongxing/fast-enter.yazi)
 plugin.
@@ -20,7 +20,7 @@ plugin.
 
 ## Requirements
 
-- [Yazi](https://github.com/sxyazi/yazi) v0.4.2+
+- [Yazi][yazi-link] v25.2.7+
 - [`7z` or `7zz` command][7z-link]
 - [`file` command][file-command-link]
 
@@ -66,13 +66,12 @@ ya pack -u
 
 If you would like to use the default configuration, which is shown below,
 you don't need to add anything to your `~/.config/yazi/init.lua`
-file on Linux and macOS, or your
-`C:\Users\USERNAME\AppData\Roaming\yazi\config\init.lua`
-file on Windows, where `USERNAME` is your Windows username.
+file on Linux and macOS, or your `%AppData%\yazi\config\init.lua`
+file on Windows.
 
 ```lua
 -- ~/.config/yazi/init.lua for Linux and macOS
--- C:\Users\USERNAME\AppData\Roaming\yazi\config\init.lua for Windows
+-- %AppData%\yazi\config\init.lua for Windows
 
 -- Using the default configuration
 require("augment-command"):setup({
@@ -100,15 +99,14 @@ require("augment-command"):setup({
 However, if you would like to configure the plugin, you can add
 your desired configuration options to your `~/.config/yazi/init.lua` file
 on Linux and macOS, or your
-`C:\Users\USERNAME\AppData\Roaming\yazi\config\init.lua`
-file on Windows, where `USERNAME` is your Windows username.
+`%AppData%\yazi\config\init.lua` file on Windows.
 You can leave out configuration options that you would
 like to be left as default.
 An example configuration is shown below:
 
 ```lua
 -- ~/.config/yazi/init.lua for Linux and macOS
--- C:\Users\USERNAME\AppData\Roaming\yazi\config\init.lua for Windows
+-- %AppData%\yazi\config\init.lua for Windows
 
 -- Custom configuration
 require("augment-command"):setup({
@@ -240,8 +238,7 @@ then it will operate on the selected items.
   [`extract` openers section][yazi-yazi-toml-extract-openers]
   in [Yazi's default `yazi.toml`][yazi-yazi-toml] into your `yazi.toml`,
   which is located at `~/.config/yazi/yazi.toml` for Linux and macOS, and
-  `C:\Users\USERNAME\AppData\Roaming\yazi\config\yazi.toml`
-  file on Windows, where `USERNAME` is your Windows username.
+  `%AppData%\yazi\config\yazi.toml` file on Windows.
   Make sure that the `extract` openers are under the `opener` key in your
   `yazi.toml`. Then replace `extract` with `augmented-extract`,
   and you will be using the plugin's `extract` command instead of
@@ -251,7 +248,7 @@ then it will operate on the selected items.
 
   ```toml
   # ~/.config/yazi/yazi.toml for Linux and macOS
-  # C:\Users\USERNAME\AppData\Roaming\yazi\config\yazi.toml for Windows
+  # %AppData%\yazi\config\yazi.toml for Windows
 
   [opener]
   extract = [
@@ -264,7 +261,7 @@ then it will operate on the selected items.
 
   ```toml
   # ~/.config/yazi/yazi.toml for Linux and macOS
-  # C:\Users\USERNAME\AppData\Roaming\yazi\config\yazi.toml for Windows
+  # %AppData%\yazi\config\yazi.toml for Windows
 
   [[opener.extract]]
   run = 'ya pub augmented-extract --list "$@"'
@@ -454,19 +451,6 @@ then it will operate on the selected items.
   create directories to ensure that the path given exists.
   It also supports all the options supported by Yazi's `create` command,
   so you can pass them to the command and expect the same behaviour.
-  However, due to the
-  [`confirm` component](https://github.com/sxyazi/yazi/issues/2082)
-  currently not being exposed to plugin developers, it uses Yazi's input
-  component to prompt for a confirmation, like in Yazi v0.3.0 and below.
-  This is not ideal, but it shouldn't happen that often and
-  hopefully wouldn't be too annoying.
-  If you are using the latest version of Yazi from the main branch,
-  the `confirm` component is now exposed to plugin developers and
-  the plugin will use the `confirm` component instead.
-  However, the separator in the `confirm` component will be the text colour
-  instead of your configured border colour for the `confirm` component as
-  the `list` part of the `confirm` component has not been exposed to plugin
-  developers, so the separator is made using text.
 - The rationale for this behaviour is that creating a path without
   a file extension usually means you intend to create a directory instead
   of a file, as files usually have file extensions.
@@ -538,43 +522,15 @@ then it will operate on the selected items.
 - To use this command, the syntax is exactly the same as the default
   `shell` command provided by Yazi. You just provide the command you want and
   provide any Yazi shell variable, which is documented
-  [here](https://yazi-rs.github.io/docs/configuration/keymap/#manager.shell).
+  [here][yazi-shell-variables].
   The plugin will automatically replace the shell variable you give
   with the file paths for the item group before executing the command.
-- You will also need to escape the quotes when giving the shell command
-  if you use the same quotes to quote the given arguments to the plugin.
-  For example, if you pass the arguments to the plugin with double quotes,
-  i.e. `--args="shell"`, you will have to escape the double quotes with a
-  backslash character, like shown below:
 
-  ```toml
-  # ~/.config/yazi/keymap.toml on Linux and macOS
-  # C:\Users\USERNAME\AppData\Roaming\yazi\config\keymap.toml on Windows
-
-  [[manager.prepend_keymap]]
-  on = [ "o" ]
-  run = 'plugin augment-command --args="shell \"$EDITOR $@\" --block"'
-  desc = "Open the editor"
-  ```
-
-- Alternatively, you can use the triple single quote `'''` delimiter
-  for the run string and avoid the escaping the shell command altogether,
-  like the two examples below:
-
-  ```toml
-  # ~/.config/yazi/keymap.toml on Linux and macOS
-  # C:\Users\USERNAME\AppData\Roaming\yazi\config\keymap.toml on Windows
-
-  [[manager.prepend_keymap]]
-  on = [ "o" ]
-  run = '''plugin augment-command --args='shell "$EDITOR $@" --block''''
-  desc = "Open the editor"
-
-  [[manager.prepend_keymap]]
-  on = [ "i" ]
-  run = '''plugin augment-command --args="shell '$PAGER $@' --block"'''
-  desc = "Open the pager"
-  ```
+- There is no need to quote the shell variable on Linux and macOS,
+  as it is expanded by the plugin instead of the shell,
+  and the paths are already quoted using the `ya.quote` function
+  before execution, so quoting is entirely unnecessary
+  and may result in unexpected behaviour.
 
 - `--exit-if-dir` flag to stop the shell command given
   from executing if the item group consists only of directories.
@@ -588,11 +544,11 @@ then it will operate on the selected items.
 
   ```toml
   # ~/.config/yazi/keymap.toml on Linux and macOS
-  # C:\Users\USERNAME\AppData\Roaming\yazi\config\keymap.toml on Windows
+  # %AppData%\yazi\config\keymap.toml on Windows
 
   [[manager.prepend_keymap]]
-  on = [ "i" ]
-  run = '''plugin augment-command --args="shell '$PAGER $@' --block --exit-if-dir"'''
+  on = "i"
+  run = "plugin augment-command -- shell '$PAGER $@' --block --exit-if-dir"
   desc = "Open the pager"
   ```
 
@@ -603,17 +559,117 @@ then it will operate on the selected items.
 
   ```toml
   # ~/.config/yazi/keymap.toml on Linux and macOS
-  # C:\Users\USERNAME\AppData\Roaming\yazi\config\keymap.toml on Windows
+  # %AppData%\yazi\config\keymap.toml on Windows
 
   [[manager.prepend_keymap]]
-  on = [ "i" ]
-  run = '''plugin augment-command --args="shell '$EDITOR $@' --block --exit-if-dir"'''
-  desc = "Open the pager"
+  on = "o"
+  run = "plugin augment-command -- shell '$EDITOR $@' --block --exit-if-dir"
+  desc = "Open the editor"
   ```
 
   Video:
 
   [shell-exit-if-directory-video]
+
+#### Passing arguments to the `shell` command
+
+Ideally, you will want to avoid using backslashes to escape the shell command
+arguments, so here are a few ways to do it:
+
+1. Shell arguments that don't have special shell variables
+   on Linux and macOS, like `$SHELL`, or don't have special shell characters
+   like `>`, `|` or spaces, need not be quoted with double quotes `"`
+   or single quotes `'` respectively.
+   For example:
+
+   ```toml
+   # ~/.config/yazi/keymap.toml on Linux and macOS
+   # %AppData%\yazi\config\keymap.toml on Windows
+   [[manager.prepend_keymap]]
+   on = "i"
+   run = "plugin augment-command -- shell --block 'bat -p --pager less $@'"
+   desc = "Open with bat"
+   ```
+
+   Even though the `$@` argument above is considered a shell variable in Linux
+   and macOS, the plugin automatically replaces it with the full path
+   of the items in the item group, so it does not need to be quoted with
+   double quotes `"`, as it is expanded by the plugin,
+   and not meant to be expanded by the shell.
+
+2. If the arguments to the `shell` command have special shell variables
+   on Linux and macOS, like `$SHELL`, or special shell characters like
+   `>`, `|`, or spaces, use `--` to denote the end of the flags and options
+   passed to the `shell` command.
+   For example:
+
+   ```toml
+   # ~/.config/yazi/keymap.toml on Linux and macOS
+   # %AppData%\yazi\config\keymap.toml on Windows
+   [[manager.prepend_keymap]]
+   on = "<C-s>"
+   run = 'plugin augment-command -- shell --block -- sh -c "$SHELL"'
+   desc = "Open a shell inside of a shell here"
+   ```
+
+   ```toml
+   # ~/.config/yazi/keymap.toml on Linux and macOS
+   # %AppData%\yazi\config\keymap.toml on Windows
+   [[manager.prepend_keymap]]
+   on = "<C-s>"
+   run = "plugin augment-command -- shell --block -- sh -c 'echo hello'"
+   desc = "Open a shell and say hello inside the opened shell"
+   ```
+
+3. If the arguments passed to the `shell` command themselves contain arguments
+   that have special shell variables on Linux and macOS, like `$SHELL`,
+   or special shell characters like `>`, `|`, or spaces,
+   use the triple single quote `'''` delimiter for the `run` string.
+
+   ```toml
+   # ~/.config/yazi/keymap.toml on Linux and macOS
+   # %AppData%\yazi\config\keymap.toml on Windows
+   [[manager.prepend_keymap]]
+   on = "<C-s>"
+   run = '''plugin augment-command -- shell --block -- sh -c 'sh -c "$SHELL"''''
+   desc = "Open a shell inside of a shell inside of a shell here"
+   ```
+
+   ```toml
+   # ~/.config/yazi/keymap.toml on Linux and macOS
+   # %AppData%\yazi\config\keymap.toml on Windows
+   [[manager.prepend_keymap]]
+   on = "<C-s>"
+   run = '''plugin augment-command --
+       shell --block -- sh -c "$SHELL -c 'echo hello'"
+   '''
+   desc = "Open a shell inside of a shell and say hello inside the opened shell"
+   ```
+
+   A more legitimate use case for this would be something like
+   [Yazi's tip to email files using Mozilla Thunderbird][thunderbird-tip]:
+
+   ```toml
+   # ~/.config/yazi/keymap.toml on Linux and macOS
+   # %AppData%\yazi\config\keymap.toml on Windows
+   [[manager.prepend_keymap]]
+   on = "<C-e>"
+   run = '''plugin augment-command --
+       shell --
+           paths=$(for p in $@; do echo "$p"; done | paste -s -d,)
+           thunderbird -compose "attachment='$paths'"
+   '''
+   desc = "Email files using Mozilla Thunderbird"
+   ```
+
+   Once again, the `$@` variable above does not need to be quoted in double
+   quotes `"` as it is expanded by the plugin instead of the shell.
+
+If the above few methods to avoid using backslashes within your shell command
+to escape the quotes are still insufficient for your use case,
+it is probably more appropriate to write a shell script in a separate file
+and execute that instead of writing the shell command inline
+in your `keymap.toml` file.
 
 ### Paste (`paste`)
 
@@ -718,15 +774,6 @@ then it will operate on the selected items.
 - When `confirm_on_quit` is set to `true`, the plugin will prompt you for
   confirmation when there is more than 1 tab open. Otherwise, it will
   immediately quit Yazi, just like the default `quit` command.
-- Due to the
-  [`confirm` component](https://github.com/sxyazi/yazi/issues/2082)
-  currently not being exposed to plugin developers, the `quit` command uses
-  Yazi's input component to prompt for a confirmation,
-  like in Yazi v0.3.0 and below. This is not ideal, but hopefully it wouldn't
-  be too annoying.
-  If you are using the latest version of Yazi from the main branch,
-  the `confirm` component is now exposed to plugin developers and
-  the plugin will use the `confirm` component instead.
 - `--confirm` flag to get the plugin to prompt you for confirmation when
   quitting with multiple tabs open.
   This flag will cause the `quit` command to prompt you for confirmation
@@ -778,19 +825,19 @@ then it will operate on the selected items.
 
   ```toml
   # ~/.config/yazi/keymap.toml on Linux and macOS
-  # C:\Users\USERNAME\AppData\Roaming\yazi\config\keymap.toml on Windows
+  # %AppData%\yazi\config\keymap.toml on Windows
 
   # Use K to move up in the parent directory
   [[manager.prepend_keymap]]
-  on   = [ "K" ]
-  run  = [ "leave", "arrow -1", "enter" ]
+  on = "K"
+  run = ["leave", "arrow -1", "enter"]
   desc = "Move up in the parent directory"
 
 
   # Use J to move down in the parent directory
   [[manager.prepend_keymap]]
-  on   = [ "J" ]
-  run  = [ "leave", "arrow 1", "enter" ]
+  on = "J"
+  run = ["leave", "arrow 1", "enter"]
   desc = "Move down in the parent directory"
   ```
 
@@ -855,16 +902,16 @@ then it will operate on the selected items.
 
 Add the commands that you would like to use to your `keymap.toml` file,
 located at `~/.config/yazi/keymap.toml` on Linux and macOS
-and at `C:\Users\USERNAME\AppData\Roaming\yazi\config\keymap.toml`
+and at `%AppData%\yazi\config\keymap.toml`
 on Windows, in this format:
 
 ```toml
 # ~/.config/yazi/keymap.toml on Linux and macOS
-# C:\Users\USERNAME\AppData\Roaming\yazi\config\keymap.toml on Windows
+# %AppData%\yazi\config\keymap.toml on Windows
 
 [[manager.prepend_keymap]]
-on = [ "key" ]
-run = "plugin augment-command --args='command arguments --flags --options=42'"
+on = "key"
+run = "plugin augment-command -- command arguments --flags --options=42"
 desc = "Description"
 ```
 
@@ -872,11 +919,11 @@ For example, to use the augmented `enter` command:
 
 ```toml
 # ~/.config/yazi/keymap.toml on Linux and macOS
-# C:\Users\USERNAME\AppData\Roaming\yazi\config\keymap.toml on Windows
+# %AppData%\yazi\config\keymap.toml on Windows
 
 [[manager.prepend_keymap]]
-on = [ "l" ]
-run = "plugin augment-command --args='enter'"
+on = "l"
+run = "plugin augment-command -- enter"
 desc = "Enter a directory and skip directories with only a single subdirectory"
 ```
 
@@ -885,33 +932,35 @@ are also supported, for example:
 
 ```toml
 # ~/.config/yazi/keymap.toml on Linux and macOS
-# C:\Users\USERNAME\AppData\Roaming\yazi\config\keymap.toml on Windows
+# %AppData%\yazi\config\keymap.toml on Windows
 
 [[manager.prepend_keymap]]
-on   = [ "k" ]
-run  = "plugin augment-command --args='arrow -1'"
+on = "k"
+run = "plugin augment-command -- arrow -1"
 desc = "Move cursor up"
 
 [[manager.prepend_keymap]]
-on = [ "r" ]
-run = "plugin augment-command --args='rename --cursor=before_ext'"
+on = "r"
+run = "plugin augment-command -- rename --cursor=before_ext"
 desc = "Rename a file or directory"
 
 [[manager.prepend_keymap]]
-on = [ "D" ]
-run = "plugin augment-command --args='remove --permanently'"
+on = "D"
+run = "plugin augment-command -- remove --permanently"
 desc = "Permanently delete the files"
+
+[[manager.prepend_keymap]]
+on = ["g", "j"]
+run = "plugin augment-command -- parent_arrow 1"
 ```
 
 For the default descriptions of the commands, you can refer to
 [Yazi's default `keymap.toml` file][yazi-keymap-toml].
 
 Essentially, all you need to do to use this plugin
-is to wrap a Yazi command in single quotes,
-like `'enter'`,
-then add `plugin augment-command --args=`
-in front of it, which results in
-`plugin augment-command --args='enter'`.
+is to add `plugin augment-command --`, with a space at the end,
+in front of a Yazi command, such as `enter`,
+which results in `plugin augment-command -- enter'`.
 
 ### Using the `extract` command as an opener
 
@@ -934,6 +983,7 @@ You can view the full licence in the [`LICENSE`][Licence] file.
 <!-- Regular links -->
 
 [yazi-link]: https://github.com/sxyazi/yazi
+[yazi-tips-page]: https://yazi-rs.github.io/docs/tips
 [smart-paste-tip]: https://yazi-rs.github.io/docs/tips#smart-paste
 [smart-tab-tip]: https://yazi-rs.github.io/docs/tips#smart-tab
 [smart-switch-tip]: https://yazi-rs.github.io/docs/tips#smart-switch
@@ -945,6 +995,8 @@ You can view the full licence in the [`LICENSE`][Licence] file.
 [brew-link]: https://brew.sh/
 [yazi-yazi-toml-extract-openers]: https://github.com/sxyazi/yazi/blob/main/yazi-config/preset/yazi-default.toml#L51-L54
 [yazi-yazi-toml]: https://github.com/sxyazi/yazi/blob/main/yazi-config/preset/yazi-default.toml
+[yazi-shell-variables]: https://yazi-rs.github.io/docs/configuration/keymap/#manager.shell
+[thunderbird-tip]: https://yazi-rs.github.io/docs/tips#email-selected-files-using-thunderbird
 [yazi-keymap-toml]: https://github.com/sxyazi/yazi/blob/main/yazi-config/preset/keymap-default.toml
 [my-keymap-toml]: https://github.com/hankertrix/Dotfiles/blob/main/.config/yazi/keymap.toml
 [my-yazi-toml]: https://github.com/hankertrix/Dotfiles/blob/main/.config/yazi/yazi.toml
@@ -954,94 +1006,94 @@ You can view the full licence in the [`LICENSE`][Licence] file.
 
 <!-- Open command -->
 
-[open-prompt-video]: https://github.com/user-attachments/assets/82ddc67d-0b79-4487-8d29-6fd1eb754a8e
-[open-behaviour-video]: https://github.com/user-attachments/assets/3f8eec80-ae39-4071-b7ed-e9e9367f10fe
-[open-auto-extract-archives-video]: https://github.com/user-attachments/assets/35b356ed-9c3f-4093-ab59-f85ae64de757
-[open-recursively-extract-archives-video]: https://github.com/user-attachments/assets/dd1a5bd4-c7af-4d0a-9bf5-b087ee5a06f0
+[open-prompt-video]: https://github.com/user-attachments/assets/f5ec1f1e-dd1c-483e-9f98-5cdd7417e25f
+[open-behaviour-video]: https://github.com/user-attachments/assets/98b06dca-c141-43c3-a89d-b17d348ece45
+[open-auto-extract-archives-video]: https://github.com/user-attachments/assets/b493e3c7-aa93-441a-b603-a281ff8be657
+[open-recursively-extract-archives-video]: https://github.com/user-attachments/assets/6f98cfe5-f807-4da6-a2f4-2d9f36497c0f
 
 <!-- Extract command -->
 
-[extract-must-have-hovered-item-video]: https://github.com/user-attachments/assets/7c0516ff-01fd-48c2-ba27-4449ffede933
-[extract-hovered-item-optional-video]: https://github.com/user-attachments/assets/07ef7d25-3284-4d93-9485-c8635519c57e
-[extract-prompt-video]: https://github.com/user-attachments/assets/be2cabc3-b47d-4aac-ac45-0f26957c606b
-[extract-behaviour-video]: https://github.com/user-attachments/assets/6ea90612-da8f-45ad-8310-9b38c9e5a6f9
-[extract-recursively-extract-archives-video]: https://github.com/user-attachments/assets/bbf7f670-f86d-4aa4-85c7-35b41170924e
-[extract-encrypted-archive]: https://github.com/user-attachments/assets/58645691-3559-44ad-918e-8c2cd127252f
+[extract-must-have-hovered-item-video]: https://github.com/user-attachments/assets/7c7e2bd4-ec69-43f3-89e1-a50af217548b
+[extract-hovered-item-optional-video]: https://github.com/user-attachments/assets/ecf9e056-46a0-4912-9215-98ebf0f71f58
+[extract-prompt-video]: https://github.com/user-attachments/assets/75111183-f283-48f4-9075-a02f30e814fc
+[extract-behaviour-video]: https://github.com/user-attachments/assets/3bf29539-723e-4c48-a464-10af26c53165
+[extract-recursively-extract-archives-video]: https://github.com/user-attachments/assets/63611f0c-f73b-4e09-ae42-61b54ed235a8
+[extract-encrypted-archive]: https://github.com/user-attachments/assets/0bf508b6-b63e-4310-9340-c7cbc4cc7482
 
 <!-- Enter command -->
 
-[smart-enter-video]: https://github.com/user-attachments/assets/a00da3f5-305a-4615-b55c-483a06dd56d7
-[enter-skip-single-subdirectory-video]: https://github.com/user-attachments/assets/25ca5fb5-68f9-45fe-bf32-369e9335505d
+[smart-enter-video]: https://github.com/user-attachments/assets/105d7495-af1a-45a1-909c-2cdeb95410ce
+[enter-skip-single-subdirectory-video]: https://github.com/user-attachments/assets/3cd08b97-f954-4082-9842-25a757ee5fc8
 
 <!-- Leave command -->
 
-[leave-skip-single-subdirectory-video]: https://github.com/user-attachments/assets/4740fdae-2cd9-463d-b67b-7cdfd8d8b9a1
+[leave-skip-single-subdirectory-video]: https://github.com/user-attachments/assets/4bbb35d9-c6bb-4875-a8dd-06a934647936
 
 <!-- Rename command -->
 
-[rename-must-have-hovered-item-video]: https://github.com/user-attachments/assets/fd88a198-3de3-4d2b-8bcf-8d68142c965f
-[rename-hovered-item-optional-video]: https://github.com/user-attachments/assets/324dcd94-6f83-49a2-9390-5f41da520689
-[rename-prompt-video]: https://github.com/user-attachments/assets/5aba29ae-8b16-4b92-a99c-ff7f0ec925fa
-[rename-behaviour-video]: https://github.com/user-attachments/assets/280db6dd-10e4-4255-8c12-e13d23105e90
+[rename-must-have-hovered-item-video]: https://github.com/user-attachments/assets/fe8d64e9-7abc-43ee-8585-0ecf883c539e
+[rename-hovered-item-optional-video]: https://github.com/user-attachments/assets/577db168-7b15-4494-9dcc-1d032f6f2c9f
+[rename-prompt-video]: https://github.com/user-attachments/assets/7200830e-b1b1-4e07-9f48-3425afb0b351
+[rename-behaviour-video]: https://github.com/user-attachments/assets/5a5abb61-c201-41ee-9606-ffc2c36a5326
 
 <!-- Remove command -->
 
-[remove-must-have-hovered-item-video]: https://github.com/user-attachments/assets/18649ff1-ef0d-409a-8f01-29431dcc8f2e
-[remove-hovered-item-optional-video]: https://github.com/user-attachments/assets/6e9f5ca0-9b9f-47f8-8499-2b2c1db9f47c
-[remove-prompt-video]: https://github.com/user-attachments/assets/3f94c6f8-2ffd-4970-a5a4-5ac6b3a621c0
-[remove-behaviour-video]: https://github.com/user-attachments/assets/37d3c059-84ff-4475-908b-2c167b23c488
+[remove-must-have-hovered-item-video]: https://github.com/user-attachments/assets/5b459716-65a0-4d8f-85cc-3935df3aef9a
+[remove-hovered-item-optional-video]: https://github.com/user-attachments/assets/e185fc77-3182-49a3-b765-833d8680c070
+[remove-prompt-video]: https://github.com/user-attachments/assets/65302a59-2795-49c2-abe4-ec4a2ee366a5
+[remove-behaviour-video]: https://github.com/user-attachments/assets/212962e6-4147-4223-afae-312d91062fa2
 
 <!-- Create command -->
 
-[create-and-enter-directories-video]: https://github.com/user-attachments/assets/a102f918-8d99-491f-a6e3-fd8151f16f96
-[create-and-open-files-video]: https://github.com/user-attachments/assets/14341b9b-a048-4ea2-9322-e963293b6813
-[create-and-open-files-and-directories-video]: https://github.com/user-attachments/assets/dd05d84a-716b-4c4b-8e77-429bbfb4ea43
-[create-behaviour-video]: https://github.com/user-attachments/assets/a13745a5-a2cc-4c25-a3ff-0f10ac98b6f9
-[create-default-behaviour-video]: https://github.com/user-attachments/assets/5e9305c0-e56c-4fc3-b36b-e86c43571b06
+[create-and-enter-directories-video]: https://github.com/user-attachments/assets/1eaffa6e-d08a-4408-aecf-69efb7dbeb36
+[create-and-open-files-video]: https://github.com/user-attachments/assets/3952a94b-d2bc-478d-971e-fcdeeef8c6ed
+[create-and-open-files-and-directories-video]: https://github.com/user-attachments/assets/b46a8667-143a-4c8c-bc88-054e14b99a71
+[create-behaviour-video]: https://github.com/user-attachments/assets/53afc2de-d855-4dc8-96d5-0a86cbeb317f
+[create-default-behaviour-video]: https://github.com/user-attachments/assets/b30d8555-d139-4e46-bb62-3703511e503c
 
 <!-- Shell command -->
 
-[shell-must-have-hovered-item-video]: https://github.com/user-attachments/assets/43404049-1a4c-458c-b33f-c221dddf15c6
-[shell-hovered-item-optional-video]: https://github.com/user-attachments/assets/b399450a-eec4-43d5-a75d-91c4f04a9d59
-[shell-prompt-video]: https://github.com/user-attachments/assets/e83eb468-96fd-463f-a96a-54ac9ee2295f
-[shell-behaviour-video]: https://github.com/user-attachments/assets/caa32923-9c3e-4ea4-a1b6-e0a2c7968e9d
-[shell-exit-if-directory-video]: https://github.com/user-attachments/assets/a0feab97-b7fc-4d58-8611-60ccf5e794d5
+[shell-must-have-hovered-item-video]: https://github.com/user-attachments/assets/d4878ce3-3ff3-4c1e-b114-eedefaa9d130
+[shell-hovered-item-optional-video]: https://github.com/user-attachments/assets/3f733b5a-bbb6-41c1-83af-e9feea0f2805
+[shell-prompt-video]: https://github.com/user-attachments/assets/17bca83b-7de1-4b79-94ed-e38bdecaed26
+[shell-behaviour-video]: https://github.com/user-attachments/assets/5cb91bcb-3058-49a7-b717-603c35996ab0
+[shell-exit-if-directory-video]: https://github.com/user-attachments/assets/8d22ecfd-e2e1-4083-ad6e-444ae1a41e58
 
 <!-- Paste command -->
 
-[smart-paste-video]: https://github.com/user-attachments/assets/d48c12a7-f652-4df7-90a5-271cbfa97683
+[smart-paste-video]: https://github.com/user-attachments/assets/17000ea8-4063-4090-89ee-884098696603
 
 <!-- Tab create command -->
 
-[smart-tab-create-video]: https://github.com/user-attachments/assets/2921df3d-b51d-4dbb-a42f-80e021feaaf6
+[smart-tab-create-video]: https://github.com/user-attachments/assets/e445292b-3eb8-4939-80be-fffe7cf6b568
 
 <!-- Tab switch command -->
 
-[smart-tab-switch-video]: https://github.com/user-attachments/assets/1afb540d-47a9-4625-ae59-95d5cd91aa35
+[smart-tab-switch-video]: https://github.com/user-attachments/assets/92e7083d-62f8-4dcd-852e-273dce4abc3e
 
 <!-- Quit command -->
 
-[quit-with-confirmation-video]: https://github.com/user-attachments/assets/b6206ee4-766b-44ce-b90b-15b015ae71f9
+[quit-with-confirmation-video]: https://github.com/user-attachments/assets/b8253222-2924-48b4-89e5-d13e14ed4226
 
 <!-- Arrow command -->
 
-[wraparound-arrow-video]: https://github.com/user-attachments/assets/41ea1fb0-a526-4549-95a2-547c3c4b0498
+[wraparound-arrow-video]: https://github.com/user-attachments/assets/b121b9ab-371d-4556-8c94-b082a0588d71
 
 <!-- Parent arrow command -->
 
-[parent-arrow-video]: https://github.com/user-attachments/assets/f4dc492a-566b-4645-82e1-301713cff11f
-[wraparound-parent-arrow-video]: https://github.com/user-attachments/assets/d19872f8-2851-47e6-8485-4e8e5be66871
+[parent-arrow-video]: https://github.com/user-attachments/assets/ba0166b6-c516-43ae-bc1c-34757ad4e5ac
+[wraparound-parent-arrow-video]: https://github.com/user-attachments/assets/c53fdee2-b06c-482b-8b8b-5de179cd7c27
 
 <!-- Editor command -->
 
-[editor-must-have-hovered-item-video]: https://github.com/user-attachments/assets/c2811b90-e164-4a6d-9f3d-aefe8aec1d95
-[editor-hovered-item-optional-video]: https://github.com/user-attachments/assets/adad538a-fbe8-4ad3-8f6d-5600618a0673
-[editor-prompt-video]: https://github.com/user-attachments/assets/cccb8a3c-6afa-49a6-8808-04b0f235b391
-[editor-behaviour-video]: https://github.com/user-attachments/assets/b6821220-8530-4fd1-a40f-53d191a3fe1b
+[editor-must-have-hovered-item-video]: https://github.com/user-attachments/assets/a9d4142c-3543-4ef0-b7ea-a52007de2f73
+[editor-hovered-item-optional-video]: https://github.com/user-attachments/assets/f2659f94-d317-4752-88df-23deda970de6
+[editor-prompt-video]: https://github.com/user-attachments/assets/5e9cf66b-b107-4e15-8799-f00aeda6de14
+[editor-behaviour-video]: https://github.com/user-attachments/assets/d5762f16-e2dc-4890-b396-9d75d5f3f2af
 
 <!-- Pager command -->
 
-[pager-must-have-hovered-item-video]: https://github.com/user-attachments/assets/22a5211a-89cc-4c36-aadb-eb9e6ab1d578
-[pager-hovered-item-optional-video]: https://github.com/user-attachments/assets/6eaed3c9-91f4-4414-8d26-5eaf955a2861
-[pager-prompt-video]: https://github.com/user-attachments/assets/1ee621f4-704e-4cc3-a2ff-ba06e4eaf5a3
-[pager-behaviour-video]: https://github.com/user-attachments/assets/9ed0d520-4e73-44c3-82f7-18378994e0f4
+[pager-must-have-hovered-item-video]: https://github.com/user-attachments/assets/4068a4be-c8c7-4056-a79b-7826a0784840
+[pager-hovered-item-optional-video]: https://github.com/user-attachments/assets/54d0597c-2b0c-4712-904a-3d5adf035589
+[pager-prompt-video]: https://github.com/user-attachments/assets/6bb0d013-cc97-4951-ab4a-f4a9999c7b93
+[pager-behaviour-video]: https://github.com/user-attachments/assets/c9bed382-e817-413c-b81d-de94041a9cb8

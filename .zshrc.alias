@@ -6,28 +6,37 @@ alias v='vim'
 alias hx='helix'
 alias rm='trash-put'
 alias myip="curl http://ipecho.net/plain; echo"
-alias t="tgpt"
-alias ts="tgpt -s"
+alias t="tgpt -q"
+alias ts="tgpt -qs" # shell
 alias tm="tgpt -m" # multiline
-alias tc="tgpt -c" # code
+alias tc="tgpt -qc" # code
 alias ti="tgpt --image"
 function cdj() { curl -s https://icanhazdadjoke.com/ }
 function cbb() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"' }
 function bbq() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"' |  cowsay -f ~/.cowsay-cows/walter-white.cow }
 function fal() { rg -e "^\s*alias" ~/i3df/.zshrc.alias | fzf }
 
+alias ..="cd .."
+alias ...="cd ../.."
+
+function p() { cd "$HOME/projects/$1" }
+alias px="pkill xdotool"
+
+alias kre="localectl set-x11-keymap us; setxkbmap -option caps:swapescape"
+
+function g() { git $@ }
 alias doo='~/i3df/scripts/doing.sh'
 alias ffo='fc-list | fzf'
-alias fdir='cd $(find * -type d | fzf)' # Change directory with interactive search
 alias fps='ps aux | fzf' # Search through running processes
 alias gb='git branch | fzf | xargs git checkout' # Git-specific fuzzy commands
 alias gl='git log --oneline | fzf --preview "git show --color=always {1}"'
 alias fk='ps aux | fzf | awk "{print \$2}" | xargs kill -9' # Kill process interactively
-alias fcd='cd $(find . -type d | fzf)' # Search and cd into subdirectories
+alias cdi='cd $(find . -type d | fzf)' # Search and cd into subdirectories
 
 alias fQ='yay -Q | fzf'
 
 alias feh='feh --scale-down'
+alias yt='$SCRIPT_DIR/yt.sh'
 alias ytvc='yt-dlp --write-subs -P "$HOME/videos/" "$(xsel -b -o 2>/dev/null)"'
 alias ytmc='yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xsel -b -o 2>/dev/null)"'
 alias ytv='yt-dlp -P "$HOME/videos/" '
@@ -45,6 +54,7 @@ alias conb='nvim ~/i3df/.bashrc'
 alias cond='cd ~/i3df/.config/dunst; nvim dunstrc'
 alias cone='cd ~/.config/doom/; nvim .'
 alias coni='cd ~/i3df/.config/i3/; nvim config'
+alias conib='cd ~/i3df/.config/i3blocks/; nvim config'
 alias const='nvim ~/i3df/.config/i3blocks/config'
 alias conm='nvim ~/.config/mimeapps.list'
 alias conn='cd ~/i3df/.config/nvim/lua/plugins/; yazi'
@@ -75,120 +85,36 @@ alias setclip='xsel -b'
 alias getclip='xsel -b -o'
 alias sc='xsel -b'
 alias gc='xsel -b -o'
+alias scl='echo "!!" | sc' # copy last command
 alias retroarch='(retroarch &)'
 alias DR='pkill dunst; ( dunst & ); sleep 1; notify-send -u low 'low"; notify-send -u normal "normal"; notify-send -u critical "critical";" 
-# alias sudo='mpv ~/i3df/scripts/notify/bell.mp3; sudo'
 
 alias RB='cd ~/FUTSALA/; source env/bin/activate; uvicorn backend.main:app --reload'
 alias RF='cd ~/FUTSALA/frontend; npm run dev'
 alias RC='cd ~/FUTSALA; nvim .'
 alias hql='harlequin'
 alias xrr='xrandr --output HDMI-1 --right-of eDP-1'
+alias xrl='xrandr --output eDP-1 --primary --mode 1366x768 --pos 1366x0 --rotate normal --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal'
 alias xr0='xrandr -s 0'
-alias xrm='xrandr --setmonitor HDMI-1~1 768/205x683/230+1366+0 HDMI-1;
-xrandr --setmonitor HDMI-1~2 768/205x683/230+1366+683 none'
+alias xreo='xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal'
+alias xrm='xrandr --setmonitor HDMI-1~1 768/205x683/230+1366+0 HDMI-1; xrandr --setmonitor HDMI-1~2 768/205x683/230+1366+683 none'
+alias xrq='xrandr --setmonitor eDP-1~1 416/416x768/683+0+0 eDP-1; xrandr --setmonitor eDP-1~2 950/950x768/683+416+0 none'
+alias xr/='xrandr --setmonitor eDP-1~1 950/416x768/683+0+0 eDP-1; xrandr --setmonitor eDP-1~2 416/1366x768/683+950+0 none'
 alias xro='xrandr --output HDMI-1 --mode 1366x768 --pos 1366x0 --rotate right'
-alias xrd='xrandr --delmonitor HDMI-1~1; xrandr --delmonitor HDMI-1~2'
+alias xrd='xrandr --delmonitor HDMI-1~1; xrandr --delmonitor HDMI-1~2; xrandr --delmonitor eDP-1~1; xrandr --delmonitor eDP-1~2'
 alias xr='xrd; xrm'
 
-# rg
-# --field-match-separator ' ' - tell rg to separate the filename and linenumber with
-# spaces to play well with fzf, (when recognizing index variables to use in the fzf
-# preview command, fzf uses a default delimiter of space, see below)
 
-# fzf
-# --preview window ~8,+{1}-5
-#   this is a fzf feature
-#   ~8 - show first 8 lines (header)
-#   +{2} - fzf delimits the input piped in to it and provides access via index variables {n}. 
-#   the default delimiter fzf uses is space but can be specified via --delimiter <delimiter>
-#   pass the second index variable from bat (which is the line number)
-#   the number is signed, you can show eg the +n row or the -n row (the nth row from the bottom)
-#   -5 subtract 5 rows (go up 5 rows) so that you don't show the highlighted line as the first line
-#   since you want to provide context by showing the rows above the highlighted line
-
-# mkdir with cd
-mkcd () {
-  mkdir -p -- "$1" && cd -P -- "$1"
-}
-
-# mv and cd 
-mvcd() {
-  mv "$@" && cd "${@: -1}"
-}
-  fman() {
+function mkcd () { mkdir -p -- "$1" && cd -P -- "$1" }
+function mvcd() { mv "$@" && cd "${@: -1}" }
+function mvn() { mv "$@" && nvim "${@: -1}" }
+function fman() {
     man -k . | fzf -q "$1" --prompt='man> '  --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r man | col -bx | bat -l man -p --color always' | tr -d '()' | awk '{printf "%s ", $2} {print $1}' | xargs -r man
   }
 
-# f() {
-#     # Store the program
-#     program="$1"
-#
-#     # Remove first argument off the list
-#     shift
-#
-#     # Store option flags with separating spaces, or just set as single space
-#     options="$@"
-#     if [ -z "${options}" ]; then
-#         options=" "
-#     else
-#         options=" $options "
-#     fi
-#
-#     # Store the arguments from fzf
-#     arguments="$(fzf --multi)"
-#
-#     # If no arguments passed (e.g. if Esc pressed), return to terminal
-#     if [ -z "${arguments}" ]; then
-#         return 1
-#     fi
-#
-#     # We want the command to show up in our bash history, so write the shell's
-#     # active history to ~/.bash_history. Then we'll also add the command from
-#     # fzf, then we'll load it all back into the shell's active history
-#     history -w
-#
-#     # ADD A REPEATABLE COMMAND TO THE BASH HISTORY ############################
-#     # Store the arguments in a temporary file for sanitising before being
-#     # entered into bash history
-#     : > /tmp/fzf_tmp
-#     for file in "${arguments[@]}"; do
-#         echo "$file" >> /tmp/fzf_tmp
-#     done
-#
-#     # Put all input arguments on one line and sanitise the command by putting
-#     # single quotes around each argument, also first put an extra single quote
-#     # next to any pre-existing single quotes in the raw argument
-#     sed -i "s/'/''/g; s/.*/'&'/g; s/\n//g" /tmp/fzf_tmp
-#
-#     # If the program is on the GUI list, add a '&' to the command history
-#     if [[ "$program" =~ ^(nautilus|zathura|evince|vlc|eog|kolourpaint)$ ]]; then
-#         sed -i '${s/$/ \&/}' /tmp/fzf_tmp
-#     fi
-#
-#     # Grab the sanitised arguments
-#     arguments="$(cat /tmp/fzf_tmp)"
-#
-#     # Add the command with the sanitised arguments to our .bash_history
-#     echo $program$options$arguments >> ~/.bash_history
-#
-#     # Reload the ~/.bash_history into the shell's active history
-#     history -r
-#
-#     # EXECUTE THE LAST COMMAND IN ~/.bash_history #############################
-#     fc -s -1
-#
-#     # Clean up temporary variables
-#     rm /tmp/fzf_tmp
-# }
-#
-#
-#
 
 # absolutely game changer bindings 
-function displayFZFFiles {
-  echo $(fzf --multi --preview 'bat --color=always --style=header,grid --line-range :400 {}')
-}
+function displayFZFFiles { echo $(fzf --multi --preview 'bat --color=always --style=header,grid --line-range :400 {}') }
 
 function ff {
   selection=$(displayFZFFiles);
@@ -287,8 +213,24 @@ function rm-restore() {
   echo "File restored: $selected_file"
 }
 
-function no() { # nvim oldfiles
-  local file
-  file=$(nvim --cmd 'lua for _, v in ipairs(vim.v.oldfiles) do print(v) end' --cmd qa | fzf)
-  [ -n "$file" ] && nvim "$file"
+function fo(){
+    [[ -f /tmp/oldfiles.txt ]] && \rm /tmp/oldfiles.txt
+    nvim -c 'redir >> /tmp/oldfiles.txt | silent oldfiles | redir end | q'
+
+    local fname
+
+    FILES=()
+    for i in $(awk '!/man:/ {print $2}' /tmp/oldfiles.txt); do
+        [[ -f $i ]] && FILES+=($i)
+    done
+
+    fname=$(printf "%s\n" "${FILES[@]}" | awk '!a[$0]++' | fzf) || return
+
+    nvim "$fname"
+}
+
+function fzf-zeal() {
+    local docset
+    docset=$(ls ~/.local/share/Zeal/Zeal/docsets/ | sed 's/\.xml$//' | fzf)
+    [ -n "$docset" ] && zeal "$docset"
 }

@@ -7,6 +7,7 @@ return {
 	},
 	opts = {
 		PATH = "skip",
+    border = "single",
 		ui = {
 			icons = {
 				package_pending = " ",

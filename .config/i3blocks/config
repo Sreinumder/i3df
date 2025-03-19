@@ -4,7 +4,7 @@
 
 [playing]
 command=~/i3df/scripts/playing.sh
-interval=1
+interval=5
 
 [connection]
 command=~/i3df/scripts/wifi.sh
@@ -24,7 +24,6 @@ markup=pango
 command=~/i3df/scripts/current_window_ram_cpu.sh
 interval=1
 markup=pango
-
 
 [brightness]
 command=~/i3df/scripts/brightness.sh
@@ -50,4 +49,4 @@ interval=30
 [tztime]
 # label=時間
 command=date '+%H時%M分'
-interval=6
+interval=1

@@ -1,6 +1,5 @@
 local map = vim.keymap.set
 
--- clever j k
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", {desc = "Down", expr = true, silent = true})
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 map({ "n", "x" }, "gj", "j", { desc = "next line" })
@@ -9,7 +8,7 @@ map({ "n", "x" }, "<A-n>", ";", { desc = "Down" })
 map({ "n", "x" }, "<A-p>", ",", { desc = "Up" })
 map({ "n", "x" }, ";;", ":", { desc = "colon" })
 
-map("n", "<leader>w", "<C-w>", { desc = "window control" }) -- split window vertically
+map("n", "<leader>w", "<C-w>", { desc = "window control" })
 map({ "n", "v", "o" }, "H", "^", { desc = "Beg of line" })
 -- map({ "n", "v", "o" }, "M", "gM", { desc = "Mid of Line" })
 map({ "n", "v", "o" }, "L", "g_", { desc = "End of Line" })
@@ -37,10 +36,11 @@ map("n", "<leader>dg", function()
 end, { desc = "cd to Git repository root" })
 
 -- clipboard management
+map({"n", "x"}, ",", '"+', {desc = 'clipboard_register'})
 -- clipboard to vim default register. usage: copy from browser to vim: <C-c>(in browser) ,p in vim
-map({"n", "x"}, ",", function() vim.fn.setreg('"', vim.fn.getreg('+')) end, {desc = 'hack clipboard to vim reg'})
+-- map({"n", "x"}, ",", function() vim.fn.setreg('"', vim.fn.getreg('+')) end, {desc = 'hack clipboard to vim reg'})
 -- vim default register to clipboard. usage: copy from vim to other: <y <C-v>(in browser)
-map({"n", "x"}, "<", function() vim.fn.setreg('+', vim.fn.getreg('"')) end, {desc = 'hack vim reg to clipboard'})
+-- map({"n", "x"}, "<", function() vim.fn.setreg('+', vim.fn.getreg('"')) end, {desc = 'hack vim reg to clipboard'})
 
 -- delete with x d or D and cut with alt + x, alt + d, alt + D, alt + c
 map({ "n", "x" }, "x", '"_x')
@@ -49,19 +49,18 @@ map({ "n", "x" }, "d", '"_d')
 map({ "n", "x" }, "D", '"_D')
 map({ "n", "x" }, "c", '"_c')
 map({ "n", "x" }, "C", '"_C')
-map({ "n", "x" }, "<A-x>", "x")
--- never used this actually tho but still here
-map({ "n", "x" }, "<A-X>", "X")
-map({ "n", "x" }, "<A-d>", "d")
-map({ "n", "x" }, "<A-D>", "D")
-map({ "n", "x" }, "<A-c>", "c")
-map({ "n", "x" }, "<A-C>", "C")
-map({ "n", "x" }, "<A-d><A-d>", "dd")
-map({ "n", "x" }, "<A-c><A-c>", "cc")
 map({ "v", "x" }, "p", '"_dP')
 map({ "v", "x" }, "P", '"_dp')
-map({ "v", "x" }, "<A-p>", "p")
-map({ "v", "x" }, "<A-P>", "P")
+
+-- default of d (the only cut I will really use)
+map({ "n", "x" }, "<A-d>", "d")
+map({ "n", "x" }, "<A-D>", "D")
+map({ "n", "x" }, "<A-d><A-d>", "dd")
+
+-- clipboard mode of d
+map({ "n", "x" }, ",d", '"+d')
+map({ "n", "x" }, ",dd", '"+dd')
+map({ "n", "x" }, ",D", '"+D')
 
 -- paste, or add line below
 map("n", "<leader>p", "m`o<ESC>p==``", { desc = "paste below current line(jump)" })
@@ -81,7 +80,7 @@ map("x", "<leader><A-k>", '"bdO<esc>"bp==', { desc = "move selection Up(v) to ne
 map("x", "<leader><A-J>", '"byo<esc>"bp==', { desc = "clone selection Down(v) to new line" })
 map("x", "<leader><A-K>", '"byO<esc>"bp==', { desc = "clone selection Up(v) to new line" })
 
--- move selection with vi motion of web(ge)/WEB(GE)/HML/gg/G
+-- move selection with vi motion
 map("x", "gl", '"bdW"bP`[v`]', { desc = "move selection with W" })
 map("x", "gh", '"bdB"bP`[v`]', { desc = "move selection with b" })
 map("x", "<A-H>", '"bd^"bP`[v`]', { desc = "move selection with H" })
@@ -89,8 +88,8 @@ map("x", "<A-L>", '"bd$"bp`[v`]', { desc = "move selection with L" })
 map("x", "<A-g><A-g>", '"bdgg"bp`[v`]', { desc = "move selection with gg" })
 map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
 
-map('x', 'g/', '<Esc>/\\%V')
 -- simple hacks
+map('x', 'g/', '<Esc>/\\%V')
 map("n", "<C-s>", "<cmd>w<cr>", { silent = true, desc = "hack save this buffer" })
 -- use ZZ ZQ
 
@@ -105,6 +104,7 @@ map("i", "<C-l>", '<C-r>=expand("%:p:h") . "/" <CR>', { desc = "Insert-mode file
 map({ "x", "i", "c", "t" }, "<A-;>", "<Esc>", { desc = "Insert-mode Escape" })
 map({ "i", "c", "t" }, "<C-a>", "<Home>", { desc = "Insert-mode Home" })
 map({ "i", "c", "t" }, "<C-e>", "<End>", { desc = "Insert-mode End" })
+map({ "i", "c", "t" }, "<C-t>", '<esc>"cXPa', { desc = "swap last two character" })
 map({ "i", "c", "t" }, "<A-h>", "<Left>", { desc = "Insert-mode left" })
 map({ "i", "c", "t" }, "<A-j>", "<Down>", { desc = "Insert-mode down" })
 map({ "i", "c", "t" }, "<A-k>", "<Up>", { desc = "Insert-mode up" })

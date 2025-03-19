@@ -34,8 +34,8 @@ exec --no-startup-id autotiling
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
-exec --no-startup-id feh --bg-fill $HOME/wallpaper/goldenratio.jpeg --bg-fill ~/wallpaper/view.jpg --bg-fill ~/wallpaper/ground.jpg
-floating_modifier $mod
+exec --no-startup-id localectl set-x11-keymap us; setxkbmap -option caps:swapescape
+exec --no-startup-id xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal
 
 # Audio, Brightness & Screenshot ---------------------------
 # 1. Audio --------------------------------------------------
@@ -48,7 +48,10 @@ bindsym shift+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @D
 bindsym shift+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-bindsym $mod+m exec wezterm -e yazi $HOME/Music/
+bindsym $mod+m exec "~/i3df/scripts/yt.sh -mg"
+bindsym $mod+shift+m exec "~/i3df/scripts/yt.sh -g"
+bindsym $mod+$alt+m exec "~/i3df/scripts/yt.sh -mge"
+bindsym $mod+$alt+shift+m exec "~/i3df/scripts/yt.sh -ge"
 bindsym $mod+// exec xfce4-terminal --drop-down
 
 
@@ -88,7 +91,7 @@ bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screensho
 
 # 4. system-commands, monitor-management and Scripts------------------------
 bindsym $mod+period exec "wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"
-bindsym $mod+Shift+p move workspace to output right
+# bindsym $mod+Shift+p move workspace to output right
 bindsym $mod+$alt+shift+s exec shutdown now
 bindsym $mod+y exec 'ytv'
 bindsym $mod+$alt+y exec  'ytm'
@@ -97,20 +100,20 @@ bindsym $mod+$alt+y exec  'ytm'
 
 # Keybindings for managing tasks with the script
 # Next task (next-do)
-bindsym $mod+n exec ~/i3df/scripts/doing.sh next-do
-bindsym $mod+p exec ~/i3df/scripts/doing.sh prev-do
+# bindsym $mod+n exec ~/i3df/scripts/doing.sh next-do
+# bindsym $mod+p exec ~/i3df/scripts/doing.sh prev-do
 # bindsym $mod+Up exec ~/i3df/scripts/doing.sh show
-bindsym $mod+comma exec ~/i3df/scripts/doing.sh toggle-show
-bindsym $mod+o exec ~/i3df/scripts/doing.sh done
-bindsym $mod+u exec ~/i3df/scripts/doing.sh undo
-bindsym $mod+$alt+n exec ~/i3df/scripts/doing.sh next-file
-bindsym $mod+$alt+p exec ~/i3df/scripts/doing.sh prev-file
+# bindsym $mod+comma exec ~/i3df/scripts/doing.sh toggle-show
+# bindsym $mod+o exec ~/i3df/scripts/doing.sh done
+# bindsym $mod+u exec ~/i3df/scripts/doing.sh undo
+# bindsym $mod+$alt+n exec ~/i3df/scripts/doing.sh next-file
+# bindsym $mod+$alt+p exec ~/i3df/scripts/doing.sh prev-file
 floating_modifier $mod
 
 # 5. Applications -------------------------------------------------------------
-bindsym $mod+Return exec warp-terminal
-bindsym $mod+z exec zeditor
-bindsym $mod+x exec emacs
+# bindsym $mod+Return exec warp-terminal
+# bindsym $mod+z exec zeditor
+# bindsym $mod+x exec emacs
 # bindsym $mod+$alt+n exec neovide
 bindsym $mod+g exec "ezterm -e retroarch"
 bindsym $mod+Ctrl+space exec wezterm
@@ -123,8 +126,6 @@ bindsym $mod+$alt+f  exec chromium --profile-directory="Profile 4"
 
 # bindsym $mod+e exec pcmanfm
 bindsym $mod+$alt+e exec thunar
-bindsym $mod+e exec wezterm -e yazi
-# bindsym $mod+e exec wezterm --class yazi -e yazi ~
 bindsym $mod+ctrl+c exec codium
 
 # kill focused window
@@ -243,6 +244,25 @@ bindsym $mod+Shift+l resize grow width 10 px or 10 ppt
 bindsym $mod+Shift+j resize grow height 10 px or 10 ppt
 bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 
+bindsym $mod+o exec "localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'"
+# bindsym Escape exec "xdotool sleep 0.1 key Escape; localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'";
+bindsym $mod+u exec "~/xdotool-scripts/question-paper/homerowdir.sh; xmodmap -e 'keycode 108 = Menu'"
+bindsym $mod+Escape exec "~/xdotool-scripts/question-paper/homerowdir.sh"
+# bindsym $mod+u exec "~/data-entry-script/xbindkeys+xd/batch_xkb.sh"
+# bindsym $mod+p exec "~/data-entry-script/xbindkeys+xd/batch_xkb.sh reverse"
+# bindsym $mod+Shift+u exec "xbindkeys -f ~/data-entry-script/xbindkeys+xd/month.xbindkeysrc.sh"
+# bindsym $mod+Shift+o exec "xbindkeys -f ~/data-entry-script/xbindkeys+xd/create-zone.xbindkeysrc.sh && xmodmap -e 'keycode 86 = BackSpace' && xmodmap -e 'keycode 64 = F5'; xmodmap -e 'keycode 36 = Tab'; xmodmap -e 'keycode 111 = F6'; xmodmap -e 'Down = F5';"
+# bindsym $mod+Shift+p exec echo "stop" > "/tmp/auto-data-entry"
+
+# mode "data_entry" {
+#     bindsym semicolon exec --no-startup-id xdotool key ctrl+s
+#     # bindsym semicolon exec --no-startup-id ~/data-entry-script/backtab.sh
+#     bindsym Shift+Escape mode "default"  
+#     bindsym $mod+m exec xdotool getmouselocation > "~/data-entry-script/xdo/pos.txt"
+# }
+
+# bindsym $mod+Shift+d mode "data_entry"
+
 # Start i3bar to display a workspace bar (plus the system information i3status
   bar {
 # below not installed
@@ -291,5 +311,5 @@ for_window [class="^.*"] border pixel 2
 gaps inner 0
 gaps outer 0
 
-for_window [class=Eog|dropdown|nsxiv|feh|Vlc|pavucontrol|Xarchiver] floating enable
+for_window [class=Eog|nsxiv|feh|Vlc|pavucontrol|Xarchiver] floating enable
 for_window [class=Eog|dropdown|nsxiv|feh|Vlc|File-roller|Xarchiver] focus

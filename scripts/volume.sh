@@ -26,10 +26,10 @@ case $BLOCK_BUTTON in
         fi
         ;;
     4) # Scroll down - Decrease volume by 5%
-        pactl set-sink-volume @DEFAULT_SINK@ -5%
+        pactl set-sink-volume @DEFAULT_SINK@ +5%
         ;;
     5) # Scroll up - Increase volume by 5%
-        pactl set-sink-volume @DEFAULT_SINK@ +5%
+        pactl set-sink-volume @DEFAULT_SINK@ -5%
         ;;
 esac
 
