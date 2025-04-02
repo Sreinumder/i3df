@@ -11,10 +11,10 @@ os:
 gui:
   # showBottomLine: false
   theme:
-    showFileTree: false
+    # showFileTree: false
     selectedLineBgColor:
-      # - '#eaeaeb'
-      - '#282828'
+      - '#eaeaeb'
+      # - '#282828'
   border: rounded
   nerdFontsVersion: '3'
 keybinding:

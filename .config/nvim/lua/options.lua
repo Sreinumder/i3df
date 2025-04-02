@@ -84,6 +84,7 @@ o.listchars = {
 	precedes = "❮",
 }
 
+vim.diagnostic.config({ virtual_lines = { current_line = true, }})
 
 -- disable some default providers
 g.loaded_node_provider = 0

@@ -13,5 +13,19 @@ return {
       end,
       desc = "Window Hydra Mode (which-key)",
     },
+    {
+      "<leader>]",
+      function()
+        require("which-key").show({ keys = "]", loop = true })
+      end,
+      desc = "] Hydra Mode (which-key)",
+    },
+    {
+      "<leader>[",
+      function()
+        require("which-key").show({ keys = "[", loop = true })
+      end,
+      desc = "[ Hydra Mode (which-key)",
+    },
   },
 }

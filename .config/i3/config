@@ -120,11 +120,10 @@ bindsym $mod+Ctrl+space exec wezterm
 # bindsym ctrl+$mod+space exec warp-terminal
 bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md
 bindsym $mod+ctrl+f exec zen-browser
-bindsym $mod+ctrl+shift+f exec chromium --profile-directory="Default"
+# bindsym $mod+ctrl+shift+f exec chromium --profile-directory="Default"
 bindsym $mod+ctrl+q exec qutebrowser
-bindsym $mod+$alt+f  exec chromium --profile-directory="Profile 4"
+# bindsym $mod+$alt+f  exec chromium --profile-directory="Profile 4"
 
-# bindsym $mod+e exec pcmanfm
 bindsym $mod+$alt+e exec thunar
 bindsym $mod+ctrl+c exec codium
 
@@ -141,22 +140,13 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 # change focus between tiling / floating windows
-bindsym $mod+minus focus mode_toggle
+bindsym $mod+$alt+f focus mode_toggle
 
 # move focused window $alt==Alt
 bindsym $mod+$alt+h move left
 bindsym $mod+$alt+j move down
 bindsym $mod+$alt+k move up
 bindsym $mod+$alt+l move right
-
-# alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
-
-# bindsym $mod+ctrl+o layout toggle
-# bindsym $mod+u exec "i3-msg 'split toggle'"
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -188,9 +178,6 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
-# layout
-# workspace_layout dwindle
-# switch to workspace
 bindsym $mod+Tab workspace next
 bindsym $mod+Shift+Tab workspace prev
 bindsym $mod+grave workspace back_and_forth
@@ -265,18 +252,14 @@ bindsym $mod+Escape exec "~/xdotool-scripts/question-paper/homerowdir.sh"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
   bar {
-# below not installed
     status_command i3blocks
-# status_command i3status
-# status_command i3status-rs
     height 15
     font pango:Jetbrains Mono 9,  Noto Sans Mono CJK JP 10
     tray_padding 1
     strip_workspace_numbers yes
-
     colors {
 #         separator  #1f222d
-# background #1f222d
+          background #000000
 # statusline #81a1c1
 #
 #         #                   border  background text
@@ -287,20 +270,6 @@ bindsym $mod+Escape exec "~/xdotool-scripts/question-paper/homerowdir.sh"
 #         binding_mode       #1f222d #81a1c1    #2e3440
     }
   }
-
-##START THEMING WM
-
-# Window color settings
-# class                 border  backgr. text    indicator
-# client.focused          #81a1c1 #81a1c1 #ffffff #81a1c1
-# client.unfocused        #2e3440 #1f222d #888888 #1f222d
-# client.focused_inactive #2e3440 #1f222d #888888 #1f222d
-# client.placeholder      #2e3440 #1f222d #888888 #1f222d
-# client.urgent           #900000 #900000 #ffffff #900000
-#
-# client.background       #242424
-
-##STOP THEMING WM
 
 bindsym $mod+i bar mode toggle
 bindsym $mod+ctrl+i bar mode invisible

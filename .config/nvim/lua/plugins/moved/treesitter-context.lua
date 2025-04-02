@@ -1,5 +1,6 @@
 return {
 	"nvim-treesitter/nvim-treesitter-context",
+  enabled = false,
 	-- event = "UIEnter",
   cmd = "TSContextToggle",
 	opts = {

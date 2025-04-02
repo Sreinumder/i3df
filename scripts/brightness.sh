@@ -9,11 +9,11 @@ PERCENTAGE=$(( 100 * CURRENT_BRIGHTNESS / MAX_BRIGHTNESS ))
 
 # Handle mouse scroll events using BLOCK_BUTTON (4 for scroll up, 5 for scroll down)
 case $BLOCK_BUTTON in
-    4) # Scroll up - Increase brightness by 1%
-        brightnessctl set +1% > /dev/null
-        ;;
-    5) # Scroll down - Decrease brightness by 1%
+    4)
         brightnessctl set 1%- > /dev/null
+        ;;
+    5)
+        brightnessctl set +1% > /dev/null
         ;;
 esac
 

@@ -5,50 +5,14 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	keys = {
 		{ "<leader>K", "K",  desc = "default K"  },
-		{
-			"<leader>ds",
-			function()
-				vim.diagnostic.setloclist()
-			end,
-			 desc = "LSP diagnostic loclist" ,
-		},
-		{
-			"gr",
-			function()
-				vim.lsp.buf.references()
-			end,
-			 desc = "Show references" ,
-		},
-		{
-			"gd",
-			function()
-				vim.lsp.buf.definition()
-			end,
-			 desc = "Go to lsp definition" ,
-		},
+		{"<leader>ds", function() vim.diagnostic.setloclist() end, desc = "LSP diagnostic loclist" ,},
+		-- {"gr", function() vim.lsp.buf.references() end, desc = "Show references" ,},
+		{"gd", function() vim.lsp.buf.definition() end, desc = "Go to lsp definition" ,},
 		{ "<Leader>gd", "gd" },
-		{
-			"gD",
-			function()
-				vim.lsp.buf.declaration()
-			end,
-			 desc = "Go to lsp declaration" ,
-		},
+		{"gD", function() vim.lsp.buf.declaration() end, desc = "Go to lsp declaration" ,},
 		{ "<Leader>gD", "gD" },
-		{
-			"<leader>D",
-			function()
-				vim.lsp.buf.type_definition()
-			end,
-			 desc = "Go to type definition" ,
-		},
-		{
-			"<leader>gi",
-			function()
-				vim.lsp.buf.implementation()
-			end,
-			 desc = "Go to implementation" ,
-		},
+		{"<leader>D", function() vim.lsp.buf.type_definition() end, desc = "Go to type definition" ,},
+		-- { "<leader>gi",function() vim.lsp.buf.implementation() end, desc = "Go to implementation" ,},
 		{
 			"<leader>wi",
 			function()
@@ -63,14 +27,7 @@ return {
 			end,
 			 desc = "Remove workspace folder" ,
 		},
-		{
-			mode = { "n", "x" },
-			"<leader>ac",
-			function()
-				vim.lsp.buf.code_action()
-			end,
-			 desc = "Code action" ,
-		},
+		-- {mode = { "n", "x" }, "<leader>ac", function() vim.lsp.buf.code_action() end, desc = "Code action" ,},
 		-- {"<leader>wl", function()
 			-- 	print(vim.inspect(vim.lsp.buf.list|workspace_folders()))
 			-- end,  desc = "List workspace folders" },

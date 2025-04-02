@@ -37,7 +37,6 @@ Browser
 =======
 - zen-browser-bin (pretty browser but too much ram consuming)
 - qutebrowser (browser with dedicated vim-binding)
-- chromium (actually ram hog lol)
 - dillo (fastest browser, only takes like 40 mb ram at idle but no js ofcourse.)
 
 Explorer
@@ -86,12 +85,17 @@ Package Managers
 - cargo (RUST)
 - python-pipx (python)
 
+Emulators
+=========
+<!-- waydroid -->
+
 Helpers/wiki
 ============
 - teal-deer (tldr for binaries)
-- arch-wiki-docs
+<!--- arch-wiki-docs-->
 - tgpt (llm in shell)
 - translate-shell (translates)
+- zeal (programming languages docs)
 
 Recorder
 ========
@@ -108,3 +112,4 @@ Misc
 - udiskie (daemon to mount usb on connection)
 - exiftool (reads music metadata + image renderer for yazi musics)
 - xbindkeys ( xbindkeys + xdotool poor man's ahk for linux)
+- cowsay (fun thing)

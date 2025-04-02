@@ -13,7 +13,6 @@ alias tc="tgpt -qc" # code
 alias ti="tgpt --image"
 function cdj() { curl -s https://icanhazdadjoke.com/ }
 function cbb() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"' }
-function bbq() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"' |  cowsay -f ~/.cowsay-cows/walter-white.cow }
 function fal() { rg -e "^\s*alias" ~/i3df/.zshrc.alias | fzf }
 
 alias ..="cd .."

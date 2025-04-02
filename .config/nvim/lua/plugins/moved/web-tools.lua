@@ -1,5 +1,6 @@
 return {
   "ray-x/web-tools.nvim",
+  enabled = false,
   cmd ={ "BrowserPreview", "BrowserOpen", "BrowserSync",},
   ft = "html",
   opts = {

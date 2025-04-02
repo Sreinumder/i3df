@@ -63,10 +63,8 @@ map({ "n", "x" }, ",dd", '"+dd')
 map({ "n", "x" }, ",D", '"+D')
 
 -- paste, or add line below
-map("n", "<leader>p", "m`o<ESC>p==``", { desc = "paste below current line(jump)" })
-map("n", "<leader>P", "m`O<ESC>p==``", { desc = "paste above current line(jump)" })
-map("n", "<leader>o", "printf('m`%so<ESC>``', v:count1)", { expr = true, desc = "insert line below" })
-map("n", "<leader>O", "printf('m`%sO<ESC>``', v:count1)", { expr = true, desc = "insert line above" })
+-- map("n", "<leader>p", "m`o<ESC>p==``", { desc = "paste below current line(jump)" })
+-- map("n", "<leader>P", "m`O<ESC>p==``", { desc = "paste above current line(jump)" })
 
 -- clone sentences up and down
 map("n", "<A-J>", 'V"cy"cP==gv<Esc>', { desc = "clone line Down" })
@@ -90,7 +88,7 @@ map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
 
 -- simple hacks
 map('x', 'g/', '<Esc>/\\%V')
-map("n", "<C-s>", "<cmd>w<cr>", { silent = true, desc = "hack save this buffer" })
+-- map("n", "<C-s>", "<cmd>w<cr>", { silent = true, desc = "hack save this buffer" })
 -- use ZZ ZQ
 
 -- insert mode hack
@@ -115,12 +113,10 @@ map("c", "<C-A-K>", "\\(.*\\)", { desc = "Cmd-mode catching group/kirby " })
 map("t", "<C-<ESC>", "<C-\\><C-n>", { desc = "terminal exit" })
 
 -- easier commenting
-map({"n","x"}, "<leader>/", "gcc",          { remap = true, silent = true, desc = "comment"  })
 map({"n","x"}, "<C-/>", "gcc",              { remap = true, silent = true, desc = "comment"  })
 map({"n","x"}, "<leader>c", "gc",           { remap = true, silent = true, desc = "comment"  })
 map({"n","x"}, "<leader>cv", "gcgc",        { remap = true, silent = true, desc = "comment toggle comment body"})
-map("n", "<leader>co", "Ox<ESC>gcc$xa",     { remap = true, silent = true, desc = "comment above" })
-map("n", "<leader>ca", "Vox<ESC>gcc$xkJA",  { remap = true, silent = true, desc = "comment at end" })
+map("n", "<leader>ca", "ox<ESC>gcckJ$xi",  { remap = true, silent = true, desc = "comment at end" })
 map("n", "<leader>cl", 'V"cy"cPgccgv<Esc>', { remap = true, silent = true, desc = "comment and clone below" })
 map("n", "<leader>cx", 'V"cy"cpgccgv<Esc>', { remap = true, silent = true, desc = "comment and clone above" })
 

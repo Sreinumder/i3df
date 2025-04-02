@@ -1,7 +1,7 @@
 return {
 	"echasnovski/mini.operators",
 	dependencies = { "echasnovski/mini.ai" },
-  event = "UIEnter",
+  -- event = "UIEnter",
 	keys = {
 		{ modes = { "n", "x" }, "s", desc = "Substitute Operator" },
 		{ modes = { "n", "x" }, "gm", desc = "Multiply Operator" },

@@ -19,17 +19,18 @@ case $BLOCK_BUTTON in
         pactl set-sink-mute @DEFAULT_SINK@ toggle
         ;;
     3) # Right-click - Toggle port
-        if [ "$current_port" == "$port1" ]; then
-            pactl set-sink-port $sink $port2
-        else
-            pactl set-sink-port $sink $port1
-        fi
+        (pavucontrol -t 3 &)
+        # if [ "$current_port" == "$port1" ]; then
+        #     pactl set-sink-port $sink $port2
+        # else
+        #     pactl set-sink-port $sink $port1
+        # fi
         ;;
-    4) # Scroll down - Decrease volume by 5%
-        pactl set-sink-volume @DEFAULT_SINK@ +5%
-        ;;
-    5) # Scroll up - Increase volume by 5%
+    4)
         pactl set-sink-volume @DEFAULT_SINK@ -5%
+        ;;
+    5)
+        pactl set-sink-volume @DEFAULT_SINK@ +5%
         ;;
 esac
 
@@ -43,5 +44,5 @@ muted=$(pactl list sinks | grep -E '^[[:space:]]*Mute' | awk '{print $2}')
 if [ "$muted" == "yes" ]; then
     echo "<span color='#e06c75'>静 $volume</span>"  # Red for mute
 else
-    echo "音 $volume"
+    echo "$current_port 音 $volume"
 fi

@@ -1,8 +1,8 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
--- config.color_scheme = "OneHalfLight"
-config.color_scheme = "Everblush"
+config.color_scheme = "OneHalfLight"
+-- config.color_scheme = "Everblush"
 config.font = wezterm.font_with_fallback({
   "JetBrains Mono",
   "Iosevka Nerd Font",
@@ -12,8 +12,8 @@ config.font = wezterm.font_with_fallback({
 -- config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, --disable ligature
 -- config.font = wezterm.font_with_fallback { 'Fira Code', }
 config.enable_kitty_graphics = true
-config.font_size = 11.0
-config.line_height = 0.9
+config.font_size = 12.0
+config.line_height = 1.0
 config.hide_tab_bar_if_only_one_tab = true
 config.tab_bar_at_bottom = true
 config.use_dead_keys = false
@@ -139,7 +139,7 @@ bar.apply_to_config(config,{
   },
   separator = {
     space = 0,
-    left_icon = '',
+    left_icon = ' ',
     right_icon = '',
     field_icon = '',
   },
@@ -164,8 +164,8 @@ bar.apply_to_config(config,{
   },
 })
 
-local colorscheme = os.getenv("COLORSCHEME")
-if colorscheme == "light" then
+-- local colorscheme = os.getenv("COLORSCHEME")
+-- if colorscheme == "light" then
   config.colors = {
     cursor_bg = '#52ad70',
     background = "#fafafa", -- Light background
@@ -200,39 +200,40 @@ if colorscheme == "light" then
       },
     }
   }
-else
-  config.colors = {
-    cursor_bg = '#52ad70',
-    -- tab_bar = {
-      --   background = "#fafafa", -- Light background
-      --   active_tab = {
-        --     bg_color = "#cccccc", -- Slightly darker than background for contrast
-        --     fg_color = "#2c2c2c", -- Dark foreground
-        --     intensity = "Bold",
-        --     underline = "None",
-        --     italic = true,
-        --     strikethrough = false,
-        --   },
-        --   inactive_tab = {
-          --     bg_color = "#f0f0f0", -- Light gray
-          --     fg_color = "#5c5c5c", -- Medium gray for text contrast
-          --   },
-          --   inactive_tab_hover = {
-            --     bg_color = "#dedede", -- Subtle hover effect
-            --     fg_color = "#2c2c2c",
-            --     italic = false,
-            --   },
-            --   new_tab = {
-              --     bg_color = "#f0f0f0",
-              --     fg_color = "#5c5c5c",
-              --   },
-              --   new_tab_hover = { 
-                --     bg_color = "#dedede",
-                --     fg_color = "#2c2c2c",
-                --     italic = false,
-                --   },
-                -- }
-              }
-            end
+-- else
+--   config.colors = {
+--     cursor_bg = '#52ad70',
+--     background = "#000000",
+--     tab_bar = {
+--       background = "#000000",
+--       active_tab = {
+--         bg_color = "#000000",
+--         fg_color = "#636b6f",
+--         intensity = "Bold",
+--         underline = "None",
+--         italic = true,
+--         strikethrough = false,
+--       },
+--       inactive_tab = {
+--         bg_color = "#000000",
+--         fg_color = "#333333",
+--       },
+--       inactive_tab_hover = {
+--         bg_color = "#dedede",
+--         fg_color = "#2c2c2c",
+--         italic = false,
+--       },
+--       new_tab = {
+--         bg_color = "#000000",
+--         fg_color = "#000000",
+--       },
+--       new_tab_hover = {
+--         bg_color = "#000000",
+--         fg_color = "#000000",
+--         italic = false,
+--       },
+--     }
+--   }
+-- end
 
-            return config
+return config

@@ -1,5 +1,6 @@
 return {
   "romgrk/barbar.nvim",
+  enabled = false,
   -- event = "UIEnter",
   dependencies = {
     "nvim-tree/nvim-web-devicons",
@@ -46,7 +47,14 @@ return {
   init = function()
     local colorscheme = os.getenv("COLORSCHEME")
     if colorscheme == "light" then
-      -- vim.api.nvim_set_hl(0, 'BufferCurrent', { fg = '#000000' })
+      vim.api.nvim_set_hl(0, 'BufferCurrent', { fg = '#000000' , bg = '#e5e5e5'})
+      vim.api.nvim_set_hl(0, 'BufferInactive', { fg = '#777777', bg = '#e5e5e5'})
+      vim.api.nvim_set_hl(0, 'BufferOffset', { fg = '#777777', bg = '#e5e5e5'})
     end
+    -- vim.api.nvim_set_hl(0, 'BufferCurrent', { bg = '#000000' })
+    -- vim.api.nvim_set_hl(0, 'BufferAlternative', { bg = '#000000' })
+    -- vim.api.nvim_set_hl(0, 'BufferVisible', { bg = '#000000' })
+    -- vim.api.nvim_set_hl(0, 'BufferInactive', { bg = '#000000' })
+    -- vim.api.nvim_set_hl(0, 'BufferOffset', { bg = '#000000' })
   end,
 }

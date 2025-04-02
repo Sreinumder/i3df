@@ -25,77 +25,11 @@ return {
 			})
 		end
 
-		local options = {
-			{ name = "Wrap", cmd = "set wrap!" },
-      { name = "Spellcheck", cmd = "set spell!" },
-      { name = "List (Hidden Chars)", cmd = "set list!" },
-			{ name = "Number", cmd = "set number!" },
-			{ name = "Relative Number ", cmd = "set relativenumber!" },
-			{ name = "Cursor Line", cmd = "set cursorline!" },
-			{
-				name = "Background (Light/Dark) (ct)",
-				cmd = function()
-					-- vim.o.background = vim.o.background == "dark" and "light" or "dark"
-        require('base46').toggle_theme()
-				end,
-			},
-			{
-				name = "Transparency (tt)",
-				cmd = function()
-					require("base46").toggle_transparency()
-				end,
-			},
-      {
-				name = "Gitsigns Blame-Line",
-				cmd = function()
-					require("gitsigns").toggle_current_line_blame()
-				end,
-			},
-      {
-        name = "Treesitter Context",
-        cmd = function()
-          require("treesitter-context").toggle()
-        end,
-      },
-      {
-        name = "Screen Key",
-        cmd = function()
-          vim.cmd("Screenkey")
-        end,
-      }
-		}
-
-		local function toggle_option()
-			require("fzf-lua").fzf_exec(
-				vim.tbl_map(function(opt)
-					return opt.name
-				end, options),
-				{
-					prompt = "Toggle Options > ",
-					actions = {
-						["default"] = function(selected)
-							for _, opt in ipairs(options) do
-								if opt.name == selected[1] then
-									if type(opt.cmd) == "string" then
-										vim.cmd(opt.cmd)
-									else
-										opt.cmd()
-									end
-									print("Toggled: " .. opt.name)
-									return
-								end
-							end
-						end,
-					},
-				}
-			)
-		end
-
 		-- Keybind to open the toggle menu
 		return {
-			{ mode = "n", "<leader>f,", toggle_option, desc = "toggle", noremap = true, silent = true },
 			{ mode = "n", "<leader>fd", zoxide_query, desc = "fzf Zoxide directory jump" },
-			{ mode = "n", "<leader>f?", "<cmd>FzfLua builtin<CR>", desc = "fzf find fzflua-commands" },
+			{ mode = "n", "<leader>f,", "<cmd>FzfLua nvim_options<CR>", desc = "fzf vim_options" },
+      { mode = "n", "<leader>f?", "<cmd>FzfLua builtin<CR>", desc = "fzf find fzflua-commands" },
 			{ mode = "n", "<leader>fb", "<cmd>FzfLua buffers<CR>", desc = "fzf find buffers" },
 			{
 				mode = "n",

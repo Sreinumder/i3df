@@ -43,7 +43,7 @@ window_id=$(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}')
 
 # Check if a valid window ID was found
 if [[ "$window_id" == "0x0" || -z "$window_id" ]]; then
-    echo "No focused window"
+    echo "窓がない"
     exit 0
 fi
 

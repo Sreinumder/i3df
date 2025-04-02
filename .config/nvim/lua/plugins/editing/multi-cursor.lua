@@ -14,7 +14,8 @@ return {
     { mode = { "n", "v" }, "<C-A-/>", "<cmd>lua require('multicursor-nvim').matchAllAddCursors()<CR>", desc = "Add all matches in the document"},
     { mode = { "n", "v" }, "<leader><C-A-8>", "<cmd>lua require('multicursor-nvim').matchSkipCursor(1) <CR>", desc = "skip current match and prev"},
     { mode = { "n", "v" }, "<C-A-d>", "<cmd>lua require('multicursor-nvim').deleteCursor()<CR>", desc = "Delete the main cursor."},
-    { mode = "n", "<c-leftmouse>", "<cmd>lua require('multicursor-nvim').handleMouse()<CR>", desc = "Add and remove cursors with mouse"},
+    { mode = "n", "<C-leftmouse>", "<cmd>lua require('multicursor-nvim').handleMouse()<CR>", desc = "Add and remove cursors with mouse"},
+    { mode = "n", "<C-A-leftmouse>", "<cmd>lua require('multicursor-nvim').handleMouse(); require('multicursor-nvim').toggleCursor()<CR>", desc = "Add and remove cursors with mouse"},
 
     { mode = { "n", "v" }, ";s", "<cmd>lua require('multicursor-nvim').toggleCursor()<CR>", desc = "pause and add cursor"},
     { mode = { "n", "v" }, ";<A-s>", "<cmd>lua require('multicursor-nvim').duplicateCursors()<CR>", desc = "pause all mc + clone them"},
@@ -47,8 +48,8 @@ return {
   },
   opts = function()
     local hl = vim.api.nvim_set_hl
-    hl(0, "MultiCursorCursor", { bg = "#484b3c" })
-    hl(0, "MultiCursorVisual", { bg = "#38453c" })
+    -- hl(0, "MultiCursorCursor", { bg = "#484b3c" })
+    -- hl(0, "MultiCursorVisual", { bg = "#38453c" })
     hl(0, "MultiCursorSign", { link = "SignColumn" })
     hl(0, "MultiCursorDisabledCursor", { link = "Visual" })
     hl(0, "MultiCursorDisabledVisual", { link = "Visual" })

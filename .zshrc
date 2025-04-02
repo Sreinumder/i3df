@@ -15,8 +15,8 @@ export EDITOR=nvim
 # export QT_STYLE_OVERRIDE=kvantum
 export QT_QPA_PLATFORMTHEME=qt5ct
 
-export COLORSCHEME="dark"
-# export COLORSCHEME="light"
+# export COLORSCHEME="dark"
+export COLORSCHEME="light"
 
 source ~/.zshrc.alias
 # start of z4h config Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
@@ -188,12 +188,12 @@ export FZF_DEFAULT_OPTS="
 --bind 'ctrl-y:execute(readlink -f {} | xsel -b)'
 --bind 'ctrl-alt-y:execute-silent(xsel -b <<< "{}")'
 "
-if [[ "$COLORSCHEME" == "light" ]]; then
-  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=bg+:#f0f0f0,bg:#fafafa,spinner:#007acc,hl:#d75f5f,fg:#2c2c2c,fg+:#2c2c2c,header:#007acc,info:#005f87,pointer:#005f87,marker:#d75f5f,prompt:#005f87,hl+:#af005f "
+# if [[ "$COLORSCHEME" == "light" ]]; then
+  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=bg+:#e5e5e5,bg:#fafafa,spinner:#007acc,hl:#d75f5f,fg:#2c2c2c,fg+:#2c2c2c,header:#007acc,info:#005f87,pointer:#005f87,marker:#d75f5f,prompt:#005f87,hl+:#af005f "
   export BAT_THEME="OneHalfLight"
-else
-  export BAT_THEME="OneHalfDark"
-fi
+# else
+  # export BAT_THEME="OneHalfDark"
+# fi
 
 # zoxide zi fzf opts
 # export _ZO_FZF_OPTS="--preview 'eza -T --color=always {}'"

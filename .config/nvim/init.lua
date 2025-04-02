@@ -28,9 +28,9 @@ else
 	if vim.g.pluginless ~= 1 then
 		local plugins = {
 			{ import = "nvchad.plugins" },
+      { import = "plugins.buffer" },
 			{ import = "plugins.ui" },
 			{ import = "plugins.lsp" },
-			{ import = "plugins.buffer" },
 			{ import = "plugins.editing" },
 			{ import = "plugins.essential" },
 			{ import = "plugins.treesitter" },
