@@ -30,12 +30,15 @@ exec --no-startup-id xrdb -merge $HOME/.Xresources # for dark mode for applicati
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
+# exec --no-startup-id feh --bg-fill ~/wallpapers/5cm-green.jpg 
 exec --no-startup-id autotiling
+exec --no-startup-id wezterm
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
 # exec --no-startup-id feh
 exec --no-startup-id localectl set-x11-keymap us; setxkbmap -option caps:swapescape
+# exec --no-startup-id localectl set-x11-keymap us; setxkbmap -option caps:swapescape
 # exec --no-startup-id xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal
 
 # Audio, Brightness & Screenshot ---------------------------

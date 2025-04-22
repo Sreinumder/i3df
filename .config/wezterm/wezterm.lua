@@ -104,19 +104,19 @@ config.keys = {
     mods = "ALT|SHIFT",
     action = wezterm.action.TogglePaneZoomState,
   },
-  {
-    key = "Tab",
-    mods = "CTRL|SHIFT",
-    action = wezterm.action.DisableDefaultAssignment,
-  },
+  -- {
+  --   key = "Tab",
+  --   mods = "CTRL|SHIFT",
+  --   action = wezterm.action.DisableDefaultAssignment,
+  -- },
+  -- {
+  --   key = "Tab",
+  --   mods = "CTRL",
+  --   action = wezterm.action.DisableDefaultAssignment,
+  -- },
   {
     key = "l",
     mods = "CTRL|SHIFT",
-    action = wezterm.action.DisableDefaultAssignment,
-  },
-  {
-    key = "Tab",
-    mods = "CTRL",
     action = wezterm.action.DisableDefaultAssignment,
   },
   { key = "Tab", mods = "ALT", action = act.ActivateTabRelative(1) },
@@ -203,19 +203,20 @@ bar.apply_to_config(config,{
 -- else
   config.colors = {
     cursor_bg = '#52ad70',
+    background = "2b3339",
     tab_bar = {
-      background = "#000000",
+      background = "2b3339",
       active_tab = {
-        bg_color = "#000000",
-        fg_color = "#636b6f",
+        bg_color = "2b3339",
+        fg_color = "#dedede",
         intensity = "Bold",
         underline = "None",
         italic = true,
         strikethrough = false,
       },
       inactive_tab = {
-        bg_color = "#000000",
-        fg_color = "#333333",
+        bg_color = "2b3339",
+        fg_color = "#636b6f",
       },
       inactive_tab_hover = {
         bg_color = "#dedede",
@@ -223,12 +224,12 @@ bar.apply_to_config(config,{
         italic = false,
       },
       new_tab = {
-        bg_color = "#000000",
-        fg_color = "#000000",
+        bg_color = "2b3339",
+        fg_color = "2b3339",
       },
       new_tab_hover = {
-        bg_color = "#000000",
-        fg_color = "#000000",
+        bg_color = "2b3339",
+        fg_color = "2b3339",
         italic = false,
       },
     }

@@ -1,5 +1,6 @@
 local options = {
 	base46 = {
+    theme = "everforest",
     -- theme = "one_light",
     theme = "everblush",
 		hl_override = {
@@ -13,11 +14,16 @@ local options = {
 			-- 	underline = false, -- Add an underline
 			-- 	italic = false, -- Make the text italic
 			-- },
+			CursorLine = {
+				bg = "#e5e5e5", -- eark gray backgroune
+				underline = false, -- Add an underline
+				italic = false, -- Make the text italic
+			},
 			-- CurSearch = { bg = "#607D8B" },
 			-- Search = { bg = "#607D8B" },
 			-- IncSearch = { bg = "#607D8B" },
 		},
-		transparency = true,
+		transparency = false,
 		theme_toggle = { "everblush", "one_light" },
 	},
   lsp = { signature = true },

@@ -1,5 +1,5 @@
 return {
-	"echasnovski/mini.tabline",
+  "echasnovski/mini.tabline",
   -- enabled = true,
   keys = {
     {"<Tab>", "<cmd>bnext<CR>", desc = "next buffer"},

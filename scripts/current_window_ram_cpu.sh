@@ -1,5 +1,14 @@
 #!/bin/bash
 
+case $BLOCK_BUTTON in
+    4)
+        ~/i3df/scripts/window_cycle.sh next
+        ;;
+    5)
+        ~/i3df/scripts/window_cycle.sh previous
+        ;;
+esac
+
 # Function to recursively find all child PIDs of a given PID
 get_all_child_pids() {
     local pid=$1
@@ -38,17 +47,17 @@ get_total_ram_usage() {
     echo "$total_ram"
 }
 
-# Get the currently focused window ID using xprop
-window_id=$(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}')
-
-# Check if a valid window ID was found
-if [[ "$window_id" == "0x0" || -z "$window_id" ]]; then
-    echo "窓がない"
-    exit 0
+if [[ "$XDG_SESSION_TYPE" == "wayland" ]] && [[ "$SWAYSOCK" ]]; then
+    pid=$(swaymsg -t get_tree | jq '.. | select(.type? == "con" and .focused == true) | .pid')
+    id=$(swaymsg -t get_tree | jq '.. | select(.type? == "con" and .focused == true) | .id')
+else
+    window_id=$(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}')
+    if [[ "$window_id" == "0x0" || -z "$window_id" ]]; then # Check if a valid window ID was found
+        echo "窓がない"
+        exit 0
+    fi
+    pid=$(xprop -id "$window_id" _NET_WM_PID | awk '{print $3}')
 fi
-
-# Get the PID of the process associated with the focused window
-pid=$(xprop -id "$window_id" _NET_WM_PID | awk '{print $3}')
 
 # Check if a valid PID was found
 if [[ -z "$pid" || "$pid" == "0" ]]; then
