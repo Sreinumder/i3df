@@ -13,9 +13,6 @@ local options = {
 			-- 	underline = false, -- Add an underline
 			-- 	italic = false, -- Make the text italic
 			-- },
-			CurSearch = { bg = "#607D8B" },
-			Search = { bg = "#607D8B" },
-			IncSearch = { bg = "#607D8B" },
 		},
 		transparency = false,
 		theme_toggle = { "everblush", "one_light" },
