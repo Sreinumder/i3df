@@ -1,8 +1,8 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
-config.color_scheme = "OneHalfLight"
--- config.color_scheme = "Everblush"
+-- config.color_scheme = "OneHalfLight"
+config.color_scheme = 'Everforest Dark (Gogh)'
 config.font = wezterm.font_with_fallback({
   "JetBrains Mono",
   "Iosevka Nerd Font",
@@ -104,19 +104,19 @@ config.keys = {
     mods = "ALT|SHIFT",
     action = wezterm.action.TogglePaneZoomState,
   },
-  {
-    key = "Tab",
-    mods = "CTRL|SHIFT",
-    action = wezterm.action.DisableDefaultAssignment,
-  },
+  -- {
+  --   key = "Tab",
+  --   mods = "CTRL|SHIFT",
+  --   action = wezterm.action.DisableDefaultAssignment,
+  -- },
+  -- {
+  --   key = "Tab",
+  --   mods = "CTRL",
+  --   action = wezterm.action.DisableDefaultAssignment,
+  -- },
   {
     key = "l",
     mods = "CTRL|SHIFT",
-    action = wezterm.action.DisableDefaultAssignment,
-  },
-  {
-    key = "Tab",
-    mods = "CTRL",
     action = wezterm.action.DisableDefaultAssignment,
   },
   { key = "Tab", mods = "ALT", action = act.ActivateTabRelative(1) },
@@ -166,74 +166,74 @@ bar.apply_to_config(config,{
 
 -- local colorscheme = os.getenv("COLORSCHEME")
 -- if colorscheme == "light" then
+  -- config.colors = {
+  --   cursor_bg = '#52ad70',
+  --   background = "#fafafa", -- Light background
+  --   foreground = "black", -- Dark text for contrast
+  --   tab_bar = {
+  --     background = "#fafafa", -- Light background
+  --     active_tab = {
+  --       bg_color = "#cccccc", -- Slightly darker than background for contrast
+  --       fg_color = "#2c2c2c", -- Dark foreground
+  --       intensity = "Bold",
+  --       underline = "None",
+  --       italic = true,
+  --       strikethrough = false,
+  --     },
+  --     inactive_tab = {
+  --       bg_color = "#f0f0f0", -- Light gray
+  --       fg_color = "#5c5c5c", -- Medium gray for text contrast
+  --     },
+  --     inactive_tab_hover = {
+  --       bg_color = "#dedede", -- Subtle hover effect
+  --       fg_color = "#2c2c2c",
+  --       italic = false,
+  --     },
+  --     new_tab = {
+  --       bg_color = "#f0f0f0",
+  --       fg_color = "#5c5c5c",
+  --     },
+  --     new_tab_hover = { 
+  --       bg_color = "#dedede",
+  --       fg_color = "#2c2c2c",
+  --       italic = false,
+  --     },
+  --   }
+  -- }
+-- else
   config.colors = {
     cursor_bg = '#52ad70',
-    background = "#fafafa", -- Light background
-    foreground = "black", -- Dark text for contrast
+    background = "2b3339",
     tab_bar = {
-      background = "#fafafa", -- Light background
+      background = "2b3339",
       active_tab = {
-        bg_color = "#cccccc", -- Slightly darker than background for contrast
-        fg_color = "#2c2c2c", -- Dark foreground
+        bg_color = "2b3339",
+        fg_color = "#dedede",
         intensity = "Bold",
         underline = "None",
         italic = true,
         strikethrough = false,
       },
       inactive_tab = {
-        bg_color = "#f0f0f0", -- Light gray
-        fg_color = "#5c5c5c", -- Medium gray for text contrast
+        bg_color = "2b3339",
+        fg_color = "#636b6f",
       },
       inactive_tab_hover = {
-        bg_color = "#dedede", -- Subtle hover effect
-        fg_color = "#2c2c2c",
-        italic = false,
-      },
-      new_tab = {
-        bg_color = "#f0f0f0",
-        fg_color = "#5c5c5c",
-      },
-      new_tab_hover = { 
         bg_color = "#dedede",
         fg_color = "#2c2c2c",
         italic = false,
       },
+      new_tab = {
+        bg_color = "2b3339",
+        fg_color = "2b3339",
+      },
+      new_tab_hover = {
+        bg_color = "2b3339",
+        fg_color = "2b3339",
+        italic = false,
+      },
     }
   }
--- else
---   config.colors = {
---     cursor_bg = '#52ad70',
---     background = "#000000",
---     tab_bar = {
---       background = "#000000",
---       active_tab = {
---         bg_color = "#000000",
---         fg_color = "#636b6f",
---         intensity = "Bold",
---         underline = "None",
---         italic = true,
---         strikethrough = false,
---       },
---       inactive_tab = {
---         bg_color = "#000000",
---         fg_color = "#333333",
---       },
---       inactive_tab_hover = {
---         bg_color = "#dedede",
---         fg_color = "#2c2c2c",
---         italic = false,
---       },
---       new_tab = {
---         bg_color = "#000000",
---         fg_color = "#000000",
---       },
---       new_tab_hover = {
---         bg_color = "#000000",
---         fg_color = "#000000",
---         italic = false,
---       },
---     }
---   }
 -- end
 
 return config

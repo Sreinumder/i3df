@@ -16,10 +16,6 @@ I3 side
 - i3 (consumes way less ram than gnome)
 - autotiling (i3-script for autotiling duh)
 
-Essential-cli
-=========
-- trash-cli (makes rm move things to trashbin)
-- bc (calculator)
 
 Editor
 ======
@@ -62,6 +58,7 @@ Media
 - brightnessctl
 - playerctl
 - xsel (for clipboard)
+- wl-clipboard (for sway/wayland)
 - clipmenu (for clipboard gui)
 - yt-dlp (youtube downloader)
 - gimp (image editor)
@@ -103,7 +100,9 @@ Recorder
 
 Misc
 ====
+- trash-cli (makes rm move things to trashbin)
 - jq (for filtering json)
+- bc (calculator)
 - curl (for web requests)
 - wget (for downloading non-interactively)
 - iw (show / manipulate wireless devices and their configuration)
@@ -112,4 +111,5 @@ Misc
 - udiskie (daemon to mount usb on connection)
 - exiftool (reads music metadata + image renderer for yazi musics)
 - xbindkeys ( xbindkeys + xdotool poor man's ahk for linux)
+- pv (shows progress through pipeline?)
 - cowsay (fun thing)

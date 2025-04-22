@@ -16,7 +16,9 @@
 sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
 ```
 
-* I fixed touchpad tapping and natural scrolling by simply editing/creating the libinput conf file at:
+* touchpad fix
+    * on X11 / i3
+    I fixed touchpad tapping and natural scrolling by simply editing/creating the libinput conf file at:
     cat /etc/X11/xorg.conf.d/30-touchpad.conf
     ```
         Section "InputClass"
@@ -45,9 +47,7 @@ cat /etc/X11/xorg.conf.d/00-keyboard.conf
         EndSection
     ```
 
-    Trying Xmodmap
-
-* Brighness and media binding
+* Brightness and media binding
 ** Installed brightnessctl
 ```
     pacman -S brightnessctl
@@ -64,6 +64,8 @@ cat /etc/X11/xorg.conf.d/00-keyboard.conf
 ```
 
 * Clipboard management through clipmenu
+* also xsel should be installed 
+* or wl-clipboard on wayland
 ```
     sudo pacman -S clipmenu
     # on .xinitrc

@@ -189,10 +189,10 @@ export FZF_DEFAULT_OPTS="
 --bind 'ctrl-alt-y:execute-silent(xsel -b <<< "{}")'
 "
 # if [[ "$COLORSCHEME" == "light" ]]; then
-  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=bg+:#e5e5e5,bg:#fafafa,spinner:#007acc,hl:#d75f5f,fg:#2c2c2c,fg+:#2c2c2c,header:#007acc,info:#005f87,pointer:#005f87,marker:#d75f5f,prompt:#005f87,hl+:#af005f "
-  export BAT_THEME="OneHalfLight"
+  # export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=bg+:#e5e5e5,bg:#fafafa,spinner:#007acc,hl:#d75f5f,fg:#2c2c2c,fg+:#2c2c2c,header:#007acc,info:#005f87,pointer:#005f87,marker:#d75f5f,prompt:#005f87,hl+:#af005f "
+  # export BAT_THEME="OneHalfLight"
 # else
-  # export BAT_THEME="OneHalfDark"
+  export BAT_THEME="OneHalfDark"
 # fi
 
 # zoxide zi fzf opts

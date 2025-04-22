@@ -5,6 +5,24 @@ status=$(playerctl status)
 # Get the current media title
 current_playing=$(playerctl metadata --format "{{title}}")
 
+case $BLOCK_BUTTON in
+    1) # Left click - Toggle mute
+        playerctl play-pause
+        ;;
+    2) # middle-click - Toggle port
+        playerctl previous
+        ;;
+    3) # Right-click - Toggle port
+        playerctl next
+        ;;
+    4) # scroll up
+        playerctl position 3+
+        ;;
+    5) #scroll down
+        playerctl position 3-
+        ;;
+
+esac
 # Check if there's any media playing or paused
 if [ -z "$current_playing" ]; then
     echo "メディア再生なし"

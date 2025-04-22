@@ -12,4 +12,5 @@ fi
 IGNORE_PATTERNS=$(paste -sd '|' "$IGNORE_FILE")
 
 cd ~/i3df || { echo "Failed to cd to ~/i3df"; exit 1; }
+# echo $IGNORE_PATTERNS
 stow --adopt --ignore="$IGNORE_PATTERNS" .

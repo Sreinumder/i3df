@@ -1,5 +1,5 @@
 return {
-	"echasnovski/mini.tabline",
+  "echasnovski/mini.tabline",
   -- enabled = true,
   keys = {
     {"<Tab>", "<cmd>bnext<CR>", desc = "next buffer"},
@@ -9,13 +9,13 @@ return {
   },
   opts = {},
   init = function()
-    vim.api.nvim_set_hl(0, 'MiniTablineCurrent', { fg = '#000000' , bg = '#f9f9f9', italic = true})
-    vim.api.nvim_set_hl(0, 'MiniTablineVisible', { fg = '#5c5c5c' , bg = '#e5e5e5'})
-    vim.api.nvim_set_hl(0, 'MiniTablineHidden', { fg = '#5c5c5c' , bg = '#e5e5e5'})
-    vim.api.nvim_set_hl(0, 'MiniTablineModifiedCurrent', { fg = '#d75f00' , bg = '#f9f9f9', italic = true})
-    vim.api.nvim_set_hl(0, 'MiniTablineModifiedVisible', { fg = '#9c6c4f' , bg = '#e5e5e5'})
-    vim.api.nvim_set_hl(0, 'MiniTablineModifiedHidden', { fg = '#9c6c4f' , bg = '#e5e5e5'})
-    vim.api.nvim_set_hl(0, 'MiniTablineTrunc', { fg = '#f75f00' , bg = '#e5e5e5'})
-    vim.api.nvim_set_hl(0, 'MiniTablineFill', {  bg = '#e5e5e5'})
-  end,
+    vim.api.nvim_set_hl(0, 'MiniTablineCurrent', { fg = '#f9f9f9' , bg = '#0 00000', italic = true})
+    vim.api.nvim_set_hl(0, 'MiniTablineVisible', { fg = '#e5e5e5' , bg = '#3 c3c3c'})
+    vim.api.nvim_set_hl(0, 'MiniTablineHidden', { fg = '#e5e5e5' , bg = '#3c 3c3c'})
+    vim.api.nvim_set_hl(0, 'MiniTablineModifiedCurrent', { fg = '#f75f00' , bg = '#3c3c3c', italic = true})
+    vim.api.nvim_set_hl(0, 'MiniTablineModifiedVisible', { fg = '#d75f00' , bg = '#3c3c3c'})
+    vim.api.nvim_set_hl(0, 'MiniTablineModifiedHidden', { fg = '#9c6c4f' , bg = '#3c3c3c'})
+    vim.api.nvim_set_hl(0, 'MiniTablineTrunc', { fg = '#f75f00' , bg = '#3c3 c3c'})
+    vim.api.nvim_set_hl(0, 'MiniTablineFill', {  bg = '#3c3c3c'})
+  end
 }
