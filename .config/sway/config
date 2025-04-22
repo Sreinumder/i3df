@@ -79,10 +79,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym $mod+m exec "~/i3df/scripts/yt.sh -mg"
 bindsym $mod+shift+m exec "~/i3df/scripts/yt.sh -g"
-bindsym $mod+$alt+m exec "~/i3df/scripts/yt.sh -mge"
+# command=curl https://zenquotes.io/api/random |  jq -r '.[] | "\"\(.q)\" -- \(.a)"' 
 bindsym $mod+$alt+shift+m exec "~/i3df/scripts/yt.sh -ge"
-# bindsym $mod+// exec xfce4-terminal --drop-down
-
 
 # 2. Brighness --------------------------------------------------
 bindsym $alt+XF86MonBrightnessUp    exec brightnessctl set +50
@@ -118,10 +116,10 @@ bindsym $alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
 bindsym $mod+Print exec --no-startup-id flameshot gui -p $HOME/Screenshots -c
 bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshots -c
 bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
+bindsym $mod+Shift+S exec --no-startup-id flameshot gui -p $HOME/Screenshots -c
 
 # 4. system-commands, monitor-management and Scripts------------------------
-bindsym $mod+period exec wezterm -e nvim -O $HOME/.config/sway/config ~/.config/i3/sway-advent.md
-bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/sway/config ~/.config/i3/sway-advent.md
+bindsym $mod+period exec "wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"
 # bindsym $mod+Shift+p move workspace to output right
 bindsym $mod+$alt+shift+s exec shutdown now
 bindsym $mod+y exec 'ytv'
@@ -317,5 +315,5 @@ input "type:touchpad" {
     natural_scroll enabled  # disables reverse scroll
 }
 input "type:keyboard" {
-    xkb_options "caps:escape,escape:caps"
+    xkb_options "swapescape""
 }
