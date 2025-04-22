@@ -36,6 +36,7 @@ exec --no-startup-id autotiling
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
+exec --no-startup-id numlockx on
 # exec --no-startup-id feh
 exec --no-startup-id localectl set-x11-keymap us; setxkbmap -option caps:swapescape
 
@@ -297,5 +298,5 @@ input "type:touchpad" {
     natural_scroll enabled  # disables reverse scroll
 }
 input "type:keyboard" {
-    xkb_options "swapescape""
+    xkb_options "caps:swapescape""
 }
