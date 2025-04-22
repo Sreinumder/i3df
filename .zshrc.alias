@@ -13,8 +13,6 @@ alias tc="tgpt -qc" # code
 alias ti="tgpt --image"
 function cdj() { curl -s https://icanhazdadjoke.com/ }
 function cbb() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"' }
-function fal() { rg -e "^\s*alias" ~/i3df/.zshrc.alias | fzf }
-
 alias ..="cd .."
 alias ...="cd ../.."
 
@@ -23,7 +21,8 @@ alias px="pkill xdotool"
 
 alias kre="localectl set-x11-keymap us; setxkbmap -option caps:swapescape"
 
-function g() { git $@ }
+# function g() { git $@ }
+alias g='git'
 alias doo='~/i3df/scripts/doing.sh'
 alias ffo='fc-list | fzf'
 alias fps='ps aux | fzf' # Search through running processes
@@ -62,7 +61,7 @@ alias conq='cd ~/.config/qutebrowser; yazi .'
 alias conw='nvim ~/i3df/.config/wezterm/wezterm.lua'
 alias con.='yazi ~/.config/'
 alias cony='cd ~/.config/yazi/; nvim .'
-alias conz='nvim ~/i3df/.zshrc'
+alias conz='nvim ~/.zshrc'
 
 alias N='cd ~/notes; y'
 alias Nha='nvim ~/notes/hobby/anime/'

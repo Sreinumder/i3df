@@ -8,39 +8,42 @@ SCROLL_LENGTH=30
 players=$(playerctl -l 2>/dev/null)
 [ -z "$players" ] && echo "no-media" && exit
 
-# Get metadata safely
-title=$(playerctl -p "$player" metadata --format "{{title}}" 2>/dev/null)
-status=$(playerctl -p "$player" status 2>/dev/null)
-artist=$(playerctl -p "$player" metadata --format "{{artist}}" 2>/dev/null)
-trackid=$(playerctl -p "$player" metadata mpris:trackid 2>/dev/null)
-position=$(playerctl -p "$player" position 2>/dev/null)
-duration=$(playerctl -p "$player" metadata --format "{{mpris:length}}" 2>/dev/null)
-
-duration_sec=$((duration / 1000000))
-position_sec=${position%.*}
-
-format_time() {
-    local seconds=$1
-    printf "%02d:%02d" $((seconds / 60)) $((seconds % 60))
+# Function to trim to first 5-6 words
+trimmed_title() {
+    echo "$1" | awk '{for(i=1;i<=4;i++) printf $i" "; if(NF>6) printf "..."; print ""}'
 }
 
-# Scroll logic
-if [[ ${#title} -gt $SCROLL_LENGTH ]]; then
-    prev_trackid=$(cat "$PREV_TRACKID_FILE" 2>/dev/null || echo "")
-    if [[ "$prev_trackid" != "$trackid" ]]; then
-        echo "$trackid" > "$PREV_TRACKID_FILE"
-        echo 0 > "$SCROLL_FILE"
+case $BLOCK_BUTTON in
+  1) # Left click - Toggle mute
+    playerctl play-pause
+    ;;
+  2) # middle-click
+    playerctl previous
+    ;;
+  3) # Right Click
+    playerctl next
+    ;;
+  4) # scroll up
+    playerctl position 3+
+    ;;
+  5) # scroll down
+    playerctl position 3-
+    ;;
+esac
+
+# Check if there's any media playing or paused
+if [ -z "$current_playing" ]; then
+    echo "no media rn"
+elif [ "$status" == "Playing" ]; then
+    display_title=$(trimmed_title "$current_playing")
+    echo "⏸ $display_title"
+    if [[ ! -f /tmp/prev_playing || "$(cat /tmp/prev_playing)" != "$current_playing" ]]; then
+        echo "$current_playing" > /tmp/prev_playing
+        ~/i3df/scripts/current_mpv_set_wallpaper.sh
     fi
-
-    scroll_index=$(cat "$SCROLL_FILE" 2>/dev/null || echo 0)
-    scroll_index=$((scroll_index + 1))
-    ((scroll_index > ${#title})) && scroll_index=0
-    echo "$scroll_index" > "$SCROLL_FILE"
-
-    scroll_title="${title:$scroll_index:$SCROLL_LENGTH}"
-    while [[ ${#scroll_title} -lt $SCROLL_LENGTH ]]; do
-        scroll_title="$scroll_title ${title:0:$(($SCROLL_LENGTH - ${#scroll_title}))}"
-    done
+elif [ "$status" == "Paused" ]; then
+    display_title=$(trimmed_title "$current_playing")
+    echo "▶ $display_title"
 else
     scroll_title="$title"
 fi

@@ -25,11 +25,11 @@ case $BLOCK_BUTTON in
     3) # Right-click - Open pavucontrol (optional)
         (pavucontrol -t 3 &)
         ;;
-    4) # Scroll up - increase volume
-        pactl set-sink-volume "$sink" +5%
+    4)
+        pactl set-sink-volume @DEFAULT_SINK@ +5%
         ;;
-    5) # Scroll down - decrease volume
-        pactl set-sink-volume "$sink" -5%
+    5)
+        pactl set-sink-volume @DEFAULT_SINK@ -5%
         ;;
 esac
 

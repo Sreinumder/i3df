@@ -53,14 +53,14 @@ bindsym ctrl+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DE
 bindsym ctrl+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1% && $refresh_i3status
 bindsym shift+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
 bindsym shift+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym alt+shift+g exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym alt+shift+h exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 bindsym $mod+m exec "~/i3df/scripts/yt.sh -mg"
 bindsym $mod+shift+m exec "~/i3df/scripts/yt.sh -g"
-bindsym $mod+$alt+m exec "~/i3df/scripts/yt.sh -mge"
+# command=curl https://zenquotes.io/api/random |  jq -r '.[] | "\"\(.q)\" -- \(.a)"' 
 bindsym $mod+$alt+shift+m exec "~/i3df/scripts/yt.sh -ge"
-# bindsym $mod+// exec xfce4-terminal --drop-down
-
 
 # 2. Brighness --------------------------------------------------
 bindsym $alt+XF86MonBrightnessUp    exec brightnessctl set +50
@@ -95,6 +95,7 @@ bindsym $alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
 bindsym $mod+Print exec --no-startup-id flameshot gui -p $HOME/Screenshots -c
 bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshots -c
 bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
+bindsym $mod+Shift+S exec --no-startup-id flameshot gui -p $HOME/Screenshots -c
 
 # 4. system-commands, monitor-management and Scripts------------------------
 bindsym $mod+period exec "wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"

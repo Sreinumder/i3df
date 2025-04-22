@@ -2,6 +2,10 @@
 command=~/i3df/scripts/doing_block.sh
 interval=1
 
+[quote]
+command=curl https://zenquotes.io/api/random |  jq -r '.[] | "\"\(.q)\" -- \(.a)"' 
+interval=10000
+
 [playing]
 command=~/i3df/scripts/playing.sh
 interval=1

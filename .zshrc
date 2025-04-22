@@ -200,13 +200,14 @@ export FZF_DEFAULT_OPTS="
 --bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
 --bind 'ctrl-y:execute(readlink -f {} | xsel -b)'
 --bind 'ctrl-alt-y:execute-silent(xsel -b <<< "{}")'
-"
-# if [[ "$COLORSCHEME" == "light" ]]; then
-  # export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=bg+:#e5e5e5,bg:#fafafa,spinner:#007acc,hl:#d75f5f,fg:#2c2c2c,fg+:#2c2c2c,header:#007acc,info:#005f87,pointer:#005f87,marker:#d75f5f,prompt:#005f87,hl+:#af005f "
-  # export BAT_THEME="OneHalfLight"
-# else
-  export BAT_THEME="OneHalfDark"
-# fi
+  --color=bg:#141b1e,bg+:#1e2227 \
+  --color=spinner:#007acc,hl:#d75f5f,hl+:#ff5f87 \
+  --color=fg:#c0c0c0,fg+:#ffffff \
+  --color=header:#007acc,info:#5f87af \
+  --color=pointer:#5fafff,marker:#d75f5f,prompt:#5fafff"
+
+# export BAT_THEME="OneHalfLight"
+export BAT_THEME="OneHalfDark"
 
 # zoxide zi fzf opts
 # export _ZO_FZF_OPTS="--preview 'eza -T --color=always {}'"

@@ -44,14 +44,14 @@ fi
 
 # Check if the battery is discharging, charging, full, or not charging
 if [ "$battery_status" == "Charging" ]; then
-    status="電"  # Charging
+    status="C:"  # Charging
     color=$COLOR_CHARGING
     if [ "$last_battery_status" != "Charging" ]; then
         notify-send -u normal "Charger Connected" "Battery is now charging."
         play_sound "$CHARGER_CONNECTED_SOUND"
     fi
 elif [ "$battery_status" == "Discharging" ]; then
-    status="放"  # Discharging
+    status="D:"  # Discharging
     if [ "$battery_percentage" -le 10 ] && [ "$last_battery_percentage" -gt 10 ]; then
         notify-send -u critical "Battery Critical!" "Battery is at ${battery_percentage}%! Please charge your device immediately."
         play_sound "$CHIME_SOUND"
@@ -64,10 +64,10 @@ elif [ "$battery_status" == "Discharging" ]; then
         play_sound "$CHARGER_DISCONNECTED_SOUND"
     fi
 elif [ "$battery_status" == "Full" ]; then
-    status="満"  # Fully Charged
+    status="C:"  # Fully Charged
     color=$COLOR_CHARGING
 else
-    status="未"  # Not Charging
+    status="D:"  # Not Charging
 fi
 
 case $BLOCK_BUTTON in
