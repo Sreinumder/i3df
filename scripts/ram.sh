@@ -32,4 +32,4 @@ else
 fi
 
 # Output for i3blocks with Pango markup
-echo "<span foreground='$color'>メモリ $ram_usage_percent</span>"
+echo "<span foreground='$color'>RAM:$ram_usage_percent</span>"

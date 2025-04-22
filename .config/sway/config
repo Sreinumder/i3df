@@ -26,6 +26,8 @@ set $alt Mod1
 font pango:Jetbrains Mono 12
 
 # basically autostart
+exec systemctl --user import-environment WAYLAND_DISPLAY DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
 exec --no-startup-id xrdb -merge $HOME/.Xresources # for dark mode for applications
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -36,6 +38,9 @@ exec --no-startup-id fcitx5
 exec --no-startup-id dunst
 # exec --no-startup-id feh
 exec --no-startup-id localectl set-x11-keymap us; setxkbmap -option caps:swapescape
+
+exec_always swaybg -i /home/romik/Downloads/photo-1529333110658-26b4cf759641.jpg -m fill
+
 # exec --no-startup-id xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal
 
 # Audio, Brightness & Screenshot ---------------------------
@@ -261,11 +266,11 @@ bindsym $mod+Escape exec "~/xdotool-scripts/question-paper/homerowdir.sh"
     strip_workspace_numbers yes
     colors {
 #         separator  #1f222d
-          background #000000
-# statusline #81a1c1
+          background #01000000
+          statusline #81a1c1
 #
 #         #                   border  background text
-#         focused_workspace  #1f222d #1f222d    #81a1c1
+        focused_workspace  #1f222d #1f222d    #81a1c1
 #         active_workspace   #1f222d #252936    #5e81ac
 #         inactive_workspace #1f222d #1f222d    #4c566a
 #         urgent_workspace   #1f222d #1f222d    #ee829f
@@ -284,3 +289,13 @@ gaps outer 0
 
 for_window [class=Eog|nsxiv|feh|Vlc|pavucontrol|Xarchiver] floating enable
 for_window [class=Eog|dropdown|nsxiv|feh|Vlc|File-roller|Xarchiver] focus
+input "type:touchpad" {
+    tap enabled         # enables click-on-tap
+    tap_button_map lrm  # tap with 1 finger = left click, 2 fingers = right click, 3 fingers = middle click
+    dwt enabled         # disable (touchpad) while typing
+    dwtp enabled        # disable (touchpad) while track pointing
+    natural_scroll enabled  # disables reverse scroll
+}
+input "type:keyboard" {
+    xkb_options "caps:escape,escape:caps"
+}

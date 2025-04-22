@@ -2,6 +2,10 @@
 # command=~/i3df/scripts/doing.sh show
 # interval=1
 
+[quote]
+command=curl https://zenquotes.io/api/random |  jq -r '.[] | "\"\(.q)\" -- \(.a)"' 
+interval=10000
+
 [playing]
 command=~/i3df/scripts/playing.sh
 interval=5
@@ -43,10 +47,10 @@ markup=pango
 
 [tzdate]
 # label=日付
-command=date '+%y年%m月%d日'
+command=date '+%y/%m/%d'
 interval=30
 
 [tztime]
 # label=時間
-command=date '+%H時%M分'
+command=date '+%H %M'
 interval=1
