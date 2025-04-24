@@ -64,7 +64,7 @@ fi
 
 # Check if a valid PID was found
 if [[ -z "$pid" || "$pid" == "0" ]]; then
-    echo "No process associated with the window"
+    echo "||"
     exit 0
 fi
 

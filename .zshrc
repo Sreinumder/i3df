@@ -215,3 +215,4 @@ export BAT_THEME="OneHalfDark"
 # --preview-window='right:45%:border-rounded'
 # --bind='alt-p:change-preview(stat {})'
 
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
