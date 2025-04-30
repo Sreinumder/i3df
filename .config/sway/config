@@ -123,7 +123,7 @@ bindsym $alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
 bindsym $mod+Print exec --no-startup-id flameshot gui -p $HOME/Screenshots -c
 bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshots -c
 bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
-bindsym $mod+Shift+S exec --no-startup-id flameshot gui -p $HOME/Screenshots -c
+bindsym $mod+Shift+S exec --no-startup-id grim -g "$(slurp)" - | tee "screenshot_$(date '+%Y-%m-%d_%H-%M-%S').png" | wl-copy 
 
 # 4. system-commands, monitor-management and Scripts------------------------
 bindsym $mod+period exec "wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"
