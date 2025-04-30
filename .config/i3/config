@@ -5,6 +5,7 @@
 # | mod+ctrl+space  | start terminal (wezterm)       |
 # | mod+ctrl+f      | start zen-browser              |
 # | mod+w           | close the program              |
+# | mod+e           | open dmenu-power menu          |
 # | mod+hjkl        | for window focus change        |
 # | mod+alt+hjkl    | for moving window              |
 # | mod+shift+hjkl  | for resizing window            |
@@ -30,14 +31,15 @@ exec --no-startup-id xrdb -merge $HOME/.Xresources # for dark mode for applicati
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-# exec --no-startup-id feh --bg-fill ~/wallpapers/5cm-green.jpg 
+exec --no-startup-id feh --bg-fill ~/wallpaper/green.jpg
 exec --no-startup-id autotiling
 exec --no-startup-id wezterm
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
 # exec --no-startup-id localectl set-x11-keymap us; setxkbmap -option caps:swapescape
-# exec --no-startup-id xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal
+exec --no-startup-id xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal
+exec --no-startup-id localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'
 
 # Audio, Brightness & Screenshot ---------------------------
 # 1. Audio --------------------------------------------------
@@ -113,18 +115,11 @@ bindsym $mod+$alt+y exec  'ytm'
 floating_modifier $mod
 
 # 5. Applications -------------------------------------------------------------
-# bindsym $mod+Return exec warp-terminal
-# bindsym $mod+z exec zeditor
-# bindsym $mod+x exec emacs
-# bindsym $mod+$alt+n exec neovide
-bindsym $mod+g exec "ezterm -e retroarch"
+bindsym $mod+g exec "wezterm -e retroarch"
 bindsym $mod+Ctrl+space exec wezterm
-# bindsym ctrl+$mod+space exec warp-terminal
-bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md
+bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/i3/config
 bindsym $mod+ctrl+f exec zen-browser
-# bindsym $mod+ctrl+shift+f exec chromium --profile-directory="Default"
 bindsym $mod+ctrl+q exec qutebrowser
-# bindsym $mod+$alt+f  exec chromium --profile-directory="Profile 4"
 
 bindsym $mod+$alt+e exec thunar
 bindsym $mod+ctrl+c exec codium
@@ -134,7 +129,8 @@ bindsym $mod+w kill
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id dmenu_run -m 0 -fn 'Jetbrains Mono-11'
-
+bindsym $mod+SHIFT+d exec --no-startup-id dmenu -m 0 -fn 'Jetbrains Mono-11' | sh
+# bindsym $mod+r exec "history | cut -c 8- | dmenu -li 'Run:' | zsh -c"
 
 # change focus
 bindsym $mod+h focus left
@@ -162,10 +158,13 @@ bindsym $mod+Shift+f floating toggle
 
 
 # focus the parent container
-bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
+
+bindsym $mod+n exec --no-startup-id ~/i3df/scripts/window_cycle.sh next
+bindsym $mod+p exec --no-startup-id ~/i3df/scripts/window_cycle.sh previous
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -225,8 +224,9 @@ bindsym $mod+Shift+r reload
 bindsym $mod+Ctrl+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-bindsym $mod+Shift+b exec "blueman-manager"
+bindsym $mod+e exec printf "systemctl poweroff\nsystemctl reboot\nsystemctl hibernate\nsystemctl suspend\nsystemctl halt\ni3-msg exit\nblueman-manager\n" | dmenu | sh
 
+bindsym $mod+Shift+b exec "blueman-manager"
 # resize window (you can also use the mouse for that)
 bindsym $mod+Shift+h resize shrink width 10 px or 10 ppt
 bindsym $mod+Shift+l resize grow width 10 px or 10 ppt
@@ -262,7 +262,7 @@ bindsym $mod+Escape exec "~/xdotool-scripts/question-paper/homerowdir.sh"
     strip_workspace_numbers yes
     colors {
 #         separator  #1f222d
-          background #000000
+          # background #88000000
 # statusline #81a1c1
 #
 #         #                   border  background text

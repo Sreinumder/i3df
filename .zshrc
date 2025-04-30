@@ -1,3 +1,15 @@
+setopt SHARE_HISTORY       # share history between all sessions
+setopt INC_APPEND_HISTORY  # append commands to history immediately
+setopt HIST_IGNORE_DUPS    # ignore duplicate commands
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+
+# Large history file
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+
 export PATH=$PATH:/var/lib/flatpak/exports/bin
 export PATH="$PATH:/usr/local/bin"
 export MANPAGER="nvim +Man!"
@@ -14,7 +26,7 @@ export GLFW_IM_MODULE=ibus
 export EDITOR=nvim
 # export QT_STYLE_OVERRIDE=kvantum
 export QT_QPA_PLATFORMTHEME=qt5ct
-
+export SCRIPT_DIR="~/i3df/scripts"
 # export COLORSCHEME="dark"
 export COLORSCHEME="light"
 

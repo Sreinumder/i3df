@@ -13,8 +13,7 @@ gui:
   theme:
     # showFileTree: false
     selectedLineBgColor:
-      - '#eaeaeb'
-      # - '#282828'
+      - '#282828'
   border: rounded
   nerdFontsVersion: '3'
 keybinding:
