@@ -165,7 +165,9 @@ bindsym $mod+ctrl+c exec codium
 bindsym $mod+w kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run -m 0 -fn 'Jetbrains Mono-11'
+bindsym $mod+d exec dmenu_run -m 0 -fn 'Jetbrains Mono-11'
+bindsym $mod+alt+d exec swaymsg "[con_id=$(swaymsg -t get_tree| jq -r 'recurse(.nodes[]?) | recurse(.floating_nodes[]?) | select(.type=="con"), select(.type=="floating_con") | select((.app_id != null) or .name != null) | {id, app_id, name} | "\(.id) \(.app_id) \(.name)"' | dmenu -i -l 10 | cut -d " " -f1 )]" focus
+bindsym $mod+e exec printf "systemctl poweroff\nsystemctl reboot\nsystemctl hibernate\nsystemctl suspend\nsystemctl halt\ni3-msg exit\nblueman-manager\n" | dmenu -l 6| sh
 
 
 # change focus
