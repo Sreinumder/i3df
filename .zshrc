@@ -216,3 +216,4 @@ export BAT_THEME="OneHalfDark"
 # --bind='alt-p:change-preview(stat {})'
 
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+alias docker="sudo docker"
