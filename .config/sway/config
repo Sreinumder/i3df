@@ -37,6 +37,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id swaybg -i ~/wallpapers/5cm-green.jpg -m fill 
 exec --no-startup-id autotiling
 exec --no-startup-id wezterm
+exec --no-startup-id numlockx
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
@@ -141,7 +142,6 @@ bindsym $mod+d exec --no-startup-id pkill dmenu; dmenu_run -m 0 -fn 'Jetbrains M
 bindsym $mod+SHIFT+d exec dmenu -m 0 -fn 'Jetbrains Mono-11' | sh
 bindsym $mod+alt+d exec swaymsg "[con_id=$(swaymsg -t get_tree| jq -r 'recurse(.nodes[]?) | recurse(.floating_nodes[]?) | select(.type=="con"), select(.type=="floating_con") | select((.app_id != null) or .name != null) | {id, app_id, name} | "\(.id) \(.app_id) \(.name)"' | dmenu -i -l 10 | cut -d " " -f1 )]" focus
 bindsym $mod+e exec printf "i3-msg exit\nsystemctl poweroff\nsystemctl reboot\nsystemctl hibernate\nsystemctl suspend\nsystemctl halt\n" | dmenu -l 6| sh
-bindsym $mod+alt+e exec printf "i3-msg exit\nsystemctl poweroff\nsystemctl reboot\nsystemctl hibernate\nsystemctl suspend\nsystemctl halt\n" | dmenu -l 6| sh
 
 # change focus
 bindsym $mod+h focus left
@@ -305,4 +305,5 @@ input "type:touchpad" {
 }
 input "type:keyboard" {
     xkb_options "caps:swapescape"
+    xkb_numlock enabled
 }
