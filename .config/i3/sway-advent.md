@@ -12,6 +12,7 @@ touchpad and keyboard (swap escape capslock)
     }
     input "type:keyboard" {
         xkb_options "caps:swapescape"
+        xkb_numlock enabled
     }
 ```
 

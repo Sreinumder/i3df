@@ -97,7 +97,8 @@ bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshot
 bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
 
 # 4. system-commands, monitor-management and Scripts------------------------
-bindsym $mod+period exec "wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"
+bindsym $mod+period exec wezterm -e nvim -O $HOME/.config/sway/config ~/.config/i3/sway-advent.md
+bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/sway/config ~/.config/i3/sway-advent.md
 # bindsym $mod+Shift+p move workspace to output right
 bindsym $mod+$alt+shift+s exec shutdown now
 bindsym $mod+y exec 'ytv'
@@ -125,7 +126,6 @@ floating_modifier $mod
 bindsym $mod+g exec "ezterm -e retroarch"
 bindsym $mod+Ctrl+space exec wezterm
 # bindsym ctrl+$mod+space exec warp-terminal
-bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md
 bindsym $mod+ctrl+f exec zen-browser
 # bindsym $mod+ctrl+shift+f exec chromium --profile-directory="Default"
 bindsym $mod+ctrl+q exec qutebrowser
@@ -138,7 +138,7 @@ bindsym $mod+ctrl+c exec codium
 bindsym $mod+w kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id pkill dmenu; dmenu_run -m 0 -fn 'Jetbrains Mono-11'
+bindsym $mod+d exec --no-startup-id dmenu_run -m 0 -fn 'Jetbrains Mono-11'
 bindsym $mod+SHIFT+d exec dmenu -m 0 -fn 'Jetbrains Mono-11' | sh
 bindsym $mod+alt+d exec swaymsg "[con_id=$(swaymsg -t get_tree| jq -r 'recurse(.nodes[]?) | recurse(.floating_nodes[]?) | select(.type=="con"), select(.type=="floating_con") | select((.app_id != null) or .name != null) | {id, app_id, name} | "\(.id) \(.app_id) \(.name)"' | dmenu -i -l 10 | cut -d " " -f1 )]" focus
 bindsym $mod+e exec printf "i3-msg exit\nsystemctl poweroff\nsystemctl reboot\nsystemctl hibernate\nsystemctl suspend\nsystemctl halt\n" | dmenu -l 6| sh
@@ -307,3 +307,4 @@ input "type:keyboard" {
     xkb_options "caps:swapescape"
     xkb_numlock enabled
 }
+include /etc/sway/config.d/*
