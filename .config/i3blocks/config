@@ -37,7 +37,11 @@ markup=pango
 [volume]
 command=~/i3df/scripts/volume.sh
 interval=1
-format_muted="静音"
+markup=pango
+
+[audio_sink_mic_status]
+command=~/i3df/scripts/audio_sink_mic_status.sh
+interval=1
 markup=pango
 
 [battery]
