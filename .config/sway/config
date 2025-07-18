@@ -75,26 +75,6 @@ bindgesture pinch:4:inward exec --no-startup-id wtype -M ctrl -P w -p w -m ctrl
 
 # exec --no-startup-id xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal
 
-# touchpad-gestures
-bindgesture swipe:3:right exec --no-startup-id ~/i3df/scripts/window_cycle.sh previous
-bindgesture swipe:3:left exec --no-startup-id ~/i3df/scripts/window_cycle.sh next
-bindgesture swipe:3:up exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindgesture swipe:3:down exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindgesture pinch:3:inward exec --no-startup-id ~/i3df/scripts/window_cycle.sh next
-bindgesture pinch:3:outward exec --no-startup-id ~/i3df/scripts/window_cycle.sh previous
-
-# browser next/prev tab, go back/forward, close / unclose tabs
-bindgesture swipe:4:up exec --no-startup-id wtype -M ctrl -M shift -P tab -p tab -m ctrl -m shift
-bindgesture swipe:4:down exec --no-startup-id wtype -M ctrl -P tab -p tab -m ctrl
-bindgesture swipe:4:left exec --no-startup-id wtype -M alt -P right -p right -m alt
-bindgesture swipe:4:right exec --no-startup-id wtype -M alt -P left -p left -m alt
-bindgesture hold:4 exec --no-startup-id playerctl play-pause
-bindgesture pinch:4:outward exec --no-startup-id wtype -M ctrl -M shift -P t -p t -m ctrl -m shift
-bindgesture pinch:4:inward exec --no-startup-id wtype -M ctrl -P w -p w -m ctrl
-# bindgesture swipe:5:right
-# bindgesture swipe:5:left
-# bindgesture swipe:5:up 
-# bindgesture swipe:5:down 
 
 # Audio, Brightness & Screenshot ---------------------------
 # 1. Audio --------------------------------------------------
