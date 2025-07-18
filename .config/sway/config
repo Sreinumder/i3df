@@ -1,4 +1,4 @@
-# if you dont know what are you doing
+#include /etc/sway/config.d/* if you dont know what are you doing
 # First super / start = mod(m)
 # | mod+c           | open this config               |
 # | mod+d           | dmenu to search/open programs  |
@@ -26,10 +26,13 @@ set $alt Mod1
 
 # setting font
 font pango:Jetbrains Mono 12
+include /etc/sway/config.d/*
 
 # basically autostart
-exec systemctl --user import-environment WAYLAND_DISPLAY DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
+
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+exec systemctl --user start xdg-desktop-portal-wlr.service
 exec --no-startup-id xrdb -merge $HOME/.Xresources # for dark mode for applications
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -49,7 +52,6 @@ exec --no-startup-id numlockx on
 exec --no-startup-id /usr/lib/xdg-desktop-portal
 exec --no-startup-id /usr/lib/xdg-desktop-portal-wlr
 exec_always swaybg -i ~/wallpapers/wallpaper.jpg -m fill
-
 # touchpad-gestures
 bindgesture swipe:3:right exec --no-startup-id ~/i3df/scripts/window_cycle.sh previous
 bindgesture swipe:3:left exec --no-startup-id ~/i3df/scripts/window_cycle.sh next
@@ -147,6 +149,7 @@ bindsym $mod+Print exec --no-startup-id flameshot gui -p $HOME/Screenshots -c
 bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshots -c
 bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
 bindsym $mod+Shift+S exec --no-startup-id grim -g "$(slurp)" - | tee "screenshot_$(date '+%Y-%m-%d_%H-%M-%S').png" | wl-copy 
+bindsym $mod+Ctrl+Shift+S exec --no-startup-id flameshot gui -c
 
 # 4. system-commands, monitor-management and Scripts------------------------
 bindsym $mod+$alt+shift+s exec shutdown now
@@ -161,7 +164,8 @@ bindsym $mod+Ctrl+space exec wezterm
 bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/sway/config 
 bindsym $mod+ctrl+f exec zen-browser
 bindsym $mod+ctrl+q exec qutebrowser
-
+bindsym $mod+shift+d exec flatpak run com.discordapp.Discord
+bindsym $mod+alt+v exec flatpak run com.viber.Viber
 bindsym $mod+$alt+e exec thunar
 
 # kill focused window
@@ -295,7 +299,7 @@ bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
     strip_workspace_numbers yes
     colors {
 #         separator  #1f222d
-          background #01000000
+          background #000000
           statusline #81a1c1
 #
 #         #                   border  background text
@@ -329,3 +333,5 @@ input "type:keyboard" {
     xkb_options "caps:swapescape""
     xkb_numlock enabled
 }
+
+include /etc/sway/config.d/*
