@@ -6,6 +6,10 @@ interval=1
 command=~/i3df/scripts/playing.sh
 interval=1
 
+[playing_switcher]
+command=~/i3df/scripts/playing_switcher.sh
+interval=1
+
 # [cur_window]
 # command=~/i3df/scripts/current_window_ram_cpu.sh
 # interval=1

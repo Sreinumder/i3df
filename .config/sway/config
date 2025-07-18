@@ -93,6 +93,7 @@ bindsym XF86MonBrightnessDown       exec brightnessctl set 2%-
 bindsym shift+XF86MonBrightnessUp   exec brightnessctl set +1%
 bindsym shift+XF86MonBrightnessDown exec brightnessctl set 1%-
 bindsym XF86AudioPlay  exec playerctl play-pause
+bindsym XF86AudioStop  exec playerctl stop
 bindsym Shift+XF86AudioPlay  exec playerctl stop
 bindsym Ctrl+XF86AudioPlay  exec playerctl play-pause -a
 bindsym XF86AudioPause exec playerctl pause
@@ -144,7 +145,6 @@ floating_modifier $mod
 # bindsym $mod+z exec zeditor
 # bindsym $mod+x exec emacs
 # bindsym $mod+$alt+n exec neovide
-bindsym $mod+g exec "ezterm -e retroarch"
 bindsym $mod+Ctrl+space exec wezterm
 # bindsym ctrl+$mod+space exec warp-terminal
 bindsym $mod+ctrl+f exec zen-browser
@@ -248,8 +248,8 @@ bindsym $mod+alt+Shift+9 move container to workspace number $ws9
 bindsym $mod+alt+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
-bindsym $mod+Shift+r reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r reload
 bindsym $mod+Ctrl+r restart
 bindsym $mod+Shift+b exec "blueman-manager"
 
