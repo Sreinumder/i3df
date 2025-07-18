@@ -27,11 +27,14 @@ set $alt Mod1
 font pango:Jetbrains Mono 12
 
 # basically autostart
+# set timeout 900 seconds which is 15 minutes
+exec --no-startup-id xset s 90000
+# exec --no-startup-id xset s off -dpms
 exec --no-startup-id xrdb -merge $HOME/.Xresources # for dark mode for applications
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-exec --no-startup-id feh --bg-fill ~/wallpaper/green.jpg
+exec --no-startup-id feh --bg-fill ~/wallpaper/window.png
 exec --no-startup-id autotiling
 exec --no-startup-id wezterm
 exec --no-startup-id clipmenud
@@ -104,14 +107,19 @@ bindsym $mod+$alt+y exec  'ytm'
 
 # Keybindings for managing tasks with the script
 # Next task (next-do)
-# bindsym $mod+n exec ~/i3df/scripts/doing.sh next-do
-# bindsym $mod+p exec ~/i3df/scripts/doing.sh prev-do
-# bindsym $mod+Up exec ~/i3df/scripts/doing.sh show
-# bindsym $mod+comma exec ~/i3df/scripts/doing.sh toggle-show
-# bindsym $mod+o exec ~/i3df/scripts/doing.sh done
-# bindsym $mod+u exec ~/i3df/scripts/doing.sh undo
-# bindsym $mod+$alt+n exec ~/i3df/scripts/doing.sh next-file
-# bindsym $mod+$alt+p exec ~/i3df/scripts/doing.sh prev-file
+bindsym $mod+Up exec ~/i3df/scripts/doing.sh prev-do
+bindsym $mod+Down exec ~/i3df/scripts/doing.sh next-do
+bindsym $mod+Left exec ~/i3df/scripts/doing.sh prev-file
+bindsym $mod+Right exec ~/i3df/scripts/doing.sh next-file
+bindsym $mod+$alt+n exec ~/i3df/scripts/doing.sh next-do
+bindsym $mod+$alt+p exec ~/i3df/scripts/doing.sh prev-do
+bindsym $mod+$alt+Shift+n exec ~/i3df/scripts/doing.sh next-file
+bindsym $mod+$alt+Shift+p exec ~/i3df/scripts/doing.sh prev-file
+bindsym $mod+comma exec ~/i3df/scripts/doing.sh toggle-show
+bindsym $mod+o exec ~/i3df/scripts/doing.sh done
+bindsym $mod+u exec ~/i3df/scripts/doing.sh undo
+bindsym $mod+slash exec wezterm -e ~/i3df/scripts/doing.sh edit
+
 floating_modifier $mod
 
 # 5. Applications -------------------------------------------------------------
@@ -233,10 +241,10 @@ bindsym $mod+Shift+l resize grow width 10 px or 10 ppt
 bindsym $mod+Shift+j resize grow height 10 px or 10 ppt
 bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 
-bindsym $mod+o exec "localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'"
+# bindsym $mod+o exec "localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'"
 # bindsym Escape exec "xdotool sleep 0.1 key Escape; localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'";
-bindsym $mod+u exec "~/xdotool-scripts/question-paper/homerowdir.sh; xmodmap -e 'keycode 108 = Menu'"
-bindsym $mod+Escape exec "~/xdotool-scripts/question-paper/homerowdir.sh"
+# bindsym $mod+u exec "~/xdotool-scripts/question-paper/homerowdir.sh; xmodmap -e 'keycode 108 = Menu'"
+# bindsym $mod+Escape exec "~/xdotool-scripts/question-paper/homerowdir.sh"
 # bindsym $mod+u exec "~/data-entry-script/xbindkeys+xd/batch_xkb.sh"
 # bindsym $mod+p exec "~/data-entry-script/xbindkeys+xd/batch_xkb.sh reverse"
 # bindsym $mod+Shift+u exec "xbindkeys -f ~/data-entry-script/xbindkeys+xd/month.xbindkeysrc.sh"

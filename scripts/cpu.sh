@@ -27,7 +27,7 @@ if [[ -f /tmp/prev_cpu_stats ]]; then
 
     # Calculate CPU usage percentage
     cpu_usage=$(echo "scale=2; (100 * ($total_delta - $idle_delta) / $total_delta)" | bc -l)
-    cpu_usage_percent=$(printf "%.2f%%" $cpu_usage)
+    cpu_usage_percent=$(printf "%.0f%" $cpu_usage)
 else
     # First run, no previous values available
     cpu_usage_percent="N/A"
@@ -52,5 +52,5 @@ fi
 if [[ "$cpu_usage_percent" == "N/A" ]]; then
     echo "CPU: N/A"
 else
-    echo "<span foreground='$color'>脳 $cpu_usage_percent</span>"
+    echo "<span foreground='$color'>脳$cpu_usage_percent</span>"
 fi

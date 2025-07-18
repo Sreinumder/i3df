@@ -42,7 +42,7 @@ muted=$(pactl list sinks | grep -E '^[[:space:]]*Mute' | awk '{print $2}')
 
 # Output with color based on mute status
 if [ "$muted" == "yes" ]; then
-    echo "<span color='#e06c75'>静 $volume</span>"  # Red for mute
+    echo "<span color='#e06c75'>静$volume</span>"  # Red for mute
 else
-    echo "$current_port 音 $volume"
+    echo "$current_port音$volume"
 fi

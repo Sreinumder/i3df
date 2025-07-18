@@ -1,10 +1,15 @@
-# [doing]
-# command=~/i3df/scripts/doing.sh show
-# interval=1
+[doing]
+command=~/i3df/scripts/doing_block.sh
+interval=1
 
 [playing]
 command=~/i3df/scripts/playing.sh
-interval=5
+interval=1
+
+# [cur_window]
+# command=~/i3df/scripts/current_window_ram_cpu.sh
+# interval=1
+# markup=pango
 
 [connection]
 command=~/i3df/scripts/wifi.sh
@@ -17,11 +22,6 @@ markup=pango
 
 [ram]
 command=~/i3df/scripts/ram.sh
-interval=1
-markup=pango
-
-[cur_window]
-command=~/i3df/scripts/current_window_ram_cpu.sh
 interval=1
 markup=pango
 
@@ -43,10 +43,10 @@ markup=pango
 
 [tzdate]
 # label=日付
-command=date '+%y年%m月%d日'
+command=~/i3df/scripts/date.sh
 interval=30
 
 [tztime]
 # label=時間
-command=date '+%H時%M分'
+command=~/i3df/scripts/time.sh
 interval=1

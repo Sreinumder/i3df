@@ -31,6 +31,7 @@ export SCRIPT_DIR="~/i3df/scripts"
 export COLORSCHEME="light"
 
 source ~/.zshrc.alias
+source ~/.zshrc.env
 # start of z4h config Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
 # You can manually run `z4h update` to update everything.
 zstyle ':z4h:' auto-update      'no' # Ask whether to auto-update this often; has no effect if auto-update is 'no'.

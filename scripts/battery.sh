@@ -44,14 +44,14 @@ fi
 
 # Check if the battery is discharging, charging, full, or not charging
 if [ "$battery_status" == "Charging" ]; then
-    status="充電中"  # Charging
+    status="電"  # Charging
     color=$COLOR_CHARGING
     if [ "$last_battery_status" != "Charging" ]; then
         notify-send -u normal "Charger Connected" "Battery is now charging."
         play_sound "$CHARGER_CONNECTED_SOUND"
     fi
 elif [ "$battery_status" == "Discharging" ]; then
-    status="放電中"  # Discharging
+    status="放"  # Discharging
     if [ "$battery_percentage" -le 10 ] && [ "$last_battery_percentage" -gt 10 ]; then
         notify-send -u critical "Battery Critical!" "Battery is at ${battery_percentage}%! Please charge your device immediately."
         play_sound "$CHIME_SOUND"
@@ -64,10 +64,10 @@ elif [ "$battery_status" == "Discharging" ]; then
         play_sound "$CHARGER_DISCONNECTED_SOUND"
     fi
 elif [ "$battery_status" == "Full" ]; then
-    status="満充電"  # Fully Charged
+    status="満"  # Fully Charged
     color=$COLOR_CHARGING
 else
-    status="未充電"  # Not Charging
+    status="未"  # Not Charging
 fi
 
 case $BLOCK_BUTTON in
@@ -88,4 +88,4 @@ echo "last_battery_percentage=$battery_percentage" > "$NOTIFICATION_STATE_FILE"
 echo "last_battery_status=$battery_status" >> "$NOTIFICATION_STATE_FILE"
 
 # Output the battery status with percentage and color for i3blocks
-echo "<span color='$color'>$status $battery_percentage%</span>"
+echo "<span color='$color'>$status$battery_percentage%</span>"

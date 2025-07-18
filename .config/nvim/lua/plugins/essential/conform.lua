@@ -7,7 +7,7 @@ return {
 			-- Customize or remove this keymap to your liking
 			"<leader>ef",
 			function()
-				require("conform").format({ async = true, lsp_fallback = true })
+				require("conform").format()
 			end,
 			mode = "",
 			desc = "Format buffer",
@@ -21,8 +21,8 @@ return {
 			toml = {  "prettier"  },
 			javascript = { { "prettierd", "prettier" } },
 			typescript = { { "prettierd", "prettier" } },
-			javascriptreact = { { "prettierd", "prettier" } },
-			typescriptreact = { { "prettierd", "prettier" } },
+			javascriptreact = { { "prettier", "prettierd" } },
+			typescriptreact = { { "prettier", "prettierd" } },
 			css = { { "prettierd", "prettier" } },
 			html = { { "prettierd", "prettier" } },
 			c = { { "prettierd", "prettier" } },

@@ -1,3 +1,7 @@
+Essential
+=========
+- earlyoom (prevents out of RAM issue make sure to run `sudo systemctl enable --now earlyoom` )
+
 Terminal
 ========
 - wezterm
@@ -113,3 +117,4 @@ Misc
 - xbindkeys ( xbindkeys + xdotool poor man's ahk for linux)
 - pv (shows progress through pipeline?)
 - cowsay (fun thing)
+- dysk (df alternative)

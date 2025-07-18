@@ -17,6 +17,9 @@ return {
       "query",
       "markdown",
       "markdown_inline",
+      "javascript",
+      "typescript",
+      "tsx",
     },
     matchup = {
       enable = true, -- mandatory, false will disable the whole extension
@@ -27,7 +30,7 @@ return {
       enable = true,
       use_languagetree = true,
     },
-    indent = { enable = true },
+    indent = { enable = false },
   },
   -- config = function()
   --   require'nvim-treesitter.configs'.setup {

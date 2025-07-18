@@ -11,13 +11,13 @@ ram_used=$((ram_total - ram_free - ram_buffers - ram_cached))
 
 # Avoid division by zero
 if [[ $ram_total -eq 0 ]]; then
-    echo "RAM: N/A"
+    echo "N/A"
     exit 0
 fi
 
 # Calculate RAM usage percentage
 ram_usage=$(echo "scale=2; ($ram_used * 100 / $ram_total)" | bc -l)
-ram_usage_percent=$(printf "%.2f%%" $ram_usage)
+ram_usage_percent=$(printf "%.0f%" $ram_usage)
 
 # Determine color based on RAM usage (using RGB values)
 if (( $(echo "$ram_usage >= 90" | bc -l) )); then
@@ -32,4 +32,4 @@ else
 fi
 
 # Output for i3blocks with Pango markup
-echo "<span foreground='$color'>メモリ $ram_usage_percent</span>"
+echo "<span foreground='$color'>M$ram_usage_percent</span>"

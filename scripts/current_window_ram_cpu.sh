@@ -1,6 +1,9 @@
 #!/bin/bash
 
 case $BLOCK_BUTTON in
+    1)
+      pkill dmenu; dmenu_run -m 0 -fn 'Jetbrains Mono-11'
+      ;;
     4)
         ~/i3df/scripts/window_cycle.sh next
         ;;
@@ -73,7 +76,7 @@ binary_short=$(echo "$binary_name" | cut -c1-2)
 
 # Get the total RAM usage of the process and its children
 total_ram_kb=$(get_total_ram_usage "$pid")
-total_ram_mb=$(echo "scale=2; $total_ram_kb / 1024" | bc)
+total_ram_mb=$(echo "scale=0; $total_ram_kb / 1024" | bc)
 
 # Output the result
-echo "${binary_short}: ${total_ram_mb}MB"
+echo "${binary_short}:${total_ram_mb}M"

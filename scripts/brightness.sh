@@ -18,4 +18,4 @@ case $BLOCK_BUTTON in
 esac
 
 # Output the current brightness percentage
-echo "明 $PERCENTAGE%"
+echo "明$PERCENTAGE%"
