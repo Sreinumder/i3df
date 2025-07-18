@@ -2,8 +2,8 @@
 
 PLAYER_FILE="/tmp/current_playerctl_player"
 
-# Get list of players
-players=($(playerctl -l 2>/dev/null))
+# Get list of players except brave
+players=($(playerctl -l 2>/dev/null | grep -vi brave))
 num_players=${#players[@]}
 
 # Exit if no players found
@@ -26,10 +26,10 @@ fi
 
 # Handle scroll to change player
 case $BLOCK_BUTTON in
-    4) # Scroll up
+    1|4) # Scroll up
         current_index=$(( (current_index - 1 + num_players) % num_players ))
         ;;
-    5) # Scroll down
+    3|5) # Scroll down
         current_index=$(( (current_index + 1) % num_players ))
         ;;
 esac
