@@ -59,9 +59,9 @@ esac
 # echo $status
 
 if [ "$status" == "Playing" ]; then
-    echo "⏸ $artist $scroll_title [$(format_time $position_sec)/$(format_time $duration_sec)]"
+    echo "⏸ $scroll_title [$(format_time $position_sec)/$(format_time $duration_sec)]"
 elif [ "$status" == "Paused" ]; then
-    echo "▶  $artist $scroll_title [$(format_time $position_sec)/$(format_time $duration_sec)]"
+    echo "▶ $scroll_title [$(format_time $position_sec)/$(format_time $duration_sec)]"
 else
     echo "no-media"
 fi

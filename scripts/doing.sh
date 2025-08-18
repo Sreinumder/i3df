@@ -3,19 +3,19 @@
 # path to the folder with all files
 DOING_PATH="$HOME/.doing"
 # first stored argument in do file (index of file to show do-line from)
-INDEX_FILE_PATH="$HOME/.doing/do-file-index"
+INDEX_FILE_PATH="$HOME/.doing/do_file_index"
 DOING_FILE_INDEX=$(sed -n '1p' "$INDEX_FILE_PATH")
-# doing-file index needs to be a number
+# doing_file index needs to be a number
 if ! [[ "$DOING_FILE_INDEX" =~ ^[0-9]+$ ]]; then
     echo "Invalid index in do file."
     exit 1
 fi
 # second stored argument in do file (flag for showing/notshowing doline)
 SHOW_FLAG=$(sed -n '2p' "$INDEX_FILE_PATH")
-# actual do-file with line number and do list
-DOING_FILE="$DOING_PATH/doing-$DOING_FILE_INDEX"
+# actual do_file with line number and do list
+DOING_FILE="$DOING_PATH/doing_$DOING_FILE_INDEX"
 # DONE_FILE for completed tasks
-DONE_FILE="$DOING_PATH/done-$DOING_FILE_INDEX"
+DONE_FILE="$DOING_PATH/done_$DOING_FILE_INDEX"
 
 # Check if the file exists
 if [ ! -f "$DOING_FILE" ]; then
@@ -86,10 +86,10 @@ case "$1" in
     "next-file")
         # Increment the file index, ensure it's >= 0
         DOING_FILE_INDEX=$((DOING_FILE_INDEX + 1))
-        DOING_FILE="$HOME/.doing/doing-$DOING_FILE_INDEX"
+        DOING_FILE="$HOME/.doing/doing_$DOING_FILE_INDEX"
         if [ ! -f "$DOING_FILE" ]; then
           DOING_FILE_INDEX=0
-          DOING_FILE="$HOME/.doing/doing-$DOING_FILE_INDEX"
+          DOING_FILE="$HOME/.doing/doing_$DOING_FILE_INDEX"
           sed -i "1s/^.*$/$DOING_FILE_INDEX/" "0"
         fi
         sed -i "1s/^.*$/$DOING_FILE_INDEX/" "$INDEX_FILE_PATH"
@@ -99,7 +99,7 @@ case "$1" in
         if [ "$DOING_FILE_INDEX" -gt 0 ]; then
             DOING_FILE_INDEX=$((DOING_FILE_INDEX - 1))
         fi
-        DOING_FILE="$HOME/.doing/doing-$DOING_FILE_INDEX"
+        DOING_FILE="$HOME/.doing/doing_$DOING_FILE_INDEX"
         sed -i "1s/^.*$/$DOING_FILE_INDEX/" "$INDEX_FILE_PATH"
         ;;
     "add")

@@ -34,7 +34,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 # exec --no-startup-id feh --bg-fill ~/wallpapers/5cm-green.jpg 
-exec --no-startup-id swaybg -i ~/wallpapers/5cm-green.jpg -m fill 
+exec --no-startup-id swaybg -i /home/romik/wallpapers/wallpaper.jpg -m fill 
 exec --no-startup-id autotiling
 exec --no-startup-id wezterm
 exec --no-startup-id numlockx
@@ -80,7 +80,12 @@ bindsym $mod+m exec "~/i3df/scripts/yt.sh -mg"
 bindsym $mod+shift+m exec "~/i3df/scripts/yt.sh -g"
 bindsym $mod+$alt+m exec "~/i3df/scripts/yt.sh -mge"
 bindsym $mod+$alt+shift+m exec "~/i3df/scripts/yt.sh -ge"
-# bindsym $mod+// exec xfce4-terminal --drop-down
+bindsym $alt+shift+j exec wtype a
+bindsym $alt+ctrl+shift+j exec wtype A
+bindsym $alt+shift+k exec wtype s
+bindsym $alt+ctrl+shift+k exec wtype S
+bindsym $alt+shift+i exec wtype w
+bindsym $alt+ctrl+shift+i exec wtype W
 
 
 # 2. Brighness --------------------------------------------------
@@ -114,7 +119,7 @@ bindsym $mod+v exec clipmenu -i -fn Terminus:size=8 -nb '#232a2e' -nf '#839496' 
 bindsym Print exec --no-startup-id flameshot gui -p $HOME/Screenshots
 bindsym Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshots
 bindsym $alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
-bindsym $mod+Print exec --no-startup-id flameshot gui -p $HOME/Screenshots -c
+bindsym $mod+Shift+s exec --no-startup-id sh -c 'flameshot gui -r | tee ~/Screenshots/$(date +%s).png | wl-copy'
 bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshots -c
 bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
 
@@ -146,6 +151,7 @@ floating_modifier $mod
 # bindsym $mod+x exec emacs
 # bindsym $mod+$alt+n exec neovide
 bindsym $mod+Ctrl+space exec wezterm
+bindsym $mod+Ctrl+d exec flatpak run com.discordapp.Discord
 # bindsym ctrl+$mod+space exec warp-terminal
 bindsym $mod+ctrl+f exec zen-browser
 # bindsym $mod+ctrl+shift+f exec chromium --profile-directory="Default"
@@ -262,7 +268,7 @@ bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 bindsym $mod+o exec "localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'"
 # bindsym Escape exec "xdotool sleep 0.1 key Escape; localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'";
 bindsym $mod+u exec "~/xdotool-scripts/question-paper/homerowdir.sh; xmodmap -e 'keycode 108 = Menu'"
-bindsym $mod+Escape exec "~/xdotool-scripts/question-paper/homerowdir.sh"
+# bindsym $mod+Escape exec "~/xdotool-scripts/question-paper/homerowdir.sh"
 
 bindsym $mod+n exec --no-startup-id ~/i3df/scripts/window_cycle.sh next
 bindsym $mod+p exec --no-startup-id ~/i3df/scripts/window_cycle.sh previous
@@ -272,13 +278,10 @@ bindsym $mod+p exec --no-startup-id ~/i3df/scripts/window_cycle.sh previous
 # bindsym $mod+Shift+u exec "xbindkeys -f ~/data-entry-script/xbindkeys+xd/month.xbindkeysrc.sh"
 # bindsym $mod+Shift+o exec "xbindkeys -f ~/data-entry-script/xbindkeys+xd/create-zone.xbindkeysrc.sh && xmodmap -e 'keycode 86 = BackSpace' && xmodmap -e 'keycode 64 = F5'; xmodmap -e 'keycode 36 = Tab'; xmodmap -e 'keycode 111 = F6'; xmodmap -e 'Down = F5';"
 # bindsym $mod+Shift+p exec echo "stop" > "/tmp/auto-data-entry"
-
-# mode "data_entry" {
-#     bindsym semicolon exec --no-startup-id xdotool key ctrl+s
-#     # bindsym semicolon exec --no-startup-id ~/data-entry-script/backtab.sh
-#     bindsym Shift+Escape mode "default"  
-#     bindsym $mod+m exec xdotool getmouselocation > "~/data-entry-script/xdo/pos.txt"
-# }
+bindsym $mod+Escape mode "vbox"  
+mode "vbox" {
+    bindsym $mod+Escape mode "default"  
+}
 
 # bindsym $mod+Shift+d mode "data_entry"
 
