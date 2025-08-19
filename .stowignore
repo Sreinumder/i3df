@@ -5,4 +5,3 @@
 ^packages.md$
 ^stow-with-ignore.sh$
 ^scripts/*
-^.config/nvim

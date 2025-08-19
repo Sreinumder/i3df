@@ -1,0 +1,10 @@
+alias stow="stow --ignore \.git"
+alias n="nvim"
+alias v="vim"
+alias hx="helix"
+# alias rm="trash-put"
+alias myip="curl http://ipecho.net/plain; echo"
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias px="pkill xdotool"

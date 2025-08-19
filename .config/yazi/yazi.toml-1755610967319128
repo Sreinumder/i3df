@@ -1,0 +1,36 @@
+[plugin]
+prepend_previewers = [
+# { mime = "text/plain", run = "mdcat" },
+{ mime = "audio/*",   run = "exifaudio"},
+{ mime = "video/*", run = "mediainfo"},
+# { mime = "application/x-subrip", run = "mediainfo"},
+{ name = "*/", run = "eza-preview" },
+# { mime = "application/{,g}zip", run  = "lsar"},
+# { mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}", run  = "lsar"},
+# { name = "*.zip", run = "ouch" },
+{ mime = "application/zip",            run = "ouch" },
+{ mime = "application/x-tar",           run = "ouch" },
+{ mime = "application/x-bzip2",         run = "ouch" },
+{ mime = "application/x-7z-compressed", run = "ouch" },
+{ mime = "application/x-rar",           run = "ouch" },
+{ mime = "application/x-xz",            run = "ouch" },
+]
+spotters = [
+    # Fallback
+    # { name = "*", run = "file" },
+    { name = "*", run = "file-extra-metadata" },
+    { name = "*/", run = "file-extra-metadata" },
+  ]
+[manager]
+ratio          = [ 1, 2, 3 ]
+sort_by        = "alphabetical"
+sort_sensitive = false
+sort_reverse 	 = false
+sort_dir_first = true
+sort_translit  = false
+linemode       = "none"
+show_hidden    = false
+show_symlink   = true
+scrolloff      = 5
+mouse_events   = [ "click", "scroll" ]
+title_format   = "Yazi: {cwd}"
