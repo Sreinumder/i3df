@@ -1,7 +1,7 @@
-[doing]
-command=~/i3df/scripts/doing_block.sh
-interval=1
-
+# [doing]
+# command=~/i3df/scripts/doing_block.sh
+# interval=1
+# 
 [playing]
 command=~/i3df/scripts/playing.sh
 interval=1

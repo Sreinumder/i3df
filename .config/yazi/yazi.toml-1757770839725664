@@ -21,7 +21,7 @@ spotters = [
     { name = "*", run = "file-extra-metadata" },
     { name = "*/", run = "file-extra-metadata" },
   ]
-[mgr]
+[manager]
 ratio          = [ 1, 2, 3 ]
 sort_by        = "alphabetical"
 sort_sensitive = false

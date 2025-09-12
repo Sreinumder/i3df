@@ -12,7 +12,8 @@ Shell
 
 Gui side
 ========
-- gnome + everything that comes with it
+- KDE (kohrnite tiling is best)
+<!-- - gnome + everything that comes with it -->
 - gparted (awesome graphical hardisk resize/analyzer)
 
 I3 side

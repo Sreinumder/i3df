@@ -36,13 +36,15 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id feh --bg-fill ~/wallpaper/window.png
 exec --no-startup-id autotiling
-exec --no-startup-id wezterm
+exec --no-startup-id kitty
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
 # exec --no-startup-id localectl set-x11-keymap us; setxkbmap -option caps:swapescape
-exec --no-startup-id xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal
-exec --no-startup-id localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'
+# exec --no-startup-id xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal
+# exec --no-startup-id xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal
+
+exec --no-startup-id localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 105 = Menu'
 
 # Audio, Brightness & Screenshot ---------------------------
 # 1. Audio --------------------------------------------------
@@ -65,12 +67,15 @@ bindsym $mod+$alt+shift+m exec "~/i3df/scripts/yt.sh -ge"
 # 2. Brighness --------------------------------------------------
 bindsym $alt+XF86MonBrightnessUp    exec brightnessctl set +50
 bindsym $alt+XF86MonBrightnessDown  exec brightnessctl set 50-
-bindsym Mod4+XF86MonBrightnessUp    exec brightnessctl set +100
-bindsym Mod4+XF86MonBrightnessDown  exec brightnessctl set 100-
+# bindsym Mod4+XF86MonBrightnessUp    exec brightnessctl set +100
+# bindsym Mod4+XF86MonBrightnessDown  exec brightnessctl set 100-
 bindsym XF86MonBrightnessUp         exec brightnessctl set +2%
 bindsym XF86MonBrightnessDown       exec brightnessctl set 2%-
 bindsym shift+XF86MonBrightnessUp   exec brightnessctl set +1%
 bindsym shift+XF86MonBrightnessDown exec brightnessctl set 1%-
+bindsym $mod+XF86MonBrightnessUp    exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1% && $refresh_i3status
+bindsym $mod+XF86MonBrightnessDown  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1% && $refresh_i3status
+
 bindsym XF86AudioPlay  exec playerctl play-pause
 bindsym Shift+XF86AudioPlay  exec playerctl stop
 bindsym Ctrl+XF86AudioPlay  exec playerctl play-pause -a
@@ -97,7 +102,7 @@ bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshot
 bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
 
 # 4. system-commands, monitor-management and Scripts------------------------
-bindsym $mod+period exec "wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"
+bindsym $mod+period exec "kitty -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"
 # bindsym $mod+Shift+p move workspace to output right
 bindsym $mod+$alt+shift+s exec shutdown now
 bindsym $mod+y exec 'ytv'
@@ -118,18 +123,17 @@ bindsym $mod+$alt+Shift+p exec ~/i3df/scripts/doing.sh prev-file
 bindsym $mod+comma exec ~/i3df/scripts/doing.sh toggle-show
 bindsym $mod+o exec ~/i3df/scripts/doing.sh done
 bindsym $mod+u exec ~/i3df/scripts/doing.sh undo
-bindsym $mod+slash exec wezterm -e ~/i3df/scripts/doing.sh edit
+bindsym $mod+slash exec kitty -e ~/i3df/scripts/doing.sh edit
 
 floating_modifier $mod
 
 # 5. Applications -------------------------------------------------------------
-bindsym $mod+g exec "wezterm -e retroarch"
-bindsym $mod+Ctrl+space exec wezterm
-bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/i3/config
+bindsym $mod+Ctrl+space exec kitty
+bindsym $mod+c exec kitty -e nvim -O $HOME/.config/i3/config
 bindsym $mod+ctrl+f exec zen-browser
 bindsym $mod+ctrl+q exec qutebrowser
 
-bindsym $mod+$alt+e exec thunar
+bindsym $mod+ctrl+e exec dolphin
 bindsym $mod+ctrl+c exec codium
 
 # kill focused window
@@ -232,7 +236,7 @@ bindsym $mod+Shift+r reload
 bindsym $mod+Ctrl+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-bindsym $mod+e exec printf "systemctl poweroff\nsystemctl reboot\nsystemctl hibernate\nsystemctl suspend\nsystemctl halt\ni3-msg exit\nblueman-manager\n" | dmenu | sh
+bindsym $mod+e exec printf "i3-msg exit \n systemctl poweroff \n systemctl reboot \n systemctl hibernate \n systemctl suspend \n systemctl halt \n " | dmenu | sh
 
 bindsym $mod+Shift+b exec "blueman-manager"
 # resize window (you can also use the mouse for that)
