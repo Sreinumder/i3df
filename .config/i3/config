@@ -36,7 +36,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id feh --bg-fill ~/wallpaper/window.png
 exec --no-startup-id autotiling
-exec --no-startup-id wezterm
+exec --no-startup-id kitty
 exec --no-startup-id clipmenud
 exec --no-startup-id fcitx5
 exec --no-startup-id dunst
@@ -97,7 +97,7 @@ bindsym $mod+Shift+Print exec --no-startup-id flameshot full -p $HOME/Screenshot
 bindsym $mod+$alt+Print exec --no-startup-id flameshot screen -p $HOME/Screenshots
 
 # 4. system-commands, monitor-management and Scripts------------------------
-bindsym $mod+period exec "wezterm -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"
+bindsym $mod+period exec "kitty -e nvim -O $HOME/.config/i3/config ~/.config/i3/i3wm-advent.md"
 # bindsym $mod+Shift+p move workspace to output right
 bindsym $mod+$alt+shift+s exec shutdown now
 bindsym $mod+y exec 'ytv'
@@ -118,14 +118,13 @@ bindsym $mod+$alt+Shift+p exec ~/i3df/scripts/doing.sh prev-file
 bindsym $mod+comma exec ~/i3df/scripts/doing.sh toggle-show
 bindsym $mod+o exec ~/i3df/scripts/doing.sh done
 bindsym $mod+u exec ~/i3df/scripts/doing.sh undo
-bindsym $mod+slash exec wezterm -e ~/i3df/scripts/doing.sh edit
+bindsym $mod+slash exec kitty -e ~/i3df/scripts/doing.sh edit
 
 floating_modifier $mod
 
 # 5. Applications -------------------------------------------------------------
-bindsym $mod+g exec "wezterm -e retroarch"
-bindsym $mod+Ctrl+space exec wezterm
-bindsym $mod+c exec wezterm -e nvim -O $HOME/.config/i3/config
+bindsym $mod+Ctrl+space exec kitty
+bindsym $mod+c exec kitty -e nvim -O $HOME/.config/i3/config
 bindsym $mod+ctrl+f exec zen-browser
 bindsym $mod+ctrl+q exec qutebrowser
 
