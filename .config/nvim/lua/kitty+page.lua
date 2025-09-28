@@ -21,7 +21,9 @@ return function(INPUT_LINE_NUMBER)
     -- Map 'q' to first yank the visual selection (if any), which makes the copy selection work, and then quit.
     vim.api.nvim_buf_set_keymap(term_buf, 'x', '<A-v>', 'y<Cmd>qa!<CR>', { })
     vim.api.nvim_buf_set_keymap(term_buf, 'x', 'q', 'y<Cmd>qa!<CR>', { })
-    -- Regular quit mapping for normal mode
+    vim.api.nvim_buf_set_keymap(term_buf, 'x', 'c', 'y<Cmd>qa!<CR>', { })
+    vim.api.nvim_buf_set_keymap(term_buf, 'n', 'i', 'y<Cmd>qa!<CR>', { })
+    vim.api.nvim_buf_set_keymap(term_buf, 'n', 'cc', 'y<Cmd>qa!<CR>', { })
     vim.api.nvim_buf_set_keymap(term_buf, 'n', 'q', '<Cmd>qa!<CR>', { })
     vim.api.nvim_buf_set_keymap(term_buf, 'n', 'H', '^', { })
     vim.api.nvim_buf_set_keymap(term_buf, 'n', 'L', 'g_', { })
