@@ -4,11 +4,29 @@ Name=Default
 # Layout
 Default Layout=us
 # Default Input Method
-DefaultIM=keyboard-us
+DefaultIM=pinyin
 
 [Groups/0/Items/0]
 # Name
 Name=keyboard-us
+# Layout
+Layout=
+
+[Groups/0/Items/1]
+# Name
+Name=keyboard-np
+# Layout
+Layout=
+
+[Groups/0/Items/2]
+# Name
+Name=pinyin
+# Layout
+Layout=
+
+[Groups/0/Items/3]
+# Name
+Name=keyboard-gr
 # Layout
 Layout=
 
