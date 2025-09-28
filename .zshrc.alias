@@ -1,10 +1,8 @@
 alias stow='stow --ignore \.git'
 alias n='nvim'
-alias n='nvim --listen /tmp/nvim-server.pipe'
 alias nv='neovide'
 alias v='vim'
 alias hx='helix'
-alias rm='trash-put'
 alias myip="curl http://ipecho.net/plain; echo"
 alias t="tgpt -q"
 alias ts="tgpt -qs" # shell
