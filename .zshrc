@@ -27,6 +27,7 @@ export EDITOR=nvim
 # export QT_STYLE_OVERRIDE=kvantum
 export QT_QPA_PLATFORMTHEME=qt5ct
 export SCRIPT_DIR="~/i3df/scripts"
+export CRYPTO_OPENSSL_NO_LEGACY=1
 # export COLORSCHEME="dark"
 export COLORSCHEME="light"
 
@@ -239,3 +240,4 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+export OPENSSL_CONF=/etc/ssl/legacy/legacy.cnf
