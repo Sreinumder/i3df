@@ -28,7 +28,7 @@ export EDITOR=nvim
 export QT_QPA_PLATFORMTHEME=qt5ct
 export SCRIPT_DIR="~/i3df/scripts"
 # export COLORSCHEME="dark"
-export COLORSCHEME="light"
+export DELTA_FEATURES=+side-by-side
 
 source ~/.zshrc.alias
 #source ~/.zshrc.env

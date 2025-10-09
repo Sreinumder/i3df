@@ -17,7 +17,7 @@ local options = {
 			Search = { bg = "#607D8B" },
 			IncSearch = { bg = "#607D8B" },
 		},
-		transparency = true,
+		transparency = false,
 		theme_toggle = { "everblush", "one_light" },
 	},
   lsp = { signature = true },
