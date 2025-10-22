@@ -15,13 +15,8 @@
   spc  ralt 
 )
 (defalias
- vnm (
-   tap-dance 300 (
-     (layer-toggle vim) 
-     (layer-toggle fnumsym) 
-     ;; (tap-hold 200 200 (layer-switch fnumsym) (layer-toggle fnumsym))
-   )
- ) ;;vim-num-modifier
+  vim (layer-toggle vim)
+  spcn (tap-hold 300 300 spc (layer-toggle fnum))
   vbm (tap-hold 300 300 (layer-switch qwerty) (layer-toggle vim))  ;;vim-base-modifier
   csc ( 
     tap-dance 300 (
@@ -47,23 +42,31 @@
 (deflayer qwerty
   caps 1     2     3     4     5     6     7     8     9     0                              
   tab  q     w     e     r     t     y     u     i     o     p     [     ]     \
-  @csc @a    @s    @d    @f     g     h     j     k     l     ;     '     ⏎
+  @csc  @a    @s    @d    @f     g     h     j     k     l     ;     '     ⏎
          z     x     c     v     b     n     m     ,     .     /
-  spc   @vnm
+  @spcn   @vim
+)
+
+(deflayer game
+  caps 1     2     3     4     5     6     7     8     9     0                              
+  tab  q     w     e     r     t     y     u     i     o     p     [     ]     \
+  esc   @a    @s    @d    @f     g     h     j     k     l     ;     (layer-switch qwerty)     ⏎
+         z     x     c     v     b     n     m     ,     .     /
+  spc ralt
 )
 
 (deflayer vim
   caps S-\   -     +     =     5     6     7     8     9     0                              
-  tab  S-6   S-9   S-0   S-4   S-3   S-8   ⇞     ⌦     ⏎     ⇟     ⎀     _     \
+  tab  S-6   S-9   S-0   S-4   S-3   S-8   ⇞     ⌦     ⏎     ⇟     ⎀    ⎙     \
   @csc  S-2   [     ]     S--   S-1   ←     ↓     ↑     →     ⇥     ▤     ⏎ 
-         S-5   S-[   S-]   S-7   \     ⇤     ⌫     @alf4 S-\   _
+         S-5   S-[   S-]   S-7   \     ⇤     ⌫     @alf4 _     S-8
   spc   ralt
 )
 
-(deflayer fnumsym
+(deflayer fnum
   caps 1     2     3     4     5     6     7     8     9     0                              
   tab  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12    \
-  @csc  4     3     2     1     5     6     0     9     8     7     \     ⏎
+  @csc  1     2     3     4     5     6     7     8     9     0     (layer-switch game)     ⏎
          -     _     -    =      S-\   S-8   +     _     _     _     
   spc   ralt
 )

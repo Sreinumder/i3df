@@ -380,6 +380,9 @@ global=
 immutability=1
 plugin=org.kde.plasma.devicenotifier
 
+[Containments][2][Applets][7][Applets][42][Configuration]
+PreloadWeight=55
+
 [Containments][2][Applets][7][Applets][43]
 immutability=1
 plugin=org.kde.plasma.clipboard

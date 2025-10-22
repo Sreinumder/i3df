@@ -6,7 +6,6 @@
   "coerce.nvim": { "branch": "main", "commit": "de8ad1663ba467003b90c79eaf5b8105964dd6f5" },
   "conform.nvim": { "branch": "master", "commit": "235dd79731c1dc51ec04abb4045cbc54727a172a" },
   "coop.nvim": { "branch": "main", "commit": "85986a6f7390d1362864708dcba097ba0e6b8d39" },
-  "dial.nvim": { "branch": "master", "commit": "f0404ec1f83a03f2c3457e60087c6331d1cbb83f" },
   "dressing.nvim": { "branch": "master", "commit": "2d7c2db2507fa3c4956142ee607431ddb2828639" },
   "flash.nvim": { "branch": "main", "commit": "2febce67ff9cf7638d2569d17c41af02c38401eb" },
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
@@ -38,5 +37,6 @@
   "transparent.nvim": { "branch": "main", "commit": "8ac59883de84e9cd1850ea25cf087031c5ba7d54" },
   "treewalker.nvim": { "branch": "main", "commit": "2f6fc4957bf428764863aa35f57549e9246a3943" },
   "undotree": { "branch": "main", "commit": "1c3e7531fad0a9c27942c5438be5adbd26260470" },
+  "venn.nvim": { "branch": "main", "commit": "b09c2f36ddf70b498281845109bedcf08a7e0de0" },
   "vim-matchup": { "branch": "master", "commit": "ca538c3bb02836510526ff7d07cf7e4c8e9a3b90" }
 }
