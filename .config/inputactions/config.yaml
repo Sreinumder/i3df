@@ -1,0 +1,97 @@
+touchpad:
+  gestures:
+    # volume left&right / global
+    - type: swipe
+      fingers: 3
+      direction: left_right
+
+      actions:
+        - on: update
+          interval: -10
+          input:
+            - keyboard: [ leftshift+volumedown ]
+
+        - on: update
+          interval: 10
+          input:
+            - keyboard: [ leftshift+volumeup ]
+
+    # brightness up&down / global
+    - type: swipe
+      fingers: 3
+      direction: up_down
+
+      actions:
+        - on: update
+          interval: -20
+          input:
+            - keyboard: [ leftshift+brightnessup ]
+
+        - on: update
+          interval: 20
+          input:
+            - keyboard: [ leftshift+brightnessdown ]
+
+    # 4 fingers
+    # go forward / global
+    - type: swipe
+      fingers: 4
+      direction: left
+
+      actions:
+        - on: begin
+          input:
+            - keyboard: [ leftalt+right ]
+
+    # go back / global
+    - type: swipe
+      fingers: 4
+      direction: right
+
+      actions:
+        - on: begin
+          input:
+            - keyboard: [ leftalt+left ]
+
+    # previous/next tab
+    - type: swipe
+      fingers: 4
+      direction: up_down
+
+      actions:
+        - on: update
+          interval: -80
+          input:
+            - keyboard: [ leftctrl+leftshift+tab ]
+
+        - on: update
+          interval: 80
+          input:
+            - keyboard: [ leftctrl+tab ]
+
+    # undo close tab
+    - type: pinch
+      fingers: 4
+      direction: in
+
+      actions:
+        - on: begin
+          input:
+            - keyboard: [ leftctrl+leftshift+t ]
+
+    # close tab
+    - type: pinch
+      fingers: 4
+      direction: out
+
+      actions:
+        - on: begin
+          input:
+            - keyboard: [ leftctrl+w ]
+
+    - type: tap
+      fingers: 4
+      actions:
+        - on: update
+          input:
+            - keyboard: [ playpause ]

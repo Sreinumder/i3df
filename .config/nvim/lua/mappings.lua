@@ -6,7 +6,6 @@ map({ "n", "x" }, "gj", "j", { desc = "next line" })
 map({ "n", "x" }, "gk", "k", { desc = "prev line" })
 map({ "n", "x" }, "<A-n>", ";", { desc = "Down" })
 map({ "n", "x" }, "<A-p>", ",", { desc = "Up" })
-map({ "n", "x" }, ";;", ":", { desc = "colon" })
 
 map("n", "<leader>w", "<C-w>", { desc = "window control" })
 map({ "n", "v", "o" }, "H", "^", { desc = "Beg of line" })

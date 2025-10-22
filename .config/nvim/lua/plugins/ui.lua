@@ -26,8 +26,8 @@ return {
     lazy = true,
     event = "UIEnter",
     keys = {
-      {"<A-S-e>", "<cmd>bnext<CR>", desc = "next buffer"},
-      {"<A-S-q>", "<cmd>bprevious<CR>", desc = "previous buffer"},
+      {"<A-e>", "<cmd>bnext<CR>", desc = "next buffer"},
+      {"<A-q>", "<cmd>bprevious<CR>", desc = "previous buffer"},
       {"<A-w>", "<cmd>bdelete<CR>", desc = "previous buffer"},
     },
     config = function()
