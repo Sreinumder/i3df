@@ -1,0 +1,6 @@
+[Daemon]
+Timeout=1000
+
+[Greeter][Wallpaper][org.kde.image][General]
+Image=/mnt/windows/Users/taman/Downloads/741914.jpg
+PreviewImage=/mnt/windows/Users/taman/Downloads/741914.jpg

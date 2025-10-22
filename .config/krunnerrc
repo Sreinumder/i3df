@@ -1,0 +1,9 @@
+[Plugins]
+krunner_killEnabled=false
+org.kde.activities2Enabled=false
+
+[Plugins][Favorites]
+plugins=krunner_services,krunner_systemsettings,windows,krunner_kwin
+
+[Runners][krunner_dictionary]
+triggerWord=define
