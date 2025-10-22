@@ -8,7 +8,7 @@
 )
 
 (defsrc
-  esc   
+  esc   1     2     3     4     5     6     7     8     9     0     
   tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
   caps  a     s     d     f     g     h     j     k     l     ;     '     ret
   z     x     c     v     b     n     m     ,     .     /
@@ -18,8 +18,8 @@
  vnm (
    tap-dance 300 (
      (layer-toggle vim) 
-     (tap-hold 200 200 (layer-switch fnumsym) (layer-toggle fnumsym))
-     (layer-toggle media)
+     (layer-toggle fnumsym) 
+     ;; (tap-hold 200 200 (layer-switch fnumsym) (layer-toggle fnumsym))
    )
  ) ;;vim-num-modifier
   vbm (tap-hold 300 300 (layer-switch qwerty) (layer-toggle vim))  ;;vim-base-modifier
@@ -45,7 +45,7 @@
 )
 
 (deflayer qwerty
-  caps                         
+  caps 1     2     3     4     5     6     7     8     9     0                              
   tab  q     w     e     r     t     y     u     i     o     p     [     ]     \
   @csc @a    @s    @d    @f     g     h     j     k     l     ;     '     ⏎
          z     x     c     v     b     n     m     ,     .     /
@@ -53,29 +53,20 @@
 )
 
 (deflayer vim
-  caps
+  caps S-\   -     +     =     5     6     7     8     9     0                              
   tab  S-6   S-9   S-0   S-4   S-3   S-8   ⇞     ⌦     ⏎     ⇟     ⎀     _     \
-  @csc  S-7   [     ]     S-1   S--   ←     ↓     ↑     →     ⇥     ▤     ⏎ 
-         S-5   S-[   S-]   S-2   \     ⇤     ⌫     @alf4 S-\   _
+  @csc  S-2   [     ]     S--   S-1   ←     ↓     ↑     →     ⇥     ▤     ⏎ 
+         S-5   S-[   S-]   S-7   \     ⇤     ⌫     @alf4 S-\   _
   spc   ralt
 )
 
 (deflayer fnumsym
-  ⇪
+  caps 1     2     3     4     5     6     7     8     9     0                              
   tab  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12    \
-  @csc  4     2     3     1     5     6     9     8     0     7     \     ⏎
+  @csc  4     3     2     1     5     6     0     9     8     7     \     ⏎
          -     _     -    =      S-\   S-8   +     _     _     _     
-  spc   @vbm
-)
-
-(deflayer media
-  caps                         
-  tab  _     _     _     _     _     _     vold  volu  mute  _     _     _     _
-  @csc  _     _     _     _      _     _     prev  pp    next  _     _     _
-         _     _     _     _      _     _    _     _     _     _     
   spc   ralt
 )
-;; @csc 🔅    🔆     @d    @f     g     h     prev  pp    next  ;     '     ⏎
 
 (defvar
   streak-count 3
@@ -100,7 +91,7 @@ basel (tap-hold             200 200 XX               (layer-switch artsey))
 )
 
 (deflayer artsey
-  XX    
+  XX 1     2     3     4     5     6     7     8     9     0                                  
   tab    @snum (chord artsey t) (chord artsey r) @ssur Enter  Enter @ssur (chord artsey r) (chord artsey t) @snum XX    XX    XX
   @csc   @saud (chord artsey i) (chord artsey y) @sspc lctrl lctrl @sspc (chord artsey y) (chord artsey i) @saud XX    XX
   XX    XX    XX    XX    XX    (chord artsey alt) (chord artsey spc) XX    XX    XX
@@ -108,7 +99,7 @@ basel (tap-hold             200 200 XX               (layer-switch artsey))
 )
 
 (deflayer num
-  XX    
+  XX 1     2     3     4     5     6     7     8     9     0                                  
   tab    XX    (chord num 3) (chord num 2) (chord num 1) Enter  Enter (chord num 1) (chord num 2) (chord num 3) XX    XX    XX    XX
   @csc   XX    (chord num 6) (chord num 5) (chord num 4) lctrl lctrl (chord num 4) (chord num 5) (chord num 6) XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
@@ -116,7 +107,7 @@ basel (tap-hold             200 200 XX               (layer-switch artsey))
 )
 
 (deflayer surround
-  XX    
+  XX 1     2     3     4     5     6     7     8     9     0                                  
   tab    S-lbrc lbrc  S-9   XX    Enter  Enter XX    S-9   lbrc  S-lbrc XX    XX    XX
   @csc   S-rbrc rbrc  S-0   XX    lctrl lctrl XX    S-0   rbrc  S-rbrc XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
@@ -124,7 +115,7 @@ basel (tap-hold             200 200 XX               (layer-switch artsey))
 )
 
 (deflayer special
-  XX    
+  XX 1     2     3     4     5     6     7     8     9     0                                  
   tab    bksl  scln  grv   S-3   Enter  Enter S-3   grv   scln  bksl  XX    XX    XX
   @csc   eql   min   S-2   XX    lctrl lctrl XX    S-2   min   eql   XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
@@ -132,7 +123,7 @@ basel (tap-hold             200 200 XX               (layer-switch artsey))
 )
 
 (deflayer audio
-  XX    
+  XX 1     2     3     4     5     6     7     8     9     0                                  
   tab    XX    volu  mute  pp    Enter  Enter pp    mute  volu  XX    XX    XX    XX
   @csc   XX    vold  prev  next  lctrl lctrl next  prev  vold  XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
@@ -140,7 +131,7 @@ basel (tap-hold             200 200 XX               (layer-switch artsey))
 )
 
 (deflayer nav
-  XX    
+  XX 1     2     3     4     5     6     7     8     9     0                                  
   tab    pgup   home (chord nav up)   end    Enter  Enter end    (chord nav up) home pgup   XX    XX    XX
   @csc   pgdn   (chord nav lft) down (chord nav rght) lctrl lctrl (chord nav lft) down (chord nav rght) pgdn XX    XX
   XX     XX     XX     XX     XX    XX    XX     XX     XX     XX
@@ -148,7 +139,7 @@ basel (tap-hold             200 200 XX               (layer-switch artsey))
 )
 
 (deflayer mouse
-  XX    
+  XX 1     2     3     4     5     6     7     8     9     0                                  
   tab   @mwu   (chord mouse mrgt) @msup (chord mouse mlft) XX    XX    (chord mouse mlft) @msup (chord mouse mrgt) @mwu XX    XX    XX
   @csc  @mwd   @mslft @msdwn @msrgt XX    XX    @mslft @msdwn @msrgt @mwd XX    XX    ;; Changed (chord mouse msdwn) to @msdwn
   XX     XX     XX     XX     XX    XX    XX     XX     XX     XX

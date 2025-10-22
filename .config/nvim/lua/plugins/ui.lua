@@ -28,7 +28,7 @@ return {
     keys = {
       {"<A-e>", "<cmd>bnext<CR>", desc = "next buffer"},
       {"<A-q>", "<cmd>bprevious<CR>", desc = "previous buffer"},
-      {"<A-w>", "<cmd>bdelete<CR>", desc = "previous buffer"},
+      {"<A-w>", "<cmd>bdelete<CR>", desc = "close buffer"},
     },
     config = function()
       require('mini.statusline').setup({

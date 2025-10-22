@@ -177,7 +177,7 @@ immutability=1
 plugin=org.kde.plasma.volume
 
 [Containments][2][Applets][7][Applets][10][Configuration]
-PreloadWeight=95
+PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][10][Configuration][General]
 migrated=true
@@ -292,7 +292,7 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][2][Applets][7][Applets][25][Configuration]
-PreloadWeight=4
+PreloadWeight=0
 
 [Containments][2][Applets][7][Applets][25][Shortcuts]
 global=Meta+;
@@ -399,7 +399,7 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][2][Applets][7][Applets][45][Configuration]
-PreloadWeight=10
+PreloadWeight=7
 
 [Containments][2][Applets][7][Applets][45][Shortcuts]
 global=Meta+B
