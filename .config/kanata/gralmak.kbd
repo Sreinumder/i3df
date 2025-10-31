@@ -1,0 +1,110 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defvar
+  tap-time 150    ;; Shorter tap time for quick presses
+  hold-time 250   ;; Longer hold time to ensure layer switch
+)
+
+(defalias
+  fnum (tap-hold 300 300 rpt (layer-toggle fnum))
+  spcm (tap-hold 300 300 spc (layer-toggle movesym))
+  csc ( 
+    tap-dance 300 (
+      (tap-hold 200 200 esc lctrl)
+      (multi lctrl lshift)
+      (multi lctrl lalt lshift)
+    )
+  )
+  shift ( 
+    tap-dance 300 (
+      (tap-hold 200 200 (one-shot 1000 lshift) lshift)
+      (multi lctrl lalt)
+      (multi lalt lshift)
+    )
+  )  ;; ctrl esc
+  00 (macro Digit0 Digit0 Digit0)
+  sl (macro ⇤ lshift ⇥ ) ;; select current line
+  alf4 (multi lalt f4)
+
+  CW (multi lctrl w)
+  _a (chord q2gl a)
+  _s (chord q2gl s)
+  _d (chord q2gl d)
+  _f (chord q2gl f)
+  n (chord g2ql n)
+  r (chord g2ql r)
+  t (chord g2ql t)
+  s (chord g2ql s)
+)
+
+(defchords q2gl 5000
+  ( a s d f ) (layer-switch gralmak)
+  ( a       ) a
+  (   s     ) s
+  (     d   ) d
+  (       f ) f
+)
+
+(defchords g2ql 5000
+  ( n r t s ) (layer-switch qwerty)
+  ( n       ) n
+  (   r     ) r
+  (     t   ) t
+  (       s ) s
+)
+
+(defsrc
+  `
+  esc   1     2     3     4     5     6     7     8     9     0     
+  tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
+  caps   a     s     d     f     g     h     j     k     l     ;     '     ret
+  lshift  z     x     c     v     b     n     m     ,     .     /
+  lctrl lalt spc  ralt 
+)
+
+(deflayer gralmak
+  `
+  caps 1     2     3     4     5     6     7     8     9     0 
+  tab  b     l     d     w     q     '     f     o     u     j     [     ]     \
+  @csc  @n    @r    @t   @s     g     y     h     a     e     i     ;     ⏎
+  @shift z     ,     m     c     x     k     p     v     .     /
+  lctrl lalt @spcm  @fnum 
+)
+
+(deflayer qwerty
+  `
+ caps 1     2     3     4     5     6     7     8     9     0 
+ tab  q     w     e     r     t     y     u     i     o     p     [     ]     \
+ @csc  @_a   @_s   @_d   @_f     g     h     j     k     l     ;     '     ⏎
+ @shift z     x     c     v     b     n     m     ,     .     /
+ lctrl lalt @spcm  @fnum 
+ )
+
+(deflayer movesym
+  `
+  caps S-6   _     S-8   S-6   _     6     7     8     9     0                              
+  S-,  S-1   S-.   /     S-9   S-0   _     ⇞     ⌦     ⏎     ⇟     ⎀    ⎙     \
+  @csc  +     S-8   -     =     S--   ←     ↓     ↑     →     ⇥     ▤     ⏎ 
+  @shift S-5   S-7   S-[   S-]   _     ⇤     ⌫     [     ]     \
+  lctrl lalt @spcm  @fnum 
+)
+
+;; 1! 2@ 3# 4$ 5% 6^ 7& 8* 9( 0) -_ =+ [{ ]} < > --> 20 symbols
+;; spaces on left 4*4 16 + 1 on right 3
+;; omit @#$ 234 
+
+(defalias
+  nll(layer-switch fnum) ;; fn num layer lock
+)
+
+(deflayer fnum
+  `
+  caps 1     2     3     4     5     6     7     8     9     0                              
+  tab  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12    \
+  @csc  1     2     3     4     =     -     7     8     9     0     @00   ⏎
+  @shift @nll  _     S-8   5     S-1   6     +     ,     .     /
+  lctrl lalt @spcm  (layer-switch gralmak) 
+)
+

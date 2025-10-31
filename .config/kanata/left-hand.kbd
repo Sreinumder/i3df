@@ -1,0 +1,81 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defvar
+  tap-time 150    ;; Shorter tap time for quick presses
+  hold-time 250   ;; Longer hold time to ensure layer switch
+)
+
+(defsrc
+  `
+  esc   1     2     3     4     5     6
+  tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
+  caps   a     s     d     f     g     h     j     k     l     ;     '     ret
+  lshift  z     x     c     v     b     n     m     ,     .     /
+  lctrl lalt  spc  ralt
+)
+
+(defchords so 5000
+ (a s d f ) (layer-switch rs)
+ (a       ) a
+ (  s     ) s
+ (    d   ) d
+ (      f ) f
+)
+
+(defalias
+  spc (tap-hold 300 300 spc (layer-toggle rsm))
+  alt (
+    tap-dance 300 (
+      lalt
+      (layer-toggle rss)
+  ))
+  csc ( 
+    tap-dance 300 (
+      (tap-hold 200 200 esc lctrl)
+      (multi lctrl lshift)
+      )
+    )  ;; ctrl esc
+  a (chord so a)
+  s (chord so s)
+  d (chord so d)
+  f (chord so f)
+  )
+
+(deflayer qwerty
+ `
+ caps 1     2     3     4     5     6
+ tab  q     w     e     r     t     y     u     i     o     p     [     ]     \
+ @csc @a    @s    @d    @f     g     h     j     k     l     ;     '     ⏎
+ lshift z     x     c     v     b     n     m     ,     .     /
+ lctrl lalt  spc  ralt
+ )
+
+(deflayer rs
+ q
+ caps b     g     w     p     z     k
+ tab  l     u     o     f     d     j     _     _     _     _     _     _     _
+ @csc  i     e     a     h     y     c     _     _     _     _     _     _
+ lshift  n     r     s     t     m     x     _     _     _     _
+ v @alt  @spc  ralt
+ )
+
+
+(deflayer rss
+ `
+ caps [     -     =     ]     \     _
+ tab  6     9     0     8     7     _     _     _     _     _     _     _     _
+ @csc  3     5     2     1     4     _     _     _     _     _     _     _
+ lshift  `     '     ,     .     /     _     _     _     _     _
+ v lalt  @spc  ralt
+ )
+
+(deflayer rsm
+ `
+ caps ⎀     ⇞     ⇟     ▤     \     _
+ tab  ⌦     ⌫     ↑     ⏎     7     _     _     _     _     _     _     _     _
+ @csc  ⇤     ←     ↓     →     ⇥     _     _     _     _     _     _     _
+ lshift  `     '     ,    .     /     _     _     _     _     _
+ v lalt  @spc  ralt
+ )

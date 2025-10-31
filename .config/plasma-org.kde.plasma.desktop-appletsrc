@@ -44,7 +44,8 @@ DialogHeight=1007
 DialogWidth=1918
 
 [Containments][1][General]
-positions={"1536x864":[],"1920x1080":[]}
+positions={"1536x864":[],"1920x1080":["9","17","desktop:/keyboard_gralmak.png","8","16"]}
+sortMode=-1
 
 [Containments][1][Wallpaper][org.kde.image][General]
 Image=/mnt/windows/Users/taman/Downloads/741914.jpg
@@ -157,9 +158,21 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][2][Applets][67][Configuration]
-PreloadWeight=80
+PreloadWeight=100
 popupHeight=400
 popupWidth=560
+
+[Containments][2][Applets][69]
+immutability=1
+plugin=org.kde.plasma.kicker
+
+[Containments][2][Applets][69][Configuration]
+PreloadWeight=100
+popupHeight=383
+popupWidth=300
+
+[Containments][2][Applets][69][Configuration][General]
+favoritesPortedToKAstats=true
 
 [Containments][2][Applets][7]
 activityId=
@@ -200,7 +213,7 @@ immutability=1
 plugin=org.kde.kscreen
 
 [Containments][2][Applets][7][Applets][13][Configuration]
-PreloadWeight=75
+PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][13][Shortcuts]
 global=Meta+S
@@ -210,7 +223,7 @@ immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][2][Applets][7][Applets][14][Configuration]
-PreloadWeight=55
+PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][14][Shortcuts]
 global=Meta+Ctrl+D
@@ -302,14 +315,16 @@ immutability=1
 plugin=org.kde.plasma.weather
 
 [Containments][2][Applets][7][Applets][32][Configuration]
-PreloadWeight=90
+PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][32][Configuration][ConfigDialog]
 DialogHeight=540
 DialogWidth=720
 
 [Containments][2][Applets][7][Applets][32][Configuration][WeatherStation]
-source=bbcukmet|weather|Bhaktapur, Nepal, NP|1283617
+placeDisplayName=Bhaktapur, Nepal, NP
+placeInfo=Bhaktapur, Nepal, NP|1283617
+provider=bbcukmet
 
 [Containments][2][Applets][7][Applets][32][Shortcuts]
 global=Meta+[
@@ -381,7 +396,7 @@ immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][2][Applets][7][Applets][42][Configuration]
-PreloadWeight=55
+PreloadWeight=70
 
 [Containments][2][Applets][7][Applets][43]
 immutability=1
@@ -402,7 +417,10 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][2][Applets][7][Applets][45][Configuration]
-PreloadWeight=7
+PreloadWeight=5
+
+[Containments][2][Applets][7][Applets][45][Configuration][General]
+showPercentage=true
 
 [Containments][2][Applets][7][Applets][45][Shortcuts]
 global=Meta+B
@@ -412,7 +430,7 @@ immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][2][Applets][7][Applets][46][Configuration]
-PreloadWeight=19
+PreloadWeight=0
 
 [Containments][2][Applets][7][Applets][46][Shortcuts]
 global=Meta+Ctrl+B
@@ -478,7 +496,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][2][Applets][7][Applets][68][Configuration]
-PreloadWeight=47
+PreloadWeight=20
 
 [Containments][2][Applets][7][Applets][9]
 immutability=1
@@ -497,8 +515,12 @@ hiddenItems=firewall-applet,org.kde.plasma.mediacontroller
 knownItems=org.kde.kscreen,org.kde.plasma.brightness,org.kde.plasma.keyboardindicator,org.kde.plasma.volume,org.kde.plasma.manage-inputmethod,org.kde.plasma.notifications,org.kde.plasma.bluetooth,org.kde.plasma.cameraindicator,org.kde.plasma.battery,org.kde.plasma.networkmanagement,org.kde.plasma.mediacontroller,org.kde.kdeconnect,org.kde.plasma.keyboardlayout,org.kde.plasma.devicenotifier,org.kde.plasma.clipboard,org.kde.plasma.weather
 shownItems=org.kde.plasma.battery
 
+[Containments][2][Applets][71]
+immutability=1
+plugin=org.kde.netspeedWidget
+
 [Containments][2][General]
-AppletOrder=4;29;26;30;67;52;6;7;20
+AppletOrder=29;69;4;26;30;71;67;52;6;7;20
 
 [Containments][23][Applets][28][Applets][36]
 plugin=org.kde.plasma.keyboardlayout
@@ -514,4 +536,4 @@ PreloadWeight=42
 
 [ScreenMapping]
 itemsOnDisabledScreens=
-screenMapping=
+screenMapping=desktop:/keyboard_gralmak.png,0,30cb0d56-b09d-444b-9c23-1eee0650811f

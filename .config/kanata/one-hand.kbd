@@ -1,0 +1,49 @@
+(deflayer ls1
+ q
+ caps /    @lsn    ⏎    .     '     k     7     8     9     0                              
+ tab  e     h     t     i     p     _     _     _     _     _     _     _     _
+ @csc  @-s   @-e   @-ls   @-a     w     _     _     _     _     _     _     _
+ lshift n     i     v     f     k     _     _     _     _     _
+ v @alt  @spc  ralt
+ )
+
+(deflayer ls2
+ z
+ caps -     x     l     '     _     _     7     8     9     0                              
+ tab  y     b     ⏎     g     t     _     _     _     _     _     _     _     _
+ @csc  u     o     l     r     c     _     _     _     _     _     _     _
+ lshift m     y     j     d     p     _     _     _     _     _
+ v @alt  @spc  ralt
+ )
+
+
+(deflayer lsn
+ `
+ caps [     -     =     ]     \     _     7     8     9     0                              
+ tab  6     9     0     8     7     _     _     _     _     _     _     _     _
+ @csc  3     5     2     1     4     _     _     _     _     _     _     _
+ lshift  `     '     ,     .     /     _     _     _     _     _
+ v lalt  @spc  ralt
+ )
+
+(deflayer lsm
+ `
+ caps ⎀     ⇞     ⇟     ▤     \     _     7     8     9     0                              
+ tab  ⌦     ⌫     ↑     ⏎     7     _     _     _     _     _     _     _     _
+ @csc  ⇤     ←     ↓     →     ⇥     _     _     _     _     _     _     _
+ lshift  `     '     ,    .     /     _     _     _     _     _
+ v lalt  @spc  ralt
+ )
+
+(defchords l2gq 5000
+  ( s e ls a ) (layer-switch gralmak)
+  (   e ls a ) (layer-switch qwerty)
+  ( s        ) s
+  (   e      ) e
+  (     ls   ) (tap-hold 100 100(one-shot 1000 (layer-toggle ls2)) (layer-toggle ls2))
+  (        a ) a
+  ( s   ls   ) u
+  (   e ls   ) o
+  (     ls a ) r
+)
+

@@ -1,6 +1,3 @@
-[Activities][LastVirtualDesktop]
-30cb0d56-b09d-444b-9c23-1eee0650811f=85d36add-df6b-4cee-aa6e-83fc04e86d93
-
 [Desktops]
 Id_1=85d36add-df6b-4cee-aa6e-83fc04e86d93
 Id_2=d9f14cea-61d9-462b-8788-76684a3c12b5
@@ -13,6 +10,12 @@ Rows=1
 [Effect-overview]
 BorderActivate=9
 
+[Effect-translucency]
+Inactive=90
+
+[MouseBindings]
+CommandTitlebarWheel=Previous/Next Desktop
+
 [NightColor]
 Active=true
 Mode=Constant
@@ -23,6 +26,7 @@ krohnkiteEnabled=true
 kwin_gesturesEnabled=true
 me.kroltan.quakewindowEnabled=true
 overviewEnabled=false
+shakecursorEnabled=false
 slideEnabled=false
 toggleterminalEnabled=true
 
@@ -30,9 +34,21 @@ toggleterminalEnabled=true
 TextOnly=true
 
 [Script-krohnkite]
+binaryTreeLayoutOrder=0
+cascadeLayoutOrder=0
+columnsLayoutOrder=4
+floatingLayoutOrder=0
 floatingTitle=Picture-in-Picture
 ignoreRole=
 ignoreScreen=Picture-in-Picture
+monocleLayoutOrder=0
+quarterLayoutOrder=0
+spiralLayoutOrder=1
+spreadLayoutOrder=0
+stackedLayoutOrder=3
+stairLayoutOrder=0
+threeColumnLayoutOrder=0
+tileLayoutOrder=0
 
 [Script-me.kroltan.quakewindow]
 animationDurationMillis=100
@@ -94,10 +110,16 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Windows]
+ActiveMouseScreen=false
 DelayFocusInterval=0
 FocusPolicy=FocusFollowsMouse
 NextFocusPrefersMouse=true
 RollOverDesktops=true
+SeparateScreenFocus=true
 
 [Xwayland]
 Scale=1
+
+[org.kde.kdecoration2]
+BorderSize=None
+BorderSizeAuto=false
