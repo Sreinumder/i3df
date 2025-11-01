@@ -5,7 +5,7 @@
 # Keeps battery between 30–60%
 # ===============================
 
-LOW_THRESHOLD=50    # % — remind to plug in
+LOW_THRESHOLD=30    # % — remind to plug in
 HIGH_THRESHOLD=60   # % — remind to unplug
 CHECK_INTERVAL=60   # seconds between checks
 
