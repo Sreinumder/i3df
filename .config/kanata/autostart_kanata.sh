@@ -1,2 +1,2 @@
 #! /bin/bash
-kanata -c ~/i3df/.config/kanata/gralmak.kbd
+kanata -c ~/i3df/.config/kanata/gralmak-displaced.kbd

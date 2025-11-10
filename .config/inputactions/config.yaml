@@ -1,32 +1,29 @@
 touchpad:
   gestures:
+
     # volume left&right / global
     - type: swipe
       fingers: 3
       direction: left_right
-
       actions:
         - on: update
           interval: -10
           input:
-            - keyboard: [ leftshift+volumedown ]
-
+            - keyboard: [ volumedown ]
         - on: update
           interval: 10
           input:
-            - keyboard: [ leftshift+volumeup ]
+            - keyboard: [ volumeup ]
 
     # brightness up&down / global
     - type: swipe
       fingers: 3
       direction: up_down
-
       actions:
         - on: update
           interval: -20
           input:
             - keyboard: [ leftshift+brightnessup ]
-
         - on: update
           interval: 20
           input:
@@ -37,7 +34,6 @@ touchpad:
     - type: swipe
       fingers: 4
       direction: left
-
       actions:
         - on: begin
           input:
@@ -47,7 +43,6 @@ touchpad:
     - type: swipe
       fingers: 4
       direction: right
-
       actions:
         - on: begin
           input:
@@ -57,13 +52,11 @@ touchpad:
     - type: swipe
       fingers: 4
       direction: up_down
-
       actions:
         - on: update
           interval: -80
           input:
             - keyboard: [ leftctrl+leftshift+tab ]
-
         - on: update
           interval: 80
           input:
@@ -73,7 +66,6 @@ touchpad:
     - type: pinch
       fingers: 4
       direction: in
-
       actions:
         - on: begin
           input:
@@ -83,7 +75,6 @@ touchpad:
     - type: pinch
       fingers: 4
       direction: out
-
       actions:
         - on: begin
           input:
@@ -95,3 +86,28 @@ touchpad:
         - on: update
           input:
             - keyboard: [ playpause ]
+
+    - type: tap
+      fingers: 5
+      actions:
+        - on: update
+          input:
+            - keyboard: [ leftalt+f4 ]
+
+
+    - type: pinch
+      fingers: 3
+      direction: out
+      actions:
+        - on: begin
+          input:
+            - keyboard: [ leftctrl+f10 ]
+
+    - type: pinch
+      fingers: 4
+      direction: in
+      actions:
+        - on: begin
+          input:
+            - keyboard: [ leftctrl+f10 ]
+

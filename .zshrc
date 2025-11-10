@@ -105,7 +105,7 @@ zle -N zle-line-init
 bindkey -v
 bindkey -M viins '^R' z4h-fzf-history
 bindkey -M viins '^[r' z4h-fzf-dir-history
-# bindkey -M viins '^T' z4h-up-substring-global
+bindkey -M viins '^T' z4h-up-substring-global
 bindkey -M vicmd '^[[A' up-line-or-search
 bindkey -M vicmd '^[[B' down-line-or-search
 bindkey -M vicmd '^[[D' backward-char

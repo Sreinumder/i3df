@@ -1,24 +1,24 @@
-if you dont know what are you doing
-First super / start = mod(m)
-| mod+c           | open this config               |
-| mod+d           | dmenu to search/open programs  |
-| mod+ctrl+space  | start terminal (wezterm)       |
-| mod+ctrl+f      | start zen-browser              |
-| mod+w           | close the program              |
-| mod+hjkl        | for window focus change        |
-| mod+alt+hjkl    | for moving window              |
-| mod+shift+hjkl  | for resizing window            |
-| mod+1...9       | switching workspace to 123...9 |
-| mod+Tab/S-Tab   | next/prev workspace            |
-| mod+Shift+1...9 | moving window to 1...9         |
-| mod+f           | toggle full screen mode        |
-| mod+shift+f     | toggle floating mode           |
-| mod+shift+space | switching keyboard (fcitx5)    |
-| mod+i           | toggle i3bar (status bar)      |
-| mod+ctrl+i      | toggle i3bar (invisible/kill)  |
-| mod+shift+i     | toggle current window titlebar |
+# if you dont know what are you doing
+# First super / start = mod(m)
+# | mod+c           | open this config               |
+# | mod+d           | dmenu to search/open programs  |
+# | mod+ctrl+space  | start terminal (wezterm)       |
+# | mod+ctrl+f      | start zen-browser              |
+# | mod+w           | close the program              |
+# | mod+hjkl        | for window focus change        |
+# | mod+alt+hjkl    | for moving window              |
+# | mod+shift+hjkl  | for resizing window            |
+# | mod+1...9       | switching workspace to 123...9 |
+# | mod+Tab/S-Tab   | next/prev workspace            |
+# | mod+Shift+1...9 | moving window to 1...9         |
+# | mod+f           | toggle full screen mode        |
+# | mod+shift+f     | toggle floating mode           |
+# | mod+shift+space | switching keyboard (fcitx5)    |
+# | mod+i           | toggle i3bar (status bar)      |
+# | mod+ctrl+i      | toggle i3bar (invisible/kill)  |
+# | mod+shift+i     | toggle current window titlebar |
 
-keybind variables mod = start/super alt = alt
+# keybind variables mod = start/super alt = alt
 set $mod Mod4  
 set $alt Mod1
 

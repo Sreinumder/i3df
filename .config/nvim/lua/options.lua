@@ -14,9 +14,9 @@ if not g.vscode then
 	o.expandtab = true -- expand tab to spaces
 	o.autoindent = true -- copy indent from current line when starting new one
 	-- o.ruler = false
-	o.cmdheight = 0 -- sets cmdline height
+	o.cmdheight = 1 -- sets cmdline height
 else
-	o.cmdheight = 3 -- sets cmdline height
+	o.cmdheight = 1 -- sets cmdline height
 	-- o.shortmess:append("c")
 	g.neovim_log_level = 0 -- Disable logging output from Neovim
 	require('vim.treesitter.highlighter').disable = true

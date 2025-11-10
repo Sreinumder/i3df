@@ -1,8 +1,8 @@
 notARepository: 'quit'
 git:
-  paging:
-    colorArg: always
-    pager: delta --paging=never --line-numbers
+  pagers:
+    - colorArg: always
+      pager: delta --paging=never --line-numbers
 os:
   editPreset: nvim
 # panels:

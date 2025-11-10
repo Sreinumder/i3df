@@ -33,13 +33,13 @@ return {
       {"<A-w>", "<cmd>bdelete<CR>", desc = "close buffer"},
     },
     config = function()
-      local function get_macro_recording_status()
-        if vim.fn.reg_recording() ~= "" then
-          return vim.fn.reg_recording()
-        else
-          return "-"
-        end
-      end
+      -- local function get_macro_recording_status()
+      --   if vim.fn.reg_recording() ~= "" then
+      --     return vim.fn.reg_recording()
+      --   else
+      --     return "-"
+      --   end
+      -- end
       require('mini.git').setup({})
       require('mini.statusline').setup({
         content = {
@@ -53,16 +53,17 @@ return {
             local fileinfo      = MiniStatusline.section_fileinfo({ trunc_width = 120 })
             local location      = MiniStatusline.section_location({ trunc_width = 75 })
             local search        = MiniStatusline.section_searchcount({ trunc_width = 75 })
-            local macro         = get_macro_recording_status()
+            -- local macro         = get_macro_recording_status()
 
             return MiniStatusline.combine_groups({
-              { hl = mode_hl,                  strings = { macro } },
-              '%<', -- Mark general truncate point
+              -- { hl = 'MiniStatuslineFilename',                  strings = { macro } },
               { hl = 'MiniStatuslineFilename', strings = { filename } },
+              '%<', -- Mark general truncate point
+              { hl = 'MiniStatuslineFilename',  strings = { git } },
               '%=', -- End left alignment
-              { hl = 'MiniStatuslineFilename',  strings = { git, diff, diagnostics, lsp } },
+              { hl = 'MiniStatuslineFilename',  strings = {diff, diagnostics, lsp } },
               -- { hl = 'MiniStatuslineFilename', strings = { fileinfo } },
-              { hl = 'MiniStatuslineFilename',                  strings = { search, location } },
+              { hl = 'MiniStatuslineFilename',                  strings = { location } },
             })
           end,
           inactive = nil,

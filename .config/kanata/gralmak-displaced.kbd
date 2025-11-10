@@ -1,0 +1,138 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defvar
+  tap-time 150    ;; Shorter tap time for quick presses
+  hold-time 250   ;; Longer hold time to ensure layer switch
+)
+
+(defalias
+  fnum (tap-hold 300 300 rpt (layer-toggle fnum))
+  spcm (tap-hold 300 300 spc (layer-toggle movesym))
+  csc ( 
+    tap-dance 300 (
+      (tap-hold 200 200 esc lctrl)
+      (multi lctrl lshift)
+      (multi lctrl lalt lshift)
+    )
+  )
+  shift ( 
+    tap-dance 300 (
+      (tap-hold 200 200 (one-shot 1000 lshift) lshift)
+      (layer-toggle fnum)
+    )
+  )  ;; ctrl esc
+  alt ( 
+    tap-dance 300 (
+      lalt
+      (layer-toggle emoji)
+    )
+  )  ;; ctrl esc
+  @/ (tap-hold 200 200 (one-shot 1000 lshift) lshift)
+  nll(layer-switch fnum) ;; fn num layer lock
+  ; (tap-hold 200 200 ; (layer-toggle extra))
+  ' (tap-hold 200 200 ' (layer-toggle extra))
+  00 (macro Digit0 Digit0 Digit0)
+  sl (macro ⇤ lshift ⇥ ) ;; select current line
+  A4 (multi lalt f4)
+
+  CW (multi lctrl w)
+  _a (chord q2gl a)
+  _s (chord q2gl s)
+  _d (chord q2gl d)
+  _f (chord q2gl f)
+  n (chord g2ql n)
+  r (chord g2ql r)
+  t (chord g2ql t)
+  s (chord g2ql s)
+
+  mu   (mwheel-up    50 120)
+  md   (mwheel-down  50 120)
+  ml   (mwheel-left  50 120)
+  mr   (mwheel-right 50 120)
+  mA    (movemouse-accel-up    1 1000 1 5)
+  m<    (movemouse-accel-left  1 1000 1 5)
+  mv    (movemouse-accel-down  1 1000 1 5)
+  m>    (movemouse-accel-right 1 1000 1 5)
+)
+
+(defchords q2gl 5000
+  ( a s d f ) (layer-switch gralmak)
+  ( a       ) a
+  (   s     ) s
+  (     d   ) d
+  (       f ) f
+)
+
+(defchords g2ql 5000
+  ( n r t s ) (layer-switch qwerty)
+  ( n       ) n
+  (   r     ) r
+  (     t   ) t
+  (       s ) s
+)
+
+(defsrc
+  `
+  esc   1     2     3     4     5     6     7     8     9     0    -
+  tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
+  caps   a     s     d     f     g     h     j     k     l     ;     '     ret
+  lshift  z     x     c     v     b     n     m     ,     .     /    rshift
+  lctrl lalt spc  ralt rctrl
+)
+
+(deflayer gralmak
+  `
+  caps 1     2     3     4     5     -     6     7     8     9     0
+  tab  b     l     d     w     q     [     '     f     o     u     j     ]     \
+  @csc  @n    @r    @t   @s     g     ⏎     y     h     a     e     i     @;
+  @shift z     ,     m     c     x     ]     k     p     v     .     /
+  lctrl @alt @spcm  @shift rpt
+)
+
+(deflayer qwerty
+  `
+ caps 1     2     3     4     5     -     6     7     8     9     0
+ tab  q     w     e     r     t     [     y     u     i     o     p     ]     \
+ @csc  @_a   @_s   @_d   @_f   g     ⏎     h     j     k     l     ;     @'
+ @shift z     x     c     v     b     ]     n     m     ,     .     /
+ lctrl lalt @spcm  @shift rpt
+ )
+
+(deflayer extra
+  `
+ caps 1     2     mmid  4     5     -     6     7     8     9     0
+ tab  mbck  mlft  @mA   mrgt  t     [     y     _     mute  vold  volu  ]     \
+ @csc  @md   @m<   @mv   @m>   mfwd  ⏎     h     _     prev  pp    next  '
+ @shift @mu   @ml   @md   @mr   b     ]     .     _     brdn  brup  /
+ lctrl lalt @spcm  @shift rpt
+ )
+
+(deflayer movesym
+  `
+  caps S-5   S-\   S-7   S-6   _     -     6     7     8     9     0
+  S-,  S-1   S-.   S-9   S-0   `     [     S-'   [     ]     ⏎     ⇟     ⎀    ⎙ 
+  @csc  +     S-8   -     =     S--   ⏎     ←     ↓     ↑     →     ⇥     ▤ 
+  @shift S-`   /     S-[   S-]   _     ]     ⇤     ⌫     ⌦     ⇞     \
+  lctrl @alt @spcm  @shift rpt
+)
+
+(deflayer fnum
+  `
+  caps 1     2     3     4     5     -     6     7     8     9     0
+  tab  f1    f2    f3    f4    f5    [     f6    f7    f8    f9    f10   f11   f12
+  @csc  1     2     3     4     XX    ⏎     XX    7     8     9     0     @00
+  @shift @nll  (layer-switch gralmak)   XX    5     XX    ]     6     6     ,     .     /
+  lctrl @alt @spcm  @shift rpt 
+)
+
+(deflayer emoji
+  `
+  caps 🔣🤝  🔣👍  🔣👎  🔣💡   🔣✅   -     6      7      8      9   0
+  tab  🔣💙  🔣😂  🔣💀  🔣😉   🔣🇳🇵   🔣👇  🔣🧑‍🦽   🔣😮   🔣🙉   🔣🙌  🔣🙁   🔣🫶   🔣👆
+  🔣🧠  🔣🙅  🔣🥀  🔣😆  🔣🙂   🔣👌   ⏎     🔣✌️   🔣💯   🔣🤭   🔣🔗   🔣🙇   🔣⚠️ 
+  @shift 🔣🏃   🔣💨   🔣🙂  🔣🙃  🔣🫅  ]      🔣🤯   🔣🙏   🔣🧲   🔣👏  🔣🤛
+  lctrl lalt @spcm  @shift rpt
+)
+

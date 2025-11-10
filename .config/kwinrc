@@ -10,6 +10,10 @@ Rows=1
 [Effect-overview]
 BorderActivate=9
 
+[Effect-thumbnailaside]
+MaxWidth=400
+Opacity=75
+
 [Effect-translucency]
 Inactive=90
 
@@ -22,13 +26,20 @@ Mode=Constant
 NightTemperature=3800
 
 [Plugins]
+blurEnabled=false
+diminactiveEnabled=true
+hidecursorEnabled=true
+invertEnabled=true
 krohnkiteEnabled=true
 kwin_gesturesEnabled=true
 me.kroltan.quakewindowEnabled=true
 overviewEnabled=false
 shakecursorEnabled=false
 slideEnabled=false
+thumbnailasideEnabled=true
 toggleterminalEnabled=true
+touchpointsEnabled=true
+zoomEnabled=false
 
 [Script-desktopchangeosd]
 TextOnly=true
@@ -108,6 +119,9 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 
 [Tiling][d9f14cea-61d9-462b-8788-76684a3c12b5][88fe2380-bb68-4fd2-a219-c5e87bce0e88]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Wayland]
+InputMethod[$e]=/usr/share/applications/fcitx5-wayland-launcher.desktop
 
 [Windows]
 ActiveMouseScreen=false
