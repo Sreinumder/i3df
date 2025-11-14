@@ -27,7 +27,6 @@ NightTemperature=3800
 
 [Plugins]
 blurEnabled=false
-diminactiveEnabled=true
 hidecursorEnabled=true
 invertEnabled=true
 krohnkiteEnabled=true

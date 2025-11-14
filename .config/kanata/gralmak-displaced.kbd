@@ -8,8 +8,10 @@
 )
 
 (defalias
-  fnum (tap-hold 300 300 rpt (layer-toggle fnum))
-  spcm (tap-hold 300 300 spc (layer-toggle movesym))
+  tq (layer-switch qwerty)
+  tg (layer-switch gralmak)
+  fnum (tap-hold 200 200 (one-shot 1000 lshift) (layer-toggle fnum))
+  spcm (tap-hold 200 200 spc (layer-toggle movesym))
   csc ( 
     tap-dance 300 (
       (tap-hold 200 200 esc lctrl)
@@ -33,19 +35,10 @@
   nll(layer-switch fnum) ;; fn num layer lock
   ; (tap-hold 200 200 ; (layer-toggle extra))
   ' (tap-hold 200 200 ' (layer-toggle extra))
+  ⏎ (tap-hold 200 200 ⏎ (layer-toggle extra))
   00 (macro Digit0 Digit0 Digit0)
   sl (macro ⇤ lshift ⇥ ) ;; select current line
   A4 (multi lalt f4)
-
-  CW (multi lctrl w)
-  _a (chord q2gl a)
-  _s (chord q2gl s)
-  _d (chord q2gl d)
-  _f (chord q2gl f)
-  n (chord g2ql n)
-  r (chord g2ql r)
-  t (chord g2ql t)
-  s (chord g2ql s)
 
   mu   (mwheel-up    50 120)
   md   (mwheel-down  50 120)
@@ -55,22 +48,6 @@
   m<    (movemouse-accel-left  1 1000 1 5)
   mv    (movemouse-accel-down  1 1000 1 5)
   m>    (movemouse-accel-right 1 1000 1 5)
-)
-
-(defchords q2gl 5000
-  ( a s d f ) (layer-switch gralmak)
-  ( a       ) a
-  (   s     ) s
-  (     d   ) d
-  (       f ) f
-)
-
-(defchords g2ql 5000
-  ( n r t s ) (layer-switch qwerty)
-  ( n       ) n
-  (   r     ) r
-  (     t   ) t
-  (       s ) s
 )
 
 (defsrc
@@ -84,47 +61,47 @@
 
 (deflayer gralmak
   `
-  caps 1     2     3     4     5     -     6     7     8     9     0
-  tab  b     l     d     w     q     [     '     f     o     u     j     ]     \
-  @csc  @n    @r    @t   @s     g     ⏎     y     h     a     e     i     @;
+  caps 1     2     3     4     5     6     7     8     9     0    -
+  tab  b     l     d     w     q     [     '     f     o     u     j     S-;   \
+  @csc  n     r     t     s     g     ;     y     h     a     e     i     @⏎
   @shift z     ,     m     c     x     ]     k     p     v     .     /
-  lctrl @alt @spcm  @shift rpt
+  lctrl @alt @spcm  @fnum ;
 )
 
 (deflayer qwerty
   `
- caps 1     2     3     4     5     -     6     7     8     9     0
- tab  q     w     e     r     t     [     y     u     i     o     p     ]     \
- @csc  @_a   @_s   @_d   @_f   g     ⏎     h     j     k     l     ;     @'
+ caps 1     2     3     4     5     6     7     8     9     0     -
+ tab  q     w     e     r     t     [     y     u     i     o     p     ⏎     \
+ @csc  a     s     d     f     g     ⏎     h     j     k     l     ;     @'
  @shift z     x     c     v     b     ]     n     m     ,     .     /
- lctrl lalt @spcm  @shift rpt
+ lctrl lalt @spcm  @fnum @fnum
  )
 
 (deflayer extra
   `
- caps 1     2     mmid  4     5     -     6     7     8     9     0
+ caps 1     2     mmid  4     5     6     7     8     9     0     -
  tab  mbck  mlft  @mA   mrgt  t     [     y     _     mute  vold  volu  ]     \
- @csc  @md   @m<   @mv   @m>   mfwd  ⏎     h     _     prev  pp    next  '
- @shift @mu   @ml   @md   @mr   b     ]     .     _     brdn  brup  /
- lctrl lalt @spcm  @shift rpt
+ @csc  @md   @m<   @mv   @m>   mfwd  ⏎     h     @tq   prev  pp    next  '
+ @shift @mu   @ml   @md   @mr   b     ]     .     @tg   brdn  brup  /
+ lctrl lalt @spcm  @fnum @fnum
  )
 
 (deflayer movesym
   `
-  caps S-5   S-\   S-7   S-6   _     -     6     7     8     9     0
+  caps S-5   S-\   S-7   S-6   _     6     7     8     9     0     -
   S-,  S-1   S-.   S-9   S-0   `     [     S-'   [     ]     ⏎     ⇟     ⎀    ⎙ 
   @csc  +     S-8   -     =     S--   ⏎     ←     ↓     ↑     →     ⇥     ▤ 
   @shift S-`   /     S-[   S-]   _     ]     ⇤     ⌫     ⌦     ⇞     \
-  lctrl @alt @spcm  @shift rpt
+  lctrl @alt @spcm  @fnum @fnum
 )
 
 (deflayer fnum
   `
-  caps 1     2     3     4     5     -     6     7     8     9     0
+  caps 1     2     3     4     5     6     7     8     9     0     -
   tab  f1    f2    f3    f4    f5    [     f6    f7    f8    f9    f10   f11   f12
-  @csc  1     2     3     4     XX    ⏎     XX    7     8     9     0     @00
+  @csc  1     2     3     4     5     ⏎     6     7     8     9     0     @00
   @shift @nll  (layer-switch gralmak)   XX    5     XX    ]     6     6     ,     .     /
-  lctrl @alt @spcm  @shift rpt 
+  lctrl @alt @spcm  @fnum @fnum 
 )
 
 (deflayer emoji
@@ -133,6 +110,6 @@
   tab  🔣💙  🔣😂  🔣💀  🔣😉   🔣🇳🇵   🔣👇  🔣🧑‍🦽   🔣😮   🔣🙉   🔣🙌  🔣🙁   🔣🫶   🔣👆
   🔣🧠  🔣🙅  🔣🥀  🔣😆  🔣🙂   🔣👌   ⏎     🔣✌️   🔣💯   🔣🤭   🔣🔗   🔣🙇   🔣⚠️ 
   @shift 🔣🏃   🔣💨   🔣🙂  🔣🙃  🔣🫅  ]      🔣🤯   🔣🙏   🔣🧲   🔣👏  🔣🤛
-  lctrl lalt @spcm  @shift rpt
+  lctrl lalt @spcm  @fnum @fnum
 )
 
