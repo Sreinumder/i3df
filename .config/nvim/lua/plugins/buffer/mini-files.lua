@@ -1,7 +1,7 @@
 return {
 	"echasnovski/mini.files",
 	lazy = false,
-  enabled = false,
+  enabled = true,
 	keys = {
 		{
 			"<leader><leader>",

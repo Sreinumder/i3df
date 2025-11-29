@@ -30,7 +30,7 @@ export SCRIPT_DIR="~/i3df/scripts"
 # export COLORSCHEME="dark"
 export DELTA_FEATURES=+side-by-side
 
-source ~/.zshrc.alias
+source ~/.zshrcalias
 #source ~/.zshrc.env
 # start of z4h config Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
 # You can manually run `z4h update` to update everything.

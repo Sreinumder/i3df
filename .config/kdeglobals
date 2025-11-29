@@ -141,6 +141,7 @@ UseSystemBell=true
 [KDE]
 AnimationDurationFactor=0.125
 AutomaticLookAndFeel=false
+DefaultLightLookAndFeel=Se7enAero
 LookAndFeelPackage=org.kde.breezedark.desktop
 ShowDeleteCommand=true
 

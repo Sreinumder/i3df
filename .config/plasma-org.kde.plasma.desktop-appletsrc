@@ -40,7 +40,7 @@ plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.image
 
 [Containments][1][ConfigDialog]
-DialogHeight=1007
+DialogHeight=1005
 DialogWidth=1918
 
 [Containments][1][General]
@@ -48,8 +48,11 @@ positions={"1536x864":[],"1920x1080":["9","17","desktop:/keyboard_gralmak.png","
 sortMode=-1
 
 [Containments][1][Wallpaper][org.kde.image][General]
-Image=/home/rise/Downloads/993980.jpg
+Image=file:///home/rise/Pictures/dark.png
 SlidePaths=/usr/share/wallpapers/
+
+[Containments][1][Wallpaper][org.kde.potd][General]
+Provider=simonstalenhag
 
 [Containments][1][Wallpaper][org.kde.slideshow][General]
 Image=file:///home/rise/wallpapers/5.png
@@ -144,7 +147,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][2][Applets][52][Configuration][General]
-history=#1d1f21,#3583d4,#282a36,#cd662f,#94bccd
+history=#4a90d9,#005577,#73c940,#1d1f21,#3583d4,#282a36,#cd662f,#94bccd
 
 [Containments][2][Applets][52][Shortcuts]
 global=Meta+Alt+C
@@ -162,25 +165,6 @@ PreloadWeight=100
 popupHeight=400
 popupWidth=560
 
-[Containments][2][Applets][69]
-immutability=1
-plugin=org.kde.plasma.kicker
-
-[Containments][2][Applets][69][Configuration]
-PreloadWeight=100
-popupHeight=440
-popupWidth=300
-
-[Containments][2][Applets][69][Configuration][ConfigDialog]
-DialogHeight=630
-DialogWidth=810
-
-[Containments][2][Applets][69][Configuration][General]
-favoritesPortedToKAstats=true
-
-[Containments][2][Applets][69][Shortcuts]
-global=
-
 [Containments][2][Applets][7]
 activityId=
 formfactor=2
@@ -188,8 +172,8 @@ immutability=1
 lastScreen=0
 location=4
 plugin=org.kde.plasma.systemtray
-popupHeight=435
-popupWidth=435
+popupHeight=444
+popupWidth=444
 wallpaperplugin=org.kde.image
 
 [Containments][2][Applets][7][Applets][10]
@@ -305,7 +289,7 @@ plugin=org.kde.plasma.networkmanagement
 PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][24][Shortcuts]
-global=Meta+N
+global=
 
 [Containments][2][Applets][7][Applets][25]
 immutability=1
@@ -417,7 +401,7 @@ plugin=org.kde.plasma.networkmanagement
 PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][44][Shortcuts]
-global=
+global=Meta+N
 
 [Containments][2][Applets][7][Applets][45]
 immutability=1
@@ -536,8 +520,31 @@ shownItems=org.kde.plasma.battery
 immutability=1
 plugin=org.kde.netspeedWidget
 
+[Containments][2][Applets][71][Configuration][ConfigDialog]
+DialogHeight=630
+DialogWidth=810
+
+[Containments][2][Applets][71][Configuration][General]
+swapDownUp=true
+
+[Containments][2][Applets][76]
+immutability=1
+plugin=org.kde.plasma.kickoff
+
+[Containments][2][Applets][76][Configuration]
+PreloadWeight=100
+popupHeight=522
+popupWidth=637
+
+[Containments][2][Applets][76][Configuration][ConfigDialog]
+DialogHeight=630
+DialogWidth=810
+
+[Containments][2][Applets][76][Configuration][General]
+favoritesPortedToKAstats=true
+
 [Containments][2][General]
-AppletOrder=29;69;4;26;30;71;67;52;6;7;20
+AppletOrder=29;76;4;26;30;71;67;52;6;7;20
 
 [Containments][23][Applets][28][Applets][36]
 plugin=org.kde.plasma.keyboardlayout
