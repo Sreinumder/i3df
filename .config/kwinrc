@@ -9,6 +9,7 @@ Rows=1
 
 [Effect-overview]
 BorderActivate=9
+GridBorderActivate=5
 
 [Effect-thumbnailaside]
 MaxWidth=400
@@ -16,6 +17,9 @@ Opacity=75
 
 [Effect-translucency]
 Inactive=90
+
+[ElectricBorders]
+TopLeft=ApplicationLauncher
 
 [MouseBindings]
 CommandTitlebarWheel=Previous/Next Desktop
@@ -35,7 +39,6 @@ me.kroltan.quakewindowEnabled=true
 overviewEnabled=false
 shakecursorEnabled=false
 slideEnabled=false
-thumbnailasideEnabled=true
 toggleterminalEnabled=true
 touchpointsEnabled=true
 zoomEnabled=false
@@ -99,6 +102,12 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][b27feba2-b587-5afc-a128-44d72072ab9b]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][ba06632f-dfac-4617-9cf0-2d4a6f9b64b6][16f7fcf7-c44e-4ab9-9a73-cf9353ab7569]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][cdfaa43c-93d0-407f-8c73-d69ee64ce15f][16f7fcf7-c44e-4ab9-9a73-cf9353ab7569]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][d08ac3e2-05ea-414b-bfc0-cf95dc77c662][16f7fcf7-c44e-4ab9-9a73-cf9353ab7569]

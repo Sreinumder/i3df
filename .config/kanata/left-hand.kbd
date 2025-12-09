@@ -16,14 +16,6 @@
   lctrl lalt  spc  ralt
 )
 
-(defchords so 5000
- (a s d f ) (layer-switch rs)
- (a       ) a
- (  s     ) s
- (    d   ) d
- (      f ) f
-)
-
 (defalias
   spc (tap-hold 300 300 spc (layer-toggle rsm))
   alt (

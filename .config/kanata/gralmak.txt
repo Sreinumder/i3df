@@ -1,0 +1,13 @@
+About one month ago. I started using graphite layout as my main layout with some changes.
+Also made this post on reddit: https://www.reddit.com/r/KeyboardLayouts/comments/1oj9rbi/does_anyone_uses_right_thumb_for_kp_in_graphite
+
+pros
+- no ph, phy, ky py SFBs
+- no stretch for po, ko, or for v
+
+cons
+- right thumb overload
+- introduces right thumb bigrams/skipgrams like: breakpoint, skip, vape, 
+- no single hand ctrl+v
+- slower typing?
+

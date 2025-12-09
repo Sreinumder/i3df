@@ -37,7 +37,7 @@ vim.env.PATH = table.concat({ vim.fn.stdpath("data"), "mason", "bin" }, sep) .. 
 
 -- o.clipboard:append("unnamedplus") -- use system clipboard as default register
 -- o.rulerformat   = ""
-o.cursorline = true -- highlight the current cursor line
+o.cursorline = false -- highlight the current cursor line
 -- o.cursorcolumn  = true -- highlight the current cursor column
 -- o.cursorlineo = "number"
 --setlocal cc        = 80

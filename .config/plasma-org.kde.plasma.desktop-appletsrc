@@ -147,7 +147,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][2][Applets][52][Configuration][General]
-history=#4a90d9,#005577,#73c940,#1d1f21,#3583d4,#282a36,#cd662f,#94bccd
+history=#f0f0f0,#2b2a33,#4a90d9,#005577,#73c940,#1d1f21,#3583d4,#282a36,#cd662f
 
 [Containments][2][Applets][52][Shortcuts]
 global=Meta+Alt+C
@@ -273,7 +273,7 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][2][Applets][7][Applets][23][Configuration]
-PreloadWeight=20
+PreloadWeight=35
 
 [Containments][2][Applets][7][Applets][23][Configuration][General]
 showPercentage=true
@@ -527,24 +527,27 @@ DialogWidth=810
 [Containments][2][Applets][71][Configuration][General]
 swapDownUp=true
 
-[Containments][2][Applets][76]
+[Containments][2][Applets][77]
 immutability=1
-plugin=org.kde.plasma.kickoff
+plugin=org.kde.plasma.kickerdash
 
-[Containments][2][Applets][76][Configuration]
+[Containments][2][Applets][77][Configuration]
 PreloadWeight=100
 popupHeight=522
-popupWidth=637
+popupWidth=647
 
-[Containments][2][Applets][76][Configuration][ConfigDialog]
+[Containments][2][Applets][77][Configuration][ConfigDialog]
 DialogHeight=630
 DialogWidth=810
 
-[Containments][2][Applets][76][Configuration][General]
+[Containments][2][Applets][77][Configuration][General]
 favoritesPortedToKAstats=true
 
+[Containments][2][Applets][77][Shortcuts]
+global=Meta+D
+
 [Containments][2][General]
-AppletOrder=29;76;4;26;30;71;67;52;6;7;20
+AppletOrder=29;77;4;26;30;71;67;52;6;7;20
 
 [Containments][23][Applets][28][Applets][36]
 plugin=org.kde.plasma.keyboardlayout
