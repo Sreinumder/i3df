@@ -7,29 +7,21 @@
   hold-time 250   ;; Longer hold time to ensure layer switch
 )
 
-(defchords large 5000
-  (lb rc) [
-  (rb lc) ]
-  (lb) S-9
-  (rb) S-0
-  (lc) S-[
-  (rc) S-]
-)
-
 (defalias
   tq_ (layer-switch default_qwerty)
   tq (layer-switch qwerty_dispaced)
   tg (layer-switch gralmak)
+  tf (layer-switch tapio_expanded)
   spcm (tap-hold 200 200 spc (layer-toggle movesym))
   fnum (
     tap-dance 300 (
-      (tap-hold 200 200 (one-shot 1000 lshift) (layer-toggle fnum))
+      (tap-hold 100 100 (one-shot 1000 lshift) (layer-toggle fnum))
       caps
     )
   )
   fnum_ (
     tap-dance 300 (
-      (tap-hold 200 200 (one-shot 1000 lshift) (layer-toggle fnum_))
+      (tap-hold 100 100 (one-shot 1000 lshift) (layer-toggle fnum_))
       caps
     )
   )
@@ -68,11 +60,6 @@
   000 (macro Digit0 Digit0 Digit0)
   sl (macro ⇤ lshift ⇥ ) ;; select current line
   A4 (multi lalt f4)
-  lb (chord large lb)
-  rb (chord large rb)
-  lc (chord large lc)
-  rc (chord large rc)
-
 
   mu   (mwheel-up    50 120)
   md   (mwheel-down  50 120)
@@ -132,17 +119,17 @@
 
 (deflayer extra
   `
- caps 1     2     mmid  4     5     6     7     8     9     0     -
- tab  mbck  mlft  @mA   mrgt  t     [     y     _     mute  vold  volu  ]     \
+ caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
+ mbck mfwd  mlft  @mA   mrgt  t     [     y     _     mute  vold  volu  ]     \
  @csc  @md   @m<   @mv   @m>   mfwd  ⏎     h     @tq   prev  pp    next  '
  @shift @mu   @ml   @md   @mr   b     ]     .     @tg   brdn  brup  /
- lctrl lalt @tg @tq_ @tq
+ @tq lalt @tg @tq_ @tf
  )
 
 (deflayer movesym
   `
   caps S-5   S-\   S-7   S-6   _     6     7     8     9     0     -
-  S-,  S-1   S-.   @lb   @rb   [     [     ]     @lc   @rc   ⏎     ⇟     ⎀    ⎙ 
+  S-,  S-1   S-.   S-9   S-0   [     [     ]     S-[   S-]   ⏎     ⇟     ⎀    ⎙ 
   @csc  +     S-8   -     =     S--   ⏎     ←     ↓     ↑     →     ⇥     ▤ 
   @shift S-`   XX    XX    XX    XX    ]     ⇤     ⌫     ⌦     ⇞     \
   lctrl @alt @spcm  @fnum ⏎
@@ -159,17 +146,17 @@
 
 (deflayer extra_
   `
- caps 1     2     mmid  4     5     6     7     8     9     0     -
- tab  mbck  mlft  @mA   mrgt  t     y     _     mute  vold  volu   [    ]     \
+ caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
+ mbck mfwd  mlft  @mA   mrgt  t     y     _     mute  vold  volu   [    ]     \
  @csc  @md   @m<   @mv   @m>   mfwd  h     @tq   prev  pp    next  ' ret
- @shift @mu   @ml   @md   @mr   b     .     @tg   brdn  brup  /  rshift
- lctrl lalt @tg @tq_ @tq
+ @shift @mu   @ml   @ml   @mr   b     .     @tg   brdn  brup  /  rshift
+ @tq lalt @tg @tq_ @tf
  )
 
 (deflayer movesym_
   `
   caps S-5   S-\   S-7   S-6   _     6     7     8     9     0     -
-  S-,  S-1   S-.   @lb   @rb   [     ]     @lc   @rc   ⏎     ⇟     ⎀    ⎙      \
+  S-,  S-1   S-.   S-9   S-0   [     ]     S-[   S-]   ⏎     ⇟     ⎀    ⎙      \
   @csc  +     S-8   -     =     S--   ←     ↓     ↑     →     ⇥     ▤    ⏎
   @shift S-`   XX    XX    XX    XX    ⇤     ⌫     ⌦     ⇞     /   rshift
   lctrl @alt @spcm_  @fnum_ ⏎
@@ -193,3 +180,250 @@
   lctrl lalt @spcm  @fnum ⏎
 )
 
+
+(deflayer tapio_expanded
+  0
+  esc   @q    @w    @e    @r    @t     6     7     8     9     0    -
+  tab   @a    @s    @d    @f    @g    d     u     i     o     p     [     ]     \
+  @csc   @z    @x    @c    @v    @b    h     j     k     l     ;     '    @_⏎
+  @shift  @1    @2    @3    @4    '     n     m     ,     .     /    rshift
+  lctrl @alt3 @spcl2  @fnum_ ⏎
+)
+
+(deflayer tapio_expanded_l2
+  0
+  esc   6     7     8     9     @000  6     7     8     9     0    -
+  S-,  S-1   S-.   S-9   S-0     `     d     u     i     o     p     [     ]     \
+  @csc     +     S-8   -      =   S--   h     j     k     l     ;     '    @_⏎
+  @shift    S-`     ;     [      ]   b     n     m     ,     .     /    rshift
+  lctrl @alt3 @spcl2  @fnum_ ⏎
+)
+
+(deflayer tapio_expanded_l3
+  mute
+  esc   volu  prev  pp    next  brup  6     7     8     9     0    -
+  tab    vold  S-[   ↑     S-]   brdn  d     u     i     o     p     [     ]     \
+  @csc   ⇥     ←     ↓     →     ⇤     h     j     k     l     ;     '    @_⏎
+  @shift  \     S-\   S-6   S-7   b     n     m     ,     .     /    rshift
+  lctrl @alt3 @spcl2  @fnum_ ⏎
+)
+
+(defchords tapio_chords 40
+  ;; (q w e r t a s d f g z x c v b 1 2 3 4)
+
+
+  ;;   s n i   -- ring and middle         (ae) ␣ (no) ⏎ (ne) ⌫ (ie) ⌦             
+  ;;  a o t e                             (ot) d (te) th (oe) c (sn) p (ni)   (ai) w
+  ;;       u y -- index finger
+  ;;      l r h -- thumb
+
+;; letters left bcdfgjkmpqvwxz
+;; b 
+
+  ;; chords with r thumb + sniaote ->
+  ;;   s n i  
+  ;;  ␣ b f d
+  ;;       u y                
+  ;;       (r) -- chords with r thumb
+
+  ;; chords with h thumb + sniaote ->
+  ;;   s n i  
+  ;;  ␣ b f d
+  ;;       u y                
+  ;;         (h) -- chords with r thumb
+
+(q) '
+(w) s
+(e) n
+(r) i
+(t) z
+(a) a
+(s) o
+(d) t
+(f) e
+(g) .
+(z) /
+(x) ;
+(c) u
+(v) y
+(b) g
+(1) ,
+(2) l
+(3) r
+(4) h
+
+(w e) p
+;;(e r) b
+;;(w r) f
+(a f) spc
+(s d) d
+(d f) (macro t h)
+(s f) c
+(w f) v
+
+;;modifier diagonals
+(e f) ⌫
+(r f) ⌦
+(e s) ⏎
+;;(r s)
+;;(e d)
+;;(w d)
+
+;;(c v)
+;;(d c)
+;;(s c)
+;;(a c)
+;;(d v)
+;;(s v)
+;;(f v)
+
+;;(3 q)
+;;(3 w)
+;;(3 e)
+;;(3 r)
+;;(3 a)
+;;(3 s)
+;;(3 d)
+;;(3 f)
+;;(3 c)
+;;(3 v)
+;;
+;;(4 q) 
+;;(4 w) 
+;;(4 e) 
+;;(4 r) 
+;;(4 a) 
+;;(4 s) 
+;;(4 d) 
+;;(4 f) 
+;;(4 c) 
+;;(4 v) 
+;;
+;;(2 q) 
+;;(2 w) 
+;;(2 e) 
+;;(2 r) 
+;;(2 a) 
+;;(2 s) 
+;;(2 d) 
+;;(2 f) 
+;;(2 c) 
+;;(2 v) 
+
+
+;;(q w e r t a s d f g z x c v b 1 2 3 4)
+
+;;(3 w                     ) k
+;;(  w e                   ) p
+;;(    e r                 ) b
+;;(        a s             ) j
+;;(          s d           ) d
+;;(            d f         ) (macro t h)
+;;(                  x c   ) S-;
+;;(                  x   v ) ;
+;;(                    c v ) S-'
+;;(              f     c   ) x
+;;(              f       v ) x
+;;
+;;(3     r                 ) g
+;;(        a     f         ) spc
+;;
+;;(3   e                   ) z
+;;(  w   r                 ) f
+;;(        a   d           ) q
+;;(          s   f         ) c
+;;(3             f         ) m
+;;(  w           f         ) v
+;;(      r   s             ) (macro o f)
+;;(  w e       f           ) (macro s c)
+;;(  w     a     f         ) (macro r d)
+;;(          s d       c   ) (macro b u)
+;;(      r               v ) (macro f y)
+;;(    e                 v ) (macro l y)
+;;(    e   a     f         ) (macro l d)
+;;(    e r   s             ) (macro l t)
+;;(  w e r                 ) (macro l l)
+;;(    e               c   ) (macro b l)
+;;;; (      r   s   f         ) (macro c l) ;; does not work not enough keyroll
+;;;; (  w       s   f         ) (macro c l)
+;;(  w         d           ) (macro o u)
+;;(3 w         d           ) (macro k u)
+;;
+;;;; avoid the ar ra os so bigram nt and ie can be alt fingered
+;;(          s d f         ) (macro a r)
+;;(        a   d f         ) (macro r a)
+;;(3 w e                   ) (macro o s)
+;;(3 w           f         ) (macro m a)
+;;(3           d f         ) (macro a m)
+;;(3     r     d           ) (macro g a)
+;;(3     r  s              ) (macro a g)
+;;(        a s d           ) (macro s o)
+;;
+;;;; (    e       d           ) (macro h a)
+;;(    e     s   f         ) (macro c h)
+;;(    e r a               ) (macro w h)
+;;(  w     a               ) (macro t h)
+;;(      r a      d        ) (macro t h)
+;;
+;;(3   e         f         ) (macro m e n)
+;;(  w         d f         ) (macro c s)
+;;(            d         v ) (macro t h e)
+;;(3   e r                 ) (macro i n g)
+;;(        a s   f         ) (macro a n d)
+;;(3 w   r                 ) (macro f o r)
+;;(          s d         v ) (macro y o u)
+;;(3         s             ) (macro t i o n)
+;;
+;;(    e         f         ) ⌫
+;;(    e    s              ) ⏎
+;;(      r       f         ) ⌦
+;;
+;;(      r a               ) w
+;;(    e   a               ) ;
+;;
+;;(3                   c   ) @email
+;;;;(  w                 c   )  
+;;;;(      r             c   )  
+;;(        a           c   ) ⇥
+;;(          s         c   ) ←
+;;(            d       c   ) →
+;;(        a             v ) ⇤
+;;(          s           v ) ↓
+;;;;(  w                   v )  
+;;;;(    e                 v )  
+;;;;(      r               v )  
+;;;;(              f       v ) 
+)
+
+;; (defchords tapio_l2_chords 60)
+
+(defalias
+  email (macro r o j g o s a i Digit0 Digit2 S-2 g m a i l . c o m)
+  q(chord tapio_chords q)
+  w(chord tapio_chords w)
+  e(chord tapio_chords e)
+  r(chord tapio_chords r)
+  t(chord tapio_chords t)
+  a(chord tapio_chords a)
+  s(chord tapio_chords s)
+  d(chord tapio_chords d)
+  f(chord tapio_chords f)
+  g(chord tapio_chords g)
+  z(chord tapio_chords z)
+  x(chord tapio_chords x)
+  c(chord tapio_chords c)
+  b(chord tapio_chords b)
+  v(chord tapio_chords v)
+  1(chord tapio_chords 1)
+  2(chord tapio_chords 2)
+  3(chord tapio_chords 3)
+  4(chord tapio_chords 4)
+  spcl2 (tap-hold 200 200 XX (layer-toggle tapio_expanded_l2))
+  alt3 (
+    tap-dance 300 (
+      (tap-hold 100 100 (one-shot 1000 lshift) (layer-toggle tapio_expanded_l3))
+      lalt
+      caps
+    )
+  )
+)

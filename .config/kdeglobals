@@ -133,7 +133,7 @@ ForegroundPositive=39,174,96
 ForegroundVisited=155,89,182
 
 [General]
-ColorSchemeHash=9f63c7711a13123582e720791ea0f8c0172977d2
+ColorSchemeHash=2c3f86428c11011a7c64ee1e7f47c274d498ff10
 TerminalApplication=kitty
 TerminalService=kitty.desktop
 UseSystemBell=true
@@ -168,30 +168,6 @@ Dialog Size=600,480
 [PreviewSettings]
 EnableRemoteFolderThumbnail=false
 MaximumRemoteSize=0
-
-[Shortcuts]
-AboutApp=
-AboutKDE=
-Clear=
-ConfigureNotifications=
-ConfigureToolbars=
-Donate=
-EditBookmarks=
-FitToHeight=
-FitToPage=
-FitToWidth=
-Goto=
-GotoPage=
-Mail=
-OpenRecent=
-PrintPreview=
-ReportBug=
-Revert=
-ShowStatusbar=
-ShowToolbar=
-Spelling=
-SwitchApplicationLanguage=
-Zoom=
 
 [WM]
 activeBackground=39,44,49

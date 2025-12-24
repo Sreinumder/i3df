@@ -13,10 +13,8 @@ return {
         vim.cmd('colorscheme github_dark_high_contrast')
       end,
       set_light_mode = function()
-        vim.api.nvim_set_option_value("background", "dark", {})
-        vim.cmd('colorscheme github_dark_high_contrast')
-        -- vim.api.nvim_set_option_value("background", "light", {})
-        -- vim.cmd('colorscheme github_light_high_contrast')
+        vim.api.nvim_set_option_value("background", "light", {})
+        vim.cmd('colorscheme github_light_high_contrast')
       end,
       update_interval = 3000,
       fallback = "dark"
@@ -28,8 +26,8 @@ return {
     lazy = true,
     event = "UIEnter",
     keys = {
-      {"<A-e>", "<cmd>bnext<CR>", desc = "next buffer"},
-      {"<A-q>", "<cmd>bprevious<CR>", desc = "previous buffer"},
+      {"<C-PageDown>", "<cmd>bnext<CR>", desc = "next buffer"},
+      {"<C-PageUp>", "<cmd>bprevious<CR>", desc = "previous buffer"},
       {"<A-w>", "<cmd>bdelete<CR>", desc = "close buffer"},
     },
     config = function()

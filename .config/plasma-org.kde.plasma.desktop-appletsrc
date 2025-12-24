@@ -44,7 +44,7 @@ DialogHeight=1005
 DialogWidth=1918
 
 [Containments][1][General]
-positions={"1536x864":[],"1920x1080":["9","17","desktop:/keyboard_gralmak.png","8","16"]}
+positions={"1536x864":[],"1920x1080":["1","17"]}
 sortMode=-1
 
 [Containments][1][Wallpaper][org.kde.image][General]
@@ -88,7 +88,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][2][Applets][20][Shortcuts]
-global=Meta+T
+global=
 
 [Containments][2][Applets][26]
 immutability=1
@@ -147,10 +147,10 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][2][Applets][52][Configuration][General]
-history=#f0f0f0,#2b2a33,#4a90d9,#005577,#73c940,#1d1f21,#3583d4,#282a36,#cd662f
+history=#4a90d9,#f9f9f9,#f0f0f0,#2b2a33,#4a90d9,#005577,#73c940,#1d1f21,#3583d4
 
 [Containments][2][Applets][52][Shortcuts]
-global=Meta+Alt+C
+global=
 
 [Containments][2][Applets][6]
 immutability=1
@@ -172,8 +172,8 @@ immutability=1
 lastScreen=0
 location=4
 plugin=org.kde.plasma.systemtray
-popupHeight=444
-popupWidth=444
+popupHeight=437
+popupWidth=436
 wallpaperplugin=org.kde.image
 
 [Containments][2][Applets][7][Applets][10]
@@ -207,7 +207,7 @@ plugin=org.kde.kscreen
 PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][13][Shortcuts]
-global=Meta+S
+global=
 
 [Containments][2][Applets][7][Applets][14]
 immutability=1
@@ -217,7 +217,7 @@ plugin=org.kde.plasma.devicenotifier
 PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][14][Shortcuts]
-global=Meta+Ctrl+D
+global=
 
 [Containments][2][Applets][7][Applets][15]
 immutability=1
@@ -252,7 +252,7 @@ plugin=org.kde.plasma.notifications
 PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][18][Shortcuts]
-global=Meta+Shift+N
+global=
 
 [Containments][2][Applets][7][Applets][19]
 immutability=1
@@ -273,13 +273,13 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][2][Applets][7][Applets][23][Configuration]
-PreloadWeight=35
+PreloadWeight=95
 
 [Containments][2][Applets][7][Applets][23][Configuration][General]
 showPercentage=true
 
 [Containments][2][Applets][7][Applets][23][Shortcuts]
-global=Meta+Shift+B
+global=Meta+B
 
 [Containments][2][Applets][7][Applets][24]
 immutability=1
@@ -318,7 +318,7 @@ placeInfo=Bhaktapur, Nepal, NP|1283617
 provider=bbcukmet
 
 [Containments][2][Applets][7][Applets][32][Shortcuts]
-global=Meta+[
+global=
 
 [Containments][2][Applets][7][Applets][33]
 immutability=1
@@ -328,7 +328,7 @@ plugin=org.kde.kscreen
 PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][33][Shortcuts]
-global=Meta+P
+global=
 
 [Containments][2][Applets][7][Applets][34]
 immutability=1
@@ -345,7 +345,7 @@ PreloadWeight=100
 migrated=true
 
 [Containments][2][Applets][7][Applets][35][Shortcuts]
-global=Meta+A
+global=
 
 [Containments][2][Applets][7][Applets][36]
 immutability=1
@@ -359,7 +359,7 @@ plugin=org.kde.plasma.notifications
 PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][37][Shortcuts]
-global=Meta+'
+global=Meta+A
 
 [Containments][2][Applets][7][Applets][38]
 immutability=1
@@ -408,23 +408,23 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][2][Applets][7][Applets][45][Configuration]
-PreloadWeight=0
+PreloadWeight=5
 
 [Containments][2][Applets][7][Applets][45][Configuration][General]
 showPercentage=true
 
 [Containments][2][Applets][7][Applets][45][Shortcuts]
-global=Meta+B
+global=
 
 [Containments][2][Applets][7][Applets][46]
 immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][2][Applets][7][Applets][46][Configuration]
-PreloadWeight=15
+PreloadWeight=30
 
 [Containments][2][Applets][7][Applets][46][Shortcuts]
-global=Meta+Ctrl+B
+global=Meta+B
 
 [Containments][2][Applets][7][Applets][47]
 immutability=1
@@ -434,7 +434,7 @@ plugin=org.kde.kdeconnect
 PreloadWeight=100
 
 [Containments][2][Applets][7][Applets][47][Shortcuts]
-global=Meta+M
+global=
 
 [Containments][2][Applets][7][Applets][54]
 immutability=1
@@ -487,21 +487,30 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][2][Applets][7][Applets][68][Configuration]
-PreloadWeight=14
+PreloadWeight=39
+
+[Containments][2][Applets][7][Applets][68][Shortcuts]
+global=Meta+Ctrl+B
 
 [Containments][2][Applets][7][Applets][74]
 immutability=1
 plugin=org.kde.plasma.trash
 
 [Containments][2][Applets][7][Applets][74][Configuration]
-PreloadWeight=55
+PreloadWeight=60
 
 [Containments][2][Applets][7][Applets][74][Shortcuts]
-global=Meta+]
+global=
 
 [Containments][2][Applets][7][Applets][9]
 immutability=1
 plugin=org.kde.plasma.cameraindicator
+
+[Containments][2][Applets][7][Applets][9][Configuration]
+PreloadWeight=90
+
+[Containments][2][Applets][7][Applets][9][Shortcuts]
+global=Meta+Ctrl+C
 
 [Containments][2][Applets][7][ConfigDialog]
 DialogHeight=540
@@ -511,10 +520,10 @@ DialogWidth=720
 PreloadWeight=70
 
 [Containments][2][Applets][7][General]
-extraItems=org.kde.kscreen,org.kde.plasma.brightness,org.kde.plasma.keyboardindicator,org.kde.plasma.volume,org.kde.plasma.manage-inputmethod,org.kde.plasma.notifications,org.kde.plasma.cameraindicator,org.kde.plasma.networkmanagement,org.kde.plasma.devicenotifier,org.kde.kdeconnect,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.mediacontroller,org.kde.plasma.trash,org.kde.plasma.weather,org.kde.plasma.diskquota,org.kde.plasma.clipboard,org.kde.plasma.keyboardlayout
+extraItems=org.kde.kscreen,org.kde.plasma.brightness,org.kde.plasma.keyboardindicator,org.kde.plasma.volume,org.kde.plasma.manage-inputmethod,org.kde.plasma.notifications,org.kde.plasma.networkmanagement,org.kde.plasma.devicenotifier,org.kde.kdeconnect,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.mediacontroller,org.kde.plasma.trash,org.kde.plasma.weather,org.kde.plasma.diskquota,org.kde.plasma.clipboard,org.kde.plasma.keyboardlayout,org.kde.plasma.cameraindicator
 hiddenItems=firewall-applet,org.kde.plasma.mediacontroller,org.kde.plasma.trash,org.kde.plasma.weather,org.kde.plasma.diskquota,org.kde.plasma.clipboard,org.kde.plasma.keyboardlayout
 knownItems=org.kde.kscreen,org.kde.plasma.brightness,org.kde.plasma.keyboardindicator,org.kde.plasma.volume,org.kde.plasma.manage-inputmethod,org.kde.plasma.notifications,org.kde.plasma.bluetooth,org.kde.plasma.cameraindicator,org.kde.plasma.battery,org.kde.plasma.networkmanagement,org.kde.plasma.mediacontroller,org.kde.kdeconnect,org.kde.plasma.keyboardlayout,org.kde.plasma.devicenotifier,org.kde.plasma.clipboard,org.kde.plasma.weather
-shownItems=org.kde.plasma.battery
+shownItems=org.kde.plasma.battery,org.kde.plasma.cameraindicator
 
 [Containments][2][Applets][71]
 immutability=1
@@ -546,8 +555,54 @@ favoritesPortedToKAstats=true
 [Containments][2][Applets][77][Shortcuts]
 global=Meta+D
 
+[Containments][2][Applets][78]
+immutability=1
+plugin=org.kde.plasma.systemmonitor.memory
+
+[Containments][2][Applets][78][Configuration]
+CurrentPreset=org.kde.plasma.systemmonitor
+PreloadWeight=75
+popupHeight=165
+popupWidth=238
+
+[Containments][2][Applets][78][Configuration][Appearance]
+chartFace=org.kde.ksysguard.linechart
+showTitle=false
+title=Memory Usage
+
+[Containments][2][Applets][78][Configuration][ConfigDialog]
+DialogHeight=630
+DialogWidth=810
+
+[Containments][2][Applets][78][Configuration][SensorColors]
+memory/physical/used=61,174,233
+
+[Containments][2][Applets][78][Configuration][Sensors]
+highPrioritySensorIds=["memory/physical/used"]
+lowPrioritySensorIds=["memory/physical/total"]
+totalSensors=["memory/physical/usedPercent"]
+
+[Containments][2][Applets][78][Configuration][org.kde.ksysguard.piechart][General]
+smoothEnds=false
+
+[Containments][2][Applets][81]
+immutability=1
+plugin=nepali-calendar
+
+[Containments][2][Applets][81][Configuration]
+PreloadWeight=60
+popupHeight=505
+popupWidth=396
+
+[Containments][2][Applets][81][Configuration][ConfigDialog]
+DialogHeight=630
+DialogWidth=810
+
+[Containments][2][Applets][81][Configuration][General]
+dateFormat=3
+
 [Containments][2][General]
-AppletOrder=29;77;4;26;30;71;67;52;6;7;20
+AppletOrder=29;77;4;26;30;78;71;67;52;6;7;81;20
 
 [Containments][23][Applets][28][Applets][36]
 plugin=org.kde.plasma.keyboardlayout
@@ -561,6 +616,17 @@ PreloadWeight=42
 [Containments][23][Applets][28][Applets][43][Configuration]
 PreloadWeight=42
 
+[Containments1Appletsts][79][Configuration][General]
+url=about:blank
+
+[Containments2Appletsts][80][Configuration][General]
+constantZoomFactor=85
+enableNavigationBar=false
+favIcon=https://ssl.gstatic.com/keep/keep_2023q4.ico
+minViewWidth=320
+url=https://keep.google.com/
+useMinViewWidth=false
+
 [ScreenMapping]
 itemsOnDisabledScreens=
-screenMapping=desktop:/keyboard_gralmak.png,0,30cb0d56-b09d-444b-9c23-1eee0650811f
+screenMapping=

@@ -10,6 +10,8 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
+export PATH="$PATH:$HOME/.dotnet/tools"
+export PATH="$PATH:$HOME/i3df/scripts"
 export PATH=$PATH:/var/lib/flatpak/exports/bin
 export PATH="$PATH:/usr/local/bin"
 export MANPAGER="nvim +Man!"
@@ -194,6 +196,7 @@ export FZF_DEFAULT_OPTS="
 --bind 'alt-a:toggle-all'
 --bind 'alt-k:up,alt-j:down'
 --bind 'alt-h:toggle,alt-l:accept'
+--bind 'alt-o:accept'
 --bind='ctrl-u:preview-half-page-up'
 --bind='ctrl-d:preview-half-page-down'
 --bind='ctrl-s:toggle-sort'
@@ -213,46 +216,3 @@ export FZF_DEFAULT_OPTS="
 # --preview-window 'right,50%,border-left,<50(down,40%,border-bottom)'
 # --preview-window='right:45%:border-rounded'
 # --bind='alt-p:change-preview(stat {})'
-
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/romik/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/romik/miniforge3/etc/profile.d/conda.sh" ]; then
-        . "/home/romik/miniforge3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/romik/miniforge3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-
-# >>> mamba initialize >>>
-# !! Contents within this block are managed by 'mamba shell init' !!
-export MAMBA_EXE='/home/romik/miniforge3/bin/mamba';
-export MAMBA_ROOT_PREFIX='/home/romik/.local/share/mamba';
-__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__mamba_setup"
-else
-    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
-fi
-unset __mamba_setup
-# <<< mamba initialize <<<
-
-# >>> juliaup initialize >>>
-
-# !! Contents within this block are managed by juliaup !!
-
-path=('/home/romik/.juliaup/bin' $path)
-export PATH
-
-# <<< juliaup initialize <<<
-export NVM_COMPLETION=true
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
