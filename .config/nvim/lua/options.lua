@@ -20,6 +20,7 @@ else
 	-- o.shortmess:append("c")
 	g.neovim_log_level = 0 -- Disable logging output from Neovim
 	require('vim.treesitter.highlighter').disable = true
+  o.completeopt = ""
 end
 
 o.shortmess:append("sI") -- disable nvim intro

@@ -18,7 +18,6 @@ map("x", "g_", "$")
 map("n", "<Esc>", "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-l><CR>", { desc = "Redraw / Clear hlsearch / Diff Update" })
 map("x", "J", "j", { desc = "Disable annoying J " })
 map("n", "<leader>gv", "printf('`[%s`]', getregtype()[0])", { expr = true, desc = "reselect last paste" })
-map("n", "<leader>v", "V", {  desc = "Line select" })
 map({ "o", "x" }, "i<space>", "iW") -- select WORD by i<space>
 map("n", "<leader>L", "<cmd>Lazy<CR>", { desc = "Lazy Menu" })
 
@@ -36,10 +35,6 @@ end, { desc = "cd to Git repository root" })
 
 -- clipboard management
 map({"n", "x"}, ",", '"+', {desc = 'clipboard_register'})
--- clipboard to vim default register. usage: copy from browser to vim: <C-c>(in browser) ,p in vim
--- map({"n", "x"}, ",", function() vim.fn.setreg('"', vim.fn.getreg('+')) end, {desc = 'hack clipboard to vim reg'})
--- vim default register to clipboard. usage: copy from vim to other: <y <C-v>(in browser)
--- map({"n", "x"}, "<", function() vim.fn.setreg('+', vim.fn.getreg('"')) end, {desc = 'hack vim reg to clipboard'})
 
 -- delete with x d or D and cut with alt + x, alt + d, alt + D, alt + c
 map({ "n", "x" }, "x", '"_x')
@@ -87,8 +82,7 @@ map("x", "<A-G>", '"bdG"bp`[v`]', { desc = "move selection with G" })
 
 -- simple hacks
 map('x', 'g/', '<Esc>/\\%V')
--- map("n", "<C-s>", "<cmd>w<cr>", { silent = true, desc = "hack save this buffer" })
--- use ZZ ZQ
+map("n", "<C-s>", "<cmd>w<cr>", { silent = true, desc = "hack save this buffer" })
 
 -- insert mode hack
 -- Add undo break-points
@@ -98,15 +92,10 @@ map("i", ";", ";<c-g>u", {desc = "Insert-mode"})
 map("i", "<C-l>", '<C-r>=expand("%:p:h") . "/" <CR>', { desc = "Insert-mode file path" })
 
 
-map({ "x", "i", "c", "t" }, "<A-;>", "<Esc>", { desc = "Insert-mode Escape" })
 map({ "i", "c", "t" }, "<C-a>", "<Home>", { desc = "Insert-mode Home" })
 map({ "i", "c", "t" }, "<C-e>", "<End>", { desc = "Insert-mode End" })
 map({ "i", "c", "t" }, "<C-t>", '<esc>"cXPa', { desc = "swap last two character" })
-map({ "i", "c", "t" }, "<A-h>", "<Left>", { desc = "Insert-mode left" })
-map({ "i", "c", "t" }, "<A-j>", "<Down>", { desc = "Insert-mode down" })
-map({ "i", "c", "t" }, "<A-k>", "<Up>", { desc = "Insert-mode up" })
-map({ "i", "c", "t" }, "<A-l>", "<Right>", { desc = "Insert-mode Right" })
-map("i", "<c-z>", [[<c-g>u<Esc>[s1z=\`\]a<c-g>u]], { noremap = true, desc = "Fix last spelling mistake in insert mode" }) 
+map("i", "<c-z>", [[<c-g>u<Esc>[s1z=\`\]a<c-g>u]], { noremap = true, desc = "Fix last spelling mistake in insert mode" })
 map("c", "<C-A-K>", "\\(.*\\)", { desc = "Cmd-mode catching group/kirby " })
 
 map("t", "<C-<ESC>", "<C-\\><C-n>", { desc = "terminal exit" })

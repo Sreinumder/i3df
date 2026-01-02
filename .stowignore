@@ -5,4 +5,6 @@
 ^packages.md$
 ^stow-with-ignore.sh$
 ^scripts/*
+^i3-blocks-scripts/*
+^firefoxCSS/*
 ^.config/nvim
