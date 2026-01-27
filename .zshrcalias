@@ -4,17 +4,14 @@ alias nv='neovide'
 alias v='vim'
 alias hx='helix'
 alias myip="curl http://ipecho.net/plain; echo"
-alias t="tgpt -q"
-alias ts="tgpt -qs" # shell
-alias tm="tgpt -m" # multiline
-alias tc="tgpt -qc" # code
-alias ti="tgpt --image"
 function cdj() { curl -s https://icanhazdadjoke.com/ }
 function cbb() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"' }
-function fal() { rg -e "^\s*alias" ~/i3df/.zshrc.alias | fzf }
+function fal() { rg -e "^\s*alias" ~/i3df/.zshrcalias | fzf }
 
 alias ..="cd .."
 alias ...="cd ../.."
+
+alias dr="dragon-drop"
 
 function p() { cd "$HOME/projects/$1" }
 alias px="pkill xdotool"
@@ -194,8 +191,8 @@ function find_git_root() {
     return 1
 }
 alias fgr='$(find_git_root)'
-alias tree='eza --git --ignore-glob=.git --tree -al '
-alias gittree='eza --git --tree --git-ignore -al "$(find_git_root || echo /dev/null)"'
+# alias tree='eza --git --ignore-glob=.git --tree -al '
+# alias gittree='eza --git --tree --git-ignore -al "$(find_git_root || echo /dev/null)"'
 
 function rm-restore() {
   # List trashed files with trash-cli and pipe to fzf for interactive selection

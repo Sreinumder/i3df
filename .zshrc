@@ -11,6 +11,7 @@ HISTSIZE=100000
 SAVEHIST=100000
 
 export PATH="$PATH:$HOME/.dotnet/tools"
+export PATH="/path/to/your/python/bins:$PATH"
 export PATH="$PATH:$HOME/i3df/scripts"
 export PATH=$PATH:/var/lib/flatpak/exports/bin
 export PATH="$PATH:/usr/local/bin"
@@ -194,16 +195,16 @@ export FZF_DEFAULT_OPTS="
 --bind ctrl-f:page-down
 --bind 'alt-d:jump'
 --bind 'alt-a:toggle-all'
---bind 'alt-k:up,alt-j:down'
---bind 'alt-h:toggle,alt-l:accept'
---bind 'alt-o:accept'
+--bind 'ctrl-j:accept'
 --bind='ctrl-u:preview-half-page-up'
 --bind='ctrl-d:preview-half-page-down'
 --bind='ctrl-s:toggle-sort'
---bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
+--bind 'ctrl-e:execute(echo {+} | xargs -o nvim)'
 --bind 'ctrl-y:execute(readlink -f {} | xsel -b)'
 --bind 'ctrl-alt-y:execute-silent(xsel -b <<< "{}")'
 "
+# --bind 'alt-k:up,alt-j:down'
+# --bind 'alt-h:toggle,alt-l:accept'
 # if [[ "$COLORSCHEME" == "light" ]]; then
   # export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=bg+:#e5e5e5,bg:#fafafa,spinner:#007acc,hl:#d75f5f,fg:#2c2c2c,fg+:#2c2c2c,header:#007acc,info:#005f87,pointer:#005f87,marker:#d75f5f,prompt:#005f87,hl+:#af005f "
   # export BAT_THEME="OneHalfLight"
@@ -216,3 +217,5 @@ export FZF_DEFAULT_OPTS="
 # --preview-window 'right,50%,border-left,<50(down,40%,border-bottom)'
 # --preview-window='right:45%:border-rounded'
 # --bind='alt-p:change-preview(stat {})'
+
+source /home/rise/.config/broot/launcher/bash/br

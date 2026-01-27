@@ -7,7 +7,6 @@ require("mappings")
 require("hacks")
 require("lazy").setup({
   { import = "plugins.editing" },
-  { import = "plugins.treesitter" },
 }, lazy_config)
 local map = vim.keymap.set
 -- map("n", "<leader>f", function() require("vscode").action("workbench.action.quickOpen") end, {desc = "open quickpicker"})

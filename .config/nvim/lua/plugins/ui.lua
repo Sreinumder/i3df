@@ -1,42 +1,5 @@
 return {
   {
-    "f-person/auto-dark-mode.nvim",
-    lazy = false,
-    priority = 100000,
-    dependencies = {
-      { 'projekt0n/github-nvim-theme', name = 'github-theme'},
-      {
-        "xiyaowong/transparent.nvim",
-        keys = { {";j", "<cmd>TransparentToggle<CR>", desc = "toggle transparency"} },
-        opts = {
-          groups = {
-            'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
-            'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
-            'Conditional', 'Repeat', 'Operator', 'Structure', 'LineNr', 'NonText',
-            'SignColumn', 'CursorLine', 'CursorLineNr', 'StatusLine', 'StatusLineNC',
-            'EndOfBuffer',
-          },
-          extra_group = {
-            'MiniTablineFill',
-            'MiniTablineHidden'
-          }
-        }
-      }
-    },
-    opts = {
-      set_dark_mode = function()
-        vim.api.nvim_set_option_value("background", "dark", {})
-        vim.cmd('colorscheme github_dark_high_contrast')
-      end,
-      set_light_mode = function()
-        vim.api.nvim_set_option_value("background", "light", {})
-        vim.cmd('colorscheme github_light_high_contrast')
-      end,
-      update_interval = 3000,
-      fallback = "dark"
-    }
-  },
-  {
     'nvim-mini/mini.nvim',
     version = '*',
     lazy = true,
@@ -88,18 +51,19 @@ return {
             local suffix = vim.bo[buf_id].modified and '+ ' or ''
             local normal_hl = vim.api.nvim_get_hl(0, { name = 'Normal' })
             local is_dark = vim.o.background == 'dark'
-            local current_bg = is_dark and '#4F7942' or '#A8E6A3'
-            local visible_bg = is_dark and '#4f5258' or '#9b9ea4'
+            local current = is_dark and '#4F7942' or '#A8E6A3'
+            local visible = is_dark and '#4f5258' or '#9b9ea4'
             local other_bg = is_dark and '#14161b' or '#e0e2ea'
             local normal_fg = is_dark and normal_hl.fg or '#14161b'
-            local normali_fg = is_dark and '#14161b' or normal_hl.fg
-            vim.api.nvim_set_hl(0, 'MiniTablineCurrent', {fg=normali_fg, bg = current_bg})
-            vim.api.nvim_set_hl(0, 'MiniTablineModifiedCurrent', {fg=normali_fg, bg = current_bg, italic = true})
-            vim.api.nvim_set_hl(0, 'MiniTablineModifiedVisible', {bg = visible_bg, italic = true})
-            vim.api.nvim_set_hl(0, 'MiniTablineModifiedHidden', { bg = other_bg, italic = true})
-            vim.api.nvim_set_hl(0, 'MiniTablineHidden', { bg = other_bg})
-            vim.api.nvim_set_hl(0, 'MiniTablineTrunc', {  bg = other_bg})
-            -- vim.api.nvim_set_hl(0, 'MiniTablineFill', {  bg = '#000000'})
+            vim.api.nvim_set_hl(0, 'MiniTablineFill', {  bg = "#000000"})
+            vim.api.nvim_set_hl(0, 'MiniTablineCurrent', {fg="#4A90D9", bg = "#000000", italic = true, bold = true })
+            vim.api.nvim_set_hl(0, 'MiniTablineModifiedCurrent', {fg="#4A90D9",  bg = "#000000", italic = true, bold = true })
+            vim.api.nvim_set_hl(0, 'MiniTablineModifiedVisible', {  bg = "#000000", italic = true})
+            vim.api.nvim_set_hl(0, 'MiniTablineVisible', {  bg = "#000000", italic = true})
+            vim.api.nvim_set_hl(0, 'MiniTablineFill', {  bg = "#000000"})
+            vim.api.nvim_set_hl(0, 'MiniTablineHidden', {  bg = "#000000"})
+            vim.api.nvim_set_hl(0, 'MiniTablineTrunc', {  bg = "#000000"})
+            vim.api.nvim_set_hl(0, 'MiniTablineModifiedHidden', {  bg = "#000000"})
             return require('mini.tabline').default_format(buf_id, label) .. suffix
           end
         })
@@ -177,5 +141,31 @@ return {
         },
       })
     end,
-  }
+  },
+  {
+    "xiyaowong/transparent.nvim",
+    lazy=false,
+    keys = { {";j", "<cmd>TransparentToggle<CR>", desc = "toggle transparency"} },
+    -- dependencies = { 'projekt0n/github-nvim-theme', name = 'github-theme'},
+    dependencies = {'Mofiqul/vscode.nvim'},
+    opts = function()
+	    vim.api.nvim_set_option_value("background", "dark", {})
+	    vim.cmd('colorscheme vscode')
+	    return {
+		    groups = {
+			    'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
+			    'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
+			    'Conditional', 'Repeat', 'Operator', 'Structure', 'LineNr', 'NonText',
+			    'SignColumn', 'CursorLine', 'CursorLineNr', 'StatusLine', 'StatusLineNC',
+			    'EndOfBuffer', 'MiniFilesNormal', 'MiniFilesTitleFocused', 'MiniFilesFile',
+			    'MiniStatuslineFilename', 'MiniStatuslineinfo', 'MiniStatuslineInactive', 'MiniClueDescSingle',
+          'LazyNormal', 'BlinkCmpMenu'
+			    -- 'MiniTablineCurrent', 'MiniTablineVisible', 'MiniTablineHidden', 'MiniTablineModifiedCurrent',
+			    -- 'MiniTablineModifiedVisible', 'MiniTablineModifiedHidden',
+			    -- 'StatusLine',
+			    -- 'MiniTablineFill', 'MiniTablineTabpagesection', 'MiniTablineTrunc',
+		    },
+	    }
+    end
+  },
 }

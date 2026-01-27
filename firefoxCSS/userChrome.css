@@ -77,6 +77,9 @@ optionally: full-screen-api.ignore-widgets as true too. for full screen without 
   transition: none !important;
 }
 
+.tabbrowser-tab:first-child{ counter-reset: nth-tab 0 } /* Change to -1 for 0-indexing */
+.tab-text::before{ content: counter(nth-tab) ":"; counter-increment: nth-tab }
+
 menupopup,
 panel {
   --panel-border-radius: 0px !important;

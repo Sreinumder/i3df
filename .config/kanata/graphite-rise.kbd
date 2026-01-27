@@ -10,18 +10,33 @@
 (defalias
   tq_ (layer-switch default_qwerty)
   tq (layer-switch qwerty_dispaced)
-  tg (layer-switch gralmak)
+  tg (layer-switch graphite_rise)
+ ;; ts (layer-switch focal)
+ ts (layer-switch sturdy)
+ ;; ts (layer-switch graphite_rise_test)
   tf (layer-switch tapio_expanded)
   spcm (tap-hold 200 200 spc (layer-toggle movesym))
   fnum (
     tap-dance 300 (
       (tap-hold 100 100 (one-shot 1000 lshift) (layer-toggle fnum))
-      caps
+      (tap-hold 200 200 caps lshift)
     )
   )
   fnum_ (
     tap-dance 300 (
       (tap-hold 100 100 (one-shot 1000 lshift) (layer-toggle fnum_))
+      (tap-hold 200 200 caps lshift)
+    )
+  )
+  fnum* (
+    tap-dance 300 (
+      (tap-hold 100 100 spc (layer-toggle fnum))
+      caps
+    )
+  )
+  fnum*_ (
+    tap-dance 300 (
+      (tap-hold 100 100 spc (layer-toggle fnum_))
       caps
     )
   )
@@ -55,9 +70,12 @@
   ; (tap-hold 200 200 ; (layer-toggle extra))
   ⏎ (tap-hold 200 200 ⏎ (layer-toggle extra))
   , (tap-hold 200 200 , (layer-toggle extra))
+  ,s (macro , spc)
+  k (tap-hold 200 200 k (layer-toggle extra))
+  xt (tap-hold 200 200 x (layer-toggle extra))
   _⏎ (tap-hold 200 200 ⏎ (layer-toggle extra_))
   ' (tap-hold 200 200 ' (layer-toggle extra_))
-  000 (macro Digit0 Digit0 Digit0)
+  000 (tap-hold 200 200 (macro Digit0 Digit0 Digit0) (layer-toggle extra_))
   sl (macro ⇤ lshift ⇥ ) ;; select current line
   A4 (multi lalt f4)
 
@@ -90,12 +108,39 @@
   lctrl @alt @spcm_  @fnum_ ⏎
 )
 
-(deflayer gralmak
+(deflayer graphite_rise
+`
+  caps 1     2     3     4     5     6     7     8     @,s  ;    -
+  tab  b     l     d     w     q     [     '     f     o     u     j     S-;   S-'
+  @csc  n     r     t     s     g     ;     y     h     a     e     i     @⏎
+  @shift z    @xt    m     c     ,     ]     k     p     v     .     /
+  @ctrl @alt @spcm  @fnum ⏎
+)
+
+(deflayer graphite_rise_test
+  `
+  caps 1     2     3     4     5     6     7     8     @,s  ;    -
+  tab  b     l     d     w     q     [     '     f     o     u     j     S-;   S-'
+  @csc  n     r     t     s     g     ;     y     h     a     e     i     @⏎
+  @shift z    @xt    m     c     ,     ]     k     p     v     .     /
+  @ctrl @alt @spcm  @fnum ⏎
+)
+
+(deflayer sturdy
   `
   caps 1     2     3     4     5     6     7     8     9     0    -
-  tab  b     l     d     w     q     [     '     f     o     u     j     S-;   S-'
-  @csc  n     r     t     s     g     ;     y     h     a     e     i     @;
-  @shift z     @,    m     c     x     ]     k     p     v     .     /
+  tab  w     m     l     c     q     [     '     f     o     u     j     S-;   S-'
+  @csc  s     t     r     d     p     ;     x     h     a     e     i     @;
+  @shift z     @k    y     g     ,     ]     b     n     v     .     /
+  @ctrl @alt @spcm  @fnum ⏎
+)
+
+(deflayer focal
+  `
+  caps 1     2     3     4     5     6     7     8     9     0    -
+  tab  v     l     h     g     p     [     q     f     o     u     j     S-;   S-'
+  @csc  s     r     n     t     b     ;     y     c     a     e     i     @;
+  @shift z     @k    m     d     x     ]     '     w     ,     .     /
   @ctrl @alt @spcm  @fnum ⏎
 )
 
@@ -118,12 +163,21 @@
  )
 
 (deflayer extra
-  `
+ mfwd
  caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
- mbck mfwd  mlft  @mA   mrgt  t     [     y     _     mute  vold  volu  ]     \
+ mbck mlft  mlft  @mA   mrgt  t     [     y     _     mute  vold  volu  ]     \
  @csc  @md   @m<   @mv   @m>   mfwd  ⏎     h     @tq   prev  pp    next  '
- @shift @mu   @ml   @md   @mr   b     ]     .     @tg   brdn  brup  /
- @tq lalt @tg @tq_ @tf
+ @shift @mu   @md   @ml   @mr   b     ]     .     @tg   brdn  brup  /
+ @tq @ts @tg @tq_ @tf
+ )
+
+(deflayer extra_
+ mfwd
+ caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
+ mbck mfwd  mlft  @mA   mrgt  t     y     _     mute  vold  volu   [    ]     \
+ @csc  @md   @m<   @mv   @m>   mfwd  h     @tq   prev  pp    next  ' ret
+ @shift @mu   @ml   @ml   @mr   b     .     @tg   brdn  brup  /  rshift
+ @tq @ts @tg @tq_ @tf
  )
 
 (deflayer movesym
@@ -131,8 +185,17 @@
   caps S-5   S-\   S-7   S-6   _     6     7     8     9     0     -
   S-,  S-1   S-.   S-9   S-0   [     [     ]     S-[   S-]   ⏎     ⇟     ⎀    ⎙ 
   @csc  +     S-8   -     =     S--   ⏎     ←     ↓     ↑     →     ⇥     ▤ 
-  @shift S-`   XX    XX    XX    XX    ]     ⇤     ⌫     ⌦     ⇞     \
-  lctrl @alt @spcm  @fnum ⏎
+  @shift S-`   S-5   S-6   /     XX    ]     ⇤     ⌫     ⌦     ⇞     \
+  lctrl @alt @spcm  @fnum* ⏎
+)
+
+(deflayer movesym_
+  `
+  caps S-5   S-\   S-7   S-6   _     6     7     8     9     0     -
+  S-,  S-1   S-.   S-9   S-0   [     ]     S-[   S-]   ⏎     ⇟     ⎀    ⎙      \
+  @csc  +     S-8   -     =     S--   ←     ↓     ↑     →     ⇥     ▤    ⏎
+  @shift S-`   S-5   S-6   /     XX    ⇤     ⌫     ⌦     ⇞     /   rshift
+  lctrl @alt @spcm_  @fnum*_ ⏎
 )
 
 (deflayer fnum_
@@ -140,26 +203,8 @@
   caps 1     2     3     4     5     6     7     8     9     0     -
   tab  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12   \
   @csc  1     2     3     4     5     6     7     8     9     0     @000  ⏎
-  @shift @nll  @tq   +     -     XX    S-5   S-8   ,     .     / rshift
+  @shift @nll  ,     +     -     XX    S-5   S-8   ,     .     / rshift
   lctrl @alt @spcm  @fnum ⏎
-)
-
-(deflayer extra_
-  `
- caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
- mbck mfwd  mlft  @mA   mrgt  t     y     _     mute  vold  volu   [    ]     \
- @csc  @md   @m<   @mv   @m>   mfwd  h     @tq   prev  pp    next  ' ret
- @shift @mu   @ml   @ml   @mr   b     .     @tg   brdn  brup  /  rshift
- @tq lalt @tg @tq_ @tf
- )
-
-(deflayer movesym_
-  `
-  caps S-5   S-\   S-7   S-6   _     6     7     8     9     0     -
-  S-,  S-1   S-.   S-9   S-0   [     ]     S-[   S-]   ⏎     ⇟     ⎀    ⎙      \
-  @csc  +     S-8   -     =     S--   ←     ↓     ↑     →     ⇥     ▤    ⏎
-  @shift S-`   XX    XX    XX    XX    ⇤     ⌫     ⌦     ⇞     /   rshift
-  lctrl @alt @spcm_  @fnum_ ⏎
 )
 
 (deflayer fnum
@@ -167,7 +212,7 @@
   caps 1     2     3     4     5     6     7     8     9     0     -
   tab  f1    f2    f3    f4    f5    [     f6    f7    f8    f9    f10   f11   f12
   @csc  1     2     3     4     5     ⏎     6     7     8     9     0     @000
-  @shift @nll  @tg   +     -     XX    ]     S-5   S-8   ,     .     /
+  @shift @nll  ,     +     -     XX    ]     S-5   S-8   ,     .     /
   lctrl @alt @spcm_ @fnum_ ⏎
 )
 

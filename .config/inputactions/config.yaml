@@ -1,5 +1,21 @@
 touchpad:
   gestures:
+    # - type: circle
+    #   direction: any
+    #   conditions:
+    #     any:
+    #       - $finger_1_initial_position_percentage_y <= 0.05
+    #       - $finger_2_initial_position_percentage_y <= 0.05
+    #       - $finger_1_initial_position_percentage_y >= 0.95
+    #       - $finger_2_initial_position_percentage_y >= 0.95
+    #   actions:
+    #     - on: update
+    #       interval: -0.5
+    #       input:
+    #         - mouse: [wheel 0 -1]
+    #       interval: 0.9
+    #       input:
+    #         - mouse: [wheel 0 +1]
 
     # volume left&right / global
     - type: swipe
@@ -9,11 +25,11 @@ touchpad:
         - on: update
           interval: -10
           input:
-            - keyboard: [ volumedown ]
+            - keyboard: [volumedown]
         - on: update
           interval: 10
           input:
-            - keyboard: [ volumeup ]
+            - keyboard: [volumeup]
 
     # brightness up&down / global
     - type: swipe
@@ -23,11 +39,11 @@ touchpad:
         - on: update
           interval: -20
           input:
-            - keyboard: [ leftshift+brightnessup ]
+            - keyboard: [leftshift+brightnessup]
         - on: update
           interval: 20
           input:
-            - keyboard: [ leftshift+brightnessdown ]
+            - keyboard: [leftshift+brightnessdown]
 
     # 4 fingers
     # go forward / global
@@ -37,7 +53,7 @@ touchpad:
       actions:
         - on: begin
           input:
-            - keyboard: [ leftalt+right ]
+            - mouse: [forward]
 
     # go back / global
     - type: swipe
@@ -46,7 +62,7 @@ touchpad:
       actions:
         - on: begin
           input:
-            - keyboard: [ leftalt+left ]
+            - mouse: [back]
 
     # previous/next tab
     - type: swipe
@@ -56,11 +72,11 @@ touchpad:
         - on: update
           interval: -80
           input:
-            - keyboard: [ leftctrl+leftshift+tab ]
+            - keyboard: [leftctrl+leftshift+tab]
         - on: update
           interval: 80
           input:
-            - keyboard: [ leftctrl+tab ]
+            - keyboard: [leftctrl+tab]
 
     # undo close tab
     - type: pinch
@@ -69,7 +85,7 @@ touchpad:
       actions:
         - on: begin
           input:
-            - keyboard: [ leftctrl+leftshift+t ]
+            - keyboard: [leftctrl+leftshift+t]
 
     # close tab
     - type: pinch
@@ -77,23 +93,23 @@ touchpad:
       direction: out
       actions:
         - on: begin
+          interval: 10
           input:
-            - keyboard: [ leftctrl+w ]
+            - keyboard: [leftctrl+w]
 
     - type: tap
       fingers: 4
       actions:
         - on: update
           input:
-            - keyboard: [ playpause ]
+            - keyboard: [playpause]
 
     - type: tap
       fingers: 5
       actions:
         - on: update
           input:
-            - keyboard: [ leftalt+f4 ]
-
+            - keyboard: [leftalt+f4]
 
     - type: pinch
       fingers: 3
@@ -101,13 +117,21 @@ touchpad:
       actions:
         - on: begin
           input:
-            - keyboard: [ leftctrl+f10 ]
+            - keyboard: [leftmeta+f]
 
     - type: pinch
-      fingers: 4
+      fingers: 3
       direction: in
       actions:
         - on: begin
           input:
-            - keyboard: [ leftctrl+f10 ]
+            - keyboard: [leftctrl+f10]
 
+    - type: stroke
+      fingers: 3
+      strokes: "ABUALQQzDyERSxwRJFYnAj5YNfNOUT7kW0BI02QLZAA="
+      # direction: any
+      actions:
+        - on: end
+          input:
+            - keyboard: [leftmeta+grave]
