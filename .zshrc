@@ -1,3 +1,7 @@
+export ANDROID_HOME=/opt/android-sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/tools
+
 setopt SHARE_HISTORY       # share history between all sessions
 setopt INC_APPEND_HISTORY  # append commands to history immediately
 setopt HIST_IGNORE_DUPS    # ignore duplicate commands
@@ -34,7 +38,8 @@ export SCRIPT_DIR="~/i3df/scripts"
 export DELTA_FEATURES=+side-by-side
 
 source ~/.zshrcalias
-#source ~/.zshrc.env
+source ~/.zshrcenv
+
 # start of z4h config Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
 # You can manually run `z4h update` to update everything.
 zstyle ':z4h:' auto-update      'no' # Ask whether to auto-update this often; has no effect if auto-update is 'no'.
@@ -102,6 +107,7 @@ case $KEYMAP in
   viins|main) echo -ne '\e[6 q' ;;  # Beam cursor in INSERT mode (Non-blinking)
 esac
 }
+
 zle -N zle-keymap-select
 function zle-line-init { echo -ne '\e[6 q' }  # Beam cursor by default (Non-blinking)
 zle -N zle-line-init
@@ -128,10 +134,15 @@ bindkey -M vicmd '^[j' z4h-cd-down
 bindkey -M viins '^[m' z4h-autosuggest-accept
 bindkey -M viins '^I' z4h-fzf-complete
 bindkey -M viins '^L' z4h-clear-screen-soft-top
-zoxide-interactive() { zi; zle reset-prompt; }
+zoxide-interactive() { zi && -z4h-redraw-prompt;}
 zle -N zoxide-interactive
 bindkey -M viins '^[z' zoxide-interactive
 bindkey -M vicmd '^[z' zoxide-interactive
+function cd_to_clipboard_path { cd "$(wl-paste)" && -z4h-redraw-prompt y; }
+zle -N cd_to_clipboard_path
+bindkey -M viins '^[c' cd_to_clipboard_path
+bindkey -M vicmd '^[c' cd_to_clipboard_path
+
 
 
 z4h bindkey undo Ctrl+/ Shift+Tab  # undo the last command line change
@@ -217,5 +228,3 @@ export FZF_DEFAULT_OPTS="
 # --preview-window 'right,50%,border-left,<50(down,40%,border-bottom)'
 # --preview-window='right:45%:border-rounded'
 # --bind='alt-p:change-preview(stat {})'
-
-source /home/rise/.config/broot/launcher/bash/br

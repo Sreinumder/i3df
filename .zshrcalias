@@ -18,6 +18,7 @@ alias px="pkill xdotool"
 
 alias kre="localectl set-x11-keymap us; setxkbmap -option caps:swapescape"
 
+alias cpw="pwd | wl-copy"
 function g() { git $@ }
 alias doo='~/i3df/scripts/doing.sh'
 alias ffo='fc-list | fzf'
@@ -27,12 +28,13 @@ alias gl='git log --oneline | fzf --preview "git show --color=always {1}"'
 alias fk='ps aux | fzf | awk "{print \$2}" | xargs kill -9' # Kill process interactively
 alias cdi='cd $(find . -type d | fzf)' # Search and cd into subdirectories
 
-alias fQ='yay -Q | fzf'
-
 alias feh='feh --scale-down'
 alias yt='~/i3df/scripts/yt.sh'
-alias ytvc='yt-dlp --write-subs -P "$HOME/videos/" "$(xsel -b -o 2>/dev/null)"'
-alias ytmc='yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail -P "$HOME/music/" "$(xsel -b -o 2>/dev/null)"'
+# alias ytvc='yt-dlp --write-subs --sponsorblock-remove "DEFAULT" -P "$HOME/videos/" "$(xsel -b -o 2>/dev/null)"'
+alias ytvc='yt-dlp --write-subs --sponsorblock-remove "DEFAULT" -P "$HOME/Videos/" "$(wl-paste)"'
+# alias ytmc='yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail --sponsorblock-remove "DEFAULT" -P "$HOME/music/" "$(xsel -b -o 2>/dev/null)"'
+alias ytmc='yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail --sponsorblock-remove "DEFAULT" -P "$HOME/music/" "$(wl-paste)"'
+
 alias ytv='yt-dlp -P "$HOME/videos/" '
 alias ytm='yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail '
 alias ll='eza --icons --color=auto --git -alh'
@@ -43,7 +45,7 @@ alias oc="ouch   compress"
 alias So='exec zsh'
 alias grep='grep --color=auto'
 
-alias cona='nvim ~/i3df/.zshrc.alias'
+alias cona='nvim ~/i3df/.zshrcalias'
 alias conb='nvim ~/i3df/.bashrc'
 alias cond='cd ~/i3df/.config/dunst; nvim dunstrc'
 alias cone='cd ~/.config/doom/; nvim .'
@@ -73,9 +75,12 @@ alias pyi='pip install -r requirements.txt'
 alias pyenv='python3 -m venv;'
 alias pyenvi='python3 -m venv env; pya; pyi;'
 alias Ps='sudo pacman -S'
+alias Pss='sudo pacman -Syyu'
 alias P='sudo pacman'
 alias Ys='yay -S'
+alias Yss='yay -Syyu'
 alias Y='yay'
+alias Yqf='yay -Q | fzf'
 alias lg='lazygit'
 alias gi3='cd ~/i3df/; lazygit;'
 alias setclip='xsel -b'
@@ -102,15 +107,24 @@ alias xrd='xrandr --delmonitor HDMI-1~1; xrandr --delmonitor HDMI-1~2; xrandr --
 alias xr='xrd; xrm'
 
 
-function mkcd () { mkdir -p -- "$1" && cd -P -- "$1" }
+function mkcd () { mkdir -p -- "$@" cd -P -- "${@: -1}" }
 function mvcd() { mv "$@" && cd "${@: -1}" }
+function cpcd() { cp -r "$@" && cd "${@: -1}" }
+function mvkcd() { mkdir -p "${@: -1}" && mv "$@" && cd "${@: -1}" }
+function cpkcd() { mkdir -p "${@: -1}" && cp -r "$@" && cd "${@: -1}" }
 function mvn() { mv "$@" && nvim "${@: -1}" }
+function gitcd() { git clone "$1" && cd "$(basename "$1" .git)"; }
+function bak() { cp "$1" "$1.$(date +%Y%m%d%H%M%S).bak" }
+function cdg() { cd "$(git rev-parse --show-toplevel 2>/dev/null)" || return; }
+
+function tempcd() { dir=$(mktemp -d) && cd "$dir" }
+function ntemp() { temp=$(mktemp) && nvim "$temp" }
+
 function fman() {
     man -k . | fzf -q "$1" --prompt='man> '  --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r man | col -bx | bat -l man -p --color always' | tr -d '()' | awk '{printf "%s ", $2} {print $1}' | xargs -r man
   }
 
 
-# absolutely game changer bindings 
 function displayFZFFiles { echo $(fzf --multi --preview 'bat --color=always --style=header,grid --line-range :400 {}') }
 
 function ff {

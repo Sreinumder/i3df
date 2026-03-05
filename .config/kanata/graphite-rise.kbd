@@ -11,11 +11,10 @@
   tq_ (layer-switch default_qwerty)
   tq (layer-switch qwerty_dispaced)
   tg (layer-switch graphite_rise)
- ;; ts (layer-switch focal)
- ts (layer-switch sturdy)
- ;; ts (layer-switch graphite_rise_test)
+  ts (layer-switch graphite_rise_test)
   tf (layer-switch tapio_expanded)
   spcm (tap-hold 200 200 spc (layer-toggle movesym))
+  spcm_tap (tap-hold 200 200 (one-shot 1000 (layer-while-held movesym)) (layer-toggle movesym))
   fnum (
     tap-dance 300 (
       (tap-hold 100 100 (one-shot 1000 lshift) (layer-toggle fnum))
@@ -41,7 +40,7 @@
     )
   )
   spcm_ (tap-hold 200 200 spc (layer-toggle movesym_))
-  csc ( 
+  csc (
     tap-dance 300 (
       (tap-hold 200 200 esc lctrl)
       (multi lctrl lshift)
@@ -53,15 +52,15 @@
       (layer-toggle qwerty_ctrl)
     )
   )
-  shift ( 
+  shift (
     tap-dance 300 (
       (tap-hold 200 200 (one-shot 1000 lshift) lshift)
       (layer-toggle fnum)
     )
   )  ;; ctrl esc
-  alt ( 
+  alt (
     tap-dance 300 (
-      lalt
+      (tap-hold 200 200 ( one-shot 1000 (layer-while-held movesym) ) lalt)
       (layer-toggle emoji)
     )
   )  ;; ctrl esc
@@ -105,7 +104,7 @@
   tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
   @csc   a     s     d     f     g     h     j     k     l     ;     '    @_⏎
   @shift  z     x     c     v     b     n     m     ,     .     /    rshift
-  lctrl @alt @spcm_  @fnum_ ⏎
+  lctrl @alt @spcm_  @fnum_ @spcm_tap
 )
 
 (deflayer graphite_rise
@@ -114,34 +113,16 @@
   tab  b     l     d     w     q     [     '     f     o     u     j     S-;   S-'
   @csc  n     r     t     s     g     ;     y     h     a     e     i     @⏎
   @shift z    @xt    m     c     ,     ]     k     p     v     .     /
-  @ctrl @alt @spcm  @fnum ⏎
+  @ctrl @alt @spcm  @fnum @spcm_tap
 )
 
 (deflayer graphite_rise_test
-  `
+`
   caps 1     2     3     4     5     6     7     8     @,s  ;    -
   tab  b     l     d     w     q     [     '     f     o     u     j     S-;   S-'
   @csc  n     r     t     s     g     ;     y     h     a     e     i     @⏎
   @shift z    @xt    m     c     ,     ]     k     p     v     .     /
-  @ctrl @alt @spcm  @fnum ⏎
-)
-
-(deflayer sturdy
-  `
-  caps 1     2     3     4     5     6     7     8     9     0    -
-  tab  w     m     l     c     q     [     '     f     o     u     j     S-;   S-'
-  @csc  s     t     r     d     p     ;     x     h     a     e     i     @;
-  @shift z     @k    y     g     ,     ]     b     n     v     .     /
-  @ctrl @alt @spcm  @fnum ⏎
-)
-
-(deflayer focal
-  `
-  caps 1     2     3     4     5     6     7     8     9     0    -
-  tab  v     l     h     g     p     [     q     f     o     u     j     S-;   S-'
-  @csc  s     r     n     t     b     ;     y     c     a     e     i     @;
-  @shift z     @k    m     d     x     ]     '     w     ,     .     /
-  @ctrl @alt @spcm  @fnum ⏎
+  @ctrl @alt @spcm  @fnum @spcm_tap
 )
 
 (deflayer qwerty_dispaced

@@ -159,7 +159,7 @@ return {
 			    'SignColumn', 'CursorLine', 'CursorLineNr', 'StatusLine', 'StatusLineNC',
 			    'EndOfBuffer', 'MiniFilesNormal', 'MiniFilesTitleFocused', 'MiniFilesFile',
 			    'MiniStatuslineFilename', 'MiniStatuslineinfo', 'MiniStatuslineInactive', 'MiniClueDescSingle',
-          'LazyNormal', 'BlinkCmpMenu'
+          'LazyNormal', 'BlinkCmpMenu', 'ModeMsg'
 			    -- 'MiniTablineCurrent', 'MiniTablineVisible', 'MiniTablineHidden', 'MiniTablineModifiedCurrent',
 			    -- 'MiniTablineModifiedVisible', 'MiniTablineModifiedHidden',
 			    -- 'StatusLine',
