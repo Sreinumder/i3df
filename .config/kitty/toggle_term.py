@@ -27,6 +27,8 @@ def handle_result(args: list[str], answer: str, target_window_id: int, boss: Bos
         # Get current window's cwd
         cwd = active.cwd_of_child if active else 'current'
 
+        tab.goto_layout('splits')
+
         # Create new split at bottom with synchronized cwd
         response = boss.call_remote_control(None, (
             'launch',
