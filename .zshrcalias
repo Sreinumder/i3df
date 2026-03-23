@@ -62,10 +62,6 @@ alias con.='yazi ~/.config/'
 alias cony='cd ~/.config/yazi/; nvim .'
 alias conz='nvim ~/i3df/.zshrc'
 
-alias N='cd ~/notes; y'
-alias Nha='nvim ~/notes/hobby/anime/'
-alias Nc='nvim ~/notes/code/'
-
 alias nnp='nvim --cmd "let g:pluginless = 1"'
 alias b='btop'
 alias py='python'
@@ -107,8 +103,26 @@ alias xrd='xrandr --delmonitor HDMI-1~1; xrandr --delmonitor HDMI-1~2; xrandr --
 alias xr='xrd; xrm'
 
 
-function mkcd () { mkdir -p -- "$@" cd -P -- "${@: -1}" }
+function mkcd () { mkdir -p -- "$@" && cd -P -- "${@: -1}" }
 function mvcd() { mv "$@" && cd "${@: -1}" }
+function rnpwd() {
+  if [ "$#" -ne 1 ]; then
+    echo "Usage: rnpwd <new-name>"
+    return 1
+  fi
+
+  local current
+  current=$(basename "$PWD")
+
+  if [ "$1" = "$current" ]; then
+    echo "Error: new name is the same as the current directory name"
+    return 1
+  fi
+
+  cd .. || return
+  mv "$current" "$1" || return
+  cd "$1" || return
+}
 function cpcd() { cp -r "$@" && cd "${@: -1}" }
 function mvkcd() { mkdir -p "${@: -1}" && mv "$@" && cd "${@: -1}" }
 function cpkcd() { mkdir -p "${@: -1}" && cp -r "$@" && cd "${@: -1}" }
@@ -245,3 +259,72 @@ function fzf-zeal() {
     docset=$(ls ~/.local/share/Zeal/Zeal/docsets/ | sed 's/\.xml$//' | fzf)
     [ -n "$docset" ] && zeal "$docset"
 }
+
+# note taking with gh
+# https://dev.to/shwetarkadam/how-to-take-notesto-do-list-in-terminal-itself-vim-or-spacemacs-or-something-else-4fmn
+# $ echo '# notes' > /tmp/notes.md # you won't need these files after initial creation as future edits will be immediately written to GH Gists
+# $ echo '# todos' > /tmp/todos.md # you won't need these files after initial creation as future edits will be immediately written to GH Gists
+# $ gh gist create /tmp/notes.md /tmp/todos.md --desc "My notes & todos"
+# will generate hash for your gist
+
+GIST_ID="a1e4237dc4a4aeed694c4232627b5285"
+notes_DIR="$HOME/notes/gist/a1e4237dc4a4aeed694c4232627b5285/"
+
+function is_online() {
+  ping -c 1 github.com &>/dev/null
+}
+
+function N() {
+  if [ $# -eq 0 ]; then
+    # No argument → open full gist
+    if is_online; then
+      echo "[🌐] Opening full gist..."
+      gh gist edit $GIST_ID && (cd $notes_DIR && git pull)
+    else
+      echo "[📴] Offline → opening local notes dir"
+      nvim $notes_DIR
+    fi
+  else
+    FILE=$1
+
+    if is_online; then
+      echo "[🌐] Editing $FILE.md on gist..."
+      gh gist edit $GIST_ID -f $FILE.md && \
+      (cd $notes_DIR && git pull)
+    else
+      echo "[📴] Offline → editing local $FILE.md"
+      nvim $notes_DIR/$FILE.md
+    fi
+  fi
+}
+
+function Na() {
+  FILE=$1
+
+  if [ -z "$FILE" ]; then
+    echo "Usage: Na <filename>"
+    return 1
+  fi
+
+  TMP_FILE="/tmp/$FILE.md"
+  echo "# $FILE" > $TMP_FILE
+
+  if gh gist edit $GIST_ID --add "$TMP_FILE" 2>/dev/null; then
+    echo "[✓] Created remotely → syncing..."
+    cd $NOTES_DIR && git pull
+    nvim "$NOTES_DIR/$FILE.md"
+  else
+    echo "[⚠] Remote failed → creating locally"
+    LOCAL_FILE="$NOTES_DIR/$FILE.md"
+    [ ! -f "$LOCAL_FILE" ] && echo "# $FILE" > "$LOCAL_FILE"
+    nvim "$LOCAL_FILE"
+  fi
+}
+
+# function NA() {echo "# $@" > /tmp/$@.md && gh gist edit a1e4237dc4a4aeed694c4232627b5285 --add "/tmp/$@.md" && nvim ~/.zshrcalias -c "normal GyyPg_i -f $@.md0fN"}
+function NV() {gh gist view a1e4237dc4a4aeed694c4232627b5285}
+function NO() {xdg-open "https://gist.github.com/Sreinumder/a1e4237dc4a4aeed694c4232627b5285"}
+
+function No() { Ng notes }
+function Nt() { Ng todos }
+function Nf() { Ng flutter }
