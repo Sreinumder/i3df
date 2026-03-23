@@ -1,60 +1,60 @@
 # [doing]
-# command=~/i3df/scripts/doing_block.sh
+# command=~/i3df/i3-blocks-scripts/doing_block.sh
 # interval=1
 # 
 [playing]
-command=~/i3df/scripts/playing.sh
+command=~/i3df/i3-blocks-scripts/playing.sh
 interval=1
 
 [playing_switcher]
-command=~/i3df/scripts/playing_switcher.sh
+command=~/i3df/i3-blocks-scripts/playing_switcher.sh
 interval=1
 
 # [cur_window]
-# command=~/i3df/scripts/current_window_ram_cpu.sh
+# command=~/i3df/i3-blocks-scripts/current_window_ram_cpu.sh
 # interval=1
 # markup=pango
 
 [connection]
-command=~/i3df/scripts/wifi.sh
+command=~/i3df/i3-blocks-scripts/wifi.sh
 interval=1
 
 [cpu]
-command=~/i3df/scripts/cpu.sh
+command=~/i3df/i3-blocks-scripts/cpu.sh
 interval=1
 markup=pango
 
 [ram]
-command=~/i3df/scripts/ram.sh
+command=~/i3df/i3-blocks-scripts/ram.sh
 interval=1
 markup=pango
 
 [brightness]
-command=~/i3df/scripts/brightness.sh
+command=~/i3df/i3-blocks-scripts/brightness.sh
 interval=1
 markup=pango
 
 [volume]
-command=~/i3df/scripts/volume.sh
+command=~/i3df/i3-blocks-scripts/volume.sh
 interval=1
 markup=pango
 
 [audio_sink_mic_status]
-command=~/i3df/scripts/audio_sink_mic_status.sh
+command=~/i3df/i3-blocks-scripts/audio_sink_mic_status.sh
 interval=1
 markup=pango
 
 [battery]
-command=~/i3df/scripts/battery.sh
+command=~/i3df/i3-blocks-scripts/battery.sh
 interval=1
 markup=pango
 
 [tzdate]
 # label=日付
-command=~/i3df/scripts/date.sh
+command=~/i3df/i3-blocks-scripts/date.sh
 interval=30
 
 [tztime]
 # label=時間
-command=~/i3df/scripts/time.sh
+command=~/i3df/i3-blocks-scripts/time.sh
 interval=1
