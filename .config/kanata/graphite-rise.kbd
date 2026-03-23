@@ -47,11 +47,7 @@
       (multi lctrl lalt lshift)
     )
   )
-  ctrl (
-    tap-dance 300 (
-      (layer-toggle qwerty_ctrl)
-    )
-  )
+  ctrl ( multi lctl (layer-toggle default_qwerty))
   shift (
     tap-dance 300 (
       (tap-hold 200 200 (one-shot 1000 lshift) lshift)
@@ -65,7 +61,6 @@
     )
   )  ;; ctrl esc
   @/ (tap-hold 200 200 (one-shot 1000 lshift) lshift)
-  nll(layer-switch fnum) ;; fn num layer lock
   ; (tap-hold 200 200 ; (layer-toggle extra))
   ⏎ (tap-hold 200 200 ⏎ (layer-toggle extra))
   , (tap-hold 200 200 , (layer-toggle extra))
@@ -143,24 +138,6 @@
  lctrl lalt @spcm  @fnum ⏎
  )
 
-(deflayer extra
- mfwd
- caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
- mbck mlft  mlft  @mA   mrgt  t     [     y     _     mute  vold  volu  ]     \
- @csc  @md   @m<   @mv   @m>   mfwd  ⏎     h     @tq   prev  pp    next  '
- @shift @mu   @md   @ml   @mr   b     ]     .     @tg   brdn  brup  /
- @tq @ts @tg @tq_ @tf
- )
-
-(deflayer extra_
- mfwd
- caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
- mbck mfwd  mlft  @mA   mrgt  t     y     _     mute  vold  volu   [    ]     \
- @csc  @md   @m<   @mv   @m>   mfwd  h     @tq   prev  pp    next  ' ret
- @shift @mu   @ml   @ml   @mr   b     .     @tg   brdn  brup  /  rshift
- @tq @ts @tg @tq_ @tf
- )
-
 (deflayer movesym
   `
   caps S-5   S-\   S-7   S-6   _     6     7     8     9     0     -
@@ -181,21 +158,39 @@
 
 (deflayer fnum_
   `
-  caps 1     2     3     4     5     6     7     8     9     0     -
+  caps 1     2     3     4     5     6     7     @,s  9     0     -
   tab  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12   \
   @csc  1     2     3     4     5     6     7     8     9     0     @000  ⏎
-  @shift @nll  ,     +     -     XX    S-5   S-8   ,     .     / rshift
+  @shift ,     +     =     -     S-6   S-5   S-8   ,     .     / rshift
   lctrl @alt @spcm  @fnum ⏎
 )
 
 (deflayer fnum
   `
-  caps 1     2     3     4     5     6     7     8     9     0     -
+  caps 1     2     3     4     5     6     7     @,s  9     0     -
   tab  f1    f2    f3    f4    f5    [     f6    f7    f8    f9    f10   f11   f12
   @csc  1     2     3     4     5     ⏎     6     7     8     9     0     @000
-  @shift @nll  ,     +     -     XX    ]     S-5   S-8   ,     .     /
+  @shift ,     +     =     -     S-6   ]     S-5   S-8   ,     .     /
   lctrl @alt @spcm_ @fnum_ ⏎
 )
+
+(deflayer extra
+ mfwd
+ caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
+ mbck mlft  mlft  @mA   mrgt  t     [     y     _     mute  vold  volu  ]     \
+ @csc  @md   @m<   @mv   @m>   mfwd  ⏎     h     @tq   prev  pp    next  '
+ @shift @mu   @md   @ml   @mr   b     ]     .     @tg   brdn  brup  /
+ @tq @ts @tg @tq_ @tf
+ )
+
+(deflayer extra_
+ mfwd
+ caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
+ mbck mfwd  mlft  @mA   mrgt  t     y     _     mute  vold  volu   [    ]     \
+ @csc  @md   @m<   @mv   @m>   mfwd  h     @tq   prev  pp    next  ' ret
+ @shift @mu   @ml   @ml   @mr   b     .     @tg   brdn  brup  /  rshift
+ @tq @ts @tg @tq_ @tf
+ )
 
 (deflayer emoji
   `
