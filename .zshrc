@@ -142,6 +142,10 @@ function cd_to_clipboard_path { cd "$(wl-paste)" && -z4h-redraw-prompt y; }
 zle -N cd_to_clipboard_path
 bindkey -M viins '^[c' cd_to_clipboard_path
 bindkey -M vicmd '^[c' cd_to_clipboard_path
+function copy_path_to_clipboard { pwd | wl-copy }
+zle -N copy_path_to_clipboard
+bindkey -M viins '^[x' copy_path_to_clipboard
+bindkey -M vicmd '^[x' copy_path_to_clipboard
 
 
 
