@@ -38,10 +38,8 @@ else
   require("options")
 	require("lsp")
 	-- require("mappings")
-  -- require("hacks")
 end
 vim.schedule(function()
 	require("mappings")
-  require("hacks")
 	require("autocmd")
 end)

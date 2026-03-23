@@ -4,7 +4,6 @@ vim.opt.shortmess:append("I")
 require("options")
 require("autocmd")
 require("mappings")
-require("hacks")
 require("lazy").setup({
   { import = "plugins.editing" },
 }, lazy_config)
