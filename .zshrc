@@ -138,7 +138,7 @@ zoxide-interactive() { zi && -z4h-redraw-prompt;}
 zle -N zoxide-interactive
 bindkey -M viins '^[z' zoxide-interactive
 bindkey -M vicmd '^[z' zoxide-interactive
-function cd_to_clipboard_path { cd "$(wl-paste)" && -z4h-redraw-prompt y; }
+function cd_to_clipboard_path {wlclip="$(wl-paste)" && [[${#wlclip} -lt 100]] && cd "${wlclip}" && -z4h-redraw-prompt y;}
 zle -N cd_to_clipboard_path
 bindkey -M viins '^[c' cd_to_clipboard_path
 bindkey -M vicmd '^[c' cd_to_clipboard_path
