@@ -146,6 +146,10 @@ function copy_path_to_clipboard { pwd | wl-copy }
 zle -N copy_path_to_clipboard
 bindkey -M viins '^[x' copy_path_to_clipboard
 bindkey -M vicmd '^[x' copy_path_to_clipboard
+function open_vscode_here { code $(pwd) }
+zle -N open_vscode_here
+bindkey -M viins '^[.' open_vscode_here
+bindkey -M vicmd '^[.' open_vscode_here
 
 
 
