@@ -45,10 +45,12 @@ alias oc="ouch   compress"
 alias So='exec zsh'
 alias grep='grep --color=auto'
 
+alias icat='kitten icat'
+
 alias cona='nvim ~/i3df/.zshrcalias'
 alias conb='nvim ~/i3df/.bashrc'
 alias cond='cd ~/i3df/.config/dunst; nvim dunstrc'
-alias cone='cd ~/.config/doom/; nvim .'
+alias cone='nvim ~/.zshrcenv'
 alias coni='cd ~/i3df/.config/i3/; nvim config'
 alias cons='cd ~/i3df/.config/sway/; nvim config'
 alias conk='cd ~/i3df/.config/kitty/; nvim .'
