@@ -10,8 +10,8 @@ require("lazy").setup({
   { import = "plugins.treesitter" },
 }, lazy_config)
 local map = vim.keymap.set
-map("n", "<leader>f", function() require("vscode").action("workbench.action.quickOpen") end, {desc = "open quickpicker"})
-map("n", "<leader>j", function() require("vscode").action("workbench.action.showCommands") end, {desc = "commands"})
+-- map("n", "<leader>f", function() require("vscode").action("workbench.action.quickOpen") end, {desc = "open quickpicker"})
+-- map("n", "<leader>j", function() require("vscode").action("workbench.action.showCommands") end, {desc = "commands"})
 map("n", "<leader>k", function() require("vscode").action("workbench.action.showAllEditors") end, {desc = "tabs"})
 
 map("n", "<A-o>", function() require("vscode").action("breadcrumbs.focusAndSelect") end, {desc = "breadcrumbs.toggle"})
@@ -23,7 +23,7 @@ map("n", ";ho", function() require("vscode").action("gitlens.openOnlyChangedFile
 
 map("n", "]x", function() require("vscode").action("editor.action.marker.nextInFiles") end, {desc = "mark next"})
 map("n", "[x", function() require("vscode").action("editor.action.marker.prevInFiles") end, {desc = "mark prev"})
-map("n", "<leader>e", function() require("vscode").action("workbench.view.explorer") end, {desc = "explorer"})
+-- map("n", "<leader>e", function() require("vscode").action("workbench.view.explorer") end, {desc = "explorer"})
 
 -- map("n", "<A-w>", function()
 --   require("vscode").action("workbench.action.closeWindow")

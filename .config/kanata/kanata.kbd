@@ -1,0 +1,77 @@
+;; https://github.com/jtroo/kanata/blob/main/docs/config.adoc
+
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defvar
+  tap-time 150    ;; Shorter tap time for quick presses
+  hold-time 250   ;; Longer hold time to ensure layer switch
+)
+
+(defsrc
+  esc   1     2     3     4     5     6     7     8     9     0     
+  tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
+  caps a     s     d     f     g     h     j     k     l     ;     '     ret
+  lshift z     x     c     v     b     n     m     ,     .     /
+  spc  ralt 
+)
+(defalias
+  fnum (
+    tap-dance 300 (
+      (tap-hold 100 100 (one-shot 1000 lshift) (layer-toggle fnum))
+      (tap-hold 200 200 caps lshift)
+    )
+  )
+  spcm (tap-hold 200 200 spc (layer-toggle movesym))
+  csc ( 
+    tap-dance 300 (
+      (tap-hold 200 200 esc lctrl)
+      (multi lctrl lshift)
+    )
+  )  ;; ctrl esc
+  sl ( macro ( ⇤ S-⇥ )) ;; select current line
+  000( tap-hold 200 200 (macro Digit0 Digit0 Digit0) (layer-toggle extra))
+  '( tap-hold 200 200 ' (layer-toggle extra))
+  
+  mu   (mwheel-up    50 120)
+  md   (mwheel-down  50 120)
+  ml   (mwheel-left  50 120)
+  mr   (mwheel-right 50 120)
+  mA    (movemouse-accel-up    1 1000 1 5)
+  m<    (movemouse-accel-left  1 1000 1 5)
+  mv    (movemouse-accel-down  1 1000 1 5)
+  m>    (movemouse-accel-right 1 1000 1 5)
+)
+
+(deflayer qwerty
+  `   1     2     3     4     5     6     7     8     9     0                              
+  tab  q     w     e     r     t     y     u     i     o     p     [     ]     \
+  @csc  a     s     d     f     g     h     j     k     l     ;     @'    ⏎
+  lshift z     x     c     v     b     n     m     ,     .     /
+  @spcm   @fnum
+)
+
+(deflayer movesym
+  `   S-5   S-\   S-7   S-6   _     6     7     8     9     0     
+  S-,  S-1   S-.   S-9   S-0   [     ]     S-[   S-]   ⏎     ⇟     ⎀    ⎙      \
+  @csc  +     S-8   -     =     S--   ←     ↓     ↑     →     ⇥     ▤    ⏎
+  lshift S-`   S-5   S-6   /     XX    ⇤     ⌫     ⌦     ⇞     @sl
+  @spcm  @fnum
+)
+
+(deflayer fnum
+  `   1     2     3     4     5     6     7     8     9     0
+  tab  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12   \
+  @csc  1     2     3     4     5     6     7     8     9     0     @000  ⏎ 
+  lshift ,     =     +     -     S-6   S-5   S-8   ,     .     /
+  @spcm @fnum
+)
+
+(deflayer extra
+ `   C-⇞   C-⇟   mmid  4     5     6     7     8     9     0
+ mbck mfwd  mlft  @mA   mrgt  t     y     _      mute  vold  volu   [    ]     \
+ @csc  @md   @m<   @mv   @m>   mfwd  h     XX    prev  pp    next  XX  ret
+ lshift  @mu   @ml   @ml   @mr   b     .     XX    brdn  brup  /
+ @spcm @fnum
+ )

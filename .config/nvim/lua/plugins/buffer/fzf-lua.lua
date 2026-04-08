@@ -67,7 +67,7 @@ return {
 			{ mode = "n", "<leader>fa", "<cmd>FzfLua args<cr>", desc = "fzf args" },
 
 			-- { mode = "n", "<leader>frr", "<cmd>FzfLua resume<CR>",  desc = "fzf resume"  },
-			{ mode = "n", "<M-Esc>", "<cmd>FzfLua resume<CR>", desc = "fzf resume" },
+			{ mode = "n", "<leader>fe", "<cmd>FzfLua resume<CR>", desc = "fzf resume" },
 
 			--cword
 			-- { mode = "n", "<A-S-8>", "<cmd>FzfLua grep_cword<CR>",  desc = "fzf cword rg"  },

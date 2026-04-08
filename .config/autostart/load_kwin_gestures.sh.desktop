@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=/home/romik/i3df/.config/inputactions/load_kwin_gestures.sh
+Icon=application-x-shellscript
+Name=load_kwin_gestures.sh
+Type=Application
+X-KDE-AutostartScript=true

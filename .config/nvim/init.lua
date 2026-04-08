@@ -1,4 +1,3 @@
-vim.g.base46_cache = vim.fn.stdpath("data") .. "/base46/"
 vim.g.mapleader = " "
 vim.g.maplocalleader = ";"
 
@@ -27,7 +26,6 @@ elseif vim.g.vscode then --vscode
 else
 	if vim.g.pluginless ~= 1 then
 		local plugins = {
-			{ import = "nvchad.plugins" },
       { import = "plugins.buffer" },
 			{ import = "plugins.ui" },
 			{ import = "plugins.lsp" },
@@ -37,10 +35,8 @@ else
 		}
 		require("lazy").setup(plugins, lazy_config)
 	end
-	dofile(vim.g.base46_cache .. "defaults")
-	dofile(vim.g.base46_cache .. "statusline")
-	require("options")
-	require("kitty+page")
+  require("options")
+	require("lsp")
 	-- require("mappings")
   -- require("hacks")
 end

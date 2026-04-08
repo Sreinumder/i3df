@@ -13,10 +13,7 @@ if not g.vscode then
 	o.softtabstop = 2
 	o.expandtab = true -- expand tab to spaces
 	o.autoindent = true -- copy indent from current line when starting new one
-	o.ignorecase = true -- ignore case when searching
-	o.smartcase = true -- iif you include mixed case in your search, assumes you want case-sensitive
 	-- o.ruler = false
-	o.shortmess:append("sI") -- disable nvim intro
 	o.cmdheight = 0 -- sets cmdline height
 else
 	o.cmdheight = 3 -- sets cmdline height
@@ -25,8 +22,9 @@ else
 	require('vim.treesitter.highlighter').disable = true
 end
 
-
-
+o.shortmess:append("sI") -- disable nvim intro
+o.ignorecase = true -- ignore case when searching
+o.smartcase = true -- iif you include mixed case in your search, assumes you want case-sensitive
 o.splitbelow = true
 o.splitright = true
 o.undofile = true
