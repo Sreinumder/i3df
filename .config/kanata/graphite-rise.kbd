@@ -8,38 +8,18 @@
 )
 
 (defalias
-  tq_ (layer-switch default_qwerty)
-  tq (layer-switch qwerty_dispaced)
+  tq (layer-switch default_qwerty)
+  td (layer-switch graphite_rise)
   tg (layer-switch graphite_rise)
-  ts (layer-switch graphite_rise_test)
-  tf (layer-switch tapio_expanded)
+  tf (layer-switch graphite_rise)
+  email (macro r o j g o s a i Digit0 Digit2 S-2 g m a i l . c o m)
   spcm (tap-hold 200 200 spc (layer-toggle movesym))
-  spcm_tap (tap-hold 200 200 (one-shot 1000 (layer-while-held movesym)) (layer-toggle movesym))
   fnum (
     tap-dance 300 (
       (tap-hold 100 100 (one-shot 1000 lshift) (layer-toggle fnum))
       (tap-hold 200 200 caps lshift)
     )
   )
-  fnum_ (
-    tap-dance 300 (
-      (tap-hold 100 100 (one-shot 1000 lshift) (layer-toggle fnum_))
-      (tap-hold 200 200 caps lshift)
-    )
-  )
-  fnum* (
-    tap-dance 300 (
-      (tap-hold 100 100 spc (layer-toggle fnum))
-      caps
-    )
-  )
-  fnum*_ (
-    tap-dance 300 (
-      (tap-hold 100 100 spc (layer-toggle fnum_))
-      caps
-    )
-  )
-  spcm_ (tap-hold 200 200 spc (layer-toggle movesym_))
   csc (
     tap-dance 300 (
       (tap-hold 200 200 esc lctrl)
@@ -51,7 +31,7 @@
   shift (
     tap-dance 300 (
       (tap-hold 200 200 (one-shot 1000 lshift) lshift)
-      (layer-toggle fnum)
+      (multi lshift lalt)
     )
   )  ;; ctrl esc
   alt (
@@ -61,17 +41,11 @@
     )
   )  ;; ctrl esc
   @/ (tap-hold 200 200 (one-shot 1000 lshift) lshift)
-  ; (tap-hold 200 200 ; (layer-toggle extra))
   ⏎ (tap-hold 200 200 ⏎ (layer-toggle extra))
-  , (tap-hold 200 200 , (layer-toggle extra))
-  ,s (macro , spc)
-  k (tap-hold 200 200 k (layer-toggle extra))
   xt (tap-hold 200 200 x (layer-toggle extra))
-  _⏎ (tap-hold 200 200 ⏎ (layer-toggle extra_))
-  ' (tap-hold 200 200 ' (layer-toggle extra_))
-  000 (tap-hold 200 200 (macro Digit0 Digit0 Digit0) (layer-toggle extra_))
-  sl (macro ⇤ lshift ⇥ ) ;; select current line
-  A4 (multi lalt f4)
+  ,s (macro , spc)
+  000 (tap-hold 200 200 (macro Digit0 Digit0 Digit0) (layer-toggle extra))
+  sl (macro ⇤ S-⇥  ) ;; select current line
 
   mu   (mwheel-up    50 120)
   md   (mwheel-down  50 120)
@@ -97,9 +71,9 @@
   `
   esc   1     2     3     4     5     6     7     8     9     0    -
   tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
-  @csc   a     s     d     f     g     h     j     k     l     ;     '    @_⏎
-  @shift  z     x     c     v     b     n     m     ,     .     /    rshift
-  lctrl @alt @spcm_  @fnum_ @spcm_tap
+  caps   a     s     d     f     g     h     j     k     l     ;     '     @⏎
+  lshift  z     x     c     v     b     n     m     ,     .     /    rshift
+  lctrl lalt spc  ralt rctrl
 )
 
 (deflayer graphite_rise
@@ -108,95 +82,41 @@
   tab  b     l     d     w     q     [     '     f     o     u     j     S-;   S-'
   @csc  n     r     t     s     g     ;     y     h     a     e     i     @⏎
   @shift z    @xt    m     c     ,     ]     k     p     v     .     /
-  @ctrl @alt @spcm  @fnum @spcm_tap
+  @ctrl @alt @spcm  @fnum -
 )
-
-(deflayer graphite_rise_test
-`
-  caps 1     2     3     4     5     6     7     8     @,s  ;    -
-  tab  b     l     d     w     q     [     '     f     o     u     j     S-;   S-'
-  @csc  n     r     t     s     g     ;     y     h     a     e     i     @⏎
-  @shift z    @xt    m     c     ,     ]     k     p     v     .     /
-  @ctrl @alt @spcm  @fnum @spcm_tap
-)
-
-(deflayer qwerty_dispaced
-  `
- caps 1     2     3     4     5     6     7     8     9     0     -
- tab  q     w     e     r     t     [     y     u     i     o     p     ⏎     \
- @csc  a     s     d     f     g     ⏎     h     j     k     l     ;     @'
- @shift z     x     c     v     b     ]     n     m     b     .     /
- lctrl lalt @spcm  @fnum ⏎
- )
-
-(deflayer qwerty_ctrl
-  `
- caps  C-j   C-k   C-k  4     5     6     7     8     9     0     -
- tab   C-y   C-u   C-o   C-h   C-'  [     y     u     i     o     p     ⏎     \
- @csc   C-a   C-e   C-i   C-f   C-j  ⏎     h     j     k     l     ;     @'
- @shift  C-z   C-x   C-c   C-v     b     ]     n     m     b     .     /
- lctrl lalt @spcm  @fnum ⏎
- )
 
 (deflayer movesym
   `
-  caps S-5   S-\   S-7   S-6   _     6     7     8     9     0     -
-  S-,  S-1   S-.   S-9   S-0   [     [     ]     S-[   S-]   ⏎     ⇟     ⎀    ⎙ 
-  @csc  +     S-8   -     =     S--   ⏎     ←     ↓     ↑     →     ⇥     ▤ 
+  caps S-5   S-\   S-7   S-6   _     6     7     8     @,s   ;     -
+  S-,  S-1   S-.   S-9   S-0   [     [     ]     S-[   S-]   ⏎     ⇟     ⎀    ⎙
+  @csc  +     S-8   -     =     S--   ⏎     ←     ↓     ↑     →     ⇥     ▤
   @shift S-`   S-5   S-6   /     XX    ]     ⇤     ⌫     ⌦     ⇞     \
-  lctrl @alt @spcm  @fnum* ⏎
-)
-
-(deflayer movesym_
-  `
-  caps S-5   S-\   S-7   S-6   _     6     7     8     9     0     -
-  S-,  S-1   S-.   S-9   S-0   [     ]     S-[   S-]   ⏎     ⇟     ⎀    ⎙      \
-  @csc  +     S-8   -     =     S--   ←     ↓     ↑     →     ⇥     ▤    ⏎
-  @shift S-`   S-5   S-6   /     XX    ⇤     ⌫     ⌦     ⇞     /   rshift
-  lctrl @alt @spcm_  @fnum*_ ⏎
-)
-
-(deflayer fnum_
-  `
-  caps 1     2     3     4     5     6     7     @,s  9     0     -
-  tab  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12   \
-  @csc  1     2     3     4     5     6     7     8     9     0     @000  ⏎
-  @shift ,     +     =     -     S-6   S-5   S-8   ,     .     / rshift
-  lctrl @alt @spcm  @fnum ⏎
+  lctrl @alt @spcm  @fnum @sl
 )
 
 (deflayer fnum
   `
-  caps 1     2     3     4     5     6     7     @,s  9     0     -
+  caps 1     2     3     4     5     6     7     @,s  ;     0     -
   tab  f1    f2    f3    f4    f5    [     f6    f7    f8    f9    f10   f11   f12
   @csc  1     2     3     4     5     ⏎     6     7     8     9     0     @000
-  @shift ,     +     =     -     S-6   ]     S-5   S-8   ,     .     /
-  lctrl @alt @spcm_ @fnum_ ⏎
+  @shift ,     =     +     -     S-6   ]     S-5   S-8   ,     .     /
+  lctrl @alt @spcm @fnum ⏎
 )
 
 (deflayer extra
  mfwd
  caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
- mbck mlft  mlft  @mA   mrgt  t     [     y     _     mute  vold  volu  ]     \
+ mbck mlft  mlft  @mA   mrgt  @email [     y     _     mute  vold  volu  ]     \
  @csc  @md   @m<   @mv   @m>   mfwd  ⏎     h     @tq   prev  pp    next  '
  @shift @mu   @md   @ml   @mr   b     ]     .     @tg   brdn  brup  /
- @tq @ts @tg @tq_ @tf
- )
-
-(deflayer extra_
- mfwd
- caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
- mbck mfwd  mlft  @mA   mrgt  t     y     _     mute  vold  volu   [    ]     \
- @csc  @md   @m<   @mv   @m>   mfwd  h     @tq   prev  pp    next  ' ret
- @shift @mu   @ml   @ml   @mr   b     .     @tg   brdn  brup  /  rshift
- @tq @ts @tg @tq_ @tf
+ @tq @td @tg @tq @tf
  )
 
 (deflayer emoji
   `
   caps 🔣🤝  🔣👍  🔣👎  🔣💡   🔣✅   -     6      7      8      9   0
   tab  🔣💙  🔣😂  🔣💀  🔣😉   🔣🇳🇵   🔣👇  🔣🧑‍🦽   🔣😮   🔣🙉   🔣🙌  🔣🙁   🔣🫶   🔣👆
-  🔣🧠  🔣🙅  🔣🥀  🔣😆  🔣🙂   🔣👌   ⏎     🔣✌️   🔣💯   🔣🤭   🔣🔗   🔣🙇   🔣⚠️ 
+  🔣🧠  🔣🙅  🔣🥀  🔣😆  🔣🙂   🔣👌   ⏎     🔣✌️   🔣💯   🔣🤭   🔣🔗   🔣🙇   🔣⚠️
   @shift 🔣🏃   🔣💨   🔣🙂  🔣🙃  🔣🫅  ]      🔣🤯   🔣🙏   🔣🧲   🔣👏  🔣🤛
   lctrl lalt @spcm  @fnum ⏎
 )
@@ -204,53 +124,53 @@
 
 (deflayer tapio_expanded
   0
-  esc   @q    @w    @e    @r    @t     6     7     8     9     0    -
-  tab   @a    @s    @d    @f    @g    d     u     i     o     p     [     ]     \
-  @csc   @z    @x    @c    @v    @b    h     j     k     l     ;     '    @_⏎
-  @shift  @1    @2    @3    @4    '     n     m     ,     .     /    rshift
-  lctrl @alt3 @spcl2  @fnum_ ⏎
+  @alt  @q    @w    @e    @r    @t     6     7     8     9     0    -
+  @csc  @a    @s    @d    @f    @g    d     u     i     o     p     [     ]     \
+  @shift @z    @x    @c    @v    @b    h     j     k     l     ;     '    @⏎
+  tab     @1    @2    @3    @4    '     n     m     ,     .     /    rshift
+  lctrl @alt3 @spcl2  @fnum ⏎
 )
 
 (deflayer tapio_expanded_l2
   0
   esc   6     7     8     9     @000  6     7     8     9     0    -
   S-,  S-1   S-.   S-9   S-0     `     d     u     i     o     p     [     ]     \
-  @csc     +     S-8   -      =   S--   h     j     k     l     ;     '    @_⏎
+  @csc     +     S-8   -      =   S--   h     j     k     l     ;     '    @⏎
   @shift    S-`     ;     [      ]   b     n     m     ,     .     /    rshift
-  lctrl @alt3 @spcl2  @fnum_ ⏎
+  lctrl @alt3 @spcl2  @fnum ⏎
 )
 
 (deflayer tapio_expanded_l3
   mute
   esc   volu  prev  pp    next  brup  6     7     8     9     0    -
   tab    vold  S-[   ↑     S-]   brdn  d     u     i     o     p     [     ]     \
-  @csc   ⇥     ←     ↓     →     ⇤     h     j     k     l     ;     '    @_⏎
+  @csc   ⇥     ←     ↓     →     ⇤     h     j     k     l     ;     '    @⏎
   @shift  \     S-\   S-6   S-7   b     n     m     ,     .     /    rshift
-  lctrl @alt3 @spcl2  @fnum_ ⏎
+  lctrl @alt3 @spcl2  @fnum ⏎
 )
 
 (defchords tapio_chords 40
   ;; (q w e r t a s d f g z x c v b 1 2 3 4)
 
 
-  ;;   s n i   -- ring and middle         (ae) ␣ (no) ⏎ (ne) ⌫ (ie) ⌦             
+  ;;   s n i   -- ring and middle         (ae) ␣ (no) ⏎ (ne) ⌫ (ie) ⌦
   ;;  a o t e                             (ot) d (te) th (oe) c (sn) p (ni)   (ai) w
   ;;       u y -- index finger
   ;;      l r h -- thumb
 
 ;; letters left bcdfgjkmpqvwxz
-;; b 
+;; b
 
   ;; chords with r thumb + sniaote ->
-  ;;   s n i  
+  ;;   s n i
   ;;  ␣ b f d
-  ;;       u y                
+  ;;       u y
   ;;       (r) -- chords with r thumb
 
   ;; chords with h thumb + sniaote ->
-  ;;   s n i  
+  ;;   s n i
   ;;  ␣ b f d
-  ;;       u y                
+  ;;       u y
   ;;         (h) -- chords with r thumb
 
 (q) '
@@ -309,27 +229,27 @@
 ;;(3 c)
 ;;(3 v)
 ;;
-;;(4 q) 
-;;(4 w) 
-;;(4 e) 
-;;(4 r) 
-;;(4 a) 
-;;(4 s) 
-;;(4 d) 
-;;(4 f) 
-;;(4 c) 
-;;(4 v) 
+;;(4 q)
+;;(4 w)
+;;(4 e)
+;;(4 r)
+;;(4 a)
+;;(4 s)
+;;(4 d)
+;;(4 f)
+;;(4 c)
+;;(4 v)
 ;;
-;;(2 q) 
-;;(2 w) 
-;;(2 e) 
-;;(2 r) 
-;;(2 a) 
-;;(2 s) 
-;;(2 d) 
-;;(2 f) 
-;;(2 c) 
-;;(2 v) 
+;;(2 q)
+;;(2 w)
+;;(2 e)
+;;(2 r)
+;;(2 a)
+;;(2 s)
+;;(2 d)
+;;(2 f)
+;;(2 c)
+;;(2 v)
 
 
 ;;(q w e r t a s d f g z x c v b 1 2 3 4)
@@ -403,23 +323,22 @@
 ;;(    e   a               ) ;
 ;;
 ;;(3                   c   ) @email
-;;;;(  w                 c   )  
-;;;;(      r             c   )  
+;;;;(  w                 c   )
+;;;;(      r             c   )
 ;;(        a           c   ) ⇥
 ;;(          s         c   ) ←
 ;;(            d       c   ) →
 ;;(        a             v ) ⇤
 ;;(          s           v ) ↓
-;;;;(  w                   v )  
-;;;;(    e                 v )  
-;;;;(      r               v )  
-;;;;(              f       v ) 
+;;;;(  w                   v )
+;;;;(    e                 v )
+;;;;(      r               v )
+;;;;(              f       v )
 )
 
 ;; (defchords tapio_l2_chords 60)
 
 (defalias
-  email (macro r o j g o s a i Digit0 Digit2 S-2 g m a i l . c o m)
   q(chord tapio_chords q)
   w(chord tapio_chords w)
   e(chord tapio_chords e)
