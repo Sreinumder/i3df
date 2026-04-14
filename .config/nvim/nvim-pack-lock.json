@@ -1,7 +1,7 @@
 {
   "plugins": {
     "blink.cmp": {
-      "rev": "5e088706d92da09949e081cc4d49e2c9ba8cfc8c",
+      "rev": "456d38d1cd3743926f329204c2340f3e7840aad6",
       "src": "https://github.com/saghen/blink.cmp"
     },
     "coerce.nvim": {
@@ -17,11 +17,11 @@
       "src": "https://github.com/folke/flash.nvim"
     },
     "fzf-lua": {
-      "rev": "c9e7b7bfbd01f949164988ee1684035468e1995c",
+      "rev": "4deeecf611c0beba6455e6cf06e2c051a6169dd4",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "mini.nvim": {
-      "rev": "3923662bf3d6ca49a9503f8d7196ea0450983e6a",
+      "rev": "2431902e78b76f435542d1e606f08475360068ca",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "multicursor.nvim": {
@@ -29,11 +29,11 @@
       "src": "https://github.com/jake-stewart/multicursor.nvim"
     },
     "nvim-treesitter": {
-      "rev": "c82bf96f0a773d85304feeb695e1e23b2207ac35",
+      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-various-textobjs": {
-      "rev": "34ca4f6b54cf167554c5792cacc69c930b654136",
+      "rev": "e049b24fc2042a424843a8db79af5ceb273be6f6",
       "src": "https://github.com/chrisgrieser/nvim-various-textobjs"
     },
     "transparent.nvim": {

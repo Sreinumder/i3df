@@ -1,61 +1,67 @@
+-- Rise's nvim config for 0.12+ Open the below folds with za or zi for disabling folds
+-- vim global options for both {{{
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
-
 vim.g.netrw_browser_split = 4
 vim.g.netrw_banner = 0
+vim.o.undofile = true
+vim.o.ignorecase = true
+vim.o.undolevels = 10000
+vim.o.virtualedit = "block"
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+vim.o.splitbelow = true
+vim.o.splitright = true
 
-vim.pack.add({'https://github.com/nvim-mini/mini.nvim', 'https://github.com/folke/flash.nvim',
-              'https://github.com/chrisgrieser/nvim-various-textobjs',
-              'https://github.com/jake-stewart/multicursor.nvim',
-              'https://github.com/gregorias/coop.nvim' ,
-              'https://github.com/gregorias/coerce.nvim'
-            })
+vim.o.foldcolumn = "1"
+vim.opt.foldtext = "v:lua.custom_foldtext()"
+function _G.custom_foldtext()
+    local line = vim.fn.getline(vim.v.foldstart)
+    line = line:gsub("{{{%d*", "") -- }}}
+    line = line:gsub("^%s+", "") -- remove leading whitespace
+    local cs = vim.bo.commentstring -- get commentstring (e.g. "// %s", "# %s", "/* %s */")
+    if cs and cs:find("%%s") then
+        local prefix = cs:match("^(.*)%%s") -- extract prefix before %s
+        if prefix then
+            prefix = prefix:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1") -- escape lua pattern chars
+            line = line:gsub("^" .. prefix .. "%s*", "") -- remove prefix + optional whitespace
+        end
+    end
+    line = vim.trim(line)
+    local lines_count = vim.v.foldend - vim.v.foldstart + 1
+    return "+" .. lines_count .. " lines>>> " .. line
+end
+
+vim.opt.fillchars = {
+    fold = " ",
+    foldopen = "v", -- optional
+    foldclose = ">", -- optional
+    foldsep = " "
+}
+-- }}}
+
+-- coerce.nvim: change naming convention of words using _piw for pascal and _s for snake and so on.{{{
+vim.pack.add({'https://github.com/gregorias/coop.nvim'})
+vim.pack.add({'https://github.com/gregorias/coerce.nvim'})
 require("coerce").setup({
-  -- camelCase 	  _c
-  -- dot.case 	  _d
-  -- kebab-case 	_k
-  -- n12e 	      _n
-  -- PascalCase 	_p
-  -- snake_case 	_s
-  -- UPPER_CASE 	_u
-  -- path/case 	  _/
-  -- space case 	_<space>
-  default_mode_keymap_prefixes = {motion_mode = "_", visual_mode = "_",},
-})
-
-require('mini.operators').setup({
-    replace = {
-        prefix = "s"
-    },
-    evaluate = {
-        prefix = "g="
-    },
-    exchange = {
-        prefix = "<A-s>"
-    },
-    multiply = {
-        prefix = "gm"
-    },
-    sort = {
-        prefix = "gS"
+    -- camelCase 	  _c
+    -- dot.case 	  _d
+    -- kebab-case 	_k
+    -- n12e 	      _n
+    -- PascalCase 	_p
+    -- snake_case 	_s
+    -- UPPER_CASE 	_u
+    -- path/case 	  _/
+    -- space case 	_<space>
+    default_mode_keymap_prefixes = {
+        motion_mode = "_",
+        visual_mode = "_"
     }
 })
+-- }}}
 
+-- various-textobjs.nvim adds useful textobjects like ii ai for inner and outer indent, ih for current line (_vg_), ij for column. {{{
+vim.pack.add({'https://github.com/chrisgrieser/nvim-various-textobjs'})
 require("various-textobjs").setup()
-require('mini.surround').setup({
-    respect_selection_type = true,
-    mappings = {
-        add = "gs", -- Add surrounding in Normal and Visual modes
-        delete = "ds", -- Delete surrounding
-        replace = "cs", -- Change surrounding
-        find = "", -- Find surrounding next
-        find_left = "", -- Find surrounding last
-        highlight = "" -- Highlight surrounding
-    }
-})
-
-require('mini.move').setup()
-
 vim.keymap.set({"o", "x"}, "g;", '<cmd>lua require("various-textobjs").lastChange()<CR>')
 vim.keymap.set({"o", "x"}, "ih", '<cmd>lua require("various-textobjs").lineCharacterwise("inner")<CR>')
 vim.keymap.set({"o", "x"}, "iu", '<cmd>lua require("various-textobjs").number("inner")<CR>')
@@ -120,7 +126,10 @@ end, {
 })
 vim.keymap.set({"o", "x"}, "is", '<cmd>lua require("various-textobjs").subword("inner")<CR>')
 vim.keymap.set({"o", "x"}, "gx", '<cmd>lua require("various-textobjs").url()<CR>')
+-- }}}
 
+-- multicursor.nvim: use multicursor in nvim with <C-A-(j|k|n|mouse)> or M|S in selection mode using regex {{{
+vim.pack.add({'https://github.com/jake-stewart/multicursor.nvim'})
 local mc = require('multicursor-nvim');
 mc.setup()
 vim.keymap.set({"n", "x"}, "<C-A-k>", function()
@@ -196,9 +205,69 @@ mc.addKeymapLayer(function(layerSet)
         end
     end)
 end)
+-- }}}
 
+-- mini.surrond: gs ds cs for example gsiw( cs{< ds' {{{
+vim.pack.add({'https://github.com/nvim-mini/mini.nvim'})
+require('mini.surround').setup({
+    respect_selection_type = true,
+    mappings = {
+        add = "gs", -- Add surrounding in Normal and Visual modes
+        delete = "ds", -- Delete surrounding
+        replace = "cs", -- Change surrounding
+        find = "", -- Find surrounding next
+        find_left = "", -- Find surrounding last
+        highlight = "" -- Highlight surrounding
+    }
+})
+-- }}}
+-- mini.move: Alt+hjkl for moving line or selection {{{
+require('mini.move').setup()
+-- }}}
+-- mini.pairs: auto creates closing for brackets {{{
+require('mini.pairs').setup()
+-- }}}
+-- mini.ai improves vinq(next quote) dipa(previous arguement) cif(function) gh gl (swap words) {{{
+require('mini.ai').setup({
+    custom_textobjects = {
+        _ = {'()%f[%w_]()%w+()%f[^%w_]()'},
+    }
+})
+-- }}}
+-- mini.bracketed [, ] + letter [B]uffer [C]omment [F]ile [I]ndent [Q]uickfix [L]ocation list [D]iagonistics {{{
+require('mini.bracketed').setup()
+-- }}}
+-- mini.splitjoin (splits a body of comma(or other delimeter) separated parts like (a, b, c) into separate lines and also reverses it) {{{
+require('mini.splitjoin').setup({
+    mappings = {
+        toggle = '<A-m>'
+    }
+})
+-- }}}
+-- mini.operators: s (replacing a selection/textobj with clipboard: siw ss S), gm (for cloning gmm gmap), <A-s> (exchanging 2 parts: <A-s><A-s>2j.) {{{
+require('mini.operators').setup({
+    replace = {
+        prefix = "s"
+    },
+    evaluate = {
+        prefix = "g="
+    },
+    exchange = {
+        prefix = "<A-s>"
+    },
+    multiply = {
+        prefix = "gm"
+    },
+    sort = {
+        prefix = "gS"
+    }
+})
 vim.keymap.set("n", "<A-s><A-s>", "V<A-s>", {
     desc = "Exchange Operator line-wise",
+    remap = true
+})
+vim.keymap.set("n", "<A-S>", "<A-s>$", {
+    desc = "Exchange to EoL",
     remap = true
 })
 vim.keymap.set("n", "S", "s$", {
@@ -209,153 +278,34 @@ vim.keymap.set("n", "gmM", "gm$", {
     desc = "Multiply to EoL",
     remap = true
 })
-vim.keymap.set("n", "<A-S>", "<A-s>$", {
-    desc = "Exchange to EoL",
-    remap = true
-})
-vim.keymap.set("n", "<leader>gh", "<A-s>ia<A-s>ila", {
+vim.keymap.set("n", "<leader>gha", "<A-s>ia<A-s>ila", {
     desc = "Exchange arg",
     remap = true
 })
-vim.keymap.set("n", "<leader>gl", "<A-s>ia<A-s>ina", {
+vim.keymap.set("n", "<leader>gla", "<A-s>ia<A-s>ina", {
     desc = "Exchange arg",
     remap = true
 })
-
-local neoswap_entity_pattern = {
-    w = {
-        _in = "\\w",
-        out = "\\W",
-        prev_end = "\\zs\\w\\W\\+$"
-    },
-    k = {
-        _in = "\\k",
-        out = "\\k\\@!",
-        prev_end = "\\k\\(\\k\\@!.\\)\\+$"
-    }
-}
-
-local function neoswap_swap_prev(cursor_pos, entity_type)
-    entity_type = entity_type or "w"
-    cursor_pos = cursor_pos or "follow"
-
-    local line = vim.api.nvim_get_current_line()
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local c = cursor[2]
-    local line_before_cursor = line:sub(1, c + 1)
-
-    local pattern = neoswap_entity_pattern[entity_type]
-    if not pattern then
-        return
-    end
-    local _in = pattern._in
-    local out = pattern.out
-    local prev_end = pattern.prev_end
-
-    local current_word_start = vim.fn.match(line_before_cursor, _in .. "\\+$")
-    if current_word_start == -1 then
-        return
-    end
-
-    local current_word_end = vim.fn.match(line, _in .. out, current_word_start)
-    current_word_end = current_word_end == -1 and #line - 1 or current_word_end
-
-    local prev_word_end = vim.fn.match(line:sub(1, current_word_start), prev_end)
-    if prev_word_end == -1 then
-        return
-    end
-    local prev_word_start = vim.fn.match(line:sub(1, prev_word_end + 1), _in .. "\\+$")
-
-    local current_word = line:sub(current_word_start + 1, current_word_end + 1)
-    local prev_word = line:sub(prev_word_start + 1, prev_word_end + 1)
-
-    local new_line = (prev_word_start > 0 and line:sub(1, prev_word_start) or "") .. current_word ..
-                         line:sub(prev_word_end + 2, current_word_start) .. prev_word .. line:sub(current_word_end + 2)
-
-    local new_c = c
-    if cursor_pos == "keep" then
-        new_c = c + 1
-    elseif cursor_pos == "follow" then
-        new_c = c + prev_word_start - current_word_start + 1
-    elseif cursor_pos == "left" then
-        new_c = prev_word_start + 1
-    end
-
-    vim.api.nvim_set_current_line(new_line)
-    vim.api.nvim_win_set_cursor(0, {cursor[1], math.max(0, new_c - 1)})
-end
-
-local function neoswap_swap_next(cursor_pos, entity_type)
-    entity_type = entity_type or "w"
-    cursor_pos = cursor_pos or "follow"
-
-    local line = vim.api.nvim_get_current_line()
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local c = cursor[2]
-    local line_before_cursor = line:sub(1, c + 1)
-
-    local pattern = neoswap_entity_pattern[entity_type]
-    if not pattern then
-        return
-    end
-    local _in = pattern._in
-    local out = pattern.out
-
-    local current_word_start = vim.fn.match(line_before_cursor, _in .. "\\+$")
-    if current_word_start == -1 then
-        return
-    end
-
-    local current_word_end = vim.fn.match(line, _in .. out, current_word_start)
-    current_word_end = current_word_end == -1 and #line - 1 or current_word_end
-
-    local next_word_start = vim.fn.match(line, _in, current_word_end + 1)
-    if next_word_start == -1 then
-        return
-    end
-
-    local next_word_end = vim.fn.match(line, _in .. out, next_word_start)
-    next_word_end = next_word_end == -1 and #line - 1 or next_word_end
-
-    local current_word = line:sub(current_word_start + 1, current_word_end + 1)
-    local next_word = line:sub(next_word_start + 1, next_word_end + 1)
-
-    local new_line = (current_word_start > 0 and line:sub(1, current_word_start) or "") .. next_word ..
-                         line:sub(current_word_end + 2, next_word_start) .. current_word .. line:sub(next_word_end + 2)
-
-    local new_c = c
-    if cursor_pos == "keep" then
-        new_c = c + 1
-    elseif cursor_pos == "follow" then
-        new_c = c + next_word:len() + next_word_start - current_word_end
-    elseif cursor_pos == "left" then
-        new_c = current_word_start + 1
-    end
-
-    vim.api.nvim_set_current_line(new_line)
-    vim.api.nvim_win_set_cursor(0, {cursor[1], math.max(0, new_c - 1)})
-end
-
-vim.keymap.set("n", "gh", function()
-    neoswap_swap_prev("follow", "w")
-end, {
-    desc = "Swap word left"
+vim.keymap.set("n", "<leader>glp", "<A-s>ap}j<A-s>ap", {
+    desc = "Exchange paragraph",
+    remap = true
 })
-
-vim.keymap.set("n", "gl", function()
-    neoswap_swap_next("follow", "w")
-end, {
-    desc = "Swap word right"
+vim.keymap.set("n", "<leader>ghp", "<A-s>ap{k<A-s>ap", {
+    desc = "Exchange paragraph",
+    remap = true
 })
-
-require('mini.pairs').setup()
-require('mini.splitjoin').setup({
-    mappings = {
-        toggle = '<A-m>'
-    }
+vim.keymap.set("n", "gh", "<A-s>i_<A-s>il_", {
+    desc = "Exchange word",
+    remap = true
 })
-require('mini.ai').setup()
-require('mini.bracketed').setup()
+vim.keymap.set("n", "gl", "<A-s>i_<A-s>in_", {
+    desc = "Exchange word",
+    remap = true
+})
+-- }}}
+
+-- flash.nvim <Space><Space> then any sting to jump to with tags behind it {{{
+vim.pack.add({'https://github.com/folke/flash.nvim'})
 vim.api.nvim_set_hl(0, 'FlashLabel', {
     fg = '#fdfdfd',
     bg = "#d16a6a"
@@ -411,15 +361,9 @@ vim.keymap.set("n", "<leader><leader>", function()
 end, {
     desc = "Flash Jump"
 })
+-- }}}
 
--- require('nvim-various-textobjs').setup()
-
-vim.o.undofile = true
-vim.o.ignorecase = true
-vim.o.undolevels = 10000
-vim.o.virtualedit = "block"
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-
+-- FileType settings{{{
 vim.filetype.add({
     extension = {
         kbd = "kbd",
@@ -440,9 +384,14 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.commentstring = ";; %s"
     end
 })
+-- }}}
 
+-- j|k->gj|gk esc->clear H|L->_|g_(home|end) space+w->(window control <C-w>) Keymaps {{{
 vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-l><CR>", {
     desc = "Redraw / Clear hlsearch / Diff Update"
+})
+vim.keymap.set('x', 'g/', '<Esc>/\\%V', {
+    desc = "search inside the selection"
 })
 vim.keymap.set("x", "J", "j", {
     desc = "Disable annoying J "
@@ -476,9 +425,11 @@ vim.keymap.set({"n", "v", "o"}, "H", "^", {
 vim.keymap.set({"n", "v", "o"}, "L", "g_", {
     desc = "End of Line"
 })
+-- }}}
+-- ,yy ,p  ,ss for using system clipboard and dxc for delete alt+dxc for cut {{{
 vim.keymap.set({"n", "x"}, ",", '"+', {
     desc = 'clipboard_register'
-}) -- clipboard management
+})
 vim.keymap.set({"n", "x"}, "x", '"_x') -- delete with x d or D and cut with alt + x, alt + d, alt + D, alt + c
 vim.keymap.set({"n", "x"}, "X", '"_X')
 vim.keymap.set({"n", "x"}, "d", '"_d')
@@ -495,6 +446,8 @@ vim.keymap.set({"n", "x"}, "<A-d><A-d>", "dd")
 vim.keymap.set({"n", "x"}, ",d", '"+d')
 vim.keymap.set({"n", "x"}, ",dd", '"+dd')
 vim.keymap.set({"n", "x"}, ",D", '"+D')
+-- }}}
+-- [alt + shift + (j|k) for clone lines and in visual mode [space + alt + (j|k|J|K)] for move/clone to new line {{{
 vim.keymap.set("n", "<A-J>", 'V"cy"cP==gv<Esc>', {
     desc = "clone line Down"
 }) -- clone sentences up and down
@@ -519,12 +472,12 @@ vim.keymap.set("x", "<leader><A-J>", '"byo<esc>"bp==', {
 vim.keymap.set("x", "<leader><A-K>", '"byO<esc>"bp==', {
     desc = "clone selection Up(v) to new line"
 })
-vim.keymap.set('x', 'g/', '<Esc>/\\%V')
+-- }}}
+-- <C-s> (save) <C-/> (comment) <C-A-k> for inserting catching group in commandline and insert mode undo separators{{{
 vim.keymap.set("n", "<C-s>", "<cmd>w<cr>", {
     silent = true,
     desc = "hack save this buffer"
 })
-vim.keymap.set({"n", "x"}, ",d", '"+d')
 vim.keymap.set("i", ",", ",<c-g>u", {
     desc = "Insert-mode"
 }) -- Add undo break-points
@@ -542,7 +495,23 @@ vim.keymap.set({"n", "x"}, "<C-/>", "gcc", {
     silent = true,
     desc = "comment"
 })
-
+-- }}}
+-- alt+r for revealing in file explorer or dolphin and space+t(t|o|O) for toggling markdown tick box - [ ] {{{
+vim.api.nvim_create_user_command("Reveal", function()
+    local file_path = vim.fn.expand("%:p")
+    if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+        vim.fn.jobstart({"explorer", "/select,", file_path}, {
+            detach = true
+        })
+    else
+        vim.fn.jobstart({"dolphin", "--select", file_path}, {
+            detach = true
+        })
+    end
+end, {})
+vim.keymap.set("n", "<A-r>", "<cmd>Reveal<cr>", {
+    desc = "reveal current file in explorer"
+})
 function ToggleTodo()
     local line = vim.api.nvim_get_current_line()
     local new_line
@@ -568,11 +537,11 @@ vim.keymap.set("n", "<leader>tO", "O- [ ] ", {
 vim.keymap.set("n", "<leader>tc", "cc- [ ] ", {
     desc = "markdown todo change"
 })
+-- }}}
 
 if vim.g.vscode then
+    -- vscode specific settings {{{
     vim.g.neovim_log_level = 0 -- Disable logging output from Neovim
-    -- vim.opt.shortmess:append("ACI")
-    -- vim.o.completeopt = ""
 
     require('vim.treesitter.highlighter').disable = true
     vim.o.completeopt = ""
@@ -617,13 +586,136 @@ if vim.g.vscode then
         desc = "mark prev"
     })
 
-else ----------------------------------------- non vscode settings
+    -- }}}
+
+else
+    -- nvim options and some bindings{{{
     vim.o.autocomplete = true
     vim.o.wrap = true
+    vim.o.relativenumber = true
+    vim.o.number = true
+    vim.o.tabstop = 2 -- 2 spaces for tabs (prettier default)
+    vim.o.shiftwidth = 2 -- 2 spaces for indent width
+    vim.o.softtabstop = 2
+    vim.o.expandtab = true -- expand tab to spaces
+    vim.o.autoindent = true -- copy indent from current line when starting new one
+    vim.o.foldmethod = "marker"
+    vim.opt.shortmess:append("sI")
     vim.cmd('colorscheme miniwinter')
     -- vim.cmd('colorscheme miniautumn')
-    vim.opt.shortmess:append("sI")
+    vim.keymap.set("n", "<C-PageDown>", "<cmd>bnext<CR>", {
+        desc = "next buffer"
+    })
+    vim.keymap.set("n", "<C-PageUp>", "<cmd>bprevious<CR>", {
+        desc = "previous buffer"
+    })
+    vim.keymap.set("n", "<A-w>", "<cmd>bdelete<CR>", {
+        desc = "close buffer"
+    })
+    vim.cmd("packadd nvim.undotree")
+    vim.keymap.set("n", "<A-u>", require("undotree").open)
+    vim.cmd("packadd nvim.difftool")
+    -- Toggle quickfix/location list
+    vim.keymap.set("n", "<leader>q", function()
+        local windows = vim.fn.getwininfo()
+        for _, win in pairs(windows) do
+            if win.quickfix == 1 then
+                vim.cmd("cclose")
+                return
+            end
+        end
+        vim.cmd("copen")
+    end, {
+        desc = "Toggle quickfix list"
+    })
+    vim.keymap.set("n", "<leader>l", function()
+        local windows = vim.fn.getwininfo()
+        for _, win in pairs(windows) do
+            if win.loclist == 1 then
+                vim.cmd("lclose")
+                return
+            end
+        end
+        vim.cmd("lopen")
+    end, {
+        desc = "Toggle locatoin list"
+    })
 
+    -- incremental selection treesitter/lsp
+    vim.keymap.set({"n", "x", "o"}, "<A-o>", function()
+        if vim.treesitter.get_parser(nil, nil, {
+            error = false
+        }) then
+            require("vim.treesitter._select").select_parent(vim.v.count1)
+        else
+            vim.lsp.buf.selection_range(vim.v.count1)
+        end
+    end, {
+        desc = "Select parent treesitter node or outer incremental lsp selections"
+    })
+
+    vim.keymap.set({"n", "x", "o"}, "<A-i>", function()
+        if vim.treesitter.get_parser(nil, nil, {
+            error = false
+        }) then
+            require("vim.treesitter._select").select_child(vim.v.count1)
+        else
+            vim.lsp.buf.selection_range(-vim.v.count1)
+        end
+    end, {
+        desc = "Select child treesitter node or inner incremental lsp selections"
+    })
+    --  }}}
+
+    -- fzf-lua: open with <space>f(o|f|w|u|b|r|h|,){{{
+    vim.pack.add({"https://github.com/ibhagwan/fzf-lua"})
+    require('fzf-lua').setup({
+        winopts = {
+            row = 0.95,
+            col = 0.00,
+            height = 0.60,
+            width = 1.00
+        },
+        keymap = {
+            fzf = {
+                ["ctrl-q"] = "select-all+accept",
+                ["ctrl-d"] = "preview-page-down",
+                ["ctrl-u"] = "preview-page-up",
+                ["alt-a"] = "toggle-all"
+            }
+        }
+    })
+    vim.keymap.set("n", "<leader>fb", "<cmd>FzfLua builtin<CR>", {
+        desc = "fzf find fzflua-commands"
+    })
+    vim.keymap.set("n", "<leader>fo", "<cmd>FzfLua oldfiles<CR>", {
+        desc = "fzf find fzflua-commands"
+    })
+    vim.keymap.set("n", "<leader>fu", "<cmd>FzfLua buffers<CR>", {
+        desc = "fzf find buffers"
+    })
+    vim.keymap.set("n", "<leader>fr", "<cmd>FzfLua resume<CR>", {
+        desc = "fzf resume"
+    })
+    vim.keymap.set("n", "<leader>fh", "<cmd>FzfLua help_tags<CR>", {
+        desc = "fzf help"
+    })
+    vim.keymap.set("n", "<leader>f,", "<cmd>FzfLua nvim_options<CR>", {
+        desc = "fzf vim_options"
+    })
+    vim.keymap.set("n", "<leader>fw", "<cmd>FzfLua live_grep_native<CR>", {
+        desc = "fzf live grep"
+    })
+    vim.keymap.set("n", "<leader>ff", function()
+        require("fzf-lua").files({
+            cmd = "fd --type f --exclude node_modules"
+        })
+    end, {
+        desc = "fzf find files"
+    })
+    -- }}}
+
+    -- mini.files: oile like file explorer open with - or <Space>e {{{
     local MiniFiles = require('mini.files')
     vim.api.nvim_create_autocmd("User", {
         pattern = "MiniFilesWindowUpdate",
@@ -672,17 +764,22 @@ else ----------------------------------------- non vscode settings
     end, {
         desc = "mini.file"
     })
+    -- }}}
+
+    -- mini.diff: apply or reset git hunk in current file with <space>a or <space>r {{{
     require('mini.diff').setup({
         view = {
             style = 'number'
         },
         mappings = {
-            apply = ';a',
-            reset = ';r',
+            apply = '<leader>a',
+            reset = '<leader>r',
             textobject = 'gh'
         }
     })
+    -- }}}
 
+    -- mini.hipatterns: show colors inside nvim to show hex codes and FIXME TODO {{{
     require('mini.hipatterns').setup({
         highlighters = {
             fixme = {
@@ -713,176 +810,21 @@ else ----------------------------------------- non vscode settings
             }
         }
     })
+    -- }}}
 
-    vim.o.relativenumber = true
-    vim.o.number = true
-    vim.o.tabstop = 2 -- 2 spaces for tabs (prettier default)
-    vim.o.shiftwidth = 2 -- 2 spaces for indent width
-    vim.o.softtabstop = 2
-    vim.o.expandtab = true -- expand tab to spaces
-    vim.o.autoindent = true -- copy indent from current line when starting new one
-
-    vim.pack.add({"https://github.com/nvim-treesitter/nvim-treesitter"}, {
-        confirm = false
-    })
-    require("nvim-treesitter.install").update("all")
-
-    -- require('mini.statusline').setup({
-    --   content = {
-    --     active = function()
-    --       local mode, mode_hl = MiniStatusline.section_mode({trunc_width = 120})
-    --       local git = MiniStatusline.section_git({trunc_width = 40})
-    --       local diff = MiniStatusline.section_diff({trunc_width = 75})
-    --       local diagnostics = MiniStatusline.section_diagnostics({trunc_width = 75})
-    --       local lsp = MiniStatusline.section_lsp({trunc_width = 75})
-    --       local filename = MiniStatusline.section_filename({trunc_width = 140})
-    --       local location = MiniStatusline.section_location({trunc_width = 75})
-    --       local search = MiniStatusline.section_searchcount({trunc_width = 75})
-    --       return MiniStatusline.combine_groups({{hl = 'MiniStatuslineFilename', strings = {filename}}, '%<', -- Mark general truncate point
-    --       {hl = 'MiniStatuslineFilename', strings = {git}}, '%=', -- End left alignment
-    --       {hl = 'MiniStatuslineFilename', strings = {diff, diagnostics, lsp}},
-    --       {hl = 'MiniStatuslineFilename', strings = {location}}})
-    --     end,
-    --     inactive = nil
-    --   }
-    -- })
-
-    vim.keymap.set("n", "<C-PageDown>", "<cmd>bnext<CR>", {
-        desc = "next buffer"
-    })
-    vim.keymap.set("n", "<C-PageUp>", "<cmd>bprevious<CR>", {
-        desc = "previous buffer"
-    })
-    vim.keymap.set("n", "<A-w>", "<cmd>bdelete<CR>", {
-        desc = "close buffer"
-    })
-
-    vim.pack.add({"https://github.com/ibhagwan/fzf-lua"})
-    require('fzf-lua').setup({
-        winopts = {
-            row = 0.95,
-            col = 0.00,
-            height = 0.60,
-            width = 1.00
-        },
-        keymap = {
-            fzf = {
-                ["ctrl-q"] = "select-all+accept",
-                ["ctrl-d"] = "preview-page-down",
-                ["ctrl-u"] = "preview-page-up",
-                ["alt-a"] = "toggle-all"
-            }
-        }
-    })
-    vim.keymap.set("n", "<leader>fb", "<cmd>FzfLua builtin<CR>", {
-        desc = "fzf find fzflua-commands"
-    })
-    vim.keymap.set("n", "<leader>fo", "<cmd>FzfLua oldfiles<CR>", {
-        desc = "fzf find fzflua-commands"
-    })
-    vim.keymap.set("n", "<leader>fu", "<cmd>FzfLua buffers<CR>", {
-        desc = "fzf find buffers"
-    })
-    vim.keymap.set("n", "<leader>fr", "<cmd>FzfLua resume<CR>", {
-        desc = "fzf resume"
-    })
-    vim.keymap.set("n", "<leader>fh", "<cmd>FzfLua help_tags<CR>", {
-        desc = "fzf help"
-    })
-    vim.keymap.set("n", "<leader>f,", "<cmd>FzfLua nvim_options<CR>", {
-        desc = "fzf vim_options"
-    })
-    vim.keymap.set("n", "<leader>fw", "<cmd>FzfLua live_grep_native<CR>", {
-        desc = "fzf live grep"
-    })
-    vim.keymap.set("n", "<leader>ff", function()
-        require("fzf-lua").files({
-            cmd = "fd --type f --exclude node_modules"
-        })
-    end, {
-        desc = "fzf find files"
-    })
-
-    vim.pack.add({"https://github.com/saghen/blink.cmp"}, {
-        confirm = false
-    })
-    require("blink.cmp").setup({
-        completion = {
-            documentation = {
-                auto_show = true
-            }
-        },
-        keymap = {
-            ['<C-p>'] = {'select_prev', 'fallback_to_mappings'},
-            ['<C-n>'] = {'select_next', 'fallback_to_mappings'},
-            ['<C-y>'] = {'select_and_accept', 'fallback'},
-            ['<C-e>'] = {'cancel', 'fallback'},
-            ['<C-space>'] = {'show', 'show_documentation', 'hide_documentation'},
-            ['<Tab>'] = {'snippet_forward', 'fallback'},
-            ['<S-Tab>'] = {'snippet_backward', 'fallback'},
-            ['<C-b>'] = {'scroll_documentation_up', 'fallback'},
-            ['<C-f>'] = {'scroll_documentation_down', 'fallback'},
-            ['<C-k>'] = {'show_signature', 'hide_signature', 'fallback'}
-        },
-        fuzzy = {
-            implementation = "lua"
-        }
-    })
-
-    vim.cmd("packadd nvim.undotree")
-    vim.keymap.set("n", "<A-u>", require("undotree").open)
-    vim.cmd("packadd nvim.difftool")
-
+    -- transparent.nvim: makes highlight groups and nvim background transparent {{{
     vim.pack.add({"https://github.com/xiyaowong/transparent.nvim"})
     require('transparent').setup({
         groups = {'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier', 'Statement', 'PreProc', 'Type',
                   'Underlined', 'Todo', 'String', 'Function', 'Conditional', 'Repeat', 'Operator', 'Structure',
                   'LineNr', 'NonText', 'SignColumn', 'CursorLine', 'CursorLineNr', 'StatusLine', 'StatusLineNC',
-                  'EndOfBuffer', 'MiniFilesNormal', 'MiniFilesTitleFocused', 'MiniFilesFile', 'MiniStatuslineFilename',
-                  'MiniStatuslineinfo', 'MiniStatuslineInactive', 'MiniClueDescSingle', 'LazyNormal',
-                  'BlinkCmpMenuBorder', 'BlinkCmpKind', 'BlinkCmpMenu', 'ModeMsg'}
+                  'Folded', 'EndOfBuffer', 'MiniFilesNormal', 'MiniFilesTitleFocused', 'MiniFilesFile',
+                  'MiniStatuslineFilename', 'MiniStatuslineinfo', 'MiniStatuslineInactive', 'MiniClueDescSingle',
+                  'LazyNormal', 'BlinkCmpMenuBorder', 'BlinkCmpKind', 'BlinkCmpMenu', 'ModeMsg'}
     })
+    -- }}}
 
-    -- Toggle quickfix/location list
-    vim.keymap.set("n", "<leader>q", function()
-        local windows = vim.fn.getwininfo()
-        for _, win in pairs(windows) do
-            if win.quickfix == 1 then
-                vim.cmd("cclose")
-                return
-            end
-        end
-        vim.cmd("copen")
-    end, {
-        desc = "Toggle quickfix list"
-    })
-    vim.keymap.set("n", "<leader>l", function()
-        local windows = vim.fn.getwininfo()
-        for _, win in pairs(windows) do
-            if win.loclist == 1 then
-                vim.cmd("lclose")
-                return
-            end
-        end
-        vim.cmd("lopen")
-    end, {
-        desc = "Toggle locatoin list"
-    })
-
-    -- Auto create dir when saving a file, in case some intermediate directory does not exist
-    vim.api.nvim_create_autocmd({"BufWritePre"}, {
-        group = vim.api.nvim_create_augroup("auto_create_dir", {
-            clear = true
-        }),
-        callback = function(event)
-            if event.match:match("^%w%w+:[\\/][\\/]") then
-                return
-            end
-            local file = vim.uv.fs_realpath(event.match) or event.match
-            vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
-        end
-    })
-
+    -- use ui2 {{{
     require("vim._core.ui2").enable {
         enable = true,
         msg = { -- Options related to the message module.
@@ -906,8 +848,9 @@ else ----------------------------------------- non vscode settings
             }
         }
     }
+    -- }}}
 
-    -- Custom highlight for yank and paste
+    -- autocmds (highlight on yank, create intermediate directories) {{{
     vim.api.nvim_create_autocmd("TextYankPost", {
         pattern = "*",
         callback = function()
@@ -916,8 +859,25 @@ else ----------------------------------------- non vscode settings
                 timeout = 200
             })
         end
+
     })
 
+    -- Auto create dir when saving a file, in case some intermediate directory does not exist
+    vim.api.nvim_create_autocmd({"BufWritePre"}, {
+        group = vim.api.nvim_create_augroup("auto_create_dir", {
+            clear = true
+        }),
+        callback = function(event)
+            if event.match:match("^%w%w+:[\\/][\\/]") then
+                return
+            end
+            local file = vim.uv.fs_realpath(event.match) or event.match
+            vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+        end
+    })
+    -- }}}
+
+    -- lsp servers setup {{{
     vim.api.nvim_create_user_command("LspInfo", "checkhealth vim.lsp", {
         desc = "Show LSP Info"
     })
@@ -934,38 +894,12 @@ else ----------------------------------------- non vscode settings
     vim.api.nvim_create_user_command("LspRestart", "lsp restart", {
         desc = "Restart LSP"
     })
-
-    -- incremental selection treesitter/lsp
-    vim.keymap.set({"n", "x", "o"}, "<A-o>", function()
-        if vim.treesitter.get_parser(nil, nil, {
-            error = false
-        }) then
-            require("vim.treesitter._select").select_parent(vim.v.count1)
-        else
-            vim.lsp.buf.selection_range(vim.v.count1)
-        end
-    end, {
-        desc = "Select parent treesitter node or outer incremental lsp selections"
-    })
-
-    vim.keymap.set({"n", "x", "o"}, "<A-i>", function()
-        if vim.treesitter.get_parser(nil, nil, {
-            error = false
-        }) then
-            require("vim.treesitter._select").select_child(vim.v.count1)
-        else
-            vim.lsp.buf.selection_range(-vim.v.count1)
-        end
-    end, {
-        desc = "Select child treesitter node or inner incremental lsp selections"
-    })
-
     vim.lsp.config['lua_ls'] = {
         cmd = {'lua-language-server'},
         filetypes = {'lua'},
         root_markers = {{'.luarc.json', '.luarc.jsonc'}, '.git'}
     }
-
     vim.lsp.enable('lua_ls')
-end
+    -- }}}
 
+end
