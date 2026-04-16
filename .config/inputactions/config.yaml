@@ -1,3 +1,4 @@
+#   20│ previous  next       │  * 4lr Tab_back_fwd * 3ud Tab_switch     │           │
 device_rules:
   - conditions: $touchpad
     swipe:

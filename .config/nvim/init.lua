@@ -196,6 +196,10 @@ mc.addKeymapLayer(function(layerSet)
     -- Delete the main cursor.
     layerSet({"n", "x"}, "<leader>x", mc.deleteCursor)
 
+    vim.keymap.set({"x", "n"}, "g<c-a>", mc.sequenceIncrement)
+    vim.keymap.set({"x", "n"}, "g<c-x>", mc.sequenceDecrement)
+    vim.keymap.set({"n", "x"}, "<c-i>", mc.jumpForward)
+        vim.keymap.set({"n", "x"}, "<c-o>", mc.jumpBackward)
     -- Enable and clear cursors using escape.
     layerSet("n", "<esc>", function()
         if not mc.cursorsEnabled() then
