@@ -1,0 +1,89 @@
+#compdef cloud-init
+
+_cloud_init() {
+    local line state
+    local -a subcommands
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[Show help message and exit]' \
+        '(-v --version)'{-v,--version}"[Show program's version number and exit]" \
+        '--all-stages[INTERNAL: Run stages under single process]' \
+        '(-d --debug)'{-d,--debug}'[Show additional pre-action logging (Deprecated)]' \
+        '--force[Force running even if no datasource is found (Deprecated)]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            subcommands=(
+                'analyze:Analyze cloud-init logs and data'
+                'collect-logs:Collect and tar all debug info'
+                'clean:Remove logs and artifacts to re-run'
+                'devel:Run development tools'
+                'features:List defined features'
+                'query:Query instance metadata'
+                'schema:Validate cloud-config files'
+                'single:Manually run a single module'
+                'status:Report status or wait on completion'
+                'init:Initialize modules (Deprecated)'
+                'modules:Activate modules via config key (Deprecated)'
+            )
+            _describe -t commands 'cloud-init subcommands' subcommands
+            ;;
+        args)
+            case $line[1] in
+                analyze)
+                    _cloudinit_analyze_subcommands
+                    ;;
+                devel)
+                    _cloudinit_devel_subcommands
+                    ;;
+                query)
+                    _cloudinit_query_options
+                    ;;
+                schema)
+                    _cloudinit_schema_options
+                    ;;
+                status|single)
+                    _message "options for $line[1]"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_cloudinit_analyze_subcommands() {
+  _arguments \
+    'blame[ Print list of executed stages ordered by time to init]' \
+    'show[ Print list of in-order events during execution]' \
+    'dump[ Dump cloud-init events in JSON format]' \
+    'boot[ Print list of boot times for kernel and cloud-init]' \
+    '1:varname: ' 
+}
+
+_cloudinit_devel_subcommands() {
+  _arguments \
+    '1:subcommand:(hotplug-hook net-convert render make-mime)' \
+    '::options:->options'
+}
+
+_cloudinit_query_options() {
+  _arguments \
+    '-h[show help message]' \
+    '-d[Add verbose messages during template render]' \
+    '-i[Path to instance-data.json file]:file:_files' \
+    '-l[List query keys available at the provided instance-data <varname>]' \
+    '-u[Path to user-data file]:file:_files' \
+    '-v[Path to vendor-data file]:file:_files' \
+    '-a[Dump all available instance-data]' \
+    '-f[Optionally specify a custom output format string]:format:' \
+    '1:varname: ' 
+}
+
+_cloudinit_schema_options() {
+  _arguments \
+    '--config-file[Path to config file]:file:_files' \
+    '--system[Use system configuration]'
+}
+
+_cloud_init "$@"

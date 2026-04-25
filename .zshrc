@@ -40,6 +40,7 @@ export DELTA_FEATURES=+side-by-side
 source ~/.zshrcalias
 source ~/.zshrcenv
 
+fpath=(~/i3df/.zsh/completions $fpath)
 # start of z4h config Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
 # You can manually run `z4h update` to update everything.
 zstyle ':z4h:' auto-update      'no' # Ask whether to auto-update this often; has no effect if auto-update is 'no'.
@@ -141,9 +142,9 @@ bindkey -M vicmd '^[z' zoxide-interactive
 function cd_to_clipboard_path {
   wlclip="$(wl-paste)" && [[${#wlclip} -lt 100]] && cd "${wlclip}" && -z4h-redraw-prompt y;
 }
-zle -N cd_to_clipboard_path
-bindkey -M viins '^[c' cd_to_clipboard_path
-bindkey -M vicmd '^[c' cd_to_clipboard_path
+# zle -N cd_to_clipboard_path
+# bindkey -M viins '^[c' cd_to_clipboard_path
+# bindkey -M vicmd '^[c' cd_to_clipboard_path
 function copy_path_to_clipboard { pwd | wl-copy }
 zle -N copy_path_to_clipboard
 bindkey -M viins '^[x' copy_path_to_clipboard
@@ -213,16 +214,19 @@ export FZF_DEFAULT_OPTS="
 --border=rounded 
 --marker='x' 
 --pointer='>' 
---bind ctrl-f:page-down
---bind 'alt-d:jump'
---bind 'alt-a:toggle-all'
---bind 'ctrl-j:accept'
+--bind=ctrl-f:page-down
+--bind='alt-d:jump'
+--bind='alt-a:toggle-all'
+--bind='alt-n:toggle-out'
+--bind='alt-p:toggle-in'
+--bind='ctrl-j:accept'
 --bind='ctrl-u:preview-half-page-up'
 --bind='ctrl-d:preview-half-page-down'
 --bind='ctrl-s:toggle-sort'
---bind 'ctrl-e:execute(echo {+} | xargs -o nvim)'
---bind 'ctrl-y:execute(readlink -f {} | xsel -b)'
---bind 'ctrl-alt-y:execute-silent(xsel -b <<< "{}")'
+--bind='ctrl-e:execute(echo {+} | xargs -o nvim)'
+--bind='ctrl-y:execute(readlink -f {} | wl-copy)'
+--bind='ctrl-alt-y:execute-silent(xsel -b <<< "{}")'
+--jump-labels=nrtshaeigybldwfoujqzxmckpv1234567890NRTSHAEIGYBLDWFOUJQZXMCKPV
 "
 # --bind 'alt-k:up,alt-j:down'
 # --bind 'alt-h:toggle,alt-l:accept'
