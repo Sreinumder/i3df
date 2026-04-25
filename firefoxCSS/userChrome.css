@@ -27,6 +27,8 @@ optionally: full-screen-api.ignore-widgets as true too. for full screen without 
   --urlbar-font: "DejaVu Sans Mono";
 
   --urlbar-height-setting: 22px;
+  --urlbar-result-height: 26px;
+  --urlbar-result-column-width: 320px;
   --tab-min-height: 23px !important;
 
   --arrowpanel-menuitem-padding: 2px !important;
@@ -88,6 +90,190 @@ optionally: full-screen-api.ignore-widgets as true too. for full screen without 
 menupopup,
 panel {
   --panel-border-radius: 0px !important;
+}
+
+/* #urlbarView { */
+/* it does not work have to change the flag in abou:config browser.urlbar.maxRichResults to higher number default is 10*/
+/* --urlbar-max-rows: 15 !important; Adjust this number (default is around 6-8) */
+/* max-height: 900px !important; */
+/* } */
+
+/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/scrollable_urlbar_popup.css made available under Mozilla Public License v. 2.0
+See the above repository for updates as well as full license text. */
+
+/* Makes the urlbar dropdown scrollable */
+/* Modify the pref browser.urlbar.maxRichResults to set how many results should be shown */
+
+#urlbar-results {
+  display: grid !important;
+  grid-auto-flow: row !important;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--urlbar-result-column-width), 1fr)
+  ) !important;
+  grid-auto-rows: var(--urlbar-result-height) !important;
+  column-gap: 7px !important;
+  row-gap: 7px !important;
+  max-height: 190px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-color: var(--urlbar-separator-color, currentColor) transparent;
+  scrollbar-width: thin;
+  align-content: start !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.urlbarView-no-wrap {
+  position: relative;
+}
+
+.urlbarView-row-inner {
+  display: grid !important;
+  grid-template-columns: 20px minmax(0, 1fr) !important;
+  grid-template-rows: min-content min-content !important;
+  column-gap: 10px !important;
+  row-gap: 0 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  align-items: start !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.urlbarView-no-wrap {
+  display: contents !important;
+  max-width: 100% !important;
+  flex-basis: 100%;
+}
+.urlbarView-row[has-url]:not([type="switchtab"]) .urlbarView-title-separator {
+  display: none;
+}
+
+.urlbarView-row[has-url]
+  > .urlbarView-row-inner
+  > .urlbarView-url:-moz-locale-dir(ltr) {
+  margin-left: 0 !important;
+}
+.urlbarView-row[has-url]
+  > .urlbarView-row-inner
+  > .urlbarView-url:-moz-locale-dir(rtl) {
+  margin-right: 0 !important;
+}
+
+.urlbarView-favicon {
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+  align-self: center !important;
+}
+
+.urlbarView-title {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+
+.urlbarView-url {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+}
+
+.urlbarView-type-icon,
+.urlbarView-action-icon {
+  display: none !important;
+}
+
+.urlbarView-action {
+  display: none !important;
+}
+
+.urlbarView-tail-prefix,
+.urlbarView-tail-prefix-string,
+.urlbarView-tail-prefix-char,
+.urlbarView-tags {
+  display: none !important;
+}
+
+.urlbarView-url:empty {
+  display: none !important;
+}
+
+.urlbarView-row[type="switchtab"] .urlbarView-action,
+.urlbarView-row[type="switchtab"] .urlbarView-title-separator,
+.urlbarView-row[type="switchtab"] .urlbarView-url {
+  display: none !important;
+}
+
+.urlbarView-row[type="switchtab"] .urlbarView-title::after {
+  content: "" !important;
+  display: none !important;
+}
+
+.urlbarView-title,
+.urlbarView-url {
+  font-size: 12px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+.urlbarView-favicon,
+.urlbarView-type-icon,
+.urlbarView-action-icon {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+/* #urlbarView {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 4px !important;
+  max-height: 900px !important;
+  overflow-y: auto !important;
+} */
+
+.urlbarView-row {
+  /* background: #000000; */
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: var(--urlbar-result-height) !important;
+  max-height: var(--urlbar-result-height) !important;
+  display: block !important;
+  align-items: stretch !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.urlbarView-row-inner[selectable],
+.urlbarView-row[selected] > .urlbarView-row-inner,
+.urlbarView-row:hover > .urlbarView-row-inner {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.urlbarView-row-buttons {
+  display: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.urlbarView-button-menu,
+.urlbarView-button-help,
+.urlbarView-button-block {
+  display: none !important;
+}
+
+@media (max-width: 300px) {
+  #urlbar-results {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
 }
 
 .urlbarView-row[selected],
