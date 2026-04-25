@@ -1,0 +1,200 @@
+/* makes privatebrowsing tab gray */
+@-moz-document url("about:privatebrowsing") {
+  html,
+  body {
+    background-color: #333;
+  }
+  .info-border {
+    background-color: inherit !important;
+  }
+}
+
+/* Block full page rendering for Reels/Shorts URL variants.
+   Note: userContent.css can hide content, but it cannot stop the network request. */
+@-moz-document regexp("^https?://(www\\.)?instagram\\.com/reels?(?:/.*)?(?:\\?.*)?$")
+{
+  html,
+  body {
+    display: none !important;
+  }
+}
+
+@-moz-document regexp("^https?://((www|m)\\.)?youtube\\.com/shorts(?:/.*)?(?:\\?.*)?$")
+{
+  html,
+  body {
+    display: none !important;
+  }
+}
+
+/* Ban Twitter / X completely. */
+@-moz-document regexp("^https?://((www|m|mobile)\\.)?(x|twitter)\\.com(?:/.*)?(?:\\?.*)?$")
+{
+  html,
+  body,
+  #react-root,
+  main,
+  [data-testid="primaryColumn"] {
+    display: none !important;
+  }
+}
+
+/* Hide Facebook Reels. */
+@-moz-document regexp("^https?://((www|m|mbasic)\\.)?facebook\\.com/(reel|reels)(?:/.*)?(?:\\?.*)?$")
+{
+  html,
+  body {
+    display: none !important;
+  }
+}
+
+@-moz-document domain("facebook.com"), domain("www.facebook.com"), domain("m.facebook.com"), domain("mbasic.facebook.com") {
+  a[href^="/reel/"],
+  a[href^="/reels/"],
+  a[href*="/reel/"],
+  a[href*="/reels/"],
+  [aria-label="Reels"],
+  [aria-label="Reel"],
+  [data-testid="reels_tab"],
+  [data-testid="fb_reels_tab"],
+  [role="navigation"] a[href*="reel"],
+  [role="navigation"] a[href*="reels"] {
+    display: none !important;
+  }
+}
+
+/* SPA fallback: apply instantly after in-site navigation without reload.
+   These selectors react when canonical/og:url metadata changes. */
+@-moz-document domain("youtube.com"), domain("m.youtube.com") {
+  html:has(link[rel="canonical"][href*="/shorts/"]),
+  html:has(meta[property="og:url"][content*="/shorts/"]),
+  body:has(link[rel="canonical"][href*="/shorts/"]),
+  body:has(meta[property="og:url"][content*="/shorts/"]) {
+    display: none !important;
+  }
+}
+
+@-moz-document domain("instagram.com"), domain("www.instagram.com") {
+  html:has(link[rel="canonical"][href*="/reel/"]),
+  html:has(link[rel="canonical"][href*="/reels/"]),
+  html:has(meta[property="og:url"][content*="/reel/"]),
+  html:has(meta[property="og:url"][content*="/reels/"]),
+  body:has(link[rel="canonical"][href*="/reel/"]),
+  body:has(link[rel="canonical"][href*="/reels/"]),
+  body:has(meta[property="og:url"][content*="/reel/"]),
+  body:has(meta[property="og:url"][content*="/reels/"]) {
+    display: none !important;
+  }
+}
+
+@-moz-document domain("youtube.com"), domain("m.youtube.com") {
+  /* Ads and promos */
+  #masthead-ad,
+  ytd-mealbar-promo-renderer,
+  ytd-carousel-ad-renderer,
+  .ytd-display-ad-renderer,
+  ytd-ad-slot-renderer,
+  ytd-action-companion-ad-renderer,
+  ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"],
+  ytm-companion-ad-renderer,
+  ytm-promoted-sparkles-web-renderer {
+    display: none !important;
+  }
+
+  /* Shorts shelves and links */
+  ytd-reel-shelf-renderer,
+  ytm-reel-shelf-renderer,
+  grid-shelf-view-model.ytGridShelfViewModelHostHasBottomButton.ytd-item-section-renderer.ytGridShelfViewModelHost,
+  a[title="Shorts"],
+  ytd-mini-guide-entry-renderer[aria-label="Shorts"],
+  a[href="/shorts"],
+  a[href="/shorts"] {
+    display: none !important;
+  }
+
+  /* Hide video cards that point to shorts (works on SPA updates too) */
+  ytd-video-renderer:has(a[href^="/shorts/"]),
+  ytd-compact-video-renderer:has(a[href^="/shorts/"]),
+  ytd-rich-item-renderer:has(a[href^="/shorts/"]),
+  ytm-video-with-context-renderer:has(a[href^="/shorts/"]),
+  ytd-grid-video-renderer:has(a[href^="/shorts/"]) {
+    display: none !important;
+  }
+
+  /* Hide homepage feed contents */
+  ytd-browse[page-subtype="home"] ytd-rich-grid-renderer > #contents,
+  ytd-browse[page-subtype="home"] ytd-rich-grid-renderer > #header,
+  ytd-browse[page-subtype="home"]
+    ytd-rich-grid-renderer
+    > ytd-continuation-item-renderer,
+  ytd-browse[page-subtype="home"]
+    ytd-rich-grid-renderer
+    > ytd-rich-section-renderer,
+  ytd-browse[page-subtype="home"] ytd-rich-item-renderer,
+  ytd-browse[page-subtype="home"] ytd-reel-shelf-renderer {
+    display: none !important;
+  }
+}
+
+/* Adapted Instagram cleanup from extension logic for userContent.css.
+    CSS can hide UI, but cannot perform JS redirects. */
+@-moz-document domain("instagram.com"), domain("www.instagram.com") {
+  /* Remove Reels/Home/Explore entry points in nav and menus */
+  nav a[href="/reels/"],
+  nav a[href^="/reels"],
+  header a[href="/reels/"],
+  a[href="/reels/"],
+  a[href^="/reels/"],
+  nav a[href="/"],
+  header a[href="/"],
+  nav a:has(svg[aria-label="Home"]),
+  header a:has(svg[aria-label="Home"]),
+  nav a:has(svg[aria-label="Explore"]),
+  header a:has(svg[aria-label="Explore"]) {
+    display: none !important;
+  }
+
+  /* Hide common "Suggested"/discovery follow blocks */
+  article:has(a[href*="/explore/people/"]),
+  section:has(a[href*="/explore/people/"]),
+  div:has(> a[href*="/explore/people/"]) {
+    display: none !important;
+  }
+
+  /* Hide Instagram homepage feed content on desktop only */
+  /* Allow mobile/tablet widths to show home feed normally */
+  @media (min-width: 768px) {
+    /* article, */
+    div[role="feed"],
+    section[role="feed"],
+    /* main article,
+    main section, */
+    /* Mobile/tablet specific feed containers */
+    div._aarf,
+    div._aard,
+    div._aare,
+    div._aarf > article,
+    div._aarj,
+    div._aarj > article,
+    /* Story rings and feed items */
+    div[role="presentation"] section,
+    section[role="region"] article {
+      display: none !important;
+    }
+  }
+
+  /* Hide "Go to post" menu option on all widths */
+  :-moz-contains("Go to post") {
+    display: none !important;
+  }
+}
+
+/* Explore page: hide post/reel tiles (equivalent to removing proposed posts) */
+@-moz-document regexp("^https?://(www\\.)?instagram\\.com/explore(?:/.*)?(?:\\?.*)?$")
+{
+  a[href*="/p/"],
+  a[href*="/reel/"],
+  a[href*="/reels/"] {
+    display: none !important;
+  }
+}
