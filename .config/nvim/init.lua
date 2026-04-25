@@ -581,7 +581,8 @@ if vim.g.vscode then
     vim.g.neovim_log_level = 0 -- Disable logging output from Neovim
 
     require('vim.treesitter.highlighter').disable = true
-    vim.o.completeopt = ""
+    vim.o.completeopt = "menuone,noselect"
+    vim.o.autocomplete = false
     vim.keymap.set("n", "<leader>k", function()
         require("vscode").action("workbench.action.showAllEditors")
     end, {
@@ -752,7 +753,7 @@ else
     })
     -- }}}
 
-    -- mini.files: oile like file explorer open with - or <Space>e {{{
+    -- mini.files: edit the fs like a buffer. Keymap: - or <Space>e {{{
     local MiniFiles = require('mini.files')
     vim.api.nvim_create_autocmd("User", {
         pattern = "MiniFilesWindowUpdate",
@@ -813,6 +814,35 @@ else
             reset = '<leader>r',
             textobject = 'gh'
         }
+    })
+    -- }}}
+
+    -- mini.statusline replaces nvim's default statusline {{{
+    require('mini.git').setup()
+    require('mini.statusline').setup({
+      content = {
+        active =   function()
+          local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
+          local git           = MiniStatusline.section_git({ trunc_width = 40 })
+          local diff          = MiniStatusline.section_diff({ trunc_width = 75 })
+          local diagnostics   = MiniStatusline.section_diagnostics({ trunc_width = 75 })
+          local lsp           = MiniStatusline.section_lsp({ trunc_width = 75 })
+          local filename      = MiniStatusline.section_filename({ trunc_width = 140 })
+          local fileinfo      = MiniStatusline.section_fileinfo({ trunc_width = 120 })
+          local location      = MiniStatusline.section_location({ trunc_width = 75 })
+
+          return MiniStatusline.combine_groups({
+            { hl = 'MiniStatuslineFilename', strings = { filename } },
+            '%<', -- Mark general truncate point
+            { hl = 'MiniStatuslineFilename',  strings = { git, diff } },
+            '%=', -- End left alignment
+            { hl = 'MiniStatuslineFilename',  strings = { diagnostics, lsp } },
+            { hl = 'MiniStatuslineFilename', strings = { fileinfo } },
+            { hl = 'MiniStatuslineFilename',  strings = { location } },
+          })
+        end,
+        inactive = nil,
+      },
     })
     -- }}}
 
