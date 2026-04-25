@@ -1,0 +1,83 @@
+#     finger_count: 1-5
+#     gesture_types: [t]ap  [h]old
+#                    pinch [i]n and pinch [o]ut
+#     swipe_gesture: [l]eft [r]ight [u]p [d]own
+#
+#     0  5  10  15  20  25  30  35  40  45  50  55  60  65  70  75  80  85  90  95 100
+#    0┌──────────────────────┬───────────────────────────────────────────┬───────────┐
+#    5│ > media_area (1f)    │  > main_neutral_area                      │           │
+#   10│     forword          │  * 3lr Volume       * 3ud Brightness      │           │
+#   20│ previous  next       │  * 4lr Tab_back_fwd * 3ud Tab_switch      │           │
+#   15│     backward         │  * 3o fullscreen     * 3i overview        │           │
+#   25│ 1t    play_pause     │  * 4o close_tab      * 4i reopen_tab      │           │
+#   30│                      │  * 4t play_pause     * 5t kill_window     │           │
+#   35│                      │  * 3h paste   * 4h copy   * 5h screenshot │           │
+#   40├──────────────────────│                                           │           │
+#   45│                      │                                           │           │
+#   50│ movement (s1)        │                                           │           │
+#   55│ 1s arrow 1t enter    │                                           │           │
+#   60│ 2lr del/bs   2t bs   │                                           │           │
+#   65│ 2ud undo/redo        │                                           │           │
+#   70│ 2l      ↑    2r/2t   │                                           │           │
+#   75│ del ← enter → bs     │                                           │           │
+#   80│         ↓            ├───────────────────────────────────────────┴───────────┤
+#   85│ 3t ctrl-l 3h ctrl-t  │                                                       │
+#   90│                      │                                                       │
+#   95│                      │                                                       │
+#  100└──────────────────────┴───────────────────────────────────────────────────────┘
+
+Gesture summary
+
+Device rule
+- touchpad swipe angle tolerance: 45 degrees
+
+Media zone: 1 finger, top-left area
+- Condition: finger 1 starts at x <= 0.30 and y < 0.40
+- 1 finger swipe up/down: `playerctl position 3+` when swiping up, `playerctl position 3-` when swiping down
+- 1 finger swipe left/right: `playerctl previous` when swiping left, `playerctl next` when swiping right
+- 1 finger tap: `playerctl play-pause`
+- 2 finger swipe left/right: `leftmeta+leftshift+h` when swiping left, `leftmeta+leftshift+l` when swiping right
+
+Bottom zone: x > 0.30 and y >= 0.80
+- 1 finger tap: `leftmeta+grave`
+- 2 finger tap: `leftmeta+v`
+
+Movement zone: x <= 0.30 and y >= 0.40
+- 1 finger swipe left/right: `left` when swiping left, `right` when swiping right
+- 1 finger swipe up/down: `up` when swiping up, `down` when swiping down
+- 2 finger swipe left/right: `delete` when swiping left, `backspace` when swiping right
+- 2 finger swipe up/down: `leftctrl+z` when swiping up, `leftctrl+y` when swiping down
+- 1 finger tap: `enter`
+- 2 finger tap: `backspace`
+- 2 finger hold: repeated `backspace` on tick
+- 3 finger tap: `leftctrl+l`
+- 3 finger hold: `leftctrl+t`
+- 3 finger swipe left/right: `home` when swiping left, `end` when swiping right
+- 3 finger swipe up/down: `pageup` when swiping up, `PageDown` when swiping down
+
+Edge area: finger 1 starts at x >= 0.85
+- 1 finger tap: `leftalt+tab`
+- 2 finger tap: `leftalt+leftshift+tab`
+
+Global overrides: all touchpad positions
+- 3 finger swipe up/down: `leftshift+brightnessup` when swiping up, `leftshift+brightnessdown` when swiping down
+- 3 finger swipe left/right: `volumedown` when swiping left, `volumeup` when swiping right
+- 4 finger swipe left: `mouse forward`
+- 4 finger swipe right: `mouse back`
+- 4 finger swipe up/down: `leftctrl+leftshift+tab` when swiping up, `leftctrl+tab` when swiping down
+- 4 finger pinch in: `leftctrl+leftshift+t`
+- 4 finger pinch out: `leftctrl+w`
+- 4 finger tap: `playpause`
+- 5 finger tap: `leftalt+f4`
+- 5 finger hold: `leftmeta+leftshift+s`
+
+Window-class specific rules
+- When `$window_class == "kitty"`, 4 finger hold: `leftctrl+leftshift+c`
+- Otherwise, 4 finger hold: `leftctrl+c`
+- When `$window_class == "kitty"`, 3 finger hold: `leftctrl+leftshift+v`
+- Otherwise, 3 finger hold: `leftctrl+v`
+
+Other 3 finger gestures
+- 3 finger tap: `mouse middle`
+- 3 finger pinch out: `leftmeta+f`
+- 3 finger pinch in: `leftctrl+f10`

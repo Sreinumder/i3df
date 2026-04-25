@@ -1,4 +1,31 @@
-#   20│ previous  next       │  * 4lr Tab_back_fwd * 3ud Tab_switch     │           │
+#     finger_count: 1-5
+#     gesture_types: [t]ap  [h]old
+#                    pinch [i]n and pinch [o]ut
+#     swipe_gesture: [l]eft [r]ight [u]p [d]own
+#
+#     0  5  10  15  20  25  30  35  40  45  50  55  60  65  70  75  80  85  90  95 100
+#    0┌──────────────────────┬───────────────────────────────────────────┬───────────┐
+#    5│ > media_area (1f)    │  > main_neutral_area                      │           │
+#   10│     forword          │  * 3lr Volume       * 3ud Brightness      │           │
+#   20│ previous  next       │  * 4lr Tab_back_fwd * 3ud Tab_switch      │           │
+#   15│     backward         │  * 3o fullscreen     * 3i overview        │           │
+#   25│ 1t    play_pause     │  * 4o close_tab      * 4i reopen_tab      │           │
+#   30│                      │  * 4t play_pause     * 5t kill_window     │           │
+#   35│                      │  * 3h paste   * 4h copy   * 5h screenshot │           │
+#   40├──────────────────────│                                           │           │
+#   45│                      │                                           │           │
+#   50│ movement (s1)        │                                           │           │
+#   55│ 1s arrow 1t enter    │                                           │           │
+#   60│ 2lr del/bs   2t bs   │                                           │           │
+#   65│ 2ud undo/redo        │                                           │           │
+#   70│ 2l      ↑    2r/2t   │                                           │           │
+#   75│ del ← enter → bs     │                                           │           │
+#   80│         ↓            ├───────────────────────────────────────────┴───────────┤
+#   85│ 3t ctrl-l 3h ctrl-t  │                                                       │
+#   90│                      │                                                       │
+#   95│                      │                                                       │
+#  100└──────────────────────┴───────────────────────────────────────────────────────┘
+
 device_rules:
   - conditions: $touchpad
     swipe:
@@ -6,66 +33,259 @@ device_rules:
 
 touchpad:
   gestures:
-    # - type: swipe
-    #   fingers: 3
-    #   direction: left
-    #   conditions:
-    #     - $last_trigger_id == swipe_3_right
-    #   actions:
-    #     - on: update
-    #       interval: 40
-    #       input:
-    #         - keyboard: [leftalt+leftshift+tab]
-    #
-    # - type: swipe
-    #   fingers: 3
-    #   direction: left
-    #   id: swipe_3_left
-    #   actions:
-    #     - on: update
-    #       interval: 10
-    #       input:
-    #         - keyboard: [volumedown]
-    #
-    # - type: swipe
-    #   fingers: 3
-    #   direction: right
-    #   conditions:
-    #     - $last_trigger_id == swipe_3_left
-    #   actions:
-    #     - on: update
-    #       interval: 10
-    #       input:
-    #         - keyboard: [volumeup]
-    #
-    # - type: swipe
-    #   fingers: 3
-    #   direction: right
-    #   id: swipe_3_right
-    #   actions:
-    #     - on: update
-    #       interval: 40
-    #       input:
-    #         - keyboard: [leftalt+tab]
+    # media zone top left
+    - type: swipe
+      fingers: 1
+      direction: up_down
+      conditions:
+        - &zone_media_x $finger_1_initial_position_percentage_x <= 0.30
+        - &zone_media_y $finger_1_initial_position_percentage_y < 0.40
+      actions:
+        - on: update
+          interval: -20
+          command: playerctl position 3+
+        - on: update
+          interval: 30
+          command: playerctl position 3-
 
-    # - type: circle
-    #   direction: any
-    #   fingers: 1
-    #   conditions:
-    #     any:
-    #       - $finger_1_initial_position_percentage_y <= 0.25
-    #       - $finger_1_initial_position_percentage_x >= 0.75
-    #   actions:
-    #     - on: update
-    #       interval: -2
-    #       input:
-    #         - mouse: [wheel 0 -1]
-    #     - on: update
-    #       interval: 2
-    #       input:
-    #         - mouse: [wheel 0 +1]
+    - type: swipe
+      fingers: 1
+      direction: left_right
+      conditions:
+        - *zone_media_x
+        - *zone_media_y
+      actions:
+        - on: update
+          interval: -200
+          command: playerctl previous
+        - on: update
+          interval: 200
+          command: playerctl next
 
+    # control width of the current window
+    - type: swipe
+      fingers: 2
+      direction: left_right
+      conditions:
+        - *zone_media_x
+        - *zone_media_y
+      actions:
+        - on: update
+          interval: -60
+          input:
+            - keyboard: [leftmeta+leftshift+left]
+        - on: update
+          interval: 60
+          input:
+            - keyboard: [leftmeta+leftshift+right]
 
+    - type: tap
+      fingers: 1
+      conditions:
+        - *zone_media_x
+        - *zone_media_y
+      actions:
+        - on: update
+          command: playerctl play-pause
+
+    - type: tap
+      fingers: 1
+      conditions:
+        - &zone_bottom_x $finger_1_initial_position_percentage_x > 0.30
+        - &zone_bottom_y $finger_1_initial_position_percentage_y >= 0.80
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftmeta+grave]
+
+    # clipboard
+    - type: tap
+      fingers: 2
+      conditions:
+        - *zone_bottom_x
+        - *zone_bottom_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftmeta+v]
+
+    # movement zone bottom left_right
+    - type: swipe
+      fingers: 1
+      direction: left_right
+      conditions:
+        - *zone_bottom_x
+        - *zone_bottom_y
+      actions:
+        - on: update
+          interval: -40
+          input:
+            - keyboard: [left]
+        - on: update
+          interval: 40
+          input:
+            - keyboard: [right]
+
+    # movement zone bottom left_right
+    - type: swipe
+      fingers: 1
+      direction: left_right
+      conditions:
+        - &zone_movement_x $finger_1_initial_position_percentage_x <= 0.30
+        - &zone_movement_y $finger_1_initial_position_percentage_y >= 0.40
+      actions:
+        - on: update
+          interval: -40
+          input:
+            - keyboard: [left]
+        - on: update
+          interval: 40
+          input:
+            - keyboard: [right]
+
+    - type: swipe
+      fingers: 1
+      direction: up_down
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: update
+          interval: -40
+          input:
+            - keyboard: [up]
+        - on: update
+          interval: 40
+          input:
+            - keyboard: [down]
+
+    - type: swipe
+      fingers: 2
+      direction: left_right
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: update
+          interval: -40
+          input:
+            - keyboard: [home]
+        - on: update
+          interval: 40
+          input:
+            - keyboard: [end]
+
+    - type: swipe
+      fingers: 2
+      direction: up_down
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: update
+          interval: -60
+          input:
+            - keyboard: [leftctrl+z]
+        - on: update
+          interval: 60
+          input:
+            - keyboard: [leftctrl+y]
+
+    - type: tap
+      fingers: 1
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [enter]
+
+    - type: tap
+      fingers: 2
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: update
+          input:
+            - keyboard: [backspace]
+
+    - type: hold
+      fingers: 2
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: tick
+          input:
+            - keyboard: [backspace]
+
+    - type: tap
+      fingers: 3
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+a]
+
+    - type: tap
+      fingers: 4
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+l]
+
+    - type: hold
+      fingers: 3
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+t]
+
+    - type: swipe
+      fingers: 3
+      direction: up_down
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: update
+          interval: -40
+          input:
+            - keyboard: [pageup]
+        - on: update
+          interval: 40
+          input:
+            - keyboard: [PageDown]
+
+    - type: tap
+      fingers: 1
+      conditions:
+        - $finger_1_initial_position_percentage_x >= 0.85
+      actions:
+        - on: update
+          input:
+            - keyboard: [leftalt+tab]
+
+    - type: tap
+      fingers: 2
+      conditions:
+        - $finger_1_initial_position_percentage_x >= 0.85
+      actions:
+        - on: update
+          input:
+            - keyboard: [leftalt+leftshift+tab]
+
+    # main gestures that should override everything
     # brightness up&down / global
     - type: swipe
       fingers: 3
@@ -86,11 +306,11 @@ touchpad:
       direction: left_right
       actions:
         - on: update
-          interval: -20
+          interval: -10
           input:
             - keyboard: [volumedown]
         - on: update
-          interval: 20
+          interval: 10
           input:
             - keyboard: [volumeup]
 
@@ -149,16 +369,66 @@ touchpad:
     - type: tap
       fingers: 4
       actions:
-        - on: update
+        - on: begin
           input:
             - keyboard: [playpause]
+
+    # copy on kitty
+    - type: hold
+      fingers: 4
+      conditions:
+        - $window_class == "kitty"
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+leftshift+c]
+
+    # general copy
+    - type: hold
+      fingers: 4
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+c]
 
     - type: tap
       fingers: 5
       actions:
-        - on: update
+        - on: begin
           input:
             - keyboard: [leftalt+f4]
+
+    - type: hold
+      fingers: 5
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftmeta+leftshift+s]
+
+    - type: tap
+      fingers: 3
+      actions:
+        - on: begin
+          input:
+            - mouse: [middle]
+
+    # paste on kitty
+    - type: hold
+      fingers: 3
+      conditions:
+        - $window_class == "kitty"
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+leftshift+v]
+
+    # general paste
+    - type: hold
+      fingers: 3
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+v]
 
     - type: pinch
       fingers: 3
@@ -175,157 +445,3 @@ touchpad:
         - on: begin
           input:
             - keyboard: [leftctrl+f10]
-
-    # - type: tap
-    #   fingers: 2
-    #   conditions:
-    #     - $finger_1_initial_position_percentage_y >= 0.80
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [Enter]
-
-    # - type: tap
-    #   fingers: 2
-    #   conditions:
-    #     - $finger_1_initial_position_percentage_x >= 0.80
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [leftctrl+z]
-    #
-    # - type: swipe
-    #   fingers: 1
-    #   direction: left_right
-    #   conditions:
-    #     - $finger_1_initial_position_percentage_y <= 0.20
-    #     - $finger_1_initial_position_percentage_x <= 0.40
-    #   actions:
-    #     - on: update
-    #       interval: 40
-    #       input:
-    #         - keyboard: [leftctrl+z]
-    #     - on: update
-    #       interval: -40
-    #       input:
-    #         - keyboard: [leftctrl+y]
-
-    - type: swipe
-      fingers: 1
-      direction: up_down
-      conditions:
-        - $finger_1_initial_position_percentage_x <= 0.30
-      actions:
-        - on: update
-          interval: 30
-          command: playerctl position 3-
-        - on: update
-          interval: -20
-          command: playerctl position 3+
-
-    # - type: tap
-    #   fingers: 1
-    #   conditions:
-    #     - $finger_1_initial_position_percentage_y <= 0.20
-    #     - $finger_1_initial_position_percentage_x <= 0.40
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [leftctrl+c]
-    #
-    # - type: tap
-    #   fingers: 1
-    #   conditions:
-    #     - $finger_1_initial_position_percentage_y <= 0.20
-    #     - $finger_1_initial_position_percentage_x > 0.25
-    #     - $finger_1_initial_position_percentage_x <= 0.60
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [leftctrl+v]
-    #
-    # - type: tap
-    #   fingers: 1
-    #   conditions:
-    #     - $finger_1_initial_position_percentage_y <= 0.20
-    #     - $finger_1_initial_position_percentage_x <= 0.40
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [leftctrl+c]
-    #
-    # - type: swipe
-    #   fingers: 1
-    #   direction: left_right
-    #   conditions:
-    #     - $finger_1_initial_position_percentage_y <= 0.20
-    #     - $finger_1_initial_position_percentage_x > 0.40
-    #     - $finger_1_initial_position_percentage_x <= 0.60
-    #   actions:
-    #     - on: update
-    #       interval: -40
-    #       input:
-    #         - keyboard: [left]
-    #     - on: update
-    #       interval: 40
-    #       input:
-    #         - keyboard: [right]
-
-    - type: tap
-      fingers: 1
-      conditions:
-        - $finger_1_initial_position_percentage_y >= 0.80
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftmeta+grave]
-
-    - type: swipe
-      fingers: 1
-      direction: left_right
-      conditions:
-        - $finger_1_initial_position_percentage_x <= 0.40
-        - $finger_1_initial_position_percentage_y >= 0.60
-      actions:
-        - on: update
-          interval: -40
-          input:
-            - keyboard: [left]
-        - on: update
-          interval: 40
-          input:
-            - keyboard: [right]
-
-    - type: swipe
-      fingers: 1
-      direction: up_down
-      conditions:
-        - $finger_1_initial_position_percentage_x <= 0.40
-        - $finger_1_initial_position_percentage_y >= 0.60
-      actions:
-        - on: update
-          interval: -40
-          input:
-            - keyboard: [up]
-        - on: update
-          interval: 40
-          input:
-            - keyboard: [down]
-
-    - type: tap
-      fingers: 1
-      conditions:
-        - $finger_1_initial_position_percentage_x >= 0.85
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftalt+tab]
-
-    # - type: stroke
-    #   fingers: 3
-    #   strokes: "ABUALQQzDyERSxwRJFYnAj5YNfNOUT7kW0BI02QLZAA="
-    #   # direction: any
-    #   actions:
-    #     - on: end
-    #       input:
-    #         - keyboard: [leftmeta+grave]
