@@ -1,7 +1,5 @@
-Initially was intended to save configuration for i3-wm and later sway.
-
-Now I barely use them but they still should be working. I primarily use KDE.
-
+Initially was intended to save configuration for i3-wm and later sway.<br>
+Now I barely use them but they still should be working. I primarily use KDE.<br>
 Currently it has configuration for:
 
 - [neovim](.config/nvim)
