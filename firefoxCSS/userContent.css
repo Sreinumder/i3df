@@ -150,6 +150,8 @@
   nav a:has(svg[aria-label="Home"]),
   header a:has(svg[aria-label="Home"]),
   nav a:has(svg[aria-label="Explore"]),
+  /* div.x1lliihq.x1n2onr6, */
+  article:not(:first-of-type),
   header a:has(svg[aria-label="Explore"]) {
     display: none !important;
   }
@@ -197,4 +199,9 @@
   a[href*="/reels/"] {
     display: none !important;
   }
+}
+
+/* Hide Instagram "More options" button */
+[aria-label="More options"] {
+  display: none !important;
 }
