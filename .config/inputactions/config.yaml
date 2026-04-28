@@ -270,7 +270,9 @@ touchpad:
     - type: tap
       fingers: 1
       conditions:
-        - $finger_1_initial_position_percentage_x >= 0.85
+        - &zone_center_right_x $finger_1_initial_position_percentage_x >= 0.85
+        - &zone_center_right_y1 $finger_1_initial_position_percentage_y < 0.80
+        - &zone_center_right_y2 $finger_1_initial_position_percentage_y >= 0.30
       actions:
         - on: update
           input:
@@ -279,11 +281,33 @@ touchpad:
     - type: tap
       fingers: 2
       conditions:
-        - $finger_1_initial_position_percentage_x >= 0.85
+        - *zone_center_right_x
+        - *zone_center_right_y1
+        - *zone_center_right_y2
       actions:
         - on: update
           input:
             - keyboard: [leftalt+leftshift+tab]
+
+    - type: tap
+      fingers: 1
+      conditions:
+        - &zone_top_right_x $finger_1_initial_position_percentage_x >= 0.85
+        - &zone_top_right_y $finger_1_initial_position_percentage_y < 0.30
+      actions:
+        - on: update
+          input:
+            - keyboard: [leftctrl+leftalt+tab]
+
+    - type: tap
+      fingers: 2
+      conditions:
+        - *zone_top_right_x
+        - *zone_top_right_y
+      actions:
+        - on: update
+          input:
+            - keyboard: [leftctrl+leftalt+leftshift+tab]
 
     # main gestures that should override everything
     # brightness up&down / global
