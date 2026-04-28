@@ -36,6 +36,7 @@ Git
 
 Browser
 =======
+- firefox (with custom css is best)
 - zen-browser-bin (pretty browser but too much ram consuming)
 - qutebrowser (browser with dedicated vim-binding)
 - dillo (fastest browser, only takes like 40 mb ram at idle but no js ofcourse.)

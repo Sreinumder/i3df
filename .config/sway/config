@@ -31,7 +31,7 @@ font pango:Jetbrains Mono 12
 # basically autostart
 # exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-exec --no-startup-id feh --bg-fill ~/wallpapers/wall.jpg 
+exec --no-startup-id feh --bg-fill ~/Pictures/dark.png
 exec --no-startup-id autotiling
 exec --no-startup-id numlockx
 exec --no-startup-id clipmenud
@@ -210,7 +210,7 @@ bindsym $mod+Tab workspace next
 bindsym $mod+Shift+Tab workspace prev
 bindsym $mod+e workspace next
 bindsym $mod+q workspace prev
-bindsym $mod+grave workspace back_and_forth
+bindsym $mod+grave exec kitten quick-access-terminal
 # bindsym $mod+n exec --no-startup-id i3-msg "workspace $(bash $HOME/i3df/.config/i3/least_empty_workspace.sh)"
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
@@ -259,11 +259,6 @@ bindsym $mod+Shift+l resize grow width 10 px or 10 ppt
 bindsym $mod+Shift+j resize grow height 10 px or 10 ppt
 bindsym $mod+Shift+k resize shrink height 10 px or 10 ppt
 
-bindsym $mod+o exec "localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'"
-# bindsym Escape exec "xdotool sleep 0.1 key Escape; localectl set-x11-keymap us; setxkbmap -option caps:swapescape; pkill xbindkeys;echo stop > /tmp/auto-data-entry; xmodmap -e 'keycode 108 = Menu'";
-bindsym $mod+u exec "~/xdotool-scripts/question-paper/homerowdir.sh; xmodmap -e 'keycode 108 = Menu'"
-# bindsym $mod+Escape exec "~/xdotool-scripts/question-paper/homerowdir.sh"
-
 bindsym $mod+n exec --no-startup-id ~/i3df/scripts/window_cycle.sh next
 bindsym $mod+p exec --no-startup-id ~/i3df/scripts/window_cycle.sh previous
 
@@ -281,7 +276,7 @@ mode "vbox" {
 
 # Start i3bar to display a workspace bar (plus the system information i3status
   bar {
-    status_command i3blocks
+    status_command swaybar
     # height 15
     height 20
     font pango:Jetbrains Mono 12,  Noto Sans Mono CJK JP 12
@@ -322,8 +317,9 @@ input "type:touchpad" {
     natural_scroll enabled  # disables reverse scroll
     # scroll_factor 0.1
 }
-input "type:keyboard" {
-    xkb_options "caps:swapescape"
-    xkb_numlock enabled
-}
+# I use kanata now
+# input "type:keyboard" {
+#     xkb_options "caps:swapescape"
+#     xkb_numlock enabled
+# }
 include /etc/sway/config.d/*
