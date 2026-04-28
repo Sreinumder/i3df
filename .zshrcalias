@@ -127,6 +127,7 @@ function rnpwd() {
 }
 function cpcd() { cp -r "$@" && cd "${@: -1}" }
 function mvkcd() { mkdir -p "${@: -1}" && mv "$@" && cd "${@: -1}" }
+function mvk() { mkdir -p "${@: -1}" && mv "$@" }
 function cpkcd() { mkdir -p "${@: -1}" && cp -r "$@" && cd "${@: -1}" }
 function mvn() { mv "$@" && nvim "${@: -1}" }
 function gitcd() { git clone "$1" && cd "$(basename "$1" .git)"; }
