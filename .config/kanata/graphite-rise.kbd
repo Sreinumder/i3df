@@ -1,5 +1,6 @@
 (defcfg
   process-unmapped-keys yes
+  sequence-timeout 2000
 )
 
 (defvar
@@ -37,7 +38,6 @@
   alt (
     tap-dance 300 (
       (tap-hold 200 200 ( one-shot 1000 (layer-while-held movesym) ) lalt)
-      (layer-toggle emoji)
     )
   )  ;; ctrl esc
   @/ (tap-hold 200 200 (one-shot 1000 lshift) lshift)
@@ -55,316 +55,207 @@
   m<    (movemouse-accel-left  1 1000 1 5)
   mv    (movemouse-accel-down  1 1000 1 5)
   m>    (movemouse-accel-right 1 1000 1 5)
+
 )
 
-
-(defsrc
-  `
-  esc   1     2     3     4     5     6     7     8     9     0    -
-  tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
-  caps   a     s     d     f     g     h     j     k     l     ;     '     ret
-  lshift  z     x     c     v     b     n     m     ,     .     /    rshift
-  lctrl lalt spc  ralt rctrl
-)
-
-(deflayer default_qwerty
-  `
-  esc   1     2     3     4     5     6     7     8     9     0    -
-  tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
-  caps   a     s     d     f     g     h     j     k     l     ;     '     @⏎
-  lshift  z     x     c     v     b     n     m     ,     .     /    rshift
-  lctrl lalt spc  ralt rctrl
-)
-
-(deflayer graphite_rise
-`
-  caps 1     2     3     4     5     6     7     8     @,s  ;    -
-  tab  b     l     d     w     q     [     '     f     o     u     j     S-;   S-'
-  @csc  n     r     t     s     g     ;     y     h     a     e     i     @⏎
-  @shift z    @xt    m     c     ,     ]     k     p     v     .     /
-  @ctrl @alt @spcm  @fnum -
-)
-
-(deflayer movesym
-  `
-  caps S-5   S-\   S-7   S-6   _     6     7     8     @,s   ;     -
-  S-,  S-1   S-.   S-9   S-0   [     [     ]     S-[   S-]   ⏎     ⇟     ⎀    ⎙
-  @csc  +     S-8   -     =     S--   ⏎     ←     ↓     ↑     →     ⇥     ▤
-  @shift S-`   S-5   S-6   S-;   XX    ]     ⇤     ⌫     ⌦     ⇞     \
-  lctrl @alt @spcm  @fnum rctrl
-)
-
-;; contains fn keys + 0-9 keys + a-f (for hex color) + (+-*/)
-(deflayer fnum
-  `
-  caps 1     2     3     4     5     6     7     @,s  ;     S-8   -
-  tab  f1    f2    f3    f4    f5    [     f6    f7    f8    f9    f10   f11   f12
-  @csc  1     2     3     4     5     ⏎     6     7     8     9     0     @000
-  @shift a     b     +     -     c     ]     d     e     f     .     /
-  lctrl @alt @spcm @fnum rctrl
-)
-
-(deflayer extra
- mfwd
- caps C-⇞   C-⇟   mmid  4     5     6     7     8     9     0     -
- mbck mlft  mlft  @mA   mrgt  @email [     y     _     mute  vold  volu  ]     \
- @csc  @md   @m<   @mv   @m>   mfwd  ⏎     h     @tq   prev  pp    next  '
- @shift @mu   @md   @ml   @mr   b     ]     .     @tg   brdn  brup  /
- @tq @td @tg @tq @tf
- )
-
-(deflayer emoji
-  `
-  caps 🔣🤝  🔣👍  🔣👎  🔣💡   🔣✅   -     6      7      8      9   0
-  tab  🔣💙  🔣😂  🔣💀  🔣😉   🔣🇳🇵   🔣👇  🔣🧑‍🦽   🔣😮   🔣🙉   🔣🙌  🔣🙁   🔣🫶   🔣👆
-  🔣🧠  🔣🙅  🔣🥀  🔣😆  🔣🙂   🔣👌   ⏎     🔣✌️   🔣💯   🔣🤭   🔣🔗   🔣🙇   🔣⚠️
-  @shift 🔣🏃   🔣💨   🔣🙂  🔣🙃  🔣🫅  ]      🔣🤯   🔣🙏   🔣🧲   🔣👏  🔣🤛
-  lctrl lalt @spcm  @fnum ⏎
-)
-
-
-(deflayer tapio_expanded
-  0
-  @alt  @q    @w    @e    @r    @t     6     7     8     9     0    -
-  @csc  @a    @s    @d    @f    @g    d     u     i     o     p     [     ]     \
-  @shift @z    @x    @c    @v    @b    h     j     k     l     ;     '    @⏎
-  tab     @1    @2    @3    @4    '     n     m     ,     .     /    rshift
-  lctrl @alt3 @spcl2  @fnum ⏎
-)
-
-(deflayer tapio_expanded_l2
-  0
-  esc   6     7     8     9     @000  6     7     8     9     0    -
-  S-,  S-1   S-.   S-9   S-0     `     d     u     i     o     p     [     ]     \
-  @csc     +     S-8   -      =   S--   h     j     k     l     ;     '    @⏎
-  @shift    S-`     ;     [      ]   b     n     m     ,     .     /    rshift
-  lctrl @alt3 @spcl2  @fnum ⏎
-)
-
-(deflayer tapio_expanded_l3
-  mute
-  esc   volu  prev  pp    next  brup  6     7     8     9     0    -
-  tab    vold  S-[   ↑     S-]   brdn  d     u     i     o     p     [     ]     \
-  @csc   ⇥     ←     ↓     →     ⇤     h     j     k     l     ;     '    @⏎
-  @shift  \     S-\   S-6   S-7   b     n     m     ,     .     /    rshift
-  lctrl @alt3 @spcl2  @fnum ⏎
-)
-
-(defchords tapio_chords 40
-  ;; (q w e r t a s d f g z x c v b 1 2 3 4)
-
-
-  ;;   s n i   -- ring and middle         (ae) ␣ (no) ⏎ (ne) ⌫ (ie) ⌦
-  ;;  a o t e                             (ot) d (te) th (oe) c (sn) p (ni)   (ai) w
-  ;;       u y -- index finger
-  ;;      l r h -- thumb
-
-;; letters left bcdfgjkmpqvwxz
-;; b
-
-  ;; chords with r thumb + sniaote ->
-  ;;   s n i
-  ;;  ␣ b f d
-  ;;       u y
-  ;;       (r) -- chords with r thumb
-
-  ;; chords with h thumb + sniaote ->
-  ;;   s n i
-  ;;  ␣ b f d
-  ;;       u y
-  ;;         (h) -- chords with r thumb
-
-(q) '
-(w) s
-(e) n
-(r) i
-(t) z
-(a) a
-(s) o
-(d) t
-(f) e
-(g) .
-(z) /
-(x) ;
-(c) u
-(v) y
-(b) g
-(1) ,
-(2) l
-(3) r
-(4) h
-
-(w e) p
-;;(e r) b
-;;(w r) f
-(a f) spc
-(s d) d
-(d f) (macro t h)
-(s f) c
-(w f) v
-
-;;modifier diagonals
-(e f) ⌫
-(r f) ⌦
-(e s) ⏎
-;;(r s)
-;;(e d)
-;;(w d)
-
-;;(c v)
-;;(d c)
-;;(s c)
-;;(a c)
-;;(d v)
-;;(s v)
-;;(f v)
-
-;;(3 q)
-;;(3 w)
-;;(3 e)
-;;(3 r)
-;;(3 a)
-;;(3 s)
-;;(3 d)
-;;(3 f)
-;;(3 c)
-;;(3 v)
-;;
-;;(4 q)
-;;(4 w)
-;;(4 e)
-;;(4 r)
-;;(4 a)
-;;(4 s)
-;;(4 d)
-;;(4 f)
-;;(4 c)
-;;(4 v)
-;;
-;;(2 q)
-;;(2 w)
-;;(2 e)
-;;(2 r)
-;;(2 a)
-;;(2 s)
-;;(2 d)
-;;(2 f)
-;;(2 c)
-;;(2 v)
-
-
-;;(q w e r t a s d f g z x c v b 1 2 3 4)
-
-;;(3 w                     ) k
-;;(  w e                   ) p
-;;(    e r                 ) b
-;;(        a s             ) j
-;;(          s d           ) d
-;;(            d f         ) (macro t h)
-;;(                  x c   ) S-;
-;;(                  x   v ) ;
-;;(                    c v ) S-'
-;;(              f     c   ) x
-;;(              f       v ) x
-;;
-;;(3     r                 ) g
-;;(        a     f         ) spc
-;;
-;;(3   e                   ) z
-;;(  w   r                 ) f
-;;(        a   d           ) q
-;;(          s   f         ) c
-;;(3             f         ) m
-;;(  w           f         ) v
-;;(      r   s             ) (macro o f)
-;;(  w e       f           ) (macro s c)
-;;(  w     a     f         ) (macro r d)
-;;(          s d       c   ) (macro b u)
-;;(      r               v ) (macro f y)
-;;(    e                 v ) (macro l y)
-;;(    e   a     f         ) (macro l d)
-;;(    e r   s             ) (macro l t)
-;;(  w e r                 ) (macro l l)
-;;(    e               c   ) (macro b l)
-;;;; (      r   s   f         ) (macro c l) ;; does not work not enough keyroll
-;;;; (  w       s   f         ) (macro c l)
-;;(  w         d           ) (macro o u)
-;;(3 w         d           ) (macro k u)
-;;
-;;;; avoid the ar ra os so bigram nt and ie can be alt fingered
-;;(          s d f         ) (macro a r)
-;;(        a   d f         ) (macro r a)
-;;(3 w e                   ) (macro o s)
-;;(3 w           f         ) (macro m a)
-;;(3           d f         ) (macro a m)
-;;(3     r     d           ) (macro g a)
-;;(3     r  s              ) (macro a g)
-;;(        a s d           ) (macro s o)
-;;
-;;;; (    e       d           ) (macro h a)
-;;(    e     s   f         ) (macro c h)
-;;(    e r a               ) (macro w h)
-;;(  w     a               ) (macro t h)
-;;(      r a      d        ) (macro t h)
-;;
-;;(3   e         f         ) (macro m e n)
-;;(  w         d f         ) (macro c s)
-;;(            d         v ) (macro t h e)
-;;(3   e r                 ) (macro i n g)
-;;(        a s   f         ) (macro a n d)
-;;(3 w   r                 ) (macro f o r)
-;;(          s d         v ) (macro y o u)
-;;(3         s             ) (macro t i o n)
-;;
-;;(    e         f         ) ⌫
-;;(    e    s              ) ⏎
-;;(      r       f         ) ⌦
-;;
-;;(      r a               ) w
-;;(    e   a               ) ;
-;;
-;;(3                   c   ) @email
-;;;;(  w                 c   )
-;;;;(      r             c   )
-;;(        a           c   ) ⇥
-;;(          s         c   ) ←
-;;(            d       c   ) →
-;;(        a             v ) ⇤
-;;(          s           v ) ↓
-;;;;(  w                   v )
-;;;;(    e                 v )
-;;;;(      r               v )
-;;;;(              f       v )
-)
-
-;; (defchords tapio_l2_chords 60)
-
-(defalias
-  q(chord tapio_chords q)
-  w(chord tapio_chords w)
-  e(chord tapio_chords e)
-  r(chord tapio_chords r)
-  t(chord tapio_chords t)
-  a(chord tapio_chords a)
-  s(chord tapio_chords s)
-  d(chord tapio_chords d)
-  f(chord tapio_chords f)
-  g(chord tapio_chords g)
-  z(chord tapio_chords z)
-  x(chord tapio_chords x)
-  c(chord tapio_chords c)
-  b(chord tapio_chords b)
-  v(chord tapio_chords v)
-  1(chord tapio_chords 1)
-  2(chord tapio_chords 2)
-  3(chord tapio_chords 3)
-  4(chord tapio_chords 4)
-  spcl2 (tap-hold 200 200 spc (layer-toggle tapio_expanded_l2))
-  alt3 (
-    tap-dance 300 (
-      (tap-hold 100 100 (one-shot 1000 lshift) (layer-toggle tapio_expanded_l3))
-      lalt
-      caps
-    )
+  (defsrc
+   `
+   esc   1     2     3     4     5     6     7     8     9     0    -
+   tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
+   caps   a     s     d     f     g     h     j     k     l     ;     '     ret
+   lshift  z     x     c     v     b     n     m     ,     .     /    rshift
+   lctrl lalt spc  ralt rctrl
   )
+
+  (deflayer default_qwerty
+   `
+   esc   1     2     3     4     5     6     7     8     9     0    -
+   tab   q     w     e     r     t     y     u     i     o     p     [     ]     \
+   caps   a     s     d     f     g     h     j     k     l     ;     '     @⏎
+   lshift  z     x     c     v     b     n     m     ,     .     /    rshift
+   lctrl lalt spc  ralt rctrl
+  )
+
+  (deflayer graphite_rise
+   `
+   caps  1     2     3     4     5     6     7     8     @,s   ;    -
+   tab   b     l     d     w     q     [     '     f     o     u     j     S-;   S-'
+   @csc   n     r     t     s     g     ;     y     h     a     e     i     @⏎
+   @shift  z     @xt   m     c     ,     ]     k     p     v     .    /
+   @ctrl @alt @spcm @fnum sldr
+  )
+
+  (deflayer movesym
+   `
+   caps  S-5   S-\   S-7   S-6   _     6     7     8     @,s   ;    -
+   S-,   S-1   S-.   S-9   S-0   [     [     ]     S-[   S-]   ⏎     ⇟     ⎀     ⎙
+   @csc   +     S-8   -     =     S--   ⏎     ←     ↓     ↑     →     ⇥     ▤
+   @shift  S-`   S-5   S-6   S-;   XX    ]     ⇤     ⌫     ⌦     ⇞    \
+   lctrl @alt @spcm @fnum rctrl
+  )
+
+  ;; contains fn keys + 0-9 keys + a-f (for hex color) + (+-*/)
+  (deflayer fnum
+   `
+   caps  1     2     3     4     5     6     7     @,s   ;     S-8  -
+   tab   f1    f2    f3    f4    f5    [     f6    f7    f8    f9    f10   f11   f12
+   @csc   1     2     3     4     5     ⏎     6     7     8     9     0     @000
+   @shift  a     b     +     -     c     ]     d     e     f     .    /
+   lctrl @alt @spcm @fnum rctrl
+  )
+
+  (deflayer extra
+   mfwd
+   caps  C-⇞   C-⇟   mmid  4     5     6     7     8     9     0    -
+   mbck  mlft  mlft  @mA   mrgt  @email [     y     _     mute  vold  volu  ]     \
+   @csc   @md   @m<   @mv   @m>   mfwd  ⏎     h     @tq   prev  pp    next  '
+   @shift  @mu   @md   @ml   @mr   b     ]     .     @tg   brdn  brup /
+   @tq   @td  @tg  @tq  @tf
+  )
+
+(deftemplate seq (vk-name input-keys output-action)
+    (defvirtualkeys $vk-name $output-action)
+    (defseq $vk-name $input-keys)
 )
+;; template-expand has a shortened form: t!
+(t! seq dotcom (.) (macro . c o m))
+
+;; --- POSITIVE / HAPPY ---
+(t! seq  giggle       ( l l ) (macro (unicode 😆)))
+(t! seq  laugh        ( l a ) (macro (unicode 😂)))
+(t! seq  happy        ( h p ) (macro (unicode 😄)))
+(t! seq  smile        ( s m ) (macro (unicode 🙂)))
+(t! seq  grin         ( g r ) (macro (unicode 😁)))
+(t! seq  cool         ( c o ) (macro (unicode 😎)))
+(t! seq  yum          ( y m ) (macro (unicode 😋)))
+(t! seq  silly        ( s i ) (macro (unicode 😜)))
+(t! seq  wink         ( w k ) (macro (unicode 😉)))
+(t! seq  excited      ( l x ) (macro (unicode 🤩)))
+(t! seq  celebrate    ( c e ) (macro (unicode 🥳)))
+(t! seq  modest       ( m o ) (macro (unicode 😊)))
+(t! seq  angelic      ( a n ) (macro (unicode 😇)))
+(t! seq  hug          ( h g ) (macro (unicode 🤗)))
+(t! seq  love         ( l v ) (macro (unicode 🥰)))
+(t! seq  satisfied    ( s f ) (macro (unicode 😌)))
+(t! seq  confident    ( c f ) (macro (unicode 😏)))
+(t! seq  nerdy        ( n d ) (macro (unicode 🤓)))
+(t! seq  melting      ( m t ) (macro (unicode 🫠)))
+
+;; --- SAD / NEGATIVE ---
+(t! seq  cry          ( c r ) (macro (unicode 😢)))
+(t! seq  sob          ( s b ) (macro (unicode 😭)))
+(t! seq  unhappy      ( u n ) (macro (unicode 🙁)))
+(t! seq  disappointed ( d s ) (macro (unicode 😞)))
+(t! seq  worried      ( w r ) (macro (unicode 😟)))
+(t! seq  sad          ( s d ) (macro (unicode 😔)))
+(t! seq  frustrated   ( f t ) (macro (unicode 😩)))
+(t! seq  annoyed      ( a y ) (macro (unicode 😖)))
+(t! seq  exhausted    ( e x ) (macro (unicode 😫)))
+
+;; --- ANGER / INTENSE ---
+(t! seq  angry        ( a g ) (macro (unicode 😠)))
+(t! seq  furious      ( f u ) (macro (unicode 😡)))
+(t! seq  scream       ( s c ) (macro (unicode 😱)))
+(t! seq  fear         ( f e ) (macro (unicode 😨)))
+(t! seq  hot          ( h t ) (macro (unicode 🥵)))
+(t! seq  cold         ( c l ) (macro (unicode 🥶)))
+
+;; --- MENTAL / STATE ---
+(t! seq  mind         ( m d ) (macro (unicode 🤯)))
+(t! seq  dizzy        ( d y ) (macro (unicode 😵)))
+(t! seq  tired        ( t r ) (macro (unicode 😓)))
+(t! seq  confused     ( c n ) (macro (unicode 😕)))
+(t! seq  thinking     ( t k ) (macro (unicode 🤔)))
+
+;; --- SICK ---
+(t! seq  disgust      ( d g ) (macro (unicode 🤢)))
+(t! seq  vomit        ( v m ) (macro (unicode 🤮)))
+(t! seq  sneeze       ( s z ) (macro (unicode 🤧)))
+
+;; --- EXPRESSIONS ---
+(t! seq  irony        ( i r ) (macro (unicode 🙃)))
+(t! seq  peek         ( p k ) (macro (unicode 🫣)))
+(t! seq  skeptical    ( s k ) (macro (unicode 🫤)))
+(t! seq  speechless   ( s p ) (macro (unicode 😶)))
+(t! seq  neutral      ( n t ) (macro (unicode 😐)))
+(t! seq  unamused     ( u a ) (macro (unicode 😑)))
+(t! seq  surprised    ( s u ) (macro (unicode 😯)))
+(t! seq  astonished   ( a s ) (macro (unicode 😲)))
+(t! seq  embarrassed  ( e b ) (macro (unicode 😳)))
+(t! seq  salute       ( s l ) (macro (unicode 🫡)))
+(t! seq  bored        ( b o ) (macro (unicode 🥱)))
+(t! seq  shock        ( s h ) (macro (unicode 😮)))
+(t! seq  asleep       ( a p ) (macro (unicode 😴)))
+(t! seq  overwhelmed  ( o w ) (macro (unicode 🫠)))
+(t! seq  shush        ( s s ) (macro (unicode 🤫)))
+(t! seq  disguise     ( d i ) (macro (unicode 🥸)))
+(t! seq  lying        ( l y ) (macro (unicode 🤥)))
+
+;; --- ACTIONS ---
+(t! seq  idea         ( i d ) (macro (unicode 💡)))
+(t! seq  pass         ( p s ) (macro (unicode ✅)))
+(t! seq  fail         ( f l ) (macro (unicode ❌)))
+(t! seq  ok           ( o k ) (macro (unicode 🆗)))
+(t! seq  agree        ( a r ) (macro (unicode 👍)))
+(t! seq  like         ( l i ) (macro (unicode 👍)))
+(t! seq  disagree     ( d r ) (macro (unicode 👎)))
+(t! seq  dislike      ( d l ) (macro (unicode 👎)))
+(t! seq  handshake    ( h s ) (macro (unicode 🤝)))
+(t! seq  perfect      ( p f ) (macro (unicode 👌)))
+(t! seq  hifive       ( h f ) (macro (unicode 🙌)))
+(t! seq  hi           ( h i ) (macro (unicode 👋)))
+(t! seq  bye          ( b y ) (macro (unicode 👋)))
+(t! seq  clap         ( c p ) (macro (unicode 👏)))
+(t! seq  punch        ( p u ) (macro (unicode 👊)))
+
+;; --- DEV / TECH ---
+(t! seq  feature      ( s t ) (macro (unicode ✨)))
+(t! seq  bug          ( b g ) (macro (unicode 🐛)))
+(t! seq  lightning    ( l t ) (macro (unicode ⚡)))
+(t! seq  test         ( t s ) (macro (unicode 🧪)))
+(t! seq  save         ( s v ) (macro (unicode 💾)))
+(t! seq  edit         ( e d ) (macro (unicode 📝)))
+(t! seq  lock         ( l k ) (macro (unicode 🔒)))
+(t! seq  design       ( d z ) (macro (unicode 🎨)))
+(t! seq  alarm        ( a l ) (macro (unicode 🚨)))
+(t! seq  rocket       ( r k ) (macro (unicode 🚀)))
+(t! seq  navigate     ( n v ) (macro (unicode 🧭)))
+(t! seq  dependency   ( d p ) (macro (unicode 🧩)))
+(t! seq  code         ( c d ) (macro (unicode 💻)))
+(t! seq  link         ( l n ) (macro (unicode 🔗)))
+(t! seq  pin          ( p n ) (macro (unicode 📌)))
+(t! seq  package      ( p a ) (macro (unicode 📦)))
+(t! seq  search       ( s r ) (macro (unicode 🔍)))
+(t! seq  file         ( f i ) (macro (unicode 📄)))
+(t! seq  folder       ( f o ) (macro (unicode 📂)))
+(t! seq  reload       ( r l ) (macro (unicode 🔄)))
+(t! seq  tweak        ( t w ) (macro (unicode 🔧)))
+(t! seq  log          ( l g ) (macro (unicode 🧾)))
+(t! seq  world        ( w d ) (macro (unicode 🌐)))
+(t! seq  notification ( n f ) (macro (unicode 🔔)))
+(t! seq  plugin       ( p l ) (macro (unicode 🔌)))
+(t! seq  growth       ( g w ) (macro (unicode 📈)))
+(t! seq  decline      ( d c ) (macro (unicode 📉)))
+(t! seq  cleanup      ( c u ) (macro (unicode 🧹)))
+(t! seq  dna          ( d n ) (macro (unicode 🧬)))
+
+;; (t! seq  unsure       ( u s ) (macro (unicode 😶‍🌫️)))
+;;   f   x (macro (unicode 🛠️)) ;; fx = fix / tools
+;;   s   e (macro (unicode ⚙️)) ;; se = settings / config
+;;   l   b (macro (unicode 🏷️)) ;; lb = label / tag
+;;   k   v (macro (unicode ✌️)) ;; pe = peace/victory
+;;   p   u (macro (unicode ☝️)) ;; pu = "point up" (see above)
+;;   p   d (macro (unicode 👇)) ;; pd = "point down" (see below)
+;;   p   l (macro (unicode 👉)) ;; pl = "point left"
+;;   p   r (macro (unicode 👈)) ;; pr = "point right"
+;;   b   d (macro (unicode 🏗️)) ;; bd = build / structure
+;;   d   l (macro (unicode 🗑️)) ;; dl = delete
+;;   b   u (macro (unicode 🐞)) ;; bu = bug
+;;   p   r (macro (unicode ⏱️)) ;; pr = timing / profile
+;;   w   r (macro (unicode ⚠️)) ;; wr = warning
+
+;; Include another kanata file
+(include
+  "passwords.kbd"
+)
+
