@@ -35,7 +35,8 @@ vim.opt.fillchars = {
     fold = " ",
     foldopen = "v", -- optional
     foldclose = ">", -- optional
-    foldsep = " "
+    foldsep = " ",
+    eob=" "
 }
 -- }}}
 
@@ -65,7 +66,8 @@ require("various-textobjs").setup()
 vim.keymap.set({"o", "x"}, "g;", '<cmd>lua require("various-textobjs").lastChange()<CR>')
 vim.keymap.set({"o", "x"}, "ih", '<cmd>lua require("various-textobjs").lineCharacterwise("inner")<CR>')
 vim.keymap.set({"o", "x"}, "iu", '<cmd>lua require("various-textobjs").number("inner")<CR>')
-vim.keymap.set({"o", "x"}, "m", '<cmd>lua require("various-textobjs").chainMember("outer")<CR>')
+vim.keymap.set({"o", "x"}, "im", '<cmd>lua require("various-textobjs").chainMember("inner")<CR>')
+vim.keymap.set({"o", "x"}, "am", '<cmd>lua require("various-textobjs").chainMember("outer")<CR>')
 vim.keymap.set({"o", "x"}, "ij", '<cmd>lua require("various-textobjs").column()<CR>')
 vim.keymap.set({"o", "x"}, "ir", '<cmd>lua require("various-textobjs").restOfIndentation()<CR>')
 vim.keymap.set({"o", "x"}, "ii", "<cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>", {
@@ -147,13 +149,13 @@ end)
 vim.keymap.set({"n", "x"}, "<C-A-n>", function()
     mc.matchAddCursor(1)
 end)
-vim.keymap.set({"n", "x"}, "<C-A-s>", function()
+vim.keymap.set({"n", "x"}, "<leader><C-A-n>", function()
     mc.matchSkipCursor(1)
 end)
 vim.keymap.set({"n", "x"}, "<C-A-S-N>", function()
     mc.matchAddCursor(-1)
 end)
-vim.keymap.set({"n", "x"}, "<C-A-S-s>", function()
+vim.keymap.set({"n", "x"}, "<leader><C-A-S-N>", function()
     mc.matchSkipCursor(-1)
 end)
 vim.keymap.set("n", "<c-a-leftmouse>", mc.handleMouse)
@@ -167,10 +169,10 @@ vim.keymap.set("x", "S", mc.splitCursors)
 vim.keymap.set("x", "M", mc.matchCursors)
 vim.keymap.set("n", "<leader>v", mc.restoreCursors)
 vim.keymap.set({"n", "x"}, "<leader>A", mc.matchAllAddCursors)
-vim.keymap.set("x", "<leader>t", function()
+vim.keymap.set("x", "<A-0>", function()
     mc.transposeCursors(1)
 end)
-vim.keymap.set("x", "<leader>T", function()
+vim.keymap.set("x", "<A-9>", function()
     mc.transposeCursors(-1)
 end)
 vim.keymap.set("x", "I", mc.insertVisual)
@@ -467,6 +469,9 @@ vim.keymap.set({"n", "v", "o"}, "L", "g_", {
 vim.keymap.set({"n", "x"}, ",", '"+', {
     desc = 'clipboard_register'
 })
+
+vim.keymap.set("v", "<leader>y", "<cmd>normal! \"zy<CR>:w !cat<CR>", { silent = true })
+
 vim.keymap.set({"n", "x"}, "x", '"_x') -- delete with x d or D and cut with alt + x, alt + d, alt + D, alt + c
 vim.keymap.set({"n", "x"}, "X", '"_X')
 vim.keymap.set({"n", "x"}, "d", '"_d')
@@ -719,6 +724,7 @@ desc = "Select child treesitter node or inner incremental lsp selections"
       vim.pack.add({"https://github.com/emmanueltouzery/apidocs.nvim"})
       require("apidocs").setup()
       -- }}}
+
       -- fzf-lua: open with <space>f(o|f|w|u|b|r|h|,){{{
         vim.pack.add({"https://github.com/ibhagwan/fzf-lua"})
         require('fzf-lua').setup({
@@ -758,229 +764,252 @@ desc = "Select child treesitter node or inner incremental lsp selections"
         vim.keymap.set("n", "<leader>fw", "<cmd>FzfLua live_grep_native<CR>", {
           desc = "fzf live grep"
         })
-        vim.keymap.set("n", "<leader>ff", function()
-          require("fzf-lua").files({
-            cmd = "fd --type f --exclude node_modules"
+      --   vim.keymap.set("n", "<leader>ff", function()
+      --     require("fzf-lua").files({
+      --       cmd = "fd --type f --exclude node_modules"
+      --     })
+      --   end, {
+      --   desc = "fzf find files"
+      -- })
+      -- }}}
+
+      -- fff.nvim{{{
+        vim.pack.add({ 'https://github.com/dmtrKovalenko/fff.nvim' })
+
+        vim.api.nvim_create_autocmd('PackChanged', {
+          callback = function(ev)
+            local name, kind = ev.data.spec.name, ev.data.kind
+            if name == 'fff.nvim' and (kind == 'install' or kind == 'update') then
+              if not ev.data.active then vim.cmd.packadd('fff.nvim') end
+              require('fff.download').download_or_build_binary()
+            end
+          end,
+        })
+
+        vim.g.fff = {
+          lazy_sync = true,
+          debug = { enabled = true, show_scores = true },
+        }
+
+        vim.keymap.set('n', '<leader>ff', function() require('fff').find_files() end, { desc = 'FFFind files' })
+        -- }}}
+
+-- vim.pack.add({ "https://github.com/barrettruth/canola.nvim" })
+-- require("oil").setup()
+        -- mini.files: edit the fs like a buffer. Keymap: - or <Space>e {{{
+          local MiniFiles = require('mini.files')
+          vim.api.nvim_create_autocmd("User", {
+            pattern = "MiniFilesWindowUpdate",
+            callback = function(args)
+              local buf_id = args.data.buf_id
+              vim.api.nvim_buf_set_keymap(buf_id, "n", "<A-j>", "j", {})
+              vim.api.nvim_buf_set_keymap(buf_id, "n", "<A-k>", "k", {})
+              vim.wo[args.data.win_id].relativenumber = true
+              vim.wo[args.data.win_id].number = true
+            end
           })
+          vim.api.nvim_create_autocmd('User', {
+            pattern = 'MiniFilesWindowOpen',
+            callback = function(args)
+              local win_id = args.data.win_id
+              local config = vim.api.nvim_win_get_config(win_id)
+              config.border, config.title_pos = 'single', 'center'
+              vim.api.nvim_win_set_config(win_id, config)
+            end
+          })
+          require("mini.files").setup({
+            options = {
+              permanent_delete = false,
+              use_as_default_explorer = true
+            },
+            mappings = {
+              close = "<ESC>",
+              go_in = "<A-l>",
+              go_in_plus = "<CR>",
+              go_out = "-",
+              go_out_plus = "<A-h>"
+            }
+          })
+          vim.keymap.set('n', '-', function()
+            if not require('mini.files').close() then
+              require('mini.files').open(vim.api.nvim_buf_get_name(0))
+              require('mini.files').reveal_cwd()
+            end
+          end, {
+          desc = "opens minifiles"
+        })
+        vim.keymap.set('n', "<leader>e", function()
+          if not require("mini.files").close() then
+            require("mini.files").open()
+          end
         end, {
-        desc = "fzf find files"
+        desc = "mini.file"
       })
       -- }}}
 
-      -- mini.files: edit the fs like a buffer. Keymap: - or <Space>e {{{
-        local MiniFiles = require('mini.files')
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "MiniFilesWindowUpdate",
-          callback = function(args)
-            local buf_id = args.data.buf_id
-            vim.api.nvim_buf_set_keymap(buf_id, "n", "<A-j>", "j", {})
-            vim.api.nvim_buf_set_keymap(buf_id, "n", "<A-k>", "k", {})
-            vim.wo[args.data.win_id].relativenumber = true
-            vim.wo[args.data.win_id].number = true
-          end
-        })
-        vim.api.nvim_create_autocmd('User', {
-          pattern = 'MiniFilesWindowOpen',
-          callback = function(args)
-            local win_id = args.data.win_id
-            local config = vim.api.nvim_win_get_config(win_id)
-            config.border, config.title_pos = 'single', 'center'
-            vim.api.nvim_win_set_config(win_id, config)
-          end
-        })
-        require("mini.files").setup({
-          options = {
-            permanent_delete = false,
-            use_as_default_explorer = true
+      -- mini.diff: apply or reset git hunk in current file with <space>a or <space>r {{{
+        require('mini.diff').setup({
+          view = {
+            style = 'number'
           },
           mappings = {
-            close = "<ESC>",
-            go_in = "<A-l>",
-            go_in_plus = "<CR>",
-            go_out = "-",
-            go_out_plus = "<A-h>"
+            apply = '<leader>a',
+            reset = '<leader>r',
+            textobject = 'gh'
           }
-        })
-        vim.keymap.set('n', '-', function()
-          if not require('mini.files').close() then
-            require('mini.files').open(vim.api.nvim_buf_get_name(0))
-            require('mini.files').reveal_cwd()
-          end
-        end, {
-        desc = "opens minifiles"
-      })
-      vim.keymap.set('n', "<leader>e", function()
-        if not require("mini.files").close() then
-          require("mini.files").open()
-        end
-      end, {
-      desc = "mini.file"
-    })
-    -- }}}
-
-    -- mini.diff: apply or reset git hunk in current file with <space>a or <space>r {{{
-      require('mini.diff').setup({
-        view = {
-          style = 'number'
-        },
-        mappings = {
-          apply = '<leader>a',
-          reset = '<leader>r',
-          textobject = 'gh'
-        }
-      })
-      -- }}}
-
-      -- mini.statusline replaces nvim's default statusline {{{
-        require('mini.git').setup()
-        require('mini.statusline').setup({
-          content = {
-            active =   function()
-              local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
-              local git           = MiniStatusline.section_git({ trunc_width = 40 })
-              local diff          = MiniStatusline.section_diff({ trunc_width = 75 })
-              local diagnostics   = MiniStatusline.section_diagnostics({ trunc_width = 75 })
-              local lsp           = MiniStatusline.section_lsp({ trunc_width = 75 })
-              local filename      = MiniStatusline.section_filename({ trunc_width = 140 })
-              local fileinfo      = MiniStatusline.section_fileinfo({ trunc_width = 120 })
-              local location      = MiniStatusline.section_location({ trunc_width = 75 })
-
-              return MiniStatusline.combine_groups({
-                { hl = 'MiniStatuslineFilename', strings = { filename } },
-                '%<', -- Mark general truncate point
-                { hl = 'MiniStatuslineFilename',  strings = { git, diff } },
-                '%=', -- End left alignment
-                { hl = 'MiniStatuslineFilename',  strings = { diagnostics, lsp } },
-                { hl = 'MiniStatuslineFilename', strings = { fileinfo } },
-                { hl = 'MiniStatuslineFilename',  strings = { location } },
-              })
-            end,
-            inactive = nil,
-          },
         })
         -- }}}
 
-        -- mini.hipatterns: show colors inside nvim to show hex codes and FIXME TODO {{{
-          require('mini.hipatterns').setup({
-            highlighters = {
-              fixme = {
-                pattern = 'FIXME',
-                group = 'MiniHipatternsFixme'
-              },
-              hack = {
-                pattern = 'HACK',
-                group = 'MiniHipatternsHack'
-              },
-              todo = {
-                pattern = 'TODO',
-                group = 'MiniHipatternsTodo'
-              },
-              note = {
-                pattern = 'NOTE',
-                group = 'MiniHipatternsNote'
-              },
-              hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
-              trailspace = {
-                pattern = '%f[%s]%s*$',
-                group = 'Error'
-              },
-              censor = {
-                pattern = 'password: ()%S+()',
-                group = '',
-                extmark_opts = censor_extmark_opts
-              }
-            }
+        -- mini.statusline replaces nvim's default statusline {{{
+          require('mini.git').setup()
+          require('mini.statusline').setup({
+            content = {
+              active =   function()
+                local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
+                local git           = MiniStatusline.section_git({ trunc_width = 40 })
+                local diff          = MiniStatusline.section_diff({ trunc_width = 75 })
+                local diagnostics   = MiniStatusline.section_diagnostics({ trunc_width = 75 })
+                local lsp           = MiniStatusline.section_lsp({ trunc_width = 75 })
+                local filename      = MiniStatusline.section_filename({ trunc_width = 140 })
+                local fileinfo      = MiniStatusline.section_fileinfo({ trunc_width = 120 })
+                local location      = MiniStatusline.section_location({ trunc_width = 75 })
+
+                return MiniStatusline.combine_groups({
+                  { hl = 'MiniStatuslineFilename', strings = { filename } },
+                  '%<', -- Mark general truncate point
+                  { hl = 'MiniStatuslineFilename',  strings = { git, diff } },
+                  '%=', -- End left alignment
+                  { hl = 'MiniStatuslineFilename',  strings = { diagnostics, lsp } },
+                  { hl = 'MiniStatuslineFilename', strings = { fileinfo } },
+                  { hl = 'MiniStatuslineFilename',  strings = { location } },
+                })
+              end,
+              inactive = nil,
+            },
           })
           -- }}}
 
-          -- transparent.nvim: makes highlight groups and nvim background transparent {{{
-            vim.pack.add({"https://github.com/xiyaowong/transparent.nvim"})
-            require('transparent').setup({
-              groups = {'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier', 'Statement', 'PreProc', 'Type',
-              'Underlined', 'Todo', 'String', 'Function', 'Conditional', 'Repeat', 'Operator', 'Structure',
-              'LineNr', 'NonText', 'SignColumn', 'CursorLine', 'CursorLineNr', 'StatusLine', 'StatusLineNC',
-              'Folded', 'EndOfBuffer', 'MiniFilesNormal', 'MiniFilesTitleFocused', 'MiniFilesFile',
-              'MiniStatuslineFilename', 'MiniStatuslineinfo', 'MiniStatuslineInactive', 'MiniClueDescSingle',
-              'LazyNormal', 'BlinkCmpMenuBorder', 'BlinkCmpKind', 'BlinkCmpMenu', 'ModeMsg'}
+          -- mini.hipatterns: show colors inside nvim to show hex codes and FIXME TODO {{{
+            require('mini.hipatterns').setup({
+              highlighters = {
+                fixme = {
+                  pattern = 'FIXME',
+                  group = 'MiniHipatternsFixme'
+                },
+                hack = {
+                  pattern = 'HACK',
+                  group = 'MiniHipatternsHack'
+                },
+                todo = {
+                  pattern = 'TODO',
+                  group = 'MiniHipatternsTodo'
+                },
+                note = {
+                  pattern = 'NOTE',
+                  group = 'MiniHipatternsNote'
+                },
+                hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
+                trailspace = {
+                  pattern = '%f[%s]%s*$',
+                  group = 'Error'
+                },
+                censor = {
+                  pattern = 'password: ()%S+()',
+                  group = '',
+                  extmark_opts = censor_extmark_opts
+                }
+              }
             })
             -- }}}
 
-            -- use ui2 {{{
-              require("vim._core.ui2").enable {
-                    enable = true,
-                    msg = { -- Options related to the message module.
-                          ---@type 'cmd'|'msg' Default message target, either in the
-                          ---cmdline or in a separate ephemeral message window.
-                          ---@type string|table<string, 'cmd'|'msg'|'pager'> Default message target
-                          ---or table mapping |ui-messages| kinds and triggers to a target.
-                          targets = "cmd",
-                          cmd = { -- Options related to messages in the cmdline window.
-                                height = 0.5 -- Maximum height while expanded for messages beyond 'cmdheight'.
-                            },
-                            dialog = { -- Options related to dialog window.
-                                  height = 0.5 -- Maximum height.
-                              },
-                              msg = { -- Options related to msg window.
-                                    height = 0.5, -- Maximum height.
-                                    timeout = 4000 -- Time a message is visible in the message window.
-                                },
-                                pager = { -- Options related to message window.
-                                      height = 0.5 -- Maximum height.
-                                  }
-                              }
-                          }
-                          -- }}}
+            -- transparent.nvim: makes highlight groups and nvim background transparent {{{
+              vim.pack.add({"https://github.com/xiyaowong/transparent.nvim"})
+              require('transparent').setup({
+                groups = {'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier', 'Statement', 'PreProc', 'Type',
+                'Underlined', 'Todo', 'String', 'Function', 'Conditional', 'Repeat', 'Operator', 'Structure',
+                'LineNr', 'NonText', 'SignColumn', 'CursorLine', 'CursorLineNr', 'StatusLine', 'StatusLineNC',
+                'Folded', 'EndOfBuffer', 'MiniFilesNormal', 'MiniFilesTitleFocused', 'MiniFilesFile',
+                'MiniStatuslineFilename', 'MiniStatuslineinfo', 'MiniStatuslineInactive', 'MiniClueDescSingle',
+                'LazyNormal', 'BlinkCmpMenuBorder', 'BlinkCmpKind', 'BlinkCmpMenu', 'ModeMsg'}
+              })
+              -- }}}
 
-                          -- autocmds (highlight on yank, create intermediate directories) {{{
-                            vim.api.nvim_create_autocmd("TextYankPost", {
-                              pattern = "*",
-                              callback = function()
-                                vim.highlight.on_yank({
-                                  higroup = "Visual",
-                                  timeout = 200
-                                })
-                              end
+              -- use ui2 {{{
+                require("vim._core.ui2").enable {
+                  enable = true,
+                  msg = { -- Options related to the message module.
+                    ---@type 'cmd'|'msg' Default message target, either in the
+                    ---cmdline or in a separate ephemeral message window.
+                    ---@type string|table<string, 'cmd'|'msg'|'pager'> Default message target
+                    ---or table mapping |ui-messages| kinds and triggers to a target.
+                    targets = "cmd",
+                    cmd = { -- Options related to messages in the cmdline window.
+                      height = 0.5 -- Maximum height while expanded for messages beyond 'cmdheight'.
+                    },
+                    dialog = { -- Options related to dialog window.
+                      height = 0.5 -- Maximum height.
+                    },
+                    msg = { -- Options related to msg window.
+                      height = 0.5, -- Maximum height.
+                      timeout = 4000 -- Time a message is visible in the message window.
+                    },
+                    pager = { -- Options related to message window.
+                      height = 0.5 -- Maximum height.
+                    }
+                  }
+                }
+                -- }}}
 
-                            })
+                -- autocmds (highlight on yank, create intermediate directories) {{{
+                  vim.api.nvim_create_autocmd("TextYankPost", {
+                    pattern = "*",
+                    callback = function()
+                      vim.highlight.on_yank({
+                        higroup = "Visual",
+                        timeout = 200
+                      })
+                    end
 
-                            -- Auto create dir when saving a file, in case some intermediate directory does not exist
-                            vim.api.nvim_create_autocmd({"BufWritePre"}, {
-                              group = vim.api.nvim_create_augroup("auto_create_dir", {
-                                clear = true
-                              }),
-                              callback = function(event)
-                                if event.match:match("^%w%w+:[\\/][\\/]") then
-                                  return
-                                end
-                                local file = vim.uv.fs_realpath(event.match) or event.match
-                                vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
-                              end
-                            })
-                            -- }}}
+                  })
 
-                            -- lsp servers setup {{{
-                              vim.api.nvim_create_user_command("LspInfo", "checkhealth vim.lsp", {
-                                desc = "Show LSP Info"
-                              })
+                  -- Auto create dir when saving a file, in case some intermediate directory does not exist
+                  vim.api.nvim_create_autocmd({"BufWritePre"}, {
+                    group = vim.api.nvim_create_augroup("auto_create_dir", {
+                      clear = true
+                    }),
+                    callback = function(event)
+                      if event.match:match("^%w%w+:[\\/][\\/]") then
+                        return
+                      end
+                      local file = vim.uv.fs_realpath(event.match) or event.match
+                      vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+                    end
+                  })
+                  -- }}}
 
-                              vim.api.nvim_create_user_command("LspLog", function(_)
-                                local state_path = vim.fn.stdpath("state")
-                                local log_path = vim.fs.joinpath(state_path, "lsp.log")
+                  -- lsp servers setup {{{
+                    vim.api.nvim_create_user_command("LspInfo", "checkhealth vim.lsp", {
+                      desc = "Show LSP Info"
+                    })
 
-                                vim.cmd(string.format("edit %s", log_path))
-                              end, {
-                              desc = "Show LSP log"
-                            })
+                    vim.api.nvim_create_user_command("LspLog", function(_)
+                      local state_path = vim.fn.stdpath("state")
+                      local log_path = vim.fs.joinpath(state_path, "lsp.log")
 
-                            vim.api.nvim_create_user_command("LspRestart", "lsp restart", {
-                              desc = "Restart LSP"
-                            })
-                            vim.lsp.config['lua_ls'] = {
-                              cmd = {'lua-language-server'},
-                              filetypes = {'lua'},
-                              root_markers = {{'.luarc.json', '.luarc.jsonc'}, '.git'}
-                            }
-                            vim.lsp.enable('lua_ls')
-                            -- }}}
+                      vim.cmd(string.format("edit %s", log_path))
+                    end, {
+                    desc = "Show LSP log"
+                  })
 
-                          end
+                  vim.api.nvim_create_user_command("LspRestart", "lsp restart", {
+                    desc = "Restart LSP"
+                  })
+                  vim.lsp.config['lua_ls'] = {
+                    cmd = {'lua-language-server'},
+                    filetypes = {'lua'},
+                    root_markers = {{'.luarc.json', '.luarc.jsonc'}, '.git'}
+                  }
+                  vim.lsp.enable('lua_ls')
+                  -- }}}
+
+                end
