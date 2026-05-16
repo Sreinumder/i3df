@@ -5,25 +5,25 @@
 #
 #     0  5  10  15  20  25  30  35  40  45  50  55  60  65  70  75  80  85  90  95 100
 #    0┌──────────────────────┬───────────────────────────────────────────┬───────────┐
-#    5│ > media_area (1f)    │  > main_neutral_area                      │           │
-#   10│     forword          │  * 3lr Volume       * 3ud Brightness      │           │
-#   20│ previous  next       │  * 4lr Tab_back_fwd * 3ud Tab_switch      │           │
-#   15│     backward         │  * 3o fullscreen     * 3i overview        │           │
-#   25│ 1t    play_pause     │  * 4o close_tab      * 4i reopen_tab      │           │
-#   30│                      │  * 4t play_pause     * 5t kill_window     │           │
-#   35│                      │  * 3h paste   * 4h copy   * 5h screenshot │           │
+#    5│ > media_area (1f)    │ > main_neutral_area                       │           │
+#   10│     forword          │ 3t middleClick 3h screensht 3i overview   │           │
+#   20│ previous  next       │ 3lr Volume     3ud Brightns 3o fullscreen │           │
+#   15│     backward         │ 4t paste       4h copy      4i tabReopn   │           │
+#   25│ 1t    play_pause     │ 4lr TabBackFwd 4ud TabChnge 4o tabClose   │           │
+#   30│                      │ 5t play-pause  5h clipboard               │           │
+#   35│                      │                                           │           │
 #   40├──────────────────────│                                           │           │
 #   45│                      │                                           │           │
 #   50│ movement (s1)        │                                           │           │
-#   55│ 1s arrow 1t enter    │                                           │           │
+#   55│ 1s dir 1t ent 1h esc │                                           │           │
 #   60│ 2lr del/bs   2t bs   │                                           │           │
 #   65│ 2ud undo/redo        │                                           │           │
-#   70│ 2l      ↑    2r/2t   │                                           │           │
-#   75│ del ← enter → bs     │                                           │           │
-#   80│         ↓            ├───────────────────────────────────────────┴───────────┤
-#   85│ 3t ctrl-l 3h ctrl-t  │                                                       │
-#   90│                      │                                                       │
-#   95│                      │                                                       │
+#   70│       ctrl-z         │                                           │           │
+#   75│ 2l       ↑           │                                           │           │
+#   80│ hom ← ent/esc → end  ├───────────────────────────────────────────┴───────────┤
+#   85│          ↓           │                                                       │
+#   90│       ctrl-y         │                                                       │
+#   95│ 3t ctrl-l 3h ctrl-t  │                                                       │
 #  100└──────────────────────┴───────────────────────────────────────────────────────┘
 
 device_rules:
@@ -33,7 +33,7 @@ device_rules:
 
 touchpad:
   gestures:
-    # media zone top left
+    # media zone top left {{{
     - type: swipe
       fingers: 1
       direction: up_down
@@ -87,7 +87,9 @@ touchpad:
       actions:
         - on: update
           command: playerctl play-pause
+    # }}}
 
+    # bottom zone {{{
     - type: tap
       fingers: 1
       conditions:
@@ -98,7 +100,7 @@ touchpad:
           input:
             - keyboard: [leftmeta+grave]
 
-    # clipboard
+    # screenshot
     - type: tap
       fingers: 2
       conditions:
@@ -107,7 +109,7 @@ touchpad:
       actions:
         - on: begin
           input:
-            - keyboard: [leftmeta+v]
+            - keyboard: [leftmeta+leftshift+s]
 
     # movement zone bottom left_right
     - type: swipe
@@ -125,8 +127,9 @@ touchpad:
           interval: 40
           input:
             - keyboard: [right]
+      # }}}
 
-    # movement zone bottom left_right
+# movement zone bottom left {{{
     - type: swipe
       fingers: 1
       direction: left_right
@@ -201,6 +204,16 @@ touchpad:
           input:
             - keyboard: [enter]
 
+    - type: hold
+      fingers: 1
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [esc]
+
     - type: tap
       fingers: 2
       conditions:
@@ -231,16 +244,6 @@ touchpad:
           input:
             - keyboard: [leftctrl+a]
 
-    - type: tap
-      fingers: 4
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftctrl+l]
-
     - type: hold
       fingers: 3
       conditions:
@@ -268,48 +271,65 @@ touchpad:
             - keyboard: [PageDown]
 
     - type: tap
-      fingers: 1
+      fingers: 4
       conditions:
-        - &zone_center_right_x $finger_1_initial_position_percentage_x >= 0.85
-        - &zone_center_right_y1 $finger_1_initial_position_percentage_y < 0.80
-        - &zone_center_right_y2 $finger_1_initial_position_percentage_y >= 0.30
+        - *zone_movement_x
+        - *zone_movement_y
       actions:
-        - on: update
+        - on: begin
           input:
-            - keyboard: [leftalt+tab]
+            - keyboard: [leftctrl+l]
 
-    - type: tap
-      fingers: 2
-      conditions:
-        - *zone_center_right_x
-        - *zone_center_right_y1
-        - *zone_center_right_y2
-      actions:
-        - on: update
-          input:
-            - keyboard: [leftalt+leftshift+tab]
+# }}}
 
-    - type: tap
-      fingers: 1
-      conditions:
-        - &zone_top_right_x $finger_1_initial_position_percentage_x >= 0.85
-        - &zone_top_right_y $finger_1_initial_position_percentage_y < 0.30
-      actions:
-        - on: update
-          input:
-            - keyboard: [leftctrl+leftalt+tab]
+# # zone center right and top right alt-tab {{{
 
-    - type: tap
-      fingers: 2
-      conditions:
-        - *zone_top_right_x
-        - *zone_top_right_y
-      actions:
-        - on: update
-          input:
-            - keyboard: [leftctrl+leftalt+leftshift+tab]
+    # - type: tap
+    #   fingers: 1
+    #   conditions:
+    #     - &zone_center_right_x $finger_1_initial_position_percentage_x >= 0.85
+    #     - &zone_center_right_y1 $finger_1_initial_position_percentage_y < 0.80
+    #     - &zone_center_right_y2 $finger_1_initial_position_percentage_y >= 0.30
+    #   actions:
+    #     - on: update
+    #       input:
+    #         - keyboard: [leftctrl+leftmeta+p]
 
-    # main gestures that should override everything
+    # - type: hold
+    #   fingers: 1
+    #   conditions:
+    #     - *zone_center_right_x
+    #     - *zone_center_right_y1
+    #     - *zone_center_right_y2
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [leftctrl+leftmeta+c]
+
+    # - type: tap
+    #   fingers: 1
+    #   conditions:
+    #     - &zone_top_right_x $finger_1_initial_position_percentage_x >= 0.85
+    #     - &zone_top_right_y $finger_1_initial_position_percentage_y < 0.30
+    #   actions:
+    #     - on: update
+    #       input:
+    #         - keyboard: [leftctrl+leftmeta+n]
+
+    # - type: hold
+    #   fingers: 1
+    #   conditions:
+    #     - *zone_top_right_x
+    #     - *zone_top_right_y
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [leftctrl+leftmeta+c]
+
+# }}}
+
+# default zone / gestures {{{
+
     # brightness up&down / global
     - type: swipe
       fingers: 3
@@ -390,12 +410,23 @@ touchpad:
           input:
             - keyboard: [leftctrl+w]
 
+    # paste on kitty
+    - type: tap
+      fingers: 4
+      conditions:
+        - $window_class == "kitty"
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+leftshift+v]
+
+
     - type: tap
       fingers: 4
       actions:
         - on: begin
           input:
-            - keyboard: [playpause]
+            - keyboard: [leftctrl+v]
 
     # copy on kitty
     - type: hold
@@ -427,32 +458,22 @@ touchpad:
       actions:
         - on: begin
           input:
-            - keyboard: [leftmeta+leftshift+s]
+            - keyboard: [leftmeta+v]
 
-    - type: tap
-      fingers: 3
-      actions:
-        - on: begin
-          input:
-            - mouse: [middle]
 
-    # paste on kitty
-    - type: hold
-      fingers: 3
-      conditions:
-        - $window_class == "kitty"
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftctrl+leftshift+v]
+    # - type: tap
+    #   fingers: 3
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - mouse: [middle]
 
-    # general paste
-    - type: hold
-      fingers: 3
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftctrl+v]
+    # - type: hold
+    #   fingers: 3
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [leftmeta+leftshift+s]
 
     - type: pinch
       fingers: 3
@@ -469,3 +490,4 @@ touchpad:
         - on: begin
           input:
             - keyboard: [leftctrl+f10]
+# }}}

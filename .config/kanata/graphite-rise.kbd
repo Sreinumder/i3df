@@ -239,6 +239,7 @@
 (t! seq  cleanup      ( c u ) (macro (unicode 🧹)))
 (t! seq  dna          ( d n ) (macro (unicode 🧬)))
 
+(t! seq deleteLine    ( d d ) (macro S-↑ ⌫⇥ ↑ ))
 ;; (t! seq  unsure       ( u s ) (macro (unicode 😶‍🌫️)))
 ;;   f   x (macro (unicode 🛠️)) ;; fx = fix / tools
 ;;   s   e (macro (unicode ⚙️)) ;; se = settings / config
