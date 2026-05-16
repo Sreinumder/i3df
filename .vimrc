@@ -1,61 +1,24 @@
-set nu rnu ru cul
-syntax on
-set bg=light
-colorscheme retrobox
+set nu rnu cul is hls ic scs sm smd et ts=2 sw=2 sts=2 ls=2 wim=longest:full,full | syntax on | colo pablo
 
 nnoremap j gj
 nnoremap k gk
 noremap H ^
 noremap L g_
 
-nnoremap <C-j> :m .+1<CR>==
-nnoremap <C-k> :m .-2<CR>==
-vnoremap <C-j> :m '>+1<CR>gv=gv
-vnoremap <C-k> :m '<-2<CR>gv=gv
+" Move lines up and down (Fixed syntax)
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+xnoremap <A-j> :m '>+1<CR>gv=gv
+noremap <A-k> :m '<-2<CR>gv=gv
 
-nnoremap <space>w <C-w>
+nnoremap <A-h> <<
+nnoremap <A-l> >>
+xnoremap <A-h> <gv
+xnoremap <A-l> >gv
 
-inoremap ( ()<Left>
-inoremap { {}<Left>
-inoremap [ []<Left>
-inoremap " ""<Left>
-inoremap ' ''<Left>
-inoremap < <><Left>
+nnoremap <space>gv '[V']
 
 " Searching
 nnoremap / /\v
-vnoremap / /\v
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-set showmatch
-" inoremap <M-;> <Esc>
-" nnoremap <M-;> :nohl<Esc>
-map <Esc> :nohl<CR>
-
-" Whitespace
-set wrap
-set textwidth=80
-set formatoptions=tcqrn1
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set expandtab
-set noshiftround
-
-" Allow hidden buffers
-set hidden
-
-" Rendering
-set ttyfast
-
-" Status bar
-set laststatus=2
-
-" Last line
-set showmode
-set showcmd
-
-set t_Co=256
-
+vnoremap / <Esc>/\%V
+nnoremap <Esc> <cmd>nohl<CR>
