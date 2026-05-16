@@ -205,3 +205,112 @@
 [aria-label="More options"] {
   display: none !important;
 }
+
+/* === REDDIT: Hide feeds, allow only individual posts, minimal UI === */
+
+/* 1. Block Reddit Homepage */
+@-moz-document regexp("^https?://(www\\.)?reddit\\.com/(?:$|home/?|popular/?|all/?|new/?)(?:\\?.*)?$")
+{
+  html,
+  body,
+  shreddit-app,
+  main {
+    display: none !important;
+  }
+}
+
+/* 2. Block subreddit listing pages (feeds) */
+@-moz-document regexp("^https?://(www\\.)?reddit\\.com/r/[^/]+/?(?:\\?.*)?$"),
+               regexp("^https?://(www\\.)?reddit\\.com/r/[^/]+/(hot|new|top|rising|controversial|best)/?(?:\\?.*)?$")
+{
+  html,
+  body,
+  shreddit-app,
+  main {
+    display: none !important;
+  }
+
+  body::before {
+    content: "Feed blocked — open a specific post";
+    display: block;
+    text-align: center;
+    font-size: 1.7rem;
+    color: #777;
+    margin-top: 25vh;
+  }
+}
+
+/* 3. Allow and clean individual post pages */
+@-moz-document regexp("^https?://(www\\.)?reddit\\.com/r/.+/comments/")
+{
+  html,
+  body,
+  shreddit-app,
+  main,
+  shreddit-post {
+    display: block !important;
+  }
+}
+
+/* 4. Heavy cleanup - Hide Left Nav, Right Sidebar, Top Header, and Post Credit Bar clutter */
+@-moz-document domain("reddit.com"), domain("www.reddit.com") {
+  /* Left Navigation */
+  nav[aria-label="Primary"],
+  .z-2.box-border.flex.flex-col,
+  left-nav-top-section,
+  faceplate-loader[name*="LeftNav"],
+  shreddit-left-nav {
+    display: none !important;
+  }
+
+  /* Right Sidebar */
+  #right-sidebar-contents,
+  aside[aria-label="Community information"],
+  shreddit-subreddit-header,
+  .right-sidebar-contents {
+    display: none !important;
+  }
+
+  /* Top Header */
+  header.v2,
+  nav.h-header-large,
+  #reddit-logo,
+  reddit-search-large,
+  create-post-entry-point-wrapper,
+  reddit-chat-header-button,
+  #notifications-inbox-button,
+  #expand-user-drawer-button {
+    display: none !important;
+  }
+
+  /* Post Header: Subreddit avatar + name (your latest request) */
+  .avatar.text-32,
+  faceplate-tracker[source="post_credit_bar"] a[href^="/r/"],
+  span.subreddit-name,
+  .shreddit-subreddit-icon__icon,
+  pdp-back-button,
+  shreddit-post[post-type] > div > span:first-child {
+    display: none !important;
+  }
+
+  /* Extra cleanup for post metadata row */
+  .flex.gap-xs.items-center.pr-xs.truncate,
+  faceplate-hovercard[label*="r/"] {
+    display: none !important;
+  }
+
+  /* Expand main content */
+  main,
+  shreddit-app,
+  shreddit-post {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+    padding: 20px 30px !important;
+  }
+
+  /* Make post title more prominent */
+  shreddit-post h1 {
+    font-size: 1.6rem !important;
+  }
+}
