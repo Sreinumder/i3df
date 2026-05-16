@@ -1,0 +1,65 @@
+#!/bin/bash
+
+step="service"
+
+while true; do
+  case $step in
+    service)
+      service=$(qdbus6 | fzf --prompt="1. Service > " \
+                            --preview "qdbus6 {}" \
+                            --header "ENTER: Select | ESC: Exit" | awk '{print $1}')
+      [[ -z "$service" ]] && exit 0
+      step="object"
+      ;;
+
+    object)
+      object=$(qdbus6 $service | fzf --prompt="2. Object > " \
+                                      --preview "qdbus6 $service {}" \
+                                      --header "$service ENTER: Select | ESC: Back to Services")
+      if [[ -z "$object" ]]; then
+        step="service"
+      else
+        step="method"
+      fi
+      ;;
+
+    method)
+      # Step 3: We use a custom preview to check if the selection is a property or method
+      selection=$(qdbus6 $service $object | fzf --prompt="3. Action > " \
+        --header "$service $object ENTER: Execute/Read | ESC: Back to Objects" \
+        --preview "
+            service='$service'
+            object='$object'
+            if echo {} | grep -q '^property'; then
+                echo '--- CURRENT PROPERTY VALUE ---'
+                # Extract property name and read it
+                prop=\$(echo {} | awk '{print \$NF}')
+                echo \$service
+                echo \$object
+                echo \$prop
+                qdbus6 \$service \$object \$prop
+            elif echo {} | grep -q '^method'; then
+                echo '--- METHOD SIGNATURE ---'
+                echo {}
+            elif echo {} | grep -q '^signal'; then
+                echo '--- SIGNAL (Notification) ---'
+                echo {}
+                echo 'Note: Signals are broadcasted, not called.'
+            fi
+        ")
+
+      if [[ -z "$selection" ]]; then
+        step="object"
+      else
+        # Extract the actual method/property name from the end of the line
+        method=$(echo "$selection" | awk -F'[( ]' '{ print $3 }')
+        echo "method"
+        echo "qdbus6 $service $object $selection"
+        echo "Running:"
+        echo "qdbus6 $service $object $method"
+        qdbus6 $service $object $method
+        break
+      fi
+      ;;
+  esac
+done
