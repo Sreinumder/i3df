@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [ "$#" -lt 3 ]; then
+    echo "Usage:"
+    echo "  $0 output.png image1 image2 [image3 ...]"
+    exit 1
+fi
+
+output="$1"
+shift
+
+# Find smallest width
+minw=""
+
+for img in "$@"; do
+    w=$(ffprobe -v error \
+        -select_streams v:0 \
+        -show_entries stream=width \
+        -of csv=p=0 "$img")
+
+    if [ -z "$minw" ] || [ "$w" -lt "$minw" ]; then
+        minw="$w"
+    fi
+done
+
+# Build ffmpeg input args
+inputs=()
+for img in "$@"; do
+    inputs+=(-i "$img")
+done
+
+# Build filter graph
+filter=""
+stack_inputs=""
+
+idx=0
+
+for img in "$@"; do
+    filter+="[$idx:v]scale=${minw}:-1[s$idx];"
+    stack_inputs+="[s$idx]"
+    ((idx+=1))
+done
+
+filter+="${stack_inputs}vstack=inputs=${idx}[out]"
+
+ffmpeg \
+    "${inputs[@]}" \
+    -filter_complex "$filter" \
+    -map "[out]" \
+    "$output"
