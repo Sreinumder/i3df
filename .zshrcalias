@@ -8,19 +8,6 @@ function cdj() { curl -s https://icanhazdadjoke.com/ }
 function cbb() { curl -s https://api.breakingbadquotes.xyz/v1/quotes | jq -r '.[] | "\"\(.quote)\" -- \(.author)"' }
 function fal() { rg -e "^\s*alias" ~/i3df/.zshrcalias | fzf }
 
-alias ..="cd .."
-alias ...="cd ../.."
-
-alias dr="dragon-drop"
-
-function p() { cd "$HOME/projects/$1" }
-alias px="pkill xdotool"
-
-alias kre="localectl set-x11-keymap us; setxkbmap -option caps:swapescape"
-
-alias cpw="pwd | wl-copy"
-function g() { git $@ }
-alias doo='~/i3df/scripts/doing.sh'
 alias ffo='fc-list | fzf'
 alias fps='ps aux | fzf' # Search through running processes
 alias gb='git branch | fzf | xargs git checkout' # Git-specific fuzzy commands
@@ -28,50 +15,25 @@ alias gl='git log --oneline | fzf --preview "git show --color=always {1}"'
 alias fk='ps aux | fzf | awk "{print \$2}" | xargs kill -9' # Kill process interactively
 alias cdi='cd $(find . -type d | fzf)' # Search and cd into subdirectories
 
-alias feh='feh --scale-down'
-alias yt='~/i3df/scripts/yt.sh'
-# alias ytvc='yt-dlp --write-subs --sponsorblock-remove "DEFAULT" -P "$HOME/videos/" "$(xsel -b -o 2>/dev/null)"'
-alias ytvc='yt-dlp --write-subs --sponsorblock-remove "DEFAULT" -P "$HOME/Videos/" "$(wl-paste)"'
-# alias ytmc='yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail --sponsorblock-remove "DEFAULT" -P "$HOME/music/" "$(xsel -b -o 2>/dev/null)"'
-alias ytmc='yt-dlp --write-subs --extract-audio --audio-quality 0 --embed-thumbnail --sponsorblock-remove "DEFAULT" -P "$HOME/music/" "$(wl-paste)"'
-
-alias ytv='yt-dlp -P "$HOME/videos/" '
-alias ytm='yt-dlp --extract-audio --audio-quality 0 --embed-thumbnail '
 alias ll='eza --icons --color=auto --git -alh'
 alias l='eza --icons --color=auto -h'
-alias od="ouch decompress"
-alias oc="ouch   compress"
-# alias So='source ~/.zshrc'
-alias So='exec zsh'
 alias grep='grep --color=auto'
 
 alias icat='kitten icat'
 
-alias cona='nvim ~/i3df/.zshrcalias'
-alias conb='nvim ~/i3df/.bashrc'
-alias cond='cd ~/i3df/.config/dunst; nvim dunstrc'
-alias cone='nvim ~/.zshrcenv'
-alias coni='cd ~/i3df/.config/i3/; nvim config'
-alias cons='cd ~/i3df/.config/sway/; nvim config'
-alias conk='cd ~/i3df/.config/kitty/; nvim .'
-alias conib='cd ~/i3df/.config/i3blocks/; nvim config'
-alias const='nvim ~/i3df/.config/i3blocks/config'
 alias conm='nvim ~/.config/mimeapps.list'
-alias conn='cd ~/i3df/.config/nvim/lua/plugins/; yazi'
-alias conq='cd ~/.config/qutebrowser; yazi .'
-alias conw='nvim ~/i3df/.config/wezterm/wezterm.lua'
-alias con.='yazi ~/.config/'
-alias cony='cd ~/.config/yazi/; nvim .'
+alias cona='nvim ~/i3df/.zshrcalias'
+alias cone='nvim ~/.zshrcenv'
 alias conz='nvim ~/i3df/.zshrc'
 
-alias nnp='nvim --cmd "let g:pluginless = 1"'
 alias b='btop'
 alias py='python'
 alias py3='python3'
-alias pya='source env/bin/activate'
+alias pya='source venv/bin/activate'
 alias pyi='pip install -r requirements.txt'
-alias pyenv='python3 -m venv;'
-alias pyenvi='python3 -m venv env; pya; pyi;'
+alias pyenv='python3 -m venv venv'
+alias pyenva='python3 -m venv venv; pya;'
+alias pyenvai='python3 -m venv venv; pya; pyi;'
 alias Ps='sudo pacman -S'
 alias Pss='sudo pacman -Syyu'
 alias P='sudo pacman'
@@ -81,28 +43,10 @@ alias Y='yay'
 alias Yqf='yay -Q | fzf'
 alias lg='lazygit'
 alias gi3='cd ~/i3df/; lazygit;'
-alias setclip='xsel -b'
-alias getclip='xsel -b -o'
-alias sc='xsel -b'
-alias gc='xsel -b -o'
 alias scl='echo "!!" | sc' # copy last command
 alias retroarch='(retroarch &)'
 alias DR='pkill dunst; ( dunst & ); sleep 1; notify-send -u low 'low"; notify-send -u normal "normal"; notify-send -u critical "critical";" 
 
-alias RB='cd ~/FUTSALA/; source env/bin/activate; uvicorn backend.main:app --reload'
-alias RF='cd ~/FUTSALA/frontend; npm run dev'
-alias RC='cd ~/FUTSALA; nvim .'
-alias hql='harlequin'
-alias xrr='xrandr --output HDMI-1 --right-of eDP-1'
-alias xrl='xrandr --output eDP-1 --primary --mode 1366x768 --pos 1366x0 --rotate normal --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal'
-alias xr0='xrandr -s 0'
-alias xreo='xrandr --output eDP-1 --off --output HDMI-1 --mode 1366x768 --pos 0x0 --rotate normal'
-alias xrm='xrandr --setmonitor HDMI-1~1 768/205x683/230+1366+0 HDMI-1; xrandr --setmonitor HDMI-1~2 768/205x683/230+1366+683 none'
-alias xrq='xrandr --setmonitor eDP-1~1 416/416x768/683+0+0 eDP-1; xrandr --setmonitor eDP-1~2 950/950x768/683+416+0 none'
-alias xr/='xrandr --setmonitor eDP-1~1 950/416x768/683+0+0 eDP-1; xrandr --setmonitor eDP-1~2 416/1366x768/683+950+0 none'
-alias xro='xrandr --output HDMI-1 --mode 1366x768 --pos 1366x0 --rotate right'
-alias xrd='xrandr --delmonitor HDMI-1~1; xrandr --delmonitor HDMI-1~2; xrandr --delmonitor eDP-1~1; xrandr --delmonitor eDP-1~2'
-alias xr='xrd; xrm'
 
 
 function mkcd () { mkdir -p -- "$@" && cd -P -- "${@: -1}" }
@@ -172,6 +116,7 @@ function fw() {
     nvim "$file" "+$line"
   fi
 }
+
 function fwa() {
   local selected=$(rga --line-number \
     --no-heading \
@@ -183,7 +128,6 @@ function fwa() {
     --prompt 'rga> ' \
     --preview 'bat --style=numbers --color=always --highlight-line {2} {1}' \
     --preview-window 'down,45%,+{2}+3/3,~3')
-
   if [[ -n "$selected" ]]; then
     local file="${${(s/:/)selected}[1]}"
     local line="${${(s/:/)selected}[2]}"
@@ -191,143 +135,49 @@ function fwa() {
   fi
 }
 
-# unzips into folder
-function smart_unzip() { 
-  for zip_file in "$@"; do
-    if [[ -f "$zip_file" ]]; then
-      folder_name=$(basename "$zip_file" .zip)
-      mkdir -p "$folder_name"
-      unzip "$zip_file" -d "$folder_name"
-      echo "Unzipped '$zip_file' into '$folder_name'"
-    else
-      echo "File '$zip_file' not found"
-    fi
-  done
-}
-alias suz='smart_unzip'
-
-function find_git_root() {
-    local dir=$(pwd)
-
-    # Traverse upwards
-    while [[ "$dir" != "$HOME" ]]; do
-        if [[ -d "$dir/.git" ]]; then
-            echo "$dir"
-            return 0
-        fi
-        dir=$(dirname "$dir")  # Move one directory up
-    done
-
-    # If we reached HOME without finding .git, exit
-    return 1
-}
-alias fgr='$(find_git_root)'
+# # unzips into folder
+# function smart_unzip() {
+#   for zip_file in "$@"; do
+#     if [[ -f "$zip_file" ]]; then
+#       folder_name=$(basename "$zip_file" .zip)
+#       mkdir -p "$folder_name"
+#       unzip "$zip_file" -d "$folder_name"
+#       echo "Unzipped '$zip_file' into '$folder_name'"
+#     else
+#       echo "File '$zip_file' not found"
+#     fi
+#   done
+# }
+# alias suz='smart_unzip'
+#
+# function find_git_root() {
+#     local dir=$(pwd)
+#     while [[ "$dir" != "$HOME" ]]; do
+#         if [[ -d "$dir/.git" ]]; then
+#             echo "$dir"
+#             return 0
+#         fi
+#         dir=$(dirname "$dir")  # Move one directory up
+#     done
+#     return 1
+# }
+# alias cdfgr='cd "$(find_git_root)"'
 # alias tree='eza --git --ignore-glob=.git --tree -al '
-# alias gittree='eza --git --tree --git-ignore -al "$(find_git_root || echo /dev/null)"'
-
-function rm-restore() {
-  # List trashed files with trash-cli and pipe to fzf for interactive selection
-  selected_file=$(trash-list | fzf --preview 'echo {}' --preview-window=down:3)
-
-  # Check if any file was selected
-  if [ -z "$selected_file" ]; then
-    echo "No file selected. Exiting."
-    exit 0
-  fi
-
-  # Restore the selected file
-  trash-restore <<< "$selected_file"
-
-  echo "File restored: $selected_file"
-}
-
-function fo(){
-    [[ -f /tmp/oldfiles.txt ]] && \rm /tmp/oldfiles.txt
-    nvim -c 'redir >> /tmp/oldfiles.txt | silent oldfiles | redir end | q'
-
-    local fname
-
-    FILES=()
-    for i in $(awk '!/man:/ {print $2}' /tmp/oldfiles.txt); do
-        [[ -f $i ]] && FILES+=($i)
-    done
-
-    fname=$(printf "%s\n" "${FILES[@]}" | awk '!a[$0]++' | fzf) || return
-
-    nvim "$fname"
-}
-
-function fzf-zeal() {
-    local docset
-    docset=$(ls ~/.local/share/Zeal/Zeal/docsets/ | sed 's/\.xml$//' | fzf)
-    [ -n "$docset" ] && zeal "$docset"
-}
-
-# note taking with gh
-# https://dev.to/shwetarkadam/how-to-take-notesto-do-list-in-terminal-itself-vim-or-spacemacs-or-something-else-4fmn
-# $ echo '# notes' > /tmp/notes.md # you won't need these files after initial creation as future edits will be immediately written to GH Gists
-# $ echo '# todos' > /tmp/todos.md # you won't need these files after initial creation as future edits will be immediately written to GH Gists
-# $ gh gist create /tmp/notes.md /tmp/todos.md --desc "My notes & todos"
-# will generate hash for your gist
-
-GIST_ID="a1e4237dc4a4aeed694c4232627b5285"
-notes_DIR="$HOME/notes/gist/a1e4237dc4a4aeed694c4232627b5285/"
-
-function is_online() {
-  ping -c 1 github.com &>/dev/null
-}
-
-function N() {
-  if [ $# -eq 0 ]; then
-    # No argument → open full gist
-    if is_online; then
-      echo "[🌐] Opening full gist..."
-      gh gist edit $GIST_ID && (cd $notes_DIR && git pull)
-    else
-      echo "[📴] Offline → opening local notes dir"
-      nvim $notes_DIR
-    fi
-  else
-    FILE=$1
-
-    if is_online; then
-      echo "[🌐] Editing $FILE.md on gist..."
-      gh gist edit $GIST_ID -f $FILE.md && \
-      (cd $notes_DIR && git pull)
-    else
-      echo "[📴] Offline → editing local $FILE.md"
-      nvim $notes_DIR/$FILE.md
-    fi
-  fi
-}
-
-function Na() {
-  FILE=$1
-
-  if [ -z "$FILE" ]; then
-    echo "Usage: Na <filename>"
-    return 1
-  fi
-
-  TMP_FILE="/tmp/$FILE.md"
-  echo "# $FILE" > $TMP_FILE
-
-  if gh gist edit $GIST_ID --add "$TMP_FILE" 2>/dev/null; then
-    echo "[✓] Created remotely → syncing..."
-    cd $NOTES_DIR && git pull
-    nvim "$NOTES_DIR/$FILE.md"
-  else
-    echo "[⚠] Remote failed → creating locally"
-    LOCAL_FILE="$NOTES_DIR/$FILE.md"
-    [ ! -f "$LOCAL_FILE" ] && echo "# $FILE" > "$LOCAL_FILE"
-    nvim "$LOCAL_FILE"
-  fi
-}
-
-# function NA() {echo "# $@" > /tmp/$@.md && gh gist edit a1e4237dc4a4aeed694c4232627b5285 --add "/tmp/$@.md" && nvim ~/.zshrcalias -c "normal GyyPg_i -f $@.md0fN"}
-function NV() {gh gist view a1e4237dc4a4aeed694c4232627b5285}
-function NO() {xdg-open "https://gist.github.com/Sreinumder/a1e4237dc4a4aeed694c4232627b5285"}
-
-function No() { Ng notes }
-function Nt() { Ng todos }
-function Nf() { Ng flutter }
+# # alias gittree='eza --git --tree --git-ignore -al "$(find_git_root || echo /dev/null)"'
+#
+#
+# function fo(){
+#     [[ -f /tmp/oldfiles.txt ]] && \rm /tmp/oldfiles.txt
+#     nvim -c 'redir >> /tmp/oldfiles.txt | silent oldfiles | redir end | q'
+#
+#     local fname
+#
+#     FILES=()
+#     for i in $(awk '!/man:/ {print $2}' /tmp/oldfiles.txt); do
+#         [[ -f $i ]] && FILES+=($i)
+#     done
+#
+#     fname=$(printf "%s\n" "${FILES[@]}" | awk '!a[$0]++' | fzf) || return
+#
+#     nvim "$fname"
+# }
