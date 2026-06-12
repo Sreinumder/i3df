@@ -54,9 +54,9 @@ vim.opt.listchars = {
 -- }}}
 
 -- coerce.nvim: change naming convention of words using _piw for pascal and _s for snake and so on.{{{
-vim.pack.add({'https://github.com/gregorias/coop.nvim'})
-vim.pack.add({'https://github.com/gregorias/coerce.nvim'})
-require("coerce").setup({
+  vim.pack.add({'https://github.com/gregorias/coop.nvim'})
+  vim.pack.add({'https://github.com/gregorias/coerce.nvim'})
+  require("coerce").setup({
     -- camelCase 	  _c
     -- dot.case 	  _d
     -- kebab-case 	_k
@@ -67,8 +67,8 @@ require("coerce").setup({
     -- path/case 	  _/
     -- space case 	_<space>
     default_mode_keymap_prefixes = {
-        motion_mode = "_",
-        visual_mode = "_"
+      motion_mode = "_",
+      visual_mode = "_"
     }
 })
 -- }}}
