@@ -1,3 +1,10 @@
+# https://wiki.inputactions.org/main/config.html
+# ----------------------------------------------
+# If a configuration renders the session unusable,
+# the emergency key combination (backspace+space+enter in any order)
+# can be held for 2 seconds to suspend InputActions until the next config reload.
+# A notification will be sent when triggered.
+#
 #     finger_count: 1-5
 #     gesture_types: [t]ap  [h]old
 #                    pinch [i]n and pinch [o]ut
@@ -5,12 +12,12 @@
 #
 #     0  5  10  15  20  25  30  35  40  45  50  55  60  65  70  75  80  85  90  95 100
 #    0┌──────────────────────┬───────────────────────────────────────────┬───────────┐
-#    5│ > media_area (1f)    │ > main_neutral_area                       │           │
-#   10│     forword          │ 3t middleClick 3h screensht 3i overview   │           │
-#   20│ previous  next       │ 3lr Volume     3ud Brightns 3o fullscreen │           │
-#   15│     backward         │ 4t paste       4h copy      4i tabReopn   │           │
-#   25│ 1t    play_pause     │ 4lr TabBackFwd 4ud TabChnge 4o tabClose   │           │
-#   30│                      │ 5t play-pause  5h clipboard               │           │
+#    5│ > left_thumb (1f)    │ > main_neutral_area                       │           │
+#   10│     scrollup         │ 3t middleClick 3h screensht 3i overview   │           │
+#   20│ scrollft  scrollrght │ 3lr Volume     3ud Brightns 3o fullscreen │           │
+#   15│     scrolldwn        │ 4t paste       4h copy      4i tabReopn   │           │
+#   25│    right_click       │ 4lr TabBackFwd 4ud TabChnge 4o tabClose   │           │
+#   30│    middleclick       │ 5t play-pause  5h clipboard               │           │
 #   35│                      │                                           │           │
 #   40├──────────────────────│                                           │           │
 #   45│                      │                                           │           │
@@ -26,98 +33,87 @@
 #   95│ 3t ctrl-l 3h ctrl-t  │                                                       │
 #  100└──────────────────────┴───────────────────────────────────────────────────────┘
 
+
 device_rules:
   - conditions: $touchpad
     swipe:
       angle_tolerance: 45
-
 touchpad:
   gestures:
-    # media zone top left {{{
+    # left thumb zone {{{
     - type: swipe
       fingers: 1
       direction: up_down
       conditions:
-        - &zone_media_x $finger_1_initial_position_percentage_x <= 0.30
-        - &zone_media_y $finger_1_initial_position_percentage_y < 0.40
+        - &left_thumb_x $finger_1_initial_position_percentage_x <= 0.30
+        - &left_thumb_y $finger_1_initial_position_percentage_y < 0.40
       actions:
         - on: update
           interval: -20
-          command: playerctl position 3+
+          input:
+            - mouse: [wheel 0 -100]
         - on: update
-          interval: 30
-          command: playerctl position 3-
+          interval: 20
+          input:
+            - mouse: [wheel 0 100]
 
     - type: swipe
       fingers: 1
       direction: left_right
       conditions:
-        - *zone_media_x
-        - *zone_media_y
+        - *left_thumb_x
+        - *left_thumb_y
       actions:
         - on: update
-          interval: -200
-          command: playerctl previous
-        - on: update
-          interval: 200
-          command: playerctl next
-
-    # control width of the current window
-    - type: swipe
-      fingers: 2
-      direction: left_right
-      conditions:
-        - *zone_media_x
-        - *zone_media_y
-      actions:
-        - on: update
-          interval: -60
+          interval: -20
           input:
-            - keyboard: [leftmeta+leftshift+left]
+            - mouse: [wheel -100 0]
         - on: update
-          interval: 60
+          interval: 20
           input:
-            - keyboard: [leftmeta+leftshift+right]
+            - mouse: [wheel 100 0]
 
     - type: tap
       fingers: 1
       conditions:
-        - *zone_media_x
-        - *zone_media_y
+        - *left_thumb_x
+        - *left_thumb_y
       actions:
         - on: update
-          command: playerctl play-pause
+          input:
+            - mouse: [right]
+
+    - type: tap
+      fingers: 2
+      conditions:
+        - *left_thumb_x
+        - *left_thumb_y
+      actions:
+        - on: update
+          input:
+            - mouse: [middle]
+
     # }}}
 
     # bottom zone {{{
-    - type: tap
-      fingers: 1
-      conditions:
-        - &zone_bottom_x $finger_1_initial_position_percentage_x > 0.30
-        - &zone_bottom_y $finger_1_initial_position_percentage_y >= 0.80
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftmeta+grave]
 
-    # screenshot
-    - type: tap
-      fingers: 2
-      conditions:
-        - *zone_bottom_x
-        - *zone_bottom_y
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftmeta+leftshift+s]
+    # - type: tap
+    #   fingers: 1
+    #   conditions:
+    #     - &zone_bottom_x $finger_1_initial_position_percentage_x > 0.30
+    #     - &zone_bottom_y $finger_1_initial_position_percentage_y >= 0.80
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [leftmeta+grave]
 
     # movement zone bottom left_right
     - type: swipe
       fingers: 1
       direction: left_right
       conditions:
-        - *zone_bottom_x
-        - *zone_bottom_y
+        - &zone_bottom_x $finger_1_initial_position_percentage_x > 0.30
+        - &zone_bottom_y $finger_1_initial_position_percentage_y >= 0.80
       actions:
         - on: update
           interval: -40
@@ -127,9 +123,10 @@ touchpad:
           interval: 40
           input:
             - keyboard: [right]
+
       # }}}
 
-# movement zone bottom left {{{
+    # movement zone bottom left {{{
     - type: swipe
       fingers: 1
       direction: left_right
@@ -280,104 +277,319 @@ touchpad:
           input:
             - keyboard: [leftctrl+l]
 
-# }}}
-
-# # zone center right and top right alt-tab {{{
-
-    # - type: tap
-    #   fingers: 1
-    #   conditions:
-    #     - &zone_center_right_x $finger_1_initial_position_percentage_x >= 0.85
-    #     - &zone_center_right_y1 $finger_1_initial_position_percentage_y < 0.80
-    #     - &zone_center_right_y2 $finger_1_initial_position_percentage_y >= 0.30
-    #   actions:
-    #     - on: update
-    #       input:
-    #         - keyboard: [leftctrl+leftmeta+p]
-
-    # - type: hold
-    #   fingers: 1
-    #   conditions:
-    #     - *zone_center_right_x
-    #     - *zone_center_right_y1
-    #     - *zone_center_right_y2
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [leftctrl+leftmeta+c]
-
-    # - type: tap
-    #   fingers: 1
-    #   conditions:
-    #     - &zone_top_right_x $finger_1_initial_position_percentage_x >= 0.85
-    #     - &zone_top_right_y $finger_1_initial_position_percentage_y < 0.30
-    #   actions:
-    #     - on: update
-    #       input:
-    #         - keyboard: [leftctrl+leftmeta+n]
-
-    # - type: hold
-    #   fingers: 1
-    #   conditions:
-    #     - *zone_top_right_x
-    #     - *zone_top_right_y
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [leftctrl+leftmeta+c]
-
-# }}}
+    # }}}
 
 # default zone / gestures {{{
 
-    # brightness up&down / global
+# 2 finger: index + ring swipe
+# [tap=play/pause, left-right=media seek, up-down=prev/next] {{{
+
+    - type: swipe
+      fingers: 2
+      direction: up_down
+      conditions:
+        - &index_ring_min $max_finger_distance_percentage >= 0.20
+        - &index_ring_max $max_finger_distance_percentage < 0.31
+      actions:
+        - on: update
+          interval: 100
+          command: ~/i3df/scripts/mpris_dbus Next
+        - on: update
+          interval: -100
+          command: ~/i3df/scripts/mpris_dbus Previous
+
+    # - type: swipe
+    #   fingers: 2
+    #   direction: up_down
+    #   conditions:
+    #     - &index_ring_min $max_finger_distance_percentage >= 0.20
+    #     - &index_ring_max $max_finger_distance_percentage < 0.31
+    #   actions:
+    #     - on: update
+    #       interval: 30
+    #       command: ~/i3df/scripts/mpris_dbus rate "-0.1 0.25 0.5 0.75 1 1.25 1.5 2.0 3.0 4.0 8.0 16.0 32.0"
+    #     - on: update
+    #       interval: -30
+    #       command: ~/i3df/scripts/mpris_dbus rate "+0.1 0.25 0.5 0.75 1 1.25 1.5 2.0 3.0 4.0 8.0 16.0 32.0"
+
+    - type: swipe
+      fingers: 2
+      direction: left_right
+      conditions:
+        - *index_ring_min
+        - *index_ring_max
+      actions:
+        - on: update
+          interval: 30
+          command: ~/i3df/scripts/mpris_dbus smartseek +2
+        - on: update
+          interval: -30
+          command: ~/i3df/scripts/mpris_dbus smartseek -2
+
+    - type: tap
+      fingers: 2
+      conditions:
+        - *index_ring_min
+        - *index_ring_max
+      actions:
+        - on: begin
+          command: ~/i3df/scripts/mpris_dbus PlayPause
+
+    - type: hold
+      fingers: 2
+      conditions:
+        - *index_ring_min
+        - *index_ring_max
+      actions:
+        - on: begin
+          command: ~/i3df/scripts/mpris_dbus rate 2.0
+        - on: end_cancel
+          command: ~/i3df/scripts/mpris_dbus rate 1.0
+
+    # }}}
+
+  # 2 finger: index + pinky swipe
+  # [tap=enter, swipe=arrow_keys] {{{
+    - type: swipe
+      fingers: 2
+      direction: left_right
+      clear_modifiers: false
+      conditions:
+        - &index_pinky $max_finger_distance_percentage >= 0.31
+      actions:
+        - on: update
+          interval: 30
+          input:
+            - keyboard: [right]
+        - on: update
+          interval: -30
+          input:
+            - keyboard: [left]
+
+    - type: swipe
+      fingers: 2
+      clear_modifiers: false
+      direction: up_down
+      conditions:
+        - *index_pinky
+      actions:
+        - on: update
+          interval: 30
+          input:
+            - keyboard: [down]
+        - on: update
+          interval: -30
+          input:
+            - keyboard: [up]
+
+    - type: tap
+      fingers: 2
+      clear_modifiers: false
+      conditions:
+        - *index_pinky
+      actions:
+        - on: begin
+          input:
+            - keyboard: [enter]
+
+    - type: hold
+      fingers: 2
+      clear_modifiers: false
+      conditions:
+        - *index_pinky
+      actions:
+        - on: begin
+          input:
+            - keyboard: [backspace]
+
+    - type: pinch
+      direction: in
+      fingers: 2
+      clear_modifiers: false
+      conditions:
+        - *index_pinky
+      actions:
+        - on: begin
+          input:
+            - keyboard: [home]
+
+    - type: pinch
+      direction: out
+      fingers: 2
+      clear_modifiers: false
+      conditions:
+        - *index_pinky
+      actions:
+        - on: begin
+          input:
+            - keyboard: [end]
+
+    # }}}
+
+    # index pinky pair + ring or middle {{{
+    - type: swipe
+      fingers: 3
+      direction: any
+      clear_modifiers: false
+      conditions:
+        - $max_finger_distance_percentage > 0.32
+      actions:
+        - on: begin
+          input:
+            - mouse: [+left]
+        - on: update
+          input:
+            - mouse: [move_by_delta]
+        - on: end_cancel
+          input:
+            - mouse: [-left]
+    # }}}
+
+    # swipe 3 up for brightnessup and down for next desktop {{{
     - type: swipe
       fingers: 3
       direction: up_down
       actions:
+        - on: begin
+          function: () => initialDirection = null;
         - on: update
-          interval: -20
-          input:
-            - keyboard: [leftshift+brightnessup]
+          interval: -1
+          conditions:
+            function: () => initialDirection == null;
+          function: () => initialDirection = "l";
         - on: update
-          interval: 20
+          interval: 1
+          limit: 1
+          conditions:
+            function: () => initialDirection == null;
           input:
-            - keyboard: [leftshift+brightnessdown]
+            - keyboard: [ +leftmeta ]
+        - on: update
+          interval: 1
+          conditions:
+            function: () => initialDirection == null;
+          function: () => initialDirection = "r";
+        - on: update
+          interval: 100
+          conditions:
+            function: () => initialDirection == "r";
+          input:
+            - keyboard: [ tab ]
+        - on: update
+          interval: -100
+          conditions:
+            function: () => initialDirection == "r";
+          input:
+            - keyboard: [ leftshift+tab ]
+        - on: update
+          interval: -5
+          conditions:
+            function: () => initialDirection == "l";
+          input:
+            - keyboard: [ brightnessdown ]
+        - on: update
+          interval: 5
+          conditions:
+            function: () => initialDirection == "l";
+          input:
+            - keyboard: [ brightnessup ]
+        - on: end_cancel
+          conditions:
+            function: () => initialDirection == "r";
+          input:
+            - keyboard: [ -leftmeta ]
+    #}}}
 
-    # brightness up&down / global
+    # swipe 3 left to volume right to alt-tab {{{
     - type: swipe
       fingers: 3
       direction: left_right
       actions:
+        - on: begin
+          function: () => initialDirection = null;
         - on: update
-          interval: -10
-          input:
-            - keyboard: [volumedown]
+          interval: -1
+          conditions:
+            function: () => initialDirection == null;
+          function: () => initialDirection = "l";
         - on: update
-          interval: 10
+          interval: 1
+          limit: 1
+          conditions:
+            function: () => initialDirection == null;
           input:
-            - keyboard: [volumeup]
+            - keyboard: [ +leftalt ]
+        - on: update
+          interval: 1
+          conditions:
+            function: () => initialDirection == null;
+          function: () => initialDirection = "r";
+        - on: update
+          interval: 100
+          conditions:
+            function: () => initialDirection == "r";
+          input:
+            - keyboard: [ tab ]
+        - on: update
+          interval: -100
+          conditions:
+            function: () => initialDirection == "r";
+          input:
+            - keyboard: [ leftshift+tab ]
+        - on: update
+          interval: -5
+          conditions:
+            function: () => initialDirection == "l";
+          input:
+            - keyboard: [ volumedown ]
+        - on: update
+          interval: 5
+          conditions:
+            function: () => initialDirection == "l";
+          input:
+            - keyboard: [ volumeup ]
+        - on: end_cancel
+          conditions:
+            function: () => initialDirection == "r";
+          input:
+            - keyboard: [ -leftalt ]
+    #}}}
 
-    # 4 fingers
-    # go forward / global
-    - type: swipe
-      fingers: 4
-      direction: left
+    # pinch 3 in= show overview of all windows and out=fullscreen {{{
+    - type: pinch
+      fingers: 3
+      direction: out
       actions:
         - on: begin
+          input:
+            - keyboard: [leftmeta+f]
+            - mouse: [left]
+
+    - type: pinch
+      fingers: 3
+      direction: in
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+f10]
+    # }}}
+
+    # 4 left_right go back / forward {{{
+    - type: swipe
+      fingers: 4
+      direction: left_right
+      actions:
+        - on: update
+          interval: -120
           input:
             - mouse: [forward]
-
-    # go back / global
-    - type: swipe
-      fingers: 4
-      direction: right
-      actions:
-        - on: begin
+        - on: update
+          interval: 120
           input:
             - mouse: [back]
+  # }}}
 
-    # previous/next tab
+    # 4 up_down previous/next tab {{{
     - type: swipe
       fingers: 4
       direction: up_down
@@ -390,8 +602,9 @@ touchpad:
           interval: 80
           input:
             - keyboard: [leftctrl+tab]
+    # }}}
 
-    # undo close tab
+    # 4 out=close tab and in=reopen tab undo close tab {{{
     - type: pinch
       fingers: 4
       direction: in
@@ -400,17 +613,29 @@ touchpad:
           input:
             - keyboard: [leftctrl+leftshift+t]
 
+    # close tab on kitty
+    - type: pinch
+      fingers: 4
+      direction: out
+      conditions:
+        - $window_class == "kitty"
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+leftshift+w]
+
     # close tab
     - type: pinch
       fingers: 4
       direction: out
       actions:
         - on: begin
-          # interval: 10
           input:
             - keyboard: [leftctrl+w]
 
-    # paste on kitty
+    # }}}
+
+    # 4 tap=paste hold=copy {{{
     - type: tap
       fingers: 4
       conditions:
@@ -420,7 +645,7 @@ touchpad:
           input:
             - keyboard: [leftctrl+leftshift+v]
 
-
+    # general paste
     - type: tap
       fingers: 4
       actions:
@@ -445,49 +670,16 @@ touchpad:
         - on: begin
           input:
             - keyboard: [leftctrl+c]
+    # }}}
 
+    # 5 tap=close windows under the cursor {{{
     - type: tap
       fingers: 5
       actions:
         - on: begin
           input:
+            - mouse: [left]
             - keyboard: [leftalt+f4]
+    # }}}
 
-    - type: hold
-      fingers: 5
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftmeta+v]
-
-
-    # - type: tap
-    #   fingers: 3
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - mouse: [middle]
-
-    # - type: hold
-    #   fingers: 3
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [leftmeta+leftshift+s]
-
-    - type: pinch
-      fingers: 3
-      direction: out
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftmeta+f]
-
-    - type: pinch
-      fingers: 3
-      direction: in
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftctrl+f10]
 # }}}
