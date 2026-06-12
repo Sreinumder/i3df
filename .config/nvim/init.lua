@@ -70,7 +70,27 @@ vim.opt.listchars = {
       motion_mode = "_",
       visual_mode = "_"
     }
-})
+  })
+  -- }}}
+
+-- genghis {{{
+if not vim.g.vscode then
+  vim.pack.add({'https://github.com/stevearc/dressing.nvim'})
+end
+vim.pack.add({'https://github.com/chrisgrieser/nvim-genghis'})
+require("genghis").setup()
+vim.keymap.set({"n"}, "<leader>eya", function() require("genghis").copyFilepathWithTilde() end, {desc = "genghis: Absolute path"})
+vim.keymap.set({"n"}, "<leader>eyr", function() require("genghis").copyRelativePath() end, {desc = "genghis: Relative path"})
+vim.keymap.set({"n"}, "<leader>eyn", function() require("genghis").copyFilename() end, {desc = "genghis: Name of file"})
+vim.keymap.set({"n"}, "<leader>eyp", function() require("genghis").copyDirectoryPath() end, {desc = "genghis: Parent path"})
+vim.keymap.set({"n"}, "<leader>er", function() require("genghis").renameFile() end, {desc = "genghis: renameFile"})
+vim.keymap.set({"n"}, "<leader>em", function() require("genghis").moveAndRenameFile() end, {desc = "genghis: moveAndRenameFile"})
+vim.keymap.set({"n"}, "<leader>ec", function() require("genghis").moveToFolderInCwd() end, {desc = "genghis: moveToFolderInCwd"} )
+vim.keymap.set({"n"}, "<leader>en", function() require("genghis").createNewFile() end, {desc = "genghis: createNewFile"} )
+vim.keymap.set({"n"}, "<leader>gm", function() require("genghis").duplicateFile() end, {desc = "genghis: duplicateFile"} )
+vim.keymap.set({"n"}, "<leader>edf", function() require("genghis").trashFile() end, {desc = "genghis: trashFile"} )
+vim.keymap.set({"x"}, "<leader>ex", function() require("genghis").moveSelectionToNewFile() end, {desc = "genghis: move selection to new file"} )
+vim.keymap.set({"n"}, "<leader>ex", function() require("genghis").chmodx() end, {desc = "genghis: chmodx"} )
 -- }}}
 
 -- various-textobjs.nvim adds useful textobjects like ii ai for inner and outer indent, ih for current line (_vg_), ij for column. {{{
