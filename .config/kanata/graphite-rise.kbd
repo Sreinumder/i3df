@@ -1,4 +1,12 @@
+;; super awesome keyboard layout: https://github.com/rdavison/graphite-layout
+;; everything mostly same except q and z swap
+;; by default this configuration behaves same as normal qwerty.
+;; to change to graphite mod hold enter key then tap space.
+;; and wallah you are on graphite layout
+;; refer to flow-graphite-rise.txt
+
 (defcfg
+ danger-enable-cmd yes
   process-unmapped-keys yes
   sequence-timeout 2000
 )
@@ -10,10 +18,9 @@
 
 (defalias
   tq (layer-switch default_qwerty)
-  td (layer-switch graphite_rise)
   tg (layer-switch graphite_rise)
-  tf (layer-switch graphite_rise)
   email (macro r o j g o s a i Digit0 Digit2 S-2 g m a i l . c o m)
+  pho (macro Digit9 Digit8 Digit6 Digit8 Digit1 Digit5 Digit6 Digit5 Digit1 Digit5 )
   spcm (tap-hold 200 200 spc (layer-toggle movesym))
   fnum (
     tap-dance 300 (
@@ -34,18 +41,14 @@
       (tap-hold 200 200 (one-shot 1000 lshift) lshift)
       (multi lshift lalt)
     )
-  )  ;; ctrl esc
-  alt (
-    tap-dance 300 (
-      (tap-hold 200 200 ( one-shot 1000 (layer-while-held movesym) ) lalt)
-    )
-  )  ;; ctrl esc
+  )
+  alt   ( tap-dance 300 ( (tap-hold 200 200 sldr lalt)))
+  rctrl ( tap-dance 300 ( (tap-hold 200 200 sldr rctrl)))
   @/ (tap-hold 200 200 (one-shot 1000 lshift) lshift)
   ⏎ (tap-hold 200 200 ⏎ (layer-toggle extra))
   xt (tap-hold 200 200 x (layer-toggle extra))
   ,s (macro , spc)
   000 (tap-hold 200 200 (macro Digit0 Digit0 Digit0) (layer-toggle extra))
-  sl (macro ⇤ S-⇥  ) ;; select current line
 
   mu   (mwheel-up    50 120)
   md   (mwheel-down  50 120)
@@ -56,6 +59,7 @@
   mv    (movemouse-accel-down  1 1000 1 5)
   m>    (movemouse-accel-right 1 1000 1 5)
 
+  ;; pdb (cmd-output-keys bash -c "date +'%F %R' | sed 's/./& /g' | sed 's/:/S-;/g' | sed 's/\(.\{20\}\)\(.*\)/\(\1 spc \2\)/'")
 )
 
   (defsrc
@@ -82,7 +86,7 @@
    tab   b     l     d     w     q     [     '     f     o     u     j     S-;   S-'
    @csc   n     r     t     s     g     ;     y     h     a     e     i     @⏎
    @shift  z     @xt   m     c     ,     ]     k     p     v     .    /
-   @ctrl @alt @spcm @fnum sldr
+   @ctrl @alt @spcm @fnum @rctrl
   )
 
   (deflayer movesym
@@ -107,21 +111,19 @@
   (deflayer extra
    mfwd
    caps  C-⇞   C-⇟   mmid  4     5     6     7     8     9     0    -
-   mbck  mlft  mlft  @mA   mrgt  @email [     y     _     mute  vold  volu  ]     \
+   mbck  mlft  mlft  @mA   mrgt  @email @pho  y     _     mute  vold  volu  ]     \
    @csc   @md   @m<   @mv   @m>   mfwd  ⏎     h     @tq   prev  pp    next  '
    @shift  @mu   @md   @ml   @mr   b     ]     .     @tg   brdn  brup /
-   @tq   @td  @tg  @tq  @tf
+   @ctrl @alt @tg  @tq  @shift
   )
 
 (deftemplate seq (vk-name input-keys output-action)
     (defvirtualkeys $vk-name $output-action)
     (defseq $vk-name $input-keys)
 )
-;; template-expand has a shortened form: t!
-(t! seq dotcom (.) (macro . c o m))
 
 ;; --- POSITIVE / HAPPY ---
-(t! seq  giggle       ( l l ) (macro (unicode 😆)))
+(t! seq  giggle       ( h e ) (macro (unicode 😆)))
 (t! seq  laugh        ( l a ) (macro (unicode 😂)))
 (t! seq  happy        ( h p ) (macro (unicode 😄)))
 (t! seq  smile        ( s m ) (macro (unicode 🙂)))
@@ -133,22 +135,23 @@
 (t! seq  excited      ( l x ) (macro (unicode 🤩)))
 (t! seq  celebrate    ( c e ) (macro (unicode 🥳)))
 (t! seq  modest       ( m o ) (macro (unicode 😊)))
-(t! seq  angelic      ( a n ) (macro (unicode 😇)))
 (t! seq  hug          ( h g ) (macro (unicode 🤗)))
 (t! seq  love         ( l v ) (macro (unicode 🥰)))
 (t! seq  satisfied    ( s f ) (macro (unicode 😌)))
 (t! seq  confident    ( c f ) (macro (unicode 😏)))
 (t! seq  nerdy        ( n d ) (macro (unicode 🤓)))
 (t! seq  melting      ( m t ) (macro (unicode 🫠)))
+(t! seq  loveheart    ( l l ) (macro (🔣❤🔣️)))
+
 
 ;; --- SAD / NEGATIVE ---
-(t! seq  cry          ( c r ) (macro (unicode 😢)))
-(t! seq  sob          ( s b ) (macro (unicode 😭)))
+(t! seq  cry          ( c r ) (macro (unicode 😭)))
+(t! seq  sad          ( s a ) (macro (unicode 😢)))
 (t! seq  unhappy      ( u n ) (macro (unicode 🙁)))
 (t! seq  disappointed ( d s ) (macro (unicode 😞)))
 (t! seq  worried      ( w r ) (macro (unicode 😟)))
-(t! seq  sad          ( s d ) (macro (unicode 😔)))
-(t! seq  frustrated   ( f t ) (macro (unicode 😩)))
+(t! seq  sed          ( s d ) (macro (unicode 😔)))
+;; (t! seq  frustrated   ( f t ) (macro (unicode 😩)))
 (t! seq  annoyed      ( a y ) (macro (unicode 😖)))
 (t! seq  exhausted    ( e x ) (macro (unicode 😫)))
 
@@ -158,7 +161,7 @@
 (t! seq  scream       ( s c ) (macro (unicode 😱)))
 (t! seq  fear         ( f e ) (macro (unicode 😨)))
 (t! seq  hot          ( h t ) (macro (unicode 🥵)))
-(t! seq  cold         ( c l ) (macro (unicode 🥶)))
+;; (t! seq  cold         ( c l ) (macro (unicode 🥶)))
 
 ;; --- MENTAL / STATE ---
 (t! seq  mind         ( m d ) (macro (unicode 🤯)))
@@ -182,7 +185,7 @@
 (t! seq  surprised    ( s u ) (macro (unicode 😯)))
 (t! seq  astonished   ( a s ) (macro (unicode 😲)))
 (t! seq  embarrassed  ( e b ) (macro (unicode 😳)))
-(t! seq  salute       ( s l ) (macro (unicode 🫡)))
+;; (t! seq  salute       ( s t ) (macro (unicode 🫡)))
 (t! seq  bored        ( b o ) (macro (unicode 🥱)))
 (t! seq  shock        ( s h ) (macro (unicode 😮)))
 (t! seq  asleep       ( a p ) (macro (unicode 😴)))
@@ -209,20 +212,20 @@
 (t! seq  punch        ( p u ) (macro (unicode 👊)))
 
 ;; --- DEV / TECH ---
-(t! seq  feature      ( s t ) (macro (unicode ✨)))
+(t! seq  feature      ( f t ) (macro (unicode ✨)))
 (t! seq  bug          ( b g ) (macro (unicode 🐛)))
-(t! seq  lightning    ( l t ) (macro (unicode ⚡)))
+(t! seq  lightning    ( l n ) (macro (unicode ⚡)))
 (t! seq  test         ( t s ) (macro (unicode 🧪)))
 (t! seq  save         ( s v ) (macro (unicode 💾)))
 (t! seq  edit         ( e d ) (macro (unicode 📝)))
-(t! seq  lock         ( l k ) (macro (unicode 🔒)))
+(t! seq  lock         ( l c ) (macro (unicode 🔒)))
 (t! seq  design       ( d z ) (macro (unicode 🎨)))
 (t! seq  alarm        ( a l ) (macro (unicode 🚨)))
 (t! seq  rocket       ( r k ) (macro (unicode 🚀)))
 (t! seq  navigate     ( n v ) (macro (unicode 🧭)))
 (t! seq  dependency   ( d p ) (macro (unicode 🧩)))
 (t! seq  code         ( c d ) (macro (unicode 💻)))
-(t! seq  link         ( l n ) (macro (unicode 🔗)))
+(t! seq  link         ( l k ) (macro (unicode 🔗)))
 (t! seq  pin          ( p n ) (macro (unicode 📌)))
 (t! seq  package      ( p a ) (macro (unicode 📦)))
 (t! seq  search       ( s r ) (macro (unicode 🔍)))
@@ -233,14 +236,57 @@
 (t! seq  log          ( l g ) (macro (unicode 🧾)))
 (t! seq  world        ( w d ) (macro (unicode 🌐)))
 (t! seq  notification ( n f ) (macro (unicode 🔔)))
-(t! seq  plugin       ( p l ) (macro (unicode 🔌)))
-(t! seq  growth       ( g w ) (macro (unicode 📈)))
-(t! seq  decline      ( d c ) (macro (unicode 📉)))
+;; (t! seq  plugin       ( p l ) (macro (unicode 🔌)))
+(t! seq  upward       ( u w ) (macro (unicode 📈)))
+(t! seq  downward     ( d w ) (macro (unicode 📉)))
 (t! seq  cleanup      ( c u ) (macro (unicode 🧹)))
 (t! seq  dna          ( d n ) (macro (unicode 🧬)))
 
-(t! seq deleteLine    ( d d ) (macro S-↑ ⌫⇥ ↑ ))
-;; (t! seq  unsure       ( u s ) (macro (unicode 😶‍🌫️)))
+(t! seq  equalEqual   ( e e ) (macro spc = = spc ))
+(t! seq  notEqual     ( n e ) (macro spc S-1 = spc ))
+(t! seq  equalTo      ( e a ) (macro spc = spc ))
+(t! seq  greaterThan  ( g t ) (macro spc S-. spc ))
+(t! seq  greaterEqual ( g e ) (macro spc S-. = spc ))
+(t! seq  lessThan     ( l t ) (macro spc S-, spc ))
+(t! seq  lessEqual    ( l e ) (macro spc S-, = spc ))
+
+
+(t! seq and           ( a n ) (macro spc S-7 S-7 spc ))
+(t! seq or            ( o r ) (macro spc S-\ S-\ spc ))
+
+(t! seq minus         ( m i ) (macro spc - spc ))
+(t! seq plus          ( p l ) (macro spc + spc ))
+
+(t! seq arrow         ( a w ) (macro spc = S-. spc ))
+(t! seq fatArrow      ( f a ) (macro spc = = S-. spc ))
+
+(t! seq plusEqual     ( p e ) (macro spc + = spc ))
+
+(t! seq increment     ( i n ) (macro + + ))
+(t! seq decrement     ( d c ) (macro - - ))
+
+(t! seq pipe          ( p i ) (macro spc S-\ spc ))
+
+;; ⏎     ←     ↓     ↑     →     ⇥
+;;  ]     ⇤     ⌫     ⌦     ⇞    \
+(t! seq selectLine    ( c c ) (macro ⇤ S-⇥  ))
+(t! seq deleteLine    ( d d ) (macro ⇥ S-⇤ S-↑ S-⇥ ⌫ ))
+(t! seq yankLine      ( y y ) (macro ⇥ S-⇤ S-↑ S-⇥ C-c ))
+(t! seq duplicateLine ( g m ) (macro ⇤ S-⇥ C-c ⇥ ret C-v ))
+
+;; quick log statement
+(t! seq consolelog    ( c l ) (macro c o n s o l e . l o g S-9 S-0 left))
+(t! seq print         ( p r ) (macro p r i n t S-9 S-0 left))
+
+;; vim short hand setup
+(t! seq vim_shorthand ( v i ) (macro s e  ␠ n o c p  ␠ n u ␠ r n u ␠ i s ␠ h l s ␠ t s = Digit2 ␠ s w = Digit2  ␠ S-\ ␠ s y n t a x  ␠ o n  ␠ S-\ ␠ n o s))
+
+;; (t! seq optional      ( o p ) (macro S-/ . ))
+;; (t! seq nullish       ( n u ) (macro S-/ S-/ ))
+;; (t! seq ternary       ( t n ) (macro spc S-/ spc S-; spc ))
+;; (t! seq slashComment  ( s l ) (macro / / spc ))
+;; (t! seq blockComment  ( b c ) (macro / S-8 spc S-8 / ))
+
 ;;   f   x (macro (unicode 🛠️)) ;; fx = fix / tools
 ;;   s   e (macro (unicode ⚙️)) ;; se = settings / config
 ;;   l   b (macro (unicode 🏷️)) ;; lb = label / tag
@@ -259,4 +305,3 @@
 (include
   "passwords.kbd"
 )
-
