@@ -38,6 +38,19 @@ vim.opt.fillchars = {
     foldsep = " ",
     eob=" "
 }
+-- Enable the display of listchars
+vim.opt.list = false
+
+-- Define which characters to show
+vim.opt.listchars = {
+  tab = '» ',       -- Show tabs as »
+  trail = '·',      -- Show trailing spaces as ·
+  nbsp = '␣',       -- Show non-breaking spaces as ␣
+  eol = '↵',        -- Show end of line as ↵
+  extends = '…',    -- Show … when a line continues off-screen
+  precedes = '…',   -- Show … when a line precedes the screen
+  space = '·', -- Shows a middle dot for every single space character
+}
 -- }}}
 
 -- coerce.nvim: change naming convention of words using _piw for pascal and _s for snake and so on.{{{
