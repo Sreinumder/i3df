@@ -1,0 +1,667 @@
+# https://wiki.inputactions.org/main/config.html
+# ----------------------------------------------
+# If a configuration renders the session unusable,
+# the emergency key combination (backspace+space+enter in any order)
+# can be held for 2 seconds to suspend InputActions until the next config reload.
+# A notification will be sent when triggered.
+#
+#     finger_count: 1-5
+#     gesture_types: [t]ap  [h]old
+#                    pinch [i]n and pinch [o]ut
+#     swipe_gesture: [l]eft [r]ight [u]p [d]own
+#
+#     0  5  10  15  20  25  30  35  40  45  50  55  60  65  70  75  80  85  90  95 100
+#    0┌──────────────────────┬───────────────────────────────────────────┬───────────┐
+#    5│ > media_area (1f)    │ > main_neutral_area                       │           │
+#   10│     forword          │ 3t middleClick 3h screensht 3i overview   │           │
+#   20│ previous  next       │ 3lr Volume     3ud Brightns 3o fullscreen │           │
+#   15│     backward         │ 4t paste       4h copy      4i tabReopn   │           │
+#   25│ 1t    play_pause     │ 4lr TabBackFwd 4ud TabChnge 4o tabClose   │           │
+#   30│                      │ 5t play-pause  5h clipboard               │           │
+#   35│                      │                                           │           │
+#   40├──────────────────────│                                           │           │
+#   45│                      │                                           │           │
+#   50│ movement (s1)        │                                           │           │
+#   55│ 1s dir 1t ent 1h esc │                                           │           │
+#   60│ 2lr del/bs   2t bs   │                                           │           │
+#   65│ 2ud undo/redo        │                                           │           │
+#   70│       ctrl-z         │                                           │           │
+#   75│ 2l       ↑           │                                           │           │
+#   80│ hom ← ent/esc → end  ├───────────────────────────────────────────┴───────────┤
+#   85│          ↓           │                                                       │
+#   90│       ctrl-y         │                                                       │
+#   95│ 3t ctrl-l 3h ctrl-t  │                                                       │
+#  100└──────────────────────┴───────────────────────────────────────────────────────┘
+
+device_rules:
+  - conditions: $touchpad
+    swipe:
+      angle_tolerance: 45
+
+touchpad:
+  gestures:
+    # media zone top left {{{
+
+    - type: swipe
+      fingers: 1
+      direction: up_down
+      conditions:
+        - &zone_media_x $finger_1_initial_position_percentage_x <= 0.30
+        - &zone_media_y $finger_1_initial_position_percentage_y < 0.40
+      actions:
+        - on: update
+          interval: -20
+          input:
+            - mouse: [wheel 0 -100]
+        - on: update
+          interval: 20
+          input:
+            - mouse: [wheel 0 100]
+
+    - type: swipe
+      fingers: 1
+      direction: left_right
+      conditions:
+        - *zone_media_x
+        - *zone_media_y
+      actions:
+        - on: update
+          interval: -20
+          input:
+            - mouse: [wheel -100 0]
+        - on: update
+          interval: 20
+          input:
+            - mouse: [wheel 100 0]
+
+    - type: tap
+      fingers: 1
+      conditions:
+        - *zone_media_x
+        - *zone_media_y
+      actions:
+        - on: update
+          input:
+            - mouse: [right]
+
+    - type: tap
+      fingers: 2
+      conditions:
+        - *zone_media_x
+        - *zone_media_y
+      actions:
+        - on: update
+          input:
+            - mouse: [middle]
+
+    # }}}
+
+    # bottom zone {{{
+
+    # - type: tap
+    #   fingers: 1
+    #   conditions:
+    #     - &zone_bottom_x $finger_1_initial_position_percentage_x > 0.30
+    #     - &zone_bottom_y $finger_1_initial_position_percentage_y >= 0.80
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [leftmeta+grave]
+
+    # screenshot
+    - type: tap
+      fingers: 2
+      conditions:
+        - &zone_bottom_x $finger_1_initial_position_percentage_x > 0.30
+        - &zone_bottom_y $finger_1_initial_position_percentage_y >= 0.80
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftmeta+leftshift+s]
+
+    # movement zone bottom left_right
+    - type: swipe
+      fingers: 1
+      direction: left_right
+      conditions:
+        - *zone_bottom_x
+        - *zone_bottom_y
+      actions:
+        - on: update
+          interval: -40
+          input:
+            - keyboard: [left]
+        - on: update
+          interval: 40
+          input:
+            - keyboard: [right]
+
+      # }}}
+
+    # movement zone bottom left {{{
+    - type: swipe
+      fingers: 1
+      direction: left_right
+      conditions:
+        - &zone_movement_x $finger_1_initial_position_percentage_x <= 0.30
+        - &zone_movement_y $finger_1_initial_position_percentage_y >= 0.40
+      actions:
+        - on: update
+          interval: -40
+          input:
+            - keyboard: [left]
+        - on: update
+          interval: 40
+          input:
+            - keyboard: [right]
+
+    - type: swipe
+      fingers: 1
+      direction: up_down
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: update
+          interval: -40
+          input:
+            - keyboard: [up]
+        - on: update
+          interval: 40
+          input:
+            - keyboard: [down]
+
+    - type: swipe
+      fingers: 2
+      direction: left_right
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: update
+          interval: -40
+          input:
+            - keyboard: [home]
+        - on: update
+          interval: 40
+          input:
+            - keyboard: [end]
+
+    - type: swipe
+      fingers: 2
+      direction: up_down
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: update
+          interval: -60
+          input:
+            - keyboard: [leftctrl+z]
+        - on: update
+          interval: 60
+          input:
+            - keyboard: [leftctrl+y]
+
+    - type: tap
+      fingers: 1
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [enter]
+
+    - type: hold
+      fingers: 1
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [esc]
+
+    - type: tap
+      fingers: 2
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: update
+          input:
+            - keyboard: [backspace]
+
+    - type: hold
+      fingers: 2
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: tick
+          input:
+            - keyboard: [backspace]
+
+    - type: tap
+      fingers: 3
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+a]
+
+    - type: hold
+      fingers: 3
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+t]
+
+    - type: swipe
+      fingers: 3
+      direction: up_down
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: update
+          interval: -40
+          input:
+            - keyboard: [pageup]
+        - on: update
+          interval: 40
+          input:
+            - keyboard: [PageDown]
+
+    - type: tap
+      fingers: 4
+      conditions:
+        - *zone_movement_x
+        - *zone_movement_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+l]
+
+    # }}}
+
+    # # zone center right and top right alt-tab {{{
+
+    # - type: tap
+    #   fingers: 1
+    #   conditions:
+    #     - &zone_center_right_x $finger_1_initial_position_percentage_x >= 0.85
+    #     - &zone_center_right_y1 $finger_1_initial_position_percentage_y < 0.80
+    #     - &zone_center_right_y2 $finger_1_initial_position_percentage_y >= 0.30
+    #   actions:
+    #     - on: update
+    #       input:
+    #         - keyboard: [leftctrl+leftmeta+p]
+
+    # - type: hold
+    #   fingers: 1
+    #   conditions:
+    #     - *zone_center_right_x
+    #     - *zone_center_right_y1
+    #     - *zone_center_right_y2
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [leftctrl+leftmeta+c]
+
+    # - type: tap
+    #   fingers: 1
+    #   conditions:
+    #     - &zone_top_right_x $finger_1_initial_position_percentage_x >= 0.85
+    #     - &zone_top_right_y $finger_1_initial_position_percentage_y < 0.30
+    #   actions:
+    #     - on: update
+    #       input:
+    #         - keyboard: [leftctrl+leftmeta+n]
+
+    # - type: hold
+    #   fingers: 1
+    #   conditions:
+    #     - *zone_top_right_x
+    #     - *zone_top_right_y
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [leftctrl+leftmeta+c]
+
+    # }}}
+
+    # default zone / gestures {{{
+
+    # index + ring or pinky
+    - type: swipe
+      fingers: 2
+      direction: any
+      clear_modifiers: false
+      conditions:
+        - $max_finger_distance_percentage > 0.22
+      actions:
+        - on: begin
+          input:
+            - mouse: [+left]
+        - on: update
+          input:
+            - mouse: [move_by_delta]
+        - on: end_cancel
+          input:
+            - mouse: [-left]
+
+    # index pinky pair + ring or middle
+    - type: swipe
+      fingers: 3
+      direction: any
+      clear_modifiers: false
+      conditions:
+        - $max_finger_distance_percentage > 0.32
+      actions:
+        - on: begin
+          input:
+            - mouse: [+right]
+        - on: update
+          input:
+            - mouse: [move_by_delta]
+        - on: end_cancel
+          input:
+            - mouse: [-right]
+
+    # 3sud
+    - type: swipe
+      fingers: 3
+      direction: up_down
+      actions:
+        - on: update
+          interval: -20
+          input:
+            - keyboard: [brightnessup]
+        - on: update
+          interval: 20
+          input:
+            - keyboard: [brightnessdown]
+
+
+    - type: swipe
+      fingers: 3
+      direction: left_right
+
+      actions:
+        - on: begin
+          function: () => initialDirection = null;
+
+        - on: update
+          interval: -1
+          conditions:
+            function: () => initialDirection == null;
+          function: () => initialDirection = "l";
+
+        - on: update
+          interval: 1
+          conditions:
+            function: () => initialDirection == null;
+          input:
+            - keyboard: [ +leftalt ]
+
+        - on: update
+          interval: 1
+          conditions:
+            function: () => initialDirection == null;
+          function: () => initialDirection = "r";
+
+        - on: update
+          interval: 40
+          conditions:
+            function: () => initialDirection == "r";
+          input:
+            - keyboard: [ tab ]
+
+        - on: update
+          interval: -40
+          conditions:
+            function: () => initialDirection == "r";
+          input:
+            - keyboard: [ leftshift+tab ]
+
+        - on: update
+          interval: -10
+          conditions:
+            function: () => initialDirection == "l";
+          input:
+            - keyboard: [ volumedown ]
+
+        - on: update
+          interval: 10
+          conditions:
+            function: () => initialDirection == "l";
+          input:
+            - keyboard: [ volumeup ]
+
+        - on: end_cancel
+          conditions:
+            function: () => initialDirection == "r";
+          input:
+            - keyboard: [ -leftalt ]
+
+    # 4slr + meta left_right
+    - type: swipe
+      fingers: 4
+      direction: left_right
+      conditions:
+        - $keyboard_modifiers contains meta
+      actions:
+        - on: update
+          interval: -10
+          input:
+            - keyboard: [left]
+        - on: update
+          interval: 10
+          input:
+            - keyboard: [right]
+
+    # 4slr + meta + shift -> left_right shift
+    - type: swipe
+      fingers: 4
+      direction: left_right
+      conditions:
+        - $keyboard_modifiers contains [ meta, shift ]
+      actions:
+        - on: update
+          interval: -10
+          input:
+            - keyboard: [leftshift+left]
+        - on: update
+          interval: 10
+          input:
+            - keyboard: [leftshift+right]
+
+    # 4 fingers
+    # go forward / global
+    - type: swipe
+      fingers: 4
+      direction: left_right
+      actions:
+        - on: update
+          interval: -120
+          input:
+            - mouse: [forward]
+        - on: update
+          interval: 120
+          input:
+            - mouse: [back]
+
+    # 4s+meta up_down
+    - type: swipe
+      fingers: 4
+      direction: up_down
+      conditions:
+        - $keyboard_modifiers contains meta
+      actions:
+        - on: update
+          interval: -10
+          input:
+            - keyboard: [up]
+        - on: update
+          interval: 10
+          input:
+            - keyboard: [down]
+
+    # 4s+meta up_down
+    - type: swipe
+      fingers: 4
+      direction: up_down
+      conditions:
+        - $keyboard_modifiers contains [ meta, shift ]
+      actions:
+        - on: update
+          interval: -10
+          input:
+            - keyboard: [leftshift+up]
+        - on: update
+          interval: 10
+          input:
+            - keyboard: [leftshift+down]
+
+    # previous/next tab
+    - type: swipe
+      fingers: 4
+      direction: up_down
+      actions:
+        - on: update
+          interval: -80
+          input:
+            - keyboard: [leftctrl+leftshift+tab]
+        - on: update
+          interval: 80
+          input:
+            - keyboard: [leftctrl+tab]
+
+    # undo close tab
+    - type: pinch
+      fingers: 4
+      direction: in
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+leftshift+t]
+
+    # close tab
+    - type: pinch
+      fingers: 4
+      direction: out
+      actions:
+        - on: begin
+          # interval: 10
+          input:
+            - keyboard: [leftctrl+w]
+
+    # paste on kitty
+    - type: tap
+      fingers: 4
+      conditions:
+        - $window_class == "kitty"
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+leftshift+v]
+
+    # meta 4 tap => media-play-pause
+    - type: tap
+      fingers: 4
+      conditions:
+        - $keyboard_modifiers contains meta
+      actions:
+        - on: begin
+          command: playerctl play-pause
+
+    # general paste
+    - type: tap
+      fingers: 4
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+v]
+
+    # copy on kitty
+    - type: hold
+      fingers: 4
+      conditions:
+        - $window_class == "kitty"
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+leftshift+c]
+
+    # general copy
+    - type: hold
+      fingers: 4
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+c]
+
+    # close windows
+    - type: tap
+      fingers: 5
+      actions:
+        - on: begin
+          input:
+            - mouse: [left]
+            - keyboard: [leftalt+f4]
+
+    # # clipboard
+    # - type: hold
+    #   fingers: 5
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [leftmeta+v]
+
+    # - type: tap
+    #   fingers: 3
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - mouse: [middle]
+
+    # - type: hold
+    #   fingers: 3
+    #   conditions:
+    #     - $keyboard_modifiers contains meta
+    #   actions:
+    #     - on: begin
+    #       command: playerctl next
+
+    - type: hold
+      fingers: 3
+      conditions:
+        - $keyboard_modifiers contains [ meta, alt ]
+      actions:
+        - on: begin
+          command: playerctl next
+
+    - type: pinch
+      fingers: 3
+      direction: out
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftmeta+f]
+            - mouse: [left]
+
+    - type: pinch
+      fingers: 3
+      direction: in
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+f10]
+# }}}

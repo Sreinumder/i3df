@@ -1,7 +1,16 @@
+export ANDROID_SDK_ROOT=/opt/android-sdk
 export ANDROID_HOME=/opt/android-sdk
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$PATH:$ANDROID_HOME/tools
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+# export PATH="$PATH:$ANDROID_HOME/tools"
+export PATH="$PATH:$ANDROID_HOME/emulator"
+export PATH="$PATH:$HOME/.cargo/bin/"
 
+export PATH="$PATH:$HOME/.dotnet/tools"
+export PATH="$PATH:$HOME/i3df/scripts"
+export PATH="$PATH:/var/lib/flatpak/exports/bin"
+export PATH="$PATH:/usr/local/bin"
+export PATH="$PATH:$(go env GOPATH)/bin"
 setopt SHARE_HISTORY       # share history between all sessions
 setopt INC_APPEND_HISTORY  # append commands to history immediately
 setopt HIST_IGNORE_DUPS    # ignore duplicate commands
@@ -14,22 +23,13 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
-export PATH="$PATH:$HOME/.dotnet/tools"
-export PATH="/path/to/your/python/bins:$PATH"
-export PATH="$PATH:$HOME/i3df/scripts"
-export PATH=$PATH:/var/lib/flatpak/exports/bin
-export PATH="$PATH:/usr/local/bin"
+
 export MANPAGER="nvim +Man!"
-export STARDICT_DATA_DIR="$HOME/stardict/dic"
-export I3D="$HOME/i3df"
-export QT_STYLE_OVERRIDE=adwaita-dark # dark mode
+
+ZVM_MAN_PAGER='nvim' # man page for zsh-vi-man (the plugin that lets you use K for help or C-k)
+
 [[ $- != *i* ]] && return
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS=@im=fcitx
-export SDL_IM_MODULE=fcitx
-export FCITX5_UI=gtk
-export GLFW_IM_MODULE=ibus
+
 export EDITOR=nvim
 # export QT_STYLE_OVERRIDE=kvantum
 export QT_QPA_PLATFORMTHEME=qt5ct
@@ -41,6 +41,9 @@ source ~/.zshrcalias
 source ~/.zshrcenv
 
 fpath=(~/i3df/.zsh/completions $fpath)
+#
+#
+#--z4h-default-part------------------------------------------------------------------------------------------------
 # start of z4h config Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
 # You can manually run `z4h update` to update everything.
 zstyle ':z4h:' auto-update      'no' # Ask whether to auto-update this often; has no effect if auto-update is 'no'.
@@ -53,10 +56,8 @@ zstyle ':z4h:direnv'         enable 'no' # Enable direnv to automatically source
 zstyle ':z4h:direnv:success' notify 'yes' # Show "loading" and "unloading" notifications from direnv.
 zstyle ':z4h:ssh:example-hostname1'   enable 'yes' # SSH when connecting to these hosts.
 zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
-zstyle ':z4h:ssh:*'                   enable 'no' 
+zstyle ':z4h:ssh:*'                   enable 'no'
 zstyle ':z4h:ssh:*' send-extra-files '~/.vimrc' '~/.env.zsh' # Send these files over to the remote host when connecting over SSH to the
-
-z4h install ohmyzsh/ohmyzsh || return
 
 # Install or update core components (fzf, zsh-autosuggestions, etc.) and
 # initialize Zsh. After this point console I/O is unavailable until Zsh
@@ -71,9 +72,6 @@ export GPG_TTY=$TTY
 z4h source ~/.env.zsh
 
 # Use additional Git repositories pulled in with `z4h install`.
-#
-# This is just an example that you should delete. It does nothing useful.
-# z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
 
 # Define key bindings.
 # z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
@@ -94,12 +92,11 @@ compdef _directories md
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
-
-# end of z4h default
+#-end-of-z4h-default-part------------------------------------------------------------------------------------------
 
 autoload -U edit-command-line
-zle -N edit-command-line 
-# vi-mode 
+zle -N edit-command-line
+# vi-mode
 z4h load   ohmyzsh/ohmyzsh/plugins/vi-mode
 # Change cursor shape in vi-mode (No Blinking)
 function zle-keymap-select {
@@ -139,12 +136,6 @@ zoxide-interactive() { zi && -z4h-redraw-prompt;}
 zle -N zoxide-interactive
 bindkey -M viins '^[z' zoxide-interactive
 bindkey -M vicmd '^[z' zoxide-interactive
-function cd_to_clipboard_path {
-  wlclip="$(wl-paste)" && [[${#wlclip} -lt 100]] && cd "${wlclip}" && -z4h-redraw-prompt y;
-}
-# zle -N cd_to_clipboard_path
-# bindkey -M viins '^[c' cd_to_clipboard_path
-# bindkey -M vicmd '^[c' cd_to_clipboard_path
 function copy_path_to_clipboard { pwd | wl-copy }
 zle -N copy_path_to_clipboard
 bindkey -M viins '^[x' copy_path_to_clipboard

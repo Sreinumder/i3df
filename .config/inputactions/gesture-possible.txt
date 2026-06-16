@@ -1,0 +1,32 @@
+3s lr volume
+3s rl alt-tab
+
+3s ud brightness
+3s du
+
+3in   present_all_windows
+3out  full screen
+
+3tap  middle-click
+3hold
+
+4s lr next_previous navigation
+4s ud next_previous tab navigation
+
+4in   unclose_tob
+4out  close_tab
+
+4tap  paste
+4hold copy
+
+
+2 index-ring pair
+2s lr seek_media_left_right
+2s ud previous_next_media
+2 tap play-pause media
+
+2 index-pinky pair
+2s lr left right
+2s ud up down
+2 tap enter
+2hold backspace
