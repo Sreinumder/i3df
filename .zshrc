@@ -159,7 +159,7 @@ z4h bindkey z4h-cd-back    Alt+H   # cd into the previous directory
 z4h bindkey z4h-cd-forward Alt+L  # cd into the next directory
 z4h bindkey z4h-cd-up      Alt+K     # cd into the parent directory
 z4h bindkey z4h-cd-down    Alt+J   # cd into a child directory
-# bindkey '^[[v' edit-command-line
+bindkey -M vicmd 'V' edit-command-line
 
 # yazi y
 function y() {
@@ -170,6 +170,55 @@ function y() {
 	fi
 	rm -f -- "$tmp"
 }
+
+autoload -Uz add-zsh-hook
+start_time=0
+current_cmd=""
+# commands to ignore
+typeset -a NOTIFY_IGNORE=(
+    ls
+    lg
+    lazygit
+    y
+    yazi
+    v
+    vim
+    n
+    nvim
+    cd
+    clear
+    htop
+    btop
+    ssh
+)
+preexec() {
+    start_time=$SECONDS
+    current_cmd="$1"
+}
+precmd() {
+    local duration=$((SECONDS - start_time))
+    # extract first command word
+    local cmd=${${(z)current_cmd}[1]}
+    # skip ignored commands
+    if (( ${NOTIFY_IGNORE[(Ie)$cmd]} )); then
+        return
+    fi
+    if (( duration > 5 )); then
+        notify-send \
+            "Command Finished" \
+            "$current_cmd (${duration}s)"
+    fi
+}
+sudo() {
+    # Check if sudo requires a password without actually prompting yet
+    if ! /usr/bin/sudo -n true 2>/dev/null; then
+        # Send the libnotify bubble
+        notify-send -i dialog-password "Sudo Authorization" "Password required in terminal"
+    fi
+    # Execute the actual sudo command with your arguments
+    /usr/bin/sudo "$@"
+}
+
 
 # Preview file content using bat (https://github.com/sharkdp/bat)
 export FZF_CTRL_T_OPTS="
