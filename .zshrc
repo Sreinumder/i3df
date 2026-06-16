@@ -138,14 +138,19 @@ bindkey -M viins '^[z' zoxide-interactive
 bindkey -M vicmd '^[z' zoxide-interactive
 function copy_path_to_clipboard { pwd | wl-copy }
 zle -N copy_path_to_clipboard
-bindkey -M viins '^[x' copy_path_to_clipboard
-bindkey -M vicmd '^[x' copy_path_to_clipboard
-function open_vscode_here { code $(pwd) }
-zle -N open_vscode_here
-bindkey -M viins '^[.' open_vscode_here
-bindkey -M vicmd '^[.' open_vscode_here
+bindkey -M viins '^[c' copy_path_to_clipboard
+bindkey -M vicmd '^[c' copy_path_to_clipboard
+# bindkey -M viins '^[x' execute-named-cmd
+# bindkey -M vicmd '^[x' execute-named-cmd
+# bindkey '^e' expand-word
 
-
+insert-zoxide-fzf() {
+  local dir
+  dir=$(zoxide query -l | fzf) || return
+  LBUFFER+="$dir" && -z4h-redraw-prompt;
+}
+zle -N insert-zoxide-fzf
+bindkey '^[x' insert-zoxide-fzf
 
 z4h bindkey undo Ctrl+/ Shift+Tab  # undo the last command line change
 z4h bindkey redo Alt+U             # redo the last undone command line change
