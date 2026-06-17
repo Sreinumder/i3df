@@ -1,0 +1,482 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+STATE_FILE="/tmp/mpris_dbus_selected"
+
+discover_players() {
+    qdbus6 | grep -E 'org\.mpris\.MediaPlayer2(\.[^/]+)?$' | xargs -n1 || true
+}
+
+load_players() {
+    mapfile -t PLAYERS < <(discover_players)
+    if [[ ${#PLAYERS[@]} -eq 0 ]]; then
+        echo "No MPRIS players found" >&2
+        exit 1
+    fi
+}
+
+current_player() {
+    load_players
+    local saved_player=""
+    [[ -f "$STATE_FILE" ]] && saved_player=$(cat "$STATE_FILE")
+
+    # If the saved target is still active, use it
+    for p in "${PLAYERS[@]}"; do
+        if [[ "$p" == "$saved_player" ]]; then
+            echo "$p"
+            return 0
+        fi
+    done
+
+    # Fallback: Save and return the first available active player
+    echo "${PLAYERS[0]}" > "$STATE_FILE"
+    echo "${PLAYERS[0]}"
+}
+
+select_player() {
+    load_players
+    local current
+    current=$(current_player)
+    local idx=-1
+
+    # Find where our current player sits in the active array
+    for i in "${!PLAYERS[@]}"; do
+        if [[ "${PLAYERS[$i]}" == "$current" ]]; then
+            idx=$i
+            break
+        fi
+    done
+
+    case "$1" in
+        next) idx=$((idx + 1)) ;;
+        prev) idx=$((idx - 1)) ;;
+    esac
+
+    # Wrap array bounds safely using standard if blocks (immune to set -e)
+    if (( idx < 0 )); then
+        idx=$((${#PLAYERS[@]} - 1))
+    fi
+    if (( idx >= ${#PLAYERS[@]} )); then
+        idx=0
+    fi
+
+    local new_player="${PLAYERS[$idx]}"
+    echo "$new_player" > "$STATE_FILE"
+    echo "Selected player: $new_player"
+
+    # Send clean desktop notification (strips prefix and capitalizes)
+    local clean_name="${new_player##*.}"
+    clean_name="${clean_name^}"
+    
+    qdbus6 org.freedesktop.Notifications /org/kde/osdService org.kde.osdService.showText alienarena "current_player: $clean_name"
+}
+
+prop_get() {
+    local player="$1"
+    local prop="$2"
+    echo "$player: getting $prop" >&2
+    qdbus6 "$player" /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get \
+        org.mpris.MediaPlayer2.Player "$prop" 2>/dev/null || echo "Error getting $prop" >&2
+}
+
+prop_set() {
+    local player="$1"
+    local prop="$2"
+    local value="$3"
+    echo "$player: setting $prop to $value" >&2
+    qdbus6 "$player" /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Set org.mpris.MediaPlayer2.Player "$prop" "$value" 2>/dev/null || echo "Error setting $prop to $value" >&2
+}
+
+call_method() {
+    local player="$1"
+    local method="$2"
+    shift 2
+    echo "$player: calling $method with args $*" >&2
+    qdbus6 "$player" /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player."$method" "$@" 2>/dev/null || echo "Error calling $method" >&2
+}
+
+extract_num() {
+    grep -oE '[0-9.]+' | head -1
+}
+
+extract_metadata_field() {
+    local metadata_raw="$1"
+    local key="$2"
+    echo "$metadata_raw" | awk -v k="$key:" '$0 ~ k {sub("^.*" k "[[:space:]]*", ""); print; exit}'
+}
+
+get_metadata() {
+    prop_get "$(current_player)" Metadata
+}
+
+get_all_properties() {
+    local player
+    player=$(current_player)
+    qdbus6 "$player" /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.GetAll org.mpris.MediaPlayer2.Player
+}
+
+status() {
+    local player
+    player=$(current_player)
+    local metadata
+    metadata=$(get_metadata)
+    
+    local title
+    title=$(extract_metadata_field "$metadata" "xesam:title")
+    local artist
+    artist=$(extract_metadata_field "$metadata" "xesam:artist")
+
+    local playback_status
+    playback_status=$(prop_get "$player" PlaybackStatus)
+    local rate
+    rate=$(prop_get "$player" Rate | extract_num)
+    local volume
+    volume=$(prop_get "$player" Volume | extract_num)
+    local position
+    position=$(prop_get "$player" Position | extract_num)
+
+    echo "Current player: $player"
+    echo "Status:         $playback_status"
+    [[ -n "$title" ]] && echo "Title:          $title"
+    [[ -n "$artist" ]] && echo "Artist:         $artist"
+    echo "Rate:           $rate"
+    echo "Volume:         $volume"
+    if [[ -n "$position" ]]; then
+        echo "Position:       $(( position / 1000000 )) seconds"
+    else
+        echo "Position:       Unknown"
+    fi
+}
+
+change_rate() {
+    local player
+    player=$(current_player)
+    local current
+    current=$(prop_get "$player" Rate | extract_num)
+    local arg="$1"
+    local new
+
+    new=$(awk -v curr="$current" -v arg="$arg" '
+        BEGIN {
+            min_cap = 0.1
+            max_cap = 10.0
+
+            if ((arg ~ /^\+/ || arg ~ /^-/) && arg ~ / /) {
+                sign = substr(arg, 1, 1)
+                list_str = substr(arg, 2)
+                n = split(list_str, steps, " ")
+                
+                min_cap = steps[1]
+                max_cap = steps[n]
+
+                if (sign == "+") {
+                    val = steps[n]
+                    for (i = 1; i <= n; i++) {
+                        if (steps[i] > curr) {
+                            val = steps[i]
+                            break
+                        }
+                    }
+                } else {
+                    val = steps[1]
+                    for (i = n; i >= 1; i--) {
+                        if (steps[i] < curr) {
+                            val = steps[i]
+                            break
+                        }
+                    }
+                }
+            }
+            else if (arg ~ /^[+-]([0-9.]*x)?$/) {
+                sign = substr(arg, 1, 1)
+                tail = substr(arg, 2)
+                gsub(/x$/, "", tail)
+                factor = (tail == "" ? 1.15 : tail + 0)
+                if (sign == "+") val = curr * factor
+                else val = curr / factor
+            }
+            else if (arg ~ /^[+-][0-9.]+$/) {
+                val = curr + arg
+            }
+            else {
+                gsub(/x$/, "", arg)
+                val = arg + 0
+            }
+
+            if (val < min_cap) val = min_cap
+            if (val > max_cap) val = max_cap
+
+            printf "%.2f", val
+        }
+    ')
+
+    prop_set "$player" Rate "$new"
+    echo "Rate: $current → $new"
+    qdbus6 org.freedesktop.Notifications /org/kde/osdService org.kde.osdService.showText alienarena "$player Speed: $new"
+}
+
+change_volume() {
+    local player
+    player=$(current_player)
+    local current
+    current=$(prop_get "$player" Volume | extract_num)
+    local arg="$1"
+    local new
+    if [[ "$arg" =~ ^[+-] ]]; then
+        new=$(awk "BEGIN{print $current $arg}")
+    else
+        new="$arg"
+    fi
+    if awk "BEGIN{exit !($new > 1.5)}"; then
+        new=1.0
+    elif awk "BEGIN{exit !($new < 0)}"; then
+        new=0.0
+    fi
+    prop_set "$player" Volume "$new"
+    echo "Volume: $current → $new"
+}
+
+to_microseconds() {
+    local s="$1"
+    local sign=""
+    if [[ "$s" =~ ^([+-])(.*)$ ]]; then
+        sign="${BASH_REMATCH[1]}"
+        s="${BASH_REMATCH[2]}"
+    fi
+
+    if [[ "$s" == *:* ]]; then
+        IFS=: read -ra p <<< "$s"
+        local sec=0
+        if (( ${#p[@]} == 2 )); then
+            sec=$((10#${p[0]}*60 + 10#${p[1]}))
+        elif (( ${#p[@]} == 3 )); then
+            sec=$((10#${p[0]}*3600 + 10#${p[1]}*60 + 10#${p[2]}))
+        fi
+        echo "${sign}$((sec*1000000))"
+    else
+        awk "BEGIN{printf \"${sign}%.0f\", $s*1000000}"
+    fi
+}
+
+set_position() {
+    local player
+    player=$(current_player)
+    local pos_us="$1"
+    
+    local metadata
+    metadata=$(get_metadata)
+    local trackid
+    trackid=$(extract_metadata_field "$metadata" "mpris:trackid")
+    
+    if [[ -z "$trackid" ]]; then
+        local current_pos
+        current_pos=$(prop_get "$player" Position | extract_num)
+        if [[ -n "$current_pos" ]]; then
+            local delta=$((pos_us - current_pos))
+            call_method "$player" Seek "$delta"
+            echo "TrackId missing; safely fell back to relative Seek ($delta µs)" >&2
+            return 0
+        else
+            echo "Error: Could not retrieve TrackId or Current Position." >&2
+            return 1
+        fi
+    fi
+    
+    call_method "$player" SetPosition "$trackid" "$pos_us"
+    echo "Position set to $pos_us microseconds" >&2
+}
+
+smart_seek() {
+    local player
+    player=$(current_player)
+    local arg="$1"
+    local display_text="$arg"
+
+    # 1. CUSTOM LIST STEPPING MODE (e.g., "+0% 10% 20%" or "-0 60 120")
+    if [[ "$arg" =~ ^([+-])(.*[[:space:]].*)$ ]]; then
+        local sign="${BASH_REMATCH[1]}"
+        local list_str="${BASH_REMATCH[2]}"
+        
+        local pos
+        pos=$(prop_get "$player" Position | extract_num)
+        [[ -z "$pos" ]] && pos=0
+        
+        local metadata
+        metadata=$(get_metadata)
+        local len
+        len=$(extract_metadata_field "$metadata" "mpris:length")
+        
+        local -a targets=()
+        local -A labels=() # Use associative array to map microseconds to original string
+        
+        for item in $list_str; do
+            if [[ "$item" == *% ]]; then
+                [[ -z "$len" ]] && { echo "Could not get track length for % calculations" >&2; return 1; }
+                local pct="${item%%%}"
+                local t_us
+                t_us=$(awk "BEGIN{printf \"%.0f\", $len * $pct / 100}")
+                targets+=("$t_us")
+                labels["$t_us"]="$item"
+            else
+                local t_us
+                t_us=$(to_microseconds "$item")
+                targets+=("$t_us")
+                labels["$t_us"]="$item"
+            fi
+        done
+        
+        # Sort targets ascending
+        mapfile -t targets < <(printf '%s\n' "${targets[@]}" | sort -n)
+        
+        local chosen_target=""
+        local margin=500000 # 0.5s tolerance to prevent "sticky" seeking
+        
+        if [[ "$sign" == "+" ]]; then
+            for t in "${targets[@]}"; do
+                if (( t > pos + margin )); then
+                    chosen_target=$t
+                    break
+                fi
+            done
+            # Wrap to start
+            [[ -z "$chosen_target" ]] && chosen_target="${targets[0]}"
+        else
+            for (( i=${#targets[@]}-1; i>=0; i-- )); do
+                local t="${targets[i]}"
+                if (( t < pos - margin )); then
+                    chosen_target=$t
+                    break
+                fi
+            done
+            # Wrap to end
+            [[ -z "$chosen_target" ]] && chosen_target="${targets[-1]}"
+        fi
+        
+        # Look up the original input string using the final microsecond target
+        display_text="${labels[$chosen_target]}"
+        set_position "$chosen_target"
+
+    # 2. ORIGINAL PERCENTAGE MODE (e.g., "+10%", "75%")
+    elif [[ "$arg" == *% ]]; then
+        local pct="${arg%%%}"
+        local len
+        len=$(extract_metadata_field "$(get_metadata)" "mpris:length")
+        [[ -z "$len" ]] && { echo "Could not get track length" >&2; return 1; }
+
+        local pos target
+        pos=$(prop_get "$player" Position | extract_num)
+        [[ -z "$pos" ]] && pos=0
+
+        if [[ "$pct" =~ ^[+-] ]]; then
+            local sign="${pct:0:1}"
+            local val="${pct:1}"
+            local delta
+            delta=$(awk "BEGIN{printf \"%.0f\", $len * $val / 100}")
+            if [[ "$sign" == "+" ]]; then
+                target=$(awk "BEGIN{printf \"%.0f\", $pos + $delta}")
+            else
+                target=$(awk "BEGIN{printf \"%.0f\", $pos - $delta}")
+            fi
+        else
+            target=$(awk "BEGIN{printf \"%.0f\", $len * $pct / 100}")
+        fi
+
+        set_position "$target"
+
+    # 3. ORIGINAL TIME FALLBACK MODE (e.g., "+30", "1:20")
+    else
+        local us
+        us=$(to_microseconds "$arg")
+        if [[ "$arg" =~ ^[+-] ]]; then
+            call_method "$player" Seek "$us"
+        else
+            set_position "$us"
+        fi
+    fi
+
+    # Trigger output to CLI and KDE OSD
+    local clean_name="${player##*.}"
+    clean_name="${clean_name^}"
+    
+    echo "SmartSeek: Jumped to $display_text"
+    qdbus6 org.freedesktop.Notifications /org/kde/osdService org.kde.osdService.showText alienarena "$clean_name Seek: $display_text"
+}
+
+print_help() {
+    cat <<EOF
+Ultimate MPRIS controller
+
+Usage: $(basename "$0") <command> [args]
+
+Players:
+  list                    List players
+  current                 Show active player
+  next_player             Switch to next (Sends system notification)
+  prev_player             Switch to previous
+
+Info:
+  status                  Playback status + details
+  metadata                Full metadata map
+  getall                  Get all DBus properties of the player
+
+Basic control:
+  Play | Pause | PlayPause | Stop | Next | Previous
+
+Rate & Volume:
+  rate <value>            Linear: (+0.1, -0.2) | Geometric: (+1.15x, -, +)
+                          Custom List: "+0.1 0.5 1.0 2.0" (Inside Quotes)
+  volume <value>          0.0–1.0 (e.g. 0.8, +0.1)
+
+Seek & Position:
+  seek <offset>           Relative seek (e.g., 1000000 for +1s, -2000000 for -2s)
+  position <position>     Absolute position (e.g., 5000000 for 5s mark)
+  smartseek <pos>         List Stepping: "+0% 10% 20%" | "-0 60 120"
+                          Percentages: 75%, +10%, -10%
+                          Absolute/Relative Time: 120, 2:30, +30
+
+Other:
+  call <method> [args]    Raw method call
+  open <URI>              Open file/http URI
+
+State File: $STATE_FILE
+EOF
+}
+
+case "${1:-}" in
+    list)              discover_players ;;
+    current)           current_player ;;
+    next_player|nextp) select_player next ;;
+    prev_player|prevp) select_player prev ;;
+    status)            status ;;
+    metadata)          get_metadata ;;
+    getall)            get_all_properties ;;
+    Play|Pause|PlayPause|Stop|Next|Previous)
+        call_method "$(current_player)" "${1^}" ;;
+    rate)
+        [[ -z "$2" ]] && { echo "Usage: $0 rate <value>" >&2; exit 1; }
+        change_rate "$2" ;;
+    volume)
+        [[ -z "$2" ]] && { echo "Usage: $0 volume <value>" >&2; exit 1; }
+        change_volume "$2" ;;
+    seek)
+        [[ -z "$2" ]] && { echo "Usage: $0 seek <offset_microseconds>" >&2; exit 1; }
+        call_method "$(current_player)" Seek "$2" ;;
+    position)
+        [[ -z "$2" ]] && { echo "Usage: $0 position <absolute_microseconds>" >&2; exit 1; }
+        set_position "$2" ;;
+    smartseek)
+        [[ -z "$2" ]] && { echo "Usage: $0 smartseek <position>" >&2; exit 1; }
+        smart_seek "$2" ;;
+    call)
+        [[ -z "$2" ]] && { echo "Usage: $0 call <method> [args]" >&2; exit 1; }
+        call_method "$(current_player)" "$2" "${@:3}" ;;
+    open)
+        [[ -z "$2" ]] && { echo "Usage: $0 open <URI>" >&2; exit 1; }
+        call_method "$(current_player)" OpenUri "$2" ;;
+    ""|help|-h|--help)
+        print_help ;;
+    *)
+        echo "Unknown command: $1" >&2
+        print_help
+        exit 1 ;;
+esac
