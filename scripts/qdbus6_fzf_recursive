@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Ensure dependencies exist
+command -v qdbus6 >/dev/null || { echo "qdbus6 not found"; exit 1; }
+command -v fzf >/dev/null || { echo "fzf not found"; exit 1; }
+
+# Step 1: Select service
+service=$(qdbus6 | fzf --prompt="1. Service > " \
+                      --preview 'qdbus6 {}' \
+                      --header "ENTER: Select | ESC: Exit" | xargs)
+
+[[ -z "$service" ]] && exit 0
+
+# Cache file (improves speed massively)
+cache="/tmp/qdbus-${service//./_}.cache"
+
+# Recursive traversal
+declare -A visited
+
+collect() {
+    local object="$1"
+
+    # Avoid revisiting
+    [[ -n "${visited[$object]:-}" ]] && return
+    visited[$object]=1
+
+    # Fetch introspection
+    mapfile -t lines < <(qdbus6 $service $object 2>/dev/null || true)
+
+    for line in "${lines[@]}"; do
+        if [[ "$line" == /* ]]; then
+            collect "$line"
+        elif [[ -n "$line" ]]; then
+            # Format: service | object | type | full line
+            if [[ "$line" =~ ^method ]]; then
+                echo "$service | $object | METHOD | $line"
+            elif [[ "$line" =~ ^property ]]; then
+                echo "$service | $object | PROPERTY | $line"
+            elif [[ "$line" =~ ^signal ]]; then
+                echo "$service | $object | SIGNAL | $line"
+            fi
+        fi
+    done
+}
+
+# Build cache if not exists
+if [[ ! -f "$cache" ]]; then
+    echo "Indexing DBus service (this may take a moment)..."
+    collect "/" > "$cache"
+fi
+
+# Step 2: FZF over everything
+selection=$(fzf --prompt="2. Action > " \
+    --header "$service | ENTER: Run/Read | ESC: Exit" \
+    --preview '
+        line="{}"
+
+        service=$(echo "$line" | cut -d"|" -f1 | xargs)
+        object=$(echo "$line" | cut -d"|" -f2 | xargs)
+        type=$(echo "$line" | cut -d"|" -f3 | xargs)
+        full=$(echo "$line" | cut -d"|" -f4- | xargs)
+
+        echo "Service: $service"
+        echo "Object : $object"
+        echo "Type   : $type"
+        echo
+        echo "$full"
+        echo
+
+        if [[ "$type" == "PROPERTY" ]]; then
+            prop=$(echo "$full" | awk "{print \$NF}")
+            echo "--- CURRENT VALUE ---"
+            qdbus6 $service $object "$prop" 2>/dev/null
+        fi
+    ' < "$cache")
+
+[[ -z "$selection" ]] && exit 0
+
+# Step 3: Execute selection
+service=$(echo "$selection" | cut -d"|" -f1 | xargs)
+object=$(echo "$selection" | cut -d"|" -f2 | xargs)
+type=$(echo "$selection" | cut -d"|" -f3 | xargs)
+full=$(echo "$selection" | cut -d"|" -f4- | xargs)
+
+member=$(echo "$full" | awk '{print $NF}')
+
+echo
+echo ">>> $type"
+echo "Running: qdbus6 $service $object $member"
+echo
+
+if [[ "$type" == "METHOD" || "$type" == "PROPERTY" ]]; then
+    qdbus6 $service $object "$member"
+else
+    echo "Signal selected (cannot be invoked)."
+fi
