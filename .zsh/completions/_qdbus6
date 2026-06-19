@@ -1,0 +1,53 @@
+#compdef qdbus6
+
+_qdbus6() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    # Check which argument position we are currently completing
+    case $((CURRENT - 1)) in
+        1)
+            # Level 1: Complete available D-Bus services
+            local -a services
+            services=($(qdbus6 2>/dev/null | awk '{print $1}'))
+            _wanted services colset 'D-Bus Services' compadd -a services
+            ;;
+        2)
+            # Level 2: Complete objects for the selected service
+            local service="${words[2]}"
+            local -a objects
+            objects=($(qdbus6 "$service" 2>/dev/null))
+            _wanted objects colset 'D-Bus Objects' compadd -a objects
+            ;;
+        3)
+            # Level 3: Complete methods, properties, or signals for the object
+            local service="${words[2]}"
+            local object="${words[3]}"
+            local -a raw_methods methods properties signals
+            
+            # Fetch raw output from qdbus6
+            raw_methods=("${(f)$(qdbus6 "$service" "$object" 2>/dev/null)}")
+
+            # Parse and categorize findings for better UX layout
+            for item in "${raw_methods[@]}"; do
+                if [[ "$item" =~ "^property " ]]; then
+                    properties+=("${item##* }") # Extracts just the property name
+                elif [[ "$item" =~ "^signal " ]]; then
+                    signals+=("${item##* }")    # Extracts just the signal name
+                elif [[ "$item" =~ "^method " ]]; then
+                    # Cleans up method signature for tab completion target
+                    local method_name=$(echo "$item" | awk -F'[( ]' '{print $3}')
+                    methods+=("$method_name")
+                fi
+            done
+
+            # Display categorized tab choices grouped neatly
+            _alternative \
+                "methods:D-Bus Methods:compadd -a methods" \
+                "properties:D-Bus Properties:compadd -a properties" \
+                "signals:D-Bus Signals:compadd -a signals"
+            ;;
+    esac
+}
+
+_qdbus6 "$@"
