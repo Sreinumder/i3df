@@ -68,7 +68,7 @@ select_player() {
     local clean_name="${new_player##*.}"
     clean_name="${clean_name^}"
     
-    qdbus6 org.freedesktop.Notifications /org/kde/osdService org.kde.osdService.showText alienarena "current_player: $clean_name"
+    show_osd "Player: $clean_name"
 }
 
 prop_get() {
@@ -103,6 +103,27 @@ extract_metadata_field() {
     local metadata_raw="$1"
     local key="$2"
     echo "$metadata_raw" | awk -v k="$key:" '$0 ~ k {sub("^.*" k "[[:space:]]*", ""); print; exit}'
+}
+
+show_osd() {
+    local action="$1"
+    local metadata
+    metadata=$(get_metadata 2>/dev/null || true)
+    local title
+    title=$(extract_metadata_field "$metadata" "xesam:title" 2>/dev/null || true)
+    local artist
+    artist=$(extract_metadata_field "$metadata" "xesam:artist" 2>/dev/null || true)
+    local message="$action"
+    
+    if [[ -n "$title" ]]; then
+        message="$title"
+        if [[ -n "$artist" ]]; then
+            message+=" by $artist"
+        fi
+        message+=" - $action"
+    fi
+    
+    qdbus6 org.freedesktop.Notifications /org/kde/osdService org.kde.osdService.showText alienarena "$message" 2>/dev/null || true
 }
 
 get_metadata() {
@@ -212,7 +233,7 @@ change_rate() {
 
     prop_set "$player" Rate "$new"
     echo "Rate: $current → $new"
-    qdbus6 org.freedesktop.Notifications /org/kde/osdService org.kde.osdService.showText alienarena "$player Speed: $new"
+    show_osd "Speed: $new"
 }
 
 change_volume() {
@@ -234,6 +255,7 @@ change_volume() {
     fi
     prop_set "$player" Volume "$new"
     echo "Volume: $current → $new"
+    show_osd "Volume: $new"
 }
 
 to_microseconds() {
@@ -399,7 +421,7 @@ smart_seek() {
     clean_name="${clean_name^}"
     
     echo "SmartSeek: Jumped to $display_text"
-    qdbus6 org.freedesktop.Notifications /org/kde/osdService org.kde.osdService.showText alienarena "$clean_name Seek: $display_text"
+    show_osd "Seek: $display_text"
 }
 
 print_help() {
@@ -451,7 +473,9 @@ case "${1:-}" in
     metadata)          get_metadata ;;
     getall)            get_all_properties ;;
     Play|Pause|PlayPause|Stop|Next|Previous)
-        call_method "$(current_player)" "${1^}" ;;
+        call_method "$(current_player)" "${1^}"
+        show_osd "${1^}"
+        ;;
     rate)
         [[ -z "$2" ]] && { echo "Usage: $0 rate <value>" >&2; exit 1; }
         change_rate "$2" ;;

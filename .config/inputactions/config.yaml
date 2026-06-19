@@ -1,3 +1,4 @@
+#
 # https://wiki.inputactions.org/main/config.html
 # ----------------------------------------------
 # If a configuration renders the session unusable,
@@ -34,10 +35,36 @@
 #  100└──────────────────────┴───────────────────────────────────────────────────────┘
 
 
+#  2 middle-ring or index-middle -> normal right click
+#  2 index-ring -> media control
+#    tap -> play_pause
+#    left_right -> seek the media
+#    up_down -> prev_next
+#    hold -> 2x playrate
+#    hold_then_up -> increase playrate
+#    hold_then_down -> decrease playrate
+#    hold_then_left -> prev_player
+#    hold_then_right -> next_player
+# 2 index-pinky -> movement
+#   tap -> enter
+#   left_right_down_up -> arrow_keys
+#   pinch in -> home
+#   pinch out -> end
+#
+# 3 normal ->
+#   left -> volume decrease_increase
+#   right -> alt tab
+#   out -> fullscreen
+#   in -> present_all_windows
+#   up_down -> brightness
+# 3 index_pinky_(middle/ring) -> left_click drag
+
+
 device_rules:
   - conditions: $touchpad
     swipe:
       angle_tolerance: 45
+
 touchpad:
   gestures:
     # left thumb zone {{{
@@ -284,33 +311,83 @@ touchpad:
 # 2 finger: index + ring swipe
 # [tap=play/pause, left-right=media seek, up-down=prev/next] {{{
 
-    - type: swipe
+    - type: tap
       fingers: 2
-      direction: up_down
       conditions:
         - &index_ring_min $max_finger_distance_percentage >= 0.20
         - &index_ring_max $max_finger_distance_percentage < 0.31
       actions:
+        - on: begin
+          command: ~/i3df/scripts/mpris_dbus PlayPause
+
+    - type: hold
+      fingers: 2
+      conditions:
+        - *index_ring_min
+        - *index_ring_max
+      id: hold_2_index_ring
+      actions:
+        - on: begin
+          command: ~/i3df/scripts/mpris_dbus rate 2.0
+        - on: end_cancel
+          command: ~/i3df/scripts/mpris_dbus rate 1.0
+
+    - type: swipe
+      fingers: 2
+      direction: up_down
+      conditions:
+        - *index_ring_min
+        - *index_ring_max
+        - $last_trigger_id == hold_2_index_ring
+      actions:
         - on: update
-          interval: 100
+          interval: -30
+          command: ~/i3df/scripts/mpris_dbus rate "+0.25 0.5 0.75 1 1.25 1.5 2.0 4.0 8.0 16.0 32.0"
+        - on: update
+          interval: 30
+          command: ~/i3df/scripts/mpris_dbus rate "-0.25 0.5 0.75 1 1.25 1.5 2.0 4.0 8.0 16.0 32.0"
+        - on: end_cancel
+          command: ~/i3df/scripts/mpris_dbus rate 1.0
+
+    - type: swipe
+      fingers: 2
+      direction: left
+      conditions:
+        - *index_ring_min
+        - *index_ring_max
+        - $last_trigger_id == hold_2_index_ring
+      actions:
+        - on: begin
+          command: ~/i3df/scripts/mpris_dbus prevp
+        - on: end_cancel
+          command: ~/i3df/scripts/mpris_dbus rate 1.0
+
+    - type: swipe
+      fingers: 2
+      direction: right
+      conditions:
+        - *index_ring_min
+        - *index_ring_max
+        - $last_trigger_id == hold_2_index_ring
+      actions:
+        - on: begin
+          command: ~/i3df/scripts/mpris_dbus nextp
+        - on: end_cancel
+          command: ~/i3df/scripts/mpris_dbus rate 1.0
+
+    - type: swipe
+      fingers: 2
+      direction: up_down
+      conditions:
+        - *index_ring_min
+        - *index_ring_max
+      actions:
+        - on: update
+          interval: 190
           command: ~/i3df/scripts/mpris_dbus Next
         - on: update
-          interval: -100
+          interval: -190
           command: ~/i3df/scripts/mpris_dbus Previous
-
-    # - type: swipe
-    #   fingers: 2
-    #   direction: up_down
-    #   conditions:
-    #     - &index_ring_min $max_finger_distance_percentage >= 0.20
-    #     - &index_ring_max $max_finger_distance_percentage < 0.31
-    #   actions:
-    #     - on: update
-    #       interval: 30
-    #       command: ~/i3df/scripts/mpris_dbus rate "-0.1 0.25 0.5 0.75 1 1.25 1.5 2.0 3.0 4.0 8.0 16.0 32.0"
-    #     - on: update
-    #       interval: -30
-    #       command: ~/i3df/scripts/mpris_dbus rate "+0.1 0.25 0.5 0.75 1 1.25 1.5 2.0 3.0 4.0 8.0 16.0 32.0"
 
     - type: swipe
       fingers: 2
@@ -325,26 +402,6 @@ touchpad:
         - on: update
           interval: -30
           command: ~/i3df/scripts/mpris_dbus smartseek -2
-
-    - type: tap
-      fingers: 2
-      conditions:
-        - *index_ring_min
-        - *index_ring_max
-      actions:
-        - on: begin
-          command: ~/i3df/scripts/mpris_dbus PlayPause
-
-    - type: hold
-      fingers: 2
-      conditions:
-        - *index_ring_min
-        - *index_ring_max
-      actions:
-        - on: begin
-          command: ~/i3df/scripts/mpris_dbus rate 2.0
-        - on: end_cancel
-          command: ~/i3df/scripts/mpris_dbus rate 1.0
 
     # }}}
 
@@ -392,15 +449,14 @@ touchpad:
           input:
             - keyboard: [enter]
 
-    - type: hold
-      fingers: 2
-      clear_modifiers: false
-      conditions:
-        - *index_pinky
-      actions:
-        - on: begin
-          input:
-            - keyboard: [backspace]
+    # - type: hold
+    #   fingers: 2
+    #   clear_modifiers: false
+    #   conditions:
+    #     - *index_pinky
+    #   actions:
+    #     - on: begin
+    #       command: firefox --private-window https://www.chatgpt.com
 
     - type: pinch
       direction: in
@@ -445,59 +501,132 @@ touchpad:
             - mouse: [-left]
     # }}}
 
+    # pinch 3 in= show overview of all windows and out=fullscreen {{{
+    - type: pinch
+      fingers: 3
+      direction: out
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftmeta+f]
+            - mouse: [left]
+
+    - type: pinch
+      fingers: 3
+      direction: in
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+f10]
+
+    # - type: hold
+    #   fingers: 3
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [leftmeta+leftshift+f]
+
+    # - type: hold
+    #   fingers: 3
+    #   id: overview_hold
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [leftctrl+f10]
+    #
+    # - type: swipe
+    #   fingers: 3
+    #   direction: left_right
+    #   id: overview_left_right
+    #   conditions:
+    #     - $last_trigger_id matches "overview_.*"
+    #   actions:
+    #     - on: update
+    #       interval: 50
+    #       input:
+    #         - keyboard: [right]
+    #     - on: update
+    #       interval: -50
+    #       input:
+    #         - keyboard: [left]
+    #     # - on: end_cancel
+    #     #   input:
+    #     #     - keyboard: [enter]
+    #
+    # - type: swipe
+    #   fingers: 3
+    #   direction: up_down
+    #   id: overview_up_down
+    #   conditions:
+    #     - $last_trigger_id matches "overview_.*"
+    #   actions:
+    #     - on: update
+    #       interval: 50
+    #       input:
+    #         - keyboard: [down]
+    #     - on: update
+    #       interval: -50
+    #       input:
+    #         - keyboard: [up]
+    #     # - on: end_cancel
+    #     #   input:
+    #     #     - keyboard: [enter]
+    #
+    # - type: swipe
+    #   fingers: 3
+    #   angle: 22.5-67.5  # top_right
+    #   id: overview_top_right
+    #   bidirectional: true
+    #   conditions:
+    #     - $last_trigger_id matches "overview_.*"
+    #   actions:
+    #     - on: update
+    #       interval: 50
+    #       input:
+    #         - keyboard: [up, right]
+    #     - on: update
+    #       interval: -50
+    #       input:
+    #         - keyboard: [down, left]
+    #     # - on: end_cancel
+    #     #   input:
+    #     #     - keyboard: [enter]
+    #
+    # - type: swipe
+    #   fingers: 3
+    #   angle: 112.5-157.5  # top_left
+    #   id: overview_top_left
+    #   bidirectional: true
+    #   conditions:
+    #     - $last_trigger_id matches "overview_.*"
+    #   actions:
+    #     - on: update
+    #       interval: 50
+    #       input:
+    #         - keyboard: [up, left]
+    #     - on: update
+    #       interval: -50
+    #       input:
+    #         - keyboard: [down, right]
+    #     # - on: end_cancel
+    #     #   input:
+    #     #     - keyboard: [enter]
+
+    # }}}
+
     # swipe 3 up for brightnessup and down for next desktop {{{
     - type: swipe
       fingers: 3
       direction: up_down
       actions:
-        - on: begin
-          function: () => initialDirection = null;
         - on: update
-          interval: -1
-          conditions:
-            function: () => initialDirection == null;
-          function: () => initialDirection = "l";
-        - on: update
-          interval: 1
-          limit: 1
-          conditions:
-            function: () => initialDirection == null;
-          input:
-            - keyboard: [ +leftmeta ]
-        - on: update
-          interval: 1
-          conditions:
-            function: () => initialDirection == null;
-          function: () => initialDirection = "r";
-        - on: update
-          interval: 100
-          conditions:
-            function: () => initialDirection == "r";
-          input:
-            - keyboard: [ tab ]
-        - on: update
-          interval: -100
-          conditions:
-            function: () => initialDirection == "r";
-          input:
-            - keyboard: [ leftshift+tab ]
-        - on: update
-          interval: -5
-          conditions:
-            function: () => initialDirection == "l";
+          interval: +10
           input:
             - keyboard: [ brightnessdown ]
         - on: update
-          interval: 5
-          conditions:
-            function: () => initialDirection == "l";
+          interval: -10
           input:
             - keyboard: [ brightnessup ]
-        - on: end_cancel
-          conditions:
-            function: () => initialDirection == "r";
-          input:
-            - keyboard: [ -leftmeta ]
     #}}}
 
     # swipe 3 left to volume right to alt-tab {{{
@@ -555,25 +684,6 @@ touchpad:
             - keyboard: [ -leftalt ]
     #}}}
 
-    # pinch 3 in= show overview of all windows and out=fullscreen {{{
-    - type: pinch
-      fingers: 3
-      direction: out
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftmeta+f]
-            - mouse: [left]
-
-    - type: pinch
-      fingers: 3
-      direction: in
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftctrl+f10]
-    # }}}
-
     # 4 left_right go back / forward {{{
     - type: swipe
       fingers: 4
@@ -587,17 +697,29 @@ touchpad:
           interval: 120
           input:
             - mouse: [back]
+
   # }}}
 
-    # 4 up_down previous/next tab {{{
+# 4 up_down previous/next tab {{{
     - type: swipe
       fingers: 4
-      direction: up_down
+      direction: up
       actions:
-        - on: update
-          interval: -80
+        - on: begin
           input:
             - keyboard: [leftctrl+leftshift+tab]
+        - on: update
+          interval: 80
+          input:
+            - keyboard: [leftctrl+leftshift+tab]
+
+    - type: swipe
+      fingers: 4
+      direction: down
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftctrl+tab]
         - on: update
           interval: 80
           input:
