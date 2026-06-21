@@ -115,6 +115,11 @@ show_osd() {
     artist=$(extract_metadata_field "$metadata" "xesam:artist" 2>/dev/null || true)
     local message="$action"
     
+    local player
+    player=$(current_player)
+    local desktop_entry=""
+    desktop_entry=$(qdbus6 "$player" /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2 DesktopEntry 2>/dev/null || true)
+    
     if [[ -n "$title" ]]; then
         message="$title"
         if [[ -n "$artist" ]]; then
@@ -123,7 +128,11 @@ show_osd() {
         message+=" - $action"
     fi
     
-    qdbus6 org.freedesktop.Notifications /org/kde/osdService org.kde.osdService.showText alienarena "$message" 2>/dev/null || true
+    # if [[ -n "$desktop_entry" ]]; then
+    #     message="[$desktop_entry] $message"
+    # fi
+    
+    qdbus6 org.freedesktop.Notifications /org/kde/osdService org.kde.osdService.showText "$desktop_entry" "$message" 2>/dev/null || true
 }
 
 get_metadata() {
@@ -443,6 +452,7 @@ Info:
 
 Basic control:
   Play | Pause | PlayPause | Stop | Next | Previous
+  Raise | Quit | Fullscreen [true|false]
 
 Rate & Volume:
   rate <value>            Linear: (+0.1, -0.2) | Geometric: (+1.15x, -, +)
@@ -475,6 +485,34 @@ case "${1:-}" in
     Play|Pause|PlayPause|Stop|Next|Previous)
         call_method "$(current_player)" "${1^}"
         show_osd "${1^}"
+        ;;
+    Raise)
+        player=$(current_player)
+        qdbus6 "$player" /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Raise 2>/dev/null || echo "Error calling Raise" >&2
+        if command -v kdotool >/dev/null 2>&1; then
+            desktop_entry=$(qdbus6 "$player" /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2 DesktopEntry 2>/dev/null || true)
+            if [[ -n "$desktop_entry" ]]; then
+                kdotool windowactivate $(kdotool search --class "$desktop_entry") 2>/dev/null || true
+            fi
+        fi
+        ;;
+    Quit)
+        qdbus6 "$(current_player)" /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Quit 2>/dev/null || echo "Error calling Quit" >&2
+        ;;
+    Fullscreen|fullscreen)
+        player=$(current_player)
+        if [[ -n "${2:-}" ]]; then
+            qdbus6 "$player" /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Set org.mpris.MediaPlayer2 Fullscreen "$2" 2>/dev/null || echo "Error setting Fullscreen to $2" >&2
+        else
+            current_fs=$(qdbus6 "$player" /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2 Fullscreen 2>/dev/null || true)
+            if [[ "$current_fs" == "true" ]]; then
+                qdbus6 "$player" /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Set org.mpris.MediaPlayer2 Fullscreen false 2>/dev/null || echo "Error setting Fullscreen to false" >&2
+            elif [[ "$current_fs" == "false" ]]; then
+                qdbus6 "$player" /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Set org.mpris.MediaPlayer2 Fullscreen true 2>/dev/null || echo "Error setting Fullscreen to true" >&2
+            else
+                echo "Fullscreen: $current_fs"
+            fi
+        fi
         ;;
     rate)
         [[ -z "$2" ]] && { echo "Usage: $0 rate <value>" >&2; exit 1; }
