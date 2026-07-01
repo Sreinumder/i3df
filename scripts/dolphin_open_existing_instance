@@ -1,0 +1,26 @@
+#!/bin/bash
+
+DOLPHIN_ID=$(qdbus6 2>/dev/null | grep org.kde.dolphin | sort | tail -n1 | xargs)
+echo "the id is $DOLPHIN_ID"
+echo "dolphin_instances:"
+qdbus6 2>/dev/null | grep org.kde.dolphin | sort
+
+if [ -z "$DOLPHIN_ID" ]; then
+    echo "no id at all"
+    dolphin
+else
+    DOLPHIN_WINDOW_ID=$(qdbus6 "$DOLPHIN_ID" /dolphin/Dolphin_1 org.freedesktop.DBus.Properties.GetAll "" 2>/dev/null \
+        | grep windowTitle | awk '{print $NF}')
+     echo "location is $DOLPHIN_WINDOW_ID"
+
+    if [ -z "$DOLPHIN_WINDOW_ID" ]; then
+        echo "empty instance run"
+        dolphin
+    elif [ "$DOLPHIN_WINDOW_ID" = "/" ] || [ "$DOLPHIN_WINDOW_ID" = "/home" ]; then
+      echo "focus home or /"
+        dolphin --select "$DOLPHIN_WINDOW_ID"
+    else
+        echo "focus"
+        dolphin --select "${DOLPHIN_WINDOW_ID}/"
+    fi
+fi

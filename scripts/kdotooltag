@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+# State storage file
+TAG_FILE="$HOME/.cache/kdotool_last_tag"
+mkdir -p "$(dirname "$TAG_FILE")"
+
+show_help() {
+    echo "Usage: kdotoolHelper [tag | go]"
+    echo "  tag  - Store the active window under cursor into the state file"
+    echo "  go   - Focus back to the stored window, or clear it if closed"
+}
+
+# 1. Tag Active Window (Overwrites the file completely)
+tag_window() {
+    local win_id
+    win_id=$(kdotool getactivewindow 2>/dev/null)
+
+    if [[ -z "$win_id" ]]; then
+        echo "Error: Could not capture active window ID." >&2
+        exit 1
+    fi
+
+    # Write cleanly to file, replacing any older entry
+    echo "$win_id" > "$TAG_FILE"
+    echo "Tagged active window: $win_id"
+}
+
+# 2. Focus Window Back (Clears file if window is dead)
+go_to_window() {
+    if [[ ! -f "$TAG_FILE" ]]; then
+        echo "Error: No window has been tagged yet." >&2
+        exit 1
+    fi
+
+    local win_id
+    win_id=$(cat "$TAG_FILE")
+
+    if [[ -z "$win_id" ]]; then
+        echo "Error: Tag file is empty." >&2
+        exit 1
+    fi
+
+    # Attempt activation. If it fails, wipe out the cache file.
+    if ! kdotool windowactivate "$win_id" 2>/dev/null; then
+        echo "Window ($win_id) is closed. Clearing tag file."
+        rm -f "$TAG_FILE"
+        exit 1
+    fi
+}
+
+# Route the commands
+case "$1" in
+    tag)
+        tag_window
+        ;;
+    go)
+        go_to_window
+        ;;
+    *)
+        show_help
+        ;;
+esac
+
