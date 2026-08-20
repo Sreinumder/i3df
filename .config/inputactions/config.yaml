@@ -118,8 +118,8 @@ touchpad:
       actions:
         - on: update
           input:
-            - mouse: [middle]
-
+            # - mouse: [middle]
+            - keyboard: [leftmeta+grave]
     # }}}
 
     # bottom zone {{{
@@ -135,63 +135,66 @@ touchpad:
     #         - keyboard: [leftmeta+grave]
 
     # movement zone bottom left_right
-    - type: swipe
-      fingers: 1
-      direction: left_right
-      conditions:
-        - &zone_bottom_x $finger_1_initial_position_percentage_x > 0.30
-        - &zone_bottom_y $finger_1_initial_position_percentage_y >= 0.80
-      actions:
-        - on: update
-          interval: -40
-          input:
-            - keyboard: [left]
-        - on: update
-          interval: 40
-          input:
-            - keyboard: [right]
+    # - type: swipe
+    #   fingers: 1
+    #   direction: left_right
+    #   conditions:
+    #     - &zone_bottom_x $finger_1_initial_position_percentage_x > 0.30
+    #     - &zone_bottom_y $finger_1_initial_position_percentage_y >= 0.80
+    #   actions:
+    #     - on: update
+    #       interval: -40
+    #       input:
+    #         - keyboard: [left]
+    #     - on: update
+    #       interval: 40
+    #       input:
+    #         - keyboard: [right]
 
       # }}}
 
     # movement zone bottom left {{{
-    - type: swipe
-      fingers: 1
-      direction: left_right
-      conditions:
-        - &zone_movement_x $finger_1_initial_position_percentage_x <= 0.30
-        - &zone_movement_y $finger_1_initial_position_percentage_y >= 0.40
-      actions:
-        - on: update
-          interval: -40
-          input:
-            - keyboard: [left]
-        - on: update
-          interval: 40
-          input:
-            - keyboard: [right]
-
-    - type: swipe
-      fingers: 1
-      direction: up_down
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: update
-          interval: -40
-          input:
-            - keyboard: [up]
-        - on: update
-          interval: 40
-          input:
-            - keyboard: [down]
+    # - type: swipe
+    #   fingers: 1
+    #   direction: left_right
+    #   conditions:
+    #     - &zone_movement_x $finger_1_initial_position_percentage_x <= 0.30
+    #     - &zone_movement_y $finger_1_initial_position_percentage_y >= 0.40
+    #   actions:
+    #     - on: update
+    #       interval: -1
+    #       limit: 1
+    #       input:
+    #         - keyboard: [leftalt+f1]
+    #     - on: update
+    #       interval: 40
+    #       input:
+    #         - keyboard: [right]
+    #
+    # - type: swipe
+    #   fingers: 1
+    #   direction: up_down
+    #   conditions:
+    #     - *zone_movement_x
+    #     - *zone_movement_y
+    #   actions:
+    #     - on: update
+    #       interval: -40
+    #       input:
+    #         - keyboard: [up]
+    #     - on: update
+    #       interval: 40
+    #       input:
+    #         - keyboard: [down]
 
     - type: swipe
       fingers: 2
       direction: left_right
       conditions:
-        - *zone_movement_x
-        - *zone_movement_y
+        - &zone_movement_x $finger_1_initial_position_percentage_x <= 0.30
+        - &zone_movement_y $finger_1_initial_position_percentage_y >= 0.40
+        # - *zone_movement_x
+        # - *zone_movement_y
       actions:
         - on: update
           interval: -40
@@ -308,9 +311,91 @@ touchpad:
 
 # default zone / gestures {{{
 
+# 2 finger: index + pinky wide
+# [tap=float, swipe=arrow_keys] {{{
+
+    - type: swipe
+      fingers: 2
+      direction: left
+      clear_modifiers: false
+      conditions:
+        - &index_pinky_wide $max_finger_distance_percentage >= 0.51
+        - !$keyboard_modifiers contains meta
+      actions:
+        - on: update
+          interval: 30
+          input:
+            - keyboard: [+leftmeta]
+
+    - type: swipe
+      fingers: 2
+      direction: left
+      clear_modifiers: false
+      conditions:
+        - *index_pinky_wide
+        - $keyboard_modifiers contains meta
+      actions:
+        - on: update
+          interval: 30
+          input:
+            - keyboard: [-leftmeta]
+
+    - type: swipe
+      fingers: 2
+      direction: right
+      clear_modifiers: false
+      conditions:
+        - *index_pinky_wide
+      actions:
+        - on: update
+          interval: 30
+          input:
+            - keyboard: [-leftmeta]
+
+    - type: swipe
+      fingers: 2
+      clear_modifiers: false
+      direction: up_down
+      conditions:
+        - *index_pinky_wide
+      actions:
+        - on: update
+          interval: 30
+          input:
+            - keyboard: [down]
+        - on: update
+          interval: -30
+          input:
+            - keyboard: [up]
+
+    - type: tap
+      fingers: 2
+      clear_modifiers: false
+      conditions:
+        - *index_pinky_wide
+      actions:
+        - on: begin
+          input:
+            - mouse: [left]
+            - keyboard: [leftmeta+leftshift+f]
+          # plasma_shortcut: kwin,KrohnkiteToggleFloat
+
+    - type: hold
+      fingers: 2
+      clear_modifiers: false
+      conditions:
+        - *index_pinky_wide
+      actions:
+        - on: begin
+          input:
+            - mouse: [left]
+            - keyboard: [leftmeta+leftshift+p]
+        # plasma_shortcut: kwin,Window On All Desktops
+
+            # }}}
+
 # 2 finger: index + ring swipe
 # [tap=play/pause, left-right=media seek, up-down=prev/next] {{{
-
     - type: tap
       fingers: 2
       conditions:
@@ -358,9 +443,10 @@ touchpad:
         - $last_trigger_id == hold_2_index_ring
       actions:
         - on: begin
-          command: ~/i3df/scripts/mpris_dbus prevp
+          command: ~/i3df/scripts/mpris_dbus Pause; ~/i3df/scripts/mpris_dbus prevp
+
         - on: end_cancel
-          command: ~/i3df/scripts/mpris_dbus rate 1.0
+          command: ~/i3df/scripts/mpris_dbus Raise; ~/i3df/scripts/mpris_dbus rate 1.0
 
     - type: swipe
       fingers: 2
@@ -397,15 +483,15 @@ touchpad:
         - *index_ring_max
       actions:
         - on: update
-          interval: 30
-          command: ~/i3df/scripts/mpris_dbus smartseek +2
-        - on: update
           interval: -30
-          command: ~/i3df/scripts/mpris_dbus smartseek -2
+          command: ~/i3df/scripts/mpris_dbus smartseek -4
+        - on: update
+          interval: 30
+          command: ~/i3df/scripts/mpris_dbus smartseek +4
 
     # }}}
 
-  # 2 finger: index + pinky swipe
+          # 2 finger: index + pinky swipe
   # [tap=enter, swipe=arrow_keys] {{{
     - type: swipe
       fingers: 2
@@ -519,12 +605,12 @@ touchpad:
           input:
             - keyboard: [leftctrl+f10]
 
-    # - type: hold
-    #   fingers: 3
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [leftmeta+leftshift+f]
+    - type: hold
+      fingers: 3
+      actions:
+        - on: begin
+          input:
+            - keyboard: [leftmeta+grave]
 
     # - type: hold
     #   fingers: 3
@@ -690,11 +776,13 @@ touchpad:
       direction: left_right
       actions:
         - on: update
-          interval: -120
+          interval: -1
+          limit: 1
           input:
             - mouse: [forward]
         - on: update
-          interval: 120
+          interval: 1
+          limit: 1
           input:
             - mouse: [back]
 
@@ -802,6 +890,7 @@ touchpad:
           input:
             - mouse: [left]
             - keyboard: [leftalt+f4]
+          # plasma_shortcut: kwin,Window Close
     # }}}
 
 # }}}
