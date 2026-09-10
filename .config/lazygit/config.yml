@@ -1,8 +1,8 @@
 notARepository: 'quit'
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --paging=never --line-numbers
+      type: rawGit
 os:
   editPreset: nvim
 # panels:
@@ -29,7 +29,14 @@ customCommands:
     command: "gh pr create --fill --web"
     context: "global"
     loadingText: "Creating pull request on GitHub"
-  # https://github.com/jesseduffield/lazygit/wiki/Custom-Commands-Compendium#conventional-commit
+    # https://github.com/jesseduffield/lazygit/discussions/4081
+  - key: "<a-p>"
+    command: 'git push `git for-each-ref --format="%(upstream:remotename)" "$(git symbolic-ref -q HEAD)"` {{.SelectedCommit.Hash}}:`git for-each-ref --format="%(upstream:remoteref)" "$(git symbolic-ref -q HEAD)"`'
+    context: "commits"
+    description: "Push selected commit"
+    output: log
+    #
+    # https://github.com/jesseduffield/lazygit/wiki/Custom-Commands-Compendium#conventional-commit
   - key: "<c-v>"
     context: "global"
     description: "Create new conventional commit"
@@ -93,3 +100,7 @@ customCommands:
         body: "Are you sure you want to commit?"
     command: "git commit --message '{{.Form.Type}}{{ if .Form.Scope }}({{ .Form.Scope }}){{ end }}{{.Form.Breaking}}: {{.Form.Message}}'"
     loadingText: "Creating conventional commit..."
+  - key: "O"
+    context: "files"
+    description: "Open in VS Code at current line"
+    command: 'code --goto "{{.SelectedFile.Name}}"'
