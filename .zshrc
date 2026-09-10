@@ -122,7 +122,7 @@ bindkey -M vicmd 'L' end-of-line
 bindkey -M vicmd ' p' insert-cli-buffer
 zle -N insert-cli-buffer
 insert-cli-buffer() { LBUFFER+=$(xsel --clipboard --output) }
-yank-to-clipboard() { xsel --clipboard --input <<< "$BUFFER"}
+yank-to-clipboard() { echo "$BUFFER" | wl-copy}
 bindkey -M vicmd 'yy' yank-to-clipboard
 zle -N yank-to-clipboard
 bindkey -M vicmd '^[h' z4h-cd-back
