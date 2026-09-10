@@ -1,0 +1,634 @@
+#compdef opencode
+
+_opencode_global_opts() {
+    _arguments -s \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '--port[port to listen on]:port' \
+        '--hostname[hostname to listen on]:hostname' \
+        '--mdns[enable mDNS service discovery]' \
+        '--mdns-domain[custom domain name for mDNS]:domain' \
+        '--cors[additional domains to allow for CORS]:domain' \
+        '(-m --model)'{-m,--model}'[model to use]:model' \
+        '(-c --continue)'{-c,--continue}'[continue the last session]' \
+        '(-s --session)'{-s,--session}'[session id to continue]:session' \
+        '--fork[fork session when continuing]' \
+        '--prompt[prompt to use]:prompt' \
+        '--agent[agent to use]:agent' \
+        '--auto[auto-approve permissions (dangerous)]' \
+        '--mini[start minimal interactive interface]' \
+        '--no-replay[disable mini session history replay]' \
+        '--replay-limit[cap visible mini replay]:limit'
+}
+
+_opencode_cmds() {
+    local -a subcommands
+    subcommands=(
+        'acp:start ACP (Agent Client Protocol) server'
+        'mcp:manage MCP (Model Context Protocol) servers'
+        'attach:attach to a running opencode server'
+        'run:run opencode with a message'
+        'debug:debugging and troubleshooting tools'
+        'providers:manage AI providers and credentials'
+        'auth:manage AI providers and credentials'
+        'agent:manage agents'
+        'upgrade:upgrade opencode to latest or specific version'
+        'uninstall:uninstall opencode and remove all related files'
+        'serve:start a headless opencode server'
+        'web:start opencode server and open web interface'
+        'models:list all available models'
+        'stats:show token usage and cost statistics'
+        'export:export session data as JSON'
+        'import:import session data from JSON file or URL'
+        'github:manage GitHub agent'
+        'pr:fetch and checkout a GitHub PR branch'
+        'session:manage sessions'
+        'plugin:install plugin and update config'
+        'plug:install plugin and update config'
+        'db:database tools'
+        'completion:generate shell completion script'
+    )
+    _describe -t commands 'opencode' subcommands
+}
+
+_opencode() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '--port[port to listen on]:port' \
+        '--hostname[hostname to listen on]:hostname' \
+        '--mdns[enable mDNS service discovery]' \
+        '--mdns-domain[custom domain name for mDNS]:domain' \
+        '--cors[additional domains to allow for CORS]:domain' \
+        '(-m --model)'{-m,--model}'[model to use]:model' \
+        '(-c --continue)'{-c,--continue}'[continue the last session]' \
+        '(-s --session)'{-s,--session}'[session id to continue]:session' \
+        '--fork[fork session when continuing]' \
+        '--prompt[prompt to use]:prompt' \
+        '--agent[agent to use]:agent' \
+        '--auto[auto-approve permissions (dangerous)]' \
+        '--mini[start minimal interactive interface]' \
+        '--no-replay[disable mini session history replay]' \
+        '--replay-limit[cap visible mini replay]:limit' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            _opencode_cmds
+            ;;
+        args)
+            case $words[1] in
+                mcp)
+                    _opencode_mcp
+                    ;;
+                providers|auth)
+                    _opencode_providers
+                    ;;
+                agent)
+                    _opencode_agent
+                    ;;
+                session)
+                    _opencode_session
+                    ;;
+                github)
+                    _opencode_github
+                    ;;
+                db)
+                    _opencode_db
+                    ;;
+                debug)
+                    _opencode_debug
+                    ;;
+                models)
+                    _opencode_models
+                    ;;
+                export)
+                    _opencode_export
+                    ;;
+                import)
+                    _opencode_import
+                    ;;
+                upgrade)
+                    _opencode_upgrade
+                    ;;
+                plugin|plug)
+                    _opencode_plugin
+                    ;;
+                attach)
+                    _arguments '1:url:'
+                    ;;
+                run)
+                    _arguments '*:message:'
+                    ;;
+                pr)
+                    _arguments '1:pr number:'
+                    ;;
+                serve|web|stats|uninstall|completion|acp)
+                    _message "no additional arguments"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_opencode_mcp() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'add:add an MCP server'
+                'list:list MCP servers and their status'
+                'ls:list MCP servers and their status'
+                'auth:authenticate with an OAuth-enabled MCP server'
+                'logout:remove OAuth credentials for an MCP server'
+                'debug:debug OAuth connection for an MCP server'
+            )
+            _describe -t commands 'mcp' sub
+            ;;
+        args)
+            case $words[1] in
+                add)
+                    _arguments \
+                        '--url[URL for a remote MCP server]:url' \
+                        '--env[environment variable (KEY=VALUE)]:env' \
+                        '--header[HTTP header (KEY=VALUE)]:header'
+                    ;;
+                auth)
+                    _opencode_mcp_auth
+                    ;;
+                logout|debug)
+                    _arguments '1:mcp server name:'
+                    ;;
+                list|ls)
+                    _message "no additional arguments"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_opencode_mcp_auth() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'list:list OAuth-capable MCP servers and their auth status'
+                'ls:list OAuth-capable MCP servers and their auth status'
+            )
+            _describe -t commands 'mcp auth' sub
+            ;;
+        args)
+            _message "no additional arguments"
+            ;;
+    esac
+}
+
+_opencode_providers() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'list:list providers and credentials'
+                'ls:list providers and credentials'
+                'login:log in to a provider'
+                'logout:log out from a configured provider'
+            )
+            _describe -t commands 'providers' sub
+            ;;
+        args)
+            case $words[1] in
+                login)
+                    _arguments '1::url'
+                    ;;
+                logout)
+                    _arguments '1::provider'
+                    ;;
+                list|ls)
+                    _message "no additional arguments"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_opencode_agent() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'create:create a new agent'
+                'list:list all available agents'
+            )
+            _describe -t commands 'agent' sub
+            ;;
+        args)
+            case $words[1] in
+                create)
+                    _arguments \
+                        '--path[directory path to generate agent file]:path:_files -/' \
+                        '--description[what the agent should do]:description' \
+                        '--mode[agent mode]:mode:(all primary subagent)' \
+                        '--permissions --tools[comma-separated permissions]:permissions' \
+                        '(-m --model)'{-m,--model}'[model to use]:model'
+                    ;;
+                list)
+                    _message "no additional arguments"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_opencode_session() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'list:list sessions'
+                'delete:delete a session'
+            )
+            _describe -t commands 'session' sub
+            ;;
+        args)
+            case $words[1] in
+                delete)
+                    _arguments '1:session id:'
+                    ;;
+                list)
+                    _message "no additional arguments"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_opencode_github() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'install:install the GitHub agent'
+                'run:run the GitHub agent'
+            )
+            _describe -t commands 'github' sub
+            ;;
+        args)
+            _message "no additional arguments"
+            ;;
+    esac
+}
+
+_opencode_db() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '--format[output format]:format:(json tsv)' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'path:print the database path'
+            )
+            _describe -t commands 'db' sub
+            ;;
+        args)
+            _message "no additional arguments"
+            ;;
+    esac
+}
+
+_opencode_debug() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'config:show resolved configuration'
+                'lsp:LSP debugging utilities'
+                'rg:ripgrep debugging utilities'
+                'file:file system debugging utilities'
+                'scrap:list all known projects'
+                'skill:list all available skills'
+                'snapshot:snapshot debugging utilities'
+                'startup:print startup timing'
+                'agent:show agent configuration details'
+                'v2:debug v2 catalog and built-in plugins'
+                'info:show debug information'
+                'paths:show global paths'
+                'wait:wait indefinitely'
+            )
+            _describe -t commands 'debug' sub
+            ;;
+        args)
+            case $words[1] in
+                lsp)
+                    _opencode_debug_lsp
+                    ;;
+                rg)
+                    _opencode_debug_rg
+                    ;;
+                file)
+                    _opencode_debug_file
+                    ;;
+                snapshot)
+                    _opencode_debug_snapshot
+                    ;;
+                agent)
+                    _arguments '1:agent name:'
+                    ;;
+                config|scrap|skill|startup|v2|info|paths|wait)
+                    _message "no additional arguments"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_opencode_debug_lsp() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'diagnostics:get diagnostics for a file'
+                'symbols:search workspace symbols'
+                'document-symbols:get symbols from a document'
+            )
+            _describe -t commands 'lsp' sub
+            ;;
+        args)
+            case $words[1] in
+                diagnostics)
+                    _arguments '1:file:_files'
+                    ;;
+                symbols)
+                    _arguments '1:query:'
+                    ;;
+                document-symbols)
+                    _arguments '1:uri:'
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_opencode_debug_rg() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'files:list files using ripgrep'
+                'search:search file contents using ripgrep'
+            )
+            _describe -t commands 'rg' sub
+            ;;
+        args)
+            case $words[1] in
+                search)
+                    _arguments '1:pattern:'
+                    ;;
+                files)
+                    _message "no additional arguments"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_opencode_debug_file() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'read:read file contents as JSON'
+                'list:list files in a directory'
+                'search:search files by query'
+            )
+            _describe -t commands 'file' sub
+            ;;
+        args)
+            case $words[1] in
+                read)
+                    _arguments '1:path:_files'
+                    ;;
+                list)
+                    _arguments '1:directory:_files -/'
+                    ;;
+                search)
+                    _arguments '1:query:'
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_opencode_debug_snapshot() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            local -a sub
+            sub=(
+                'track:track current snapshot state'
+                'patch:show patch for a snapshot hash'
+                'diff:show diff for a snapshot hash'
+            )
+            _describe -t commands 'snapshot' sub
+            ;;
+        args)
+            case $words[1] in
+                patch|diff)
+                    _arguments '1:hash:'
+                    ;;
+                track)
+                    _message "no additional arguments"
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_opencode_models() {
+    _arguments \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '--verbose[verbose model output]' \
+        '--refresh[refresh models cache]' \
+        '1::provider'
+}
+
+_opencode_export() {
+    _arguments \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '--sanitize[redact sensitive data]' \
+        '1::session id'
+}
+
+_opencode_import() {
+    _arguments \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '1:file:_files'
+}
+
+_opencode_upgrade() {
+    _arguments \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '(-m --method)'{-m,--method}'[installation method]:method:(curl npm pnpm bun brew choco scoop)' \
+        '1::target version'
+}
+
+_opencode_plugin() {
+    _arguments \
+        '(-h --help)'{-h,--help}'[show help]' \
+        '(-v --version)'{-v,--version}'[show version number]' \
+        '--print-logs[print logs to stderr]' \
+        '--log-level[log level]:level:(DEBUG INFO WARN ERROR)' \
+        '--pure[run without external plugins]' \
+        '(-g --global)'{-g,--global}'[install in global config]' \
+        '(-f --force)'{-f,--force}'[replace existing plugin version]' \
+        '1:module:'
+}
+
+_opencode "$@"

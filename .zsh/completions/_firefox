@@ -1,0 +1,54 @@
+#compdef firefox firefox-esr iceweasel
+
+_firefox() {
+    _arguments -C \
+        '(-allow-downgrade)'{-allow-downgrade}'[Bypass Firefox downgrade protection]' \
+        '(-CreateProfile)'{-CreateProfile}'[Create a new profile in the default directory]:profile name:' \
+        '(-migration)'{-migration}'[Start with the import wizard]' \
+        '(-new-instance)'{-new-instance}'[Open a new instance, not a new window]' \
+        '(-no-remote)'{-no-remote}'[Do not accept or send remote commands]' \
+        '(-override)'{-override}'[Load the specified override.ini file]:override.ini file:_files' \
+        '(-ProfileManager -P)'{-ProfileManager}'[Start with the profile manager]' \
+        '(-P -ProfileManager)'{-P}'[Launch application with the named profile]:profile name:_firefox_profiles' \
+        '(-profile)'{-profile}'[Start with the given profile path]:profile path:_directories' \
+        '(-browser)'{-browser}'[Start with the browser component]' \
+        '(-foreground)'{-foreground}'[Make this instance the active application]' \
+        '(-wait-for-browser)'{-wait-for-browser}'[Keep the launcher process alive until the browser shuts down]' \
+        '(-headless)'{-headless}'[Run Firefox in headless mode]' \
+        '(-new-tab)'{-new-tab}'[Open URL in a new tab]:URL:_urls' \
+        '(-new-window)'{-new-window}'[Open URL in a new window]:URL:_urls' \
+        '(-kiosk)'{--kiosk}'[Open URL full screen without user interface]:URL:_urls' \
+        '(-preferences)'{-preferences}'[Open the options/preferences window]' \
+        '(-private)'{-private}'[Open in permanent private browsing mode]' \
+        '(-private-window)'{-private-window}'[Open a new private browsing window]:URL:_urls' \
+        '(-safe-mode)'{-safe-mode}'[Start in troubleshoot (safe) mode]' \
+        '(-search)'{-search}'[Search term with your default search engine]:term:' \
+        '(-setDefaultBrowser)'{-setDefaultBrowser}'[Set the application as the default browser]' \
+        '(-url)'{-url}'[Open URL in a new tab or window]:URL:_urls' \
+        '(-devtools)'{-devtools}'[Start with native developer tools opened]' \
+        '(-inspector)'{-inspector}'[Start with the DOM Inspector and inspect URL]:URL:_urls' \
+        '(-jsdebugger)'{-jsdebugger}'[Start with the browser toolbox]' \
+        '(-jsconsole)'{-jsconsole}'[Start with the browser console]' \
+        '(-purgecaches)'{-purgecaches}'[Clear the JavaScript cache on startup]' \
+        '(-start-debugger-server)'{-start-debugger-server}'[Start the debugger server on port]:port:' \
+        '(-venkman)'{-venkman}'[Start with the JavaScript debugger Venkman, if installed]' \
+        '*:URL:_urls'
+}
+
+_firefox_profiles() {
+    local -a profs ini
+    local profiles_root
+
+    for profiles_root in "$HOME/.mozilla/firefox" "$HOME/.mozilla/firefox-esr" "$HOME/snap/firefox/common/.mozilla/firefox"; do
+        ini=( $profiles_root/profiles.ini(N) )
+        (( $#ini )) && break
+    done
+    if (( $#ini )); then
+        profs=( ${(f)"$(command awk -F= '
+            tolower($1) == "name" { gsub(/^ +| +$/, "", $2); print $2 }
+        ' $ini)"} )
+    fi
+    _describe -t profiles 'Firefox profile' profs
+}
+
+_firefox "$@"

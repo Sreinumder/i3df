@@ -1,0 +1,660 @@
+#compdef ffmpeg
+
+_ffmpeg() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(- 1 *)'{-L,--license}'[show license]' \
+        '(- 1 *)'{-version,--version}'[show version]' \
+        '(- :)'{-h,--help}'[show help]:topic:->help_topics' \
+        '(- 1 *)'{-?,-help,--help}'[show help]:topic:->help_topics' \
+        '(- 1 *)--buildconf[show build configuration]' \
+        '(- 1 *)-formats[show available formats]' \
+        '(- 1 *)-codecs[show available codecs]' \
+        '(- 1 *)-decoders[show available decoders]' \
+        '(- 1 *)-encoders[show available encoders]' \
+        '(- 1 *)-bsfs[show available bitstream filters]' \
+        '(- 1 *)-protocols[show available protocols]' \
+        '(- 1 *)-filters[show available filters]' \
+        '(- 1 *)-pix_fmts[show available pixel formats]' \
+        '(- 1 *)-layouts[show standard channel layouts]' \
+        '(- 1 *)-sample_fmts[show available audio sample formats]' \
+        '(- 1 *)-colors[show available color names]' \
+        '(- 1 *)-dispositions[show available stream dispositions]' \
+        '(- 1 *)-muxers[show available muxers]' \
+        '(- 1 *)-demuxers[show available demuxers]' \
+        '(- 1 *)-devices[show available devices]' \
+        '(- 1 *)-hwaccels[show available HW acceleration methods]' \
+        '(- 1 *)-sources[list sources of the input device]:device' \
+        '(- 1 *)-sinks[list sinks of the output device]:device' \
+        '(-y -n)-y[overwrite output files]' \
+        '(-y -n)-n[never overwrite output files]' \
+        '(-v --loglevel)'{-v,--loglevel}'[set logging level]:level:(quiet panic fatal error warning info verbose debug trace)' \
+        '-report[generate a report]' \
+        '--stats[print progress report during encoding]' \
+        '--max_alloc[maximum size of a single allocated block]:bytes' \
+        '--cpuflags[force specific cpu flags]:flags' \
+        '--cpucount[force specific cpu count]:count' \
+        '--hide_banner[do not show program banner]' \
+        '--ignore_unknown[ignore unknown stream types]' \
+        '--copy_unknown[copy unknown stream types]' \
+        '--recast_media[allow recasting stream type]' \
+        '--benchmark[add timings for benchmarking]' \
+        '--benchmark_all[add timings for each task]' \
+        '--progress[write program-readable progress info]:url' \
+        '-stdin[enable or disable interaction on standard input]' \
+        '--timelimit[set max runtime in CPU user time]:limit' \
+        '-dump[dump each input packet]' \
+        '-hex[when dumping packets also dump payload]' \
+        '--debug_ts[print timestamp debugging info]' \
+        '--filter_threads[number of non-complex filter threads]:number' \
+        '--filter_complex[create a complex filtergraph]:graph' \
+        '--filter_complex_threads[number of threads for filter_complex]:number' \
+        '--lavfi[create a complex filtergraph]:graph' \
+        '--filter_complex_script[load filtergraph from file]:file:_files' \
+        '--auto_conversion_filters[enable automatic conversion filters]' \
+        '--stats_period[set stats update period]:time' \
+        '--max_error_rate[max error rate]:rate' \
+        '--vstats[dump video coding statistics to file]' \
+        '--vstats_file[dump video coding statistics to file]:file:_files' \
+        '--sdp_file[specify sdp output file]:file:_files' \
+        '--init_hw_device[initialise hardware device]:args' \
+        '--filter_hw_device[set hardware device used when filtering]:device' \
+        '--vsync[set video sync method]:method:(cfr vfr drop auto)' \
+        '(-i)'{-i+,--input}'[input file]:file:_files' \
+        '-f[force container format]:format:->formats' \
+        '-t[stop transcoding after duration]:duration' \
+        '-to[stop transcoding at time]:time' \
+        '-ss[start transcoding at time]:time_off' \
+        '-sseof[set start time offset relative to EOF]:time_off' \
+        '-seek_timestamp[enable/disable seeking by timestamp with -ss]' \
+        '-accurate_seek[enable/disable accurate seeking with -ss]' \
+        '-isync[indicate input index for sync reference]:index' \
+        '-itsoffset[set input ts offset]:time_off' \
+        '--re[read input at native frame rate]' \
+        '--readrate[read input at specified rate]:speed' \
+        '--stream_loop[set number of times input stream shall be looped]:count' \
+        '--find_stream_info[read stream info with heuristics]' \
+        '-map[set input stream mapping]:mapping' \
+        '-map_metadata[set metadata mapping]:mapping' \
+        '-map_chapters[set chapters mapping]:index' \
+        '-metadata[add metadata]:key=value' \
+        '-program[add program with specified streams]:spec' \
+        '-stream_group[add stream group]:spec' \
+        '-dframes[set number of data frames to output]:number' \
+        '-target[specify target file type]:type:(vcd svcd dvd dv dv50 pal-vcd pal-svcd pal-dvd pal-dv pal-dv50 ntsc-vcd ntsc-svcd ntsc-dvd ntsc-dv ntsc-dv50 film-vcd film-svcd film-dvd film-dv film-dv50)' \
+        '-shortest[finish encoding within shortest input]' \
+        '-qscale[use fixed quality scale]:q' \
+        '-profile[set profile]:profile' \
+        '-attach[add attachment to output file]:file:_files' \
+        '-muxdelay[set max demux-decode delay]:seconds' \
+        '-muxpreload[set initial demux-decode delay]:seconds' \
+        '-fpre[set options from preset file]:file:_files' \
+        '-c[select encoder/decoder]:codec:->codecs' \
+        '-codec[select encoder/decoder]:codec:->codecs' \
+        '-c:v[select video encoder/decoder]:codec:->vencoders' \
+        '-c:V[select video encoder/decoder]:codec:->vencoders' \
+        '-vcodec[select video encoder/decoder]:codec:->vencoders' \
+        '-c:a[select audio encoder/decoder]:codec:->aencoders' \
+        '-c:A[select audio encoder/decoder]:codec:->aencoders' \
+        '-acodec[select audio encoder/decoder]:codec:->aencoders' \
+        '-c:s[select subtitle encoder/decoder]:codec:->sencoders' \
+        '-scodec[select subtitle encoder/decoder]:codec:->sencoders' \
+        '-filter[apply filters to audio/video]:filter_graph' \
+        '-vf[apply video filters]:filter_graph:->vfilters' \
+        '-filter:v[apply video filters]:filter_graph:->vfilters' \
+        '-af[apply audio filters]:filter_graph:->afilters' \
+        '-filter:a[apply audio filters]:filter_graph:->afilters' \
+        '-filter_script[load filter from file]:file:_files' \
+        '-frames[set number of frames to output]:number' \
+        '-tag[force codec tag]:fourcc' \
+        '-time_base[set desired time base hint]:ratio' \
+        '-enc_time_base[set desired encoder time base]:ratio' \
+        '-bsf[set bitstream filters]:filters' \
+        '-max_muxing_queue_size[max packets in muxing queue]:packets' \
+        '-r[override input framerate / set output framerate]:rate' \
+        '-aspect[set aspect ratio]:aspect' \
+        '-vn[disable video]' \
+        '-b[set bitrate]:bitrate' \
+        '-b:v[set video bitrate]:bitrate' \
+        '-b:a[set audio bitrate]:bitrate' \
+        '-b:s[set subtitle bitrate]:bitrate' \
+        '-vframes[set number of video frames to output]:number' \
+        '-aframes[set number of audio frames to output]:number' \
+        '-fpsmax[set max frame rate]:rate' \
+        '-pix_fmt[set pixel format]:format:->pix_fmts' \
+        '-pixel_format[set pixel format]:format:->pix_fmts' \
+        '-an[disable audio]' \
+        '-sn[disable subtitle]' \
+        '-dn[disable data]' \
+        '-ar[set audio sampling rate]:rate' \
+        '-ac[set number of audio channels]:channels' \
+        '-vol[set audio volume]:volume' \
+        '-sample_fmt[set audio sample format]:format:->sample_fmts' \
+        '-sample_format[set audio sample format]:format:->sample_fmts' \
+        '-channel_layout[set audio channel layout]:layout:->layouts' \
+        '-preset[set encoding preset]:preset' \
+        '-tune[set encoding tuning]:tune' \
+        '-crf[set constant rate factor]:crf' \
+        '-qp[set quantizer parameter]:qp' \
+        '-minrate[set min bitrate]:bitrate' \
+        '-maxrate[set max bitrate]:bitrate' \
+        '-bufsize[set ratecontrol buffer size]:size' \
+        '-rc[set rate control method]:method:(vbr cbr cqp vbr_hq cbr_hq)' \
+        '-g[set GOP size]:gop_size' \
+        '-keyint_min[set minimum GOP size]:size' \
+        '-refs[set reference frame count]:count' \
+        '-bf[set B-frames count]:count' \
+        '-sc_threshold[set scene change threshold]:threshold' \
+        '-trellis[set trellis quantization]:trellis' \
+        '-me_method[set motion estimation method]:method:(epzs esa tss tdls nt mcq full)' \
+        '-movflags[mov/mp4 writing flags]:flags' \
+        '-flags[set generic flags]:flags' \
+        '-flags2[set second-gen generic flags]:flags' \
+        '-strict[set strictness]:level' \
+        '-threads[set thread count]:count' \
+        '-profile:v[set video profile]:profile' \
+        '-level[set encoding level]:level' \
+        '-pass[select encoding pass]:pass:(1 2 3)' \
+        '-passlogfile[pass log file name]:file:_files' \
+        '-x264-params[set x264 options]:params' \
+        '-x265-params[set x265 options]:params' \
+        '-libx264opts[set libx264 options]:opts' \
+        '-hwaccel[set hardware acceleration method]:method:(cuda dxva2 qsv vaapi videotoolbox d3d11va opencl vulkan)' \
+        '-hwaccel_device[set hardware acceleration device]:device' \
+        '-vaapi_device[set VAAPI hardware device]:device' \
+        '-qsv_device[set QSV hardware device]:device' \
+        *:output:_files
+
+    case $state in
+        help_topics)
+            local -a topics
+            topics=(
+                'long:print more options'
+                'full:print all options'
+                'decoder:print decoder options'
+                'encoder:print encoder options'
+                'demuxer:print demuxer options'
+                'muxer:print muxer options'
+                'filter:print filter options'
+                'bsf:print bitstream filter options'
+                'protocol:print protocol options'
+            )
+            _describe -t topics 'help topic' topics
+            ;;
+        formats)
+            local -a formats
+            formats=(
+                '3g2:3GP2'
+                '3gp:3GP'
+                'a64:a64 - video for Commodore 64'
+                'aac:raw ADTS AAC'
+                'ac3:raw AC-3'
+                'ac4:raw AC-4'
+                'adts:ADTS AAC'
+                'adx:CRI ADX'
+                'aiff:Audio IFF'
+                'alaw:PCM A-law'
+                'amr:3GPP AMR'
+                'apng:Animated PNG'
+                'asf:ASF'
+                'ass:ASS subtitle'
+                'ast:AST'
+                'au:SUN AU'
+                'avi:AVI'
+                'avif:AVIF'
+                'avm2:SWF (ShockWave Flash)'
+                'bit:G.729 BIT'
+                'caf:Apple CAF'
+                'cavsvideo:raw Chinese AVS video'
+                'codec2:codec2 .c2'
+                'codec2raw:raw codec2'
+                'concat:virtual concatenation script'
+                'crc:CRC'
+                'dash:DASH'
+                'data:raw data'
+                'daud:D-Cinema audio'
+                'dvd:DVD video'
+                'dvdvideo:DVD video'
+                'dts:raw DTS'
+                'dv:DV video'
+                'eac3:raw E-AC-3'
+                'f4v:F4V Adobe Flash'
+                'ffmetadata:FFmpeg metadata'
+                'fifo:FIFO queue'
+                'flac:raw FLAC'
+                'flv:FLV'
+                'framecrc:frame CRC'
+                'gif:CompuServe GIF'
+                'gxf:GXF'
+                'h261:raw H.261'
+                'h263:raw H.263'
+                'h264:raw H.264'
+                'hevc:raw HEVC'
+                'hls:Apple HTTP Live Streaming'
+                'image2:image2 sequence'
+                'image2pipe:image2pipe'
+                'ipod:iPod H.264 MP4'
+                'ircam:Libavformat IRCAM'
+                'isom:ISOM MP4'
+                'ivf:raw IVF'
+                'jacosub:JACOsub subtitle'
+                'lrc:LRC lyrics'
+                'm4v:raw MPEG-4 video'
+                'matroska:Matroska'
+                'md5:MD5'
+                'microdvd:MicroDVD subtitle'
+                'mjpeg:raw MJPEG'
+                'mkv:Matroska'
+                'mlp:raw MLP'
+                'mmf:MMF'
+                'mov:QuickTime MOV'
+                'mp2:MP2'
+                'mp3:MP3'
+                'mp4:MP4'
+                'mpeg:MPEG-1/2 system'
+                'mpeg1video:raw MPEG-1 video'
+                'mpeg2video:raw MPEG-2 video'
+                'mpegts:MPEG-TS'
+                'mxf:MXF'
+                'mxf_d10:MXF D-10'
+                'mxf_opatom:MXF operational pattern atom'
+                'ogg:Ogg'
+                'oga:Ogg Audio'
+                'ogv:Ogg Video'
+                'opus:Ogg Opus'
+                'pcm_alaw:raw PCM A-law'
+                'pcm_f32be:raw PCM 32-bit float big-endian'
+                'pcm_f32le:raw PCM 32-bit float little-endian'
+                'pcm_f64be:raw PCM 64-bit float big-endian'
+                'pcm_f64le:raw PCM 64-bit float little-endian'
+                'pcm_mulaw:raw PCM mu-law'
+                'pcm_s16be:raw PCM signed 16-bit big-endian'
+                'pcm_s16le:raw PCM signed 16-bit little-endian'
+                'pcm_s24be:raw PCM signed 24-bit big-endian'
+                'pcm_s24le:raw PCM signed 24-bit little-endian'
+                'pcm_s32be:raw PCM signed 32-bit big-endian'
+                'pcm_s32le:raw PCM signed 32-bit little-endian'
+                'pcm_u8:raw PCM unsigned 8-bit'
+                'psp:PSP MP4'
+                'rawvideo:raw video'
+                'rm:RealMedia'
+                'rtp:RTP output'
+                'rtsp:RTSP output'
+                's22be:raw signed 22-bit big-endian'
+                's22le:raw signed 22-bit little-endian'
+                's24be:raw signed 24-bit big-endian'
+                's24le:raw signed 24-bit little-endian'
+                's32be:raw signed 32-bit big-endian'
+                's32le:raw signed 32-bit little-endian'
+                's8:raw signed 8-bit'
+                'sbc:raw SBC'
+                'scc:Scenarist Closed Captions'
+                'sdl2:SDL2 output'
+                'segment:segment'
+                'sgi:SGI image'
+                'smjpeg:SMPEG'
+                'smoothstreaming:Smooth Streaming'
+                'sox:SoX'
+                'spdif:IEC 61937'
+                'spx:Ogg Speex'
+                'srt:SubRip subtitle'
+                'streamhash:stream hash'
+                'sup:raw PGS subtitle'
+                'svcd:SVCD'
+                'swf:SWF'
+                'tak:raw TAK'
+                'tee:tee'
+                'truehd:raw TrueHD'
+                'tta:True Audio'
+                'ttml:TTML subtitle'
+                'u16be:raw unsigned 16-bit big-endian'
+                'u16le:raw unsigned 16-bit little-endian'
+                'u24be:raw unsigned 24-bit big-endian'
+                'u24le:raw unsigned 24-bit little-endian'
+                'u32be:raw unsigned 32-bit big-endian'
+                'u32le:raw unsigned 32-bit little-endian'
+                'u8:raw unsigned 8-bit'
+                'v210:raw 10-bit packed 4:2:2 YUV'
+                'v308:raw 8-bit packed 4:4:4'
+                'v408:raw 8-bit packed 4:4:4:4'
+                'v410:raw 10-bit packed 4:4:4'
+                'vcd:VCD'
+                'vob:MPEG-2 PS VOB'
+                'voc:Creative VOC'
+                'vorbis:Ogg Vorbis'
+                'wav:WAV'
+                'webm:WebM'
+                'webp:WebP'
+                'webvtt:WebVTT subtitle'
+                'wmv:Windows Media Video'
+                'wtv:Windows Television'
+                'wv:raw WavPack'
+                'xa:raw XA'
+                'xmv:Microsoft XMV'
+                'xwma:raw xWMA'
+            )
+            _describe -t formats 'format' formats
+            ;;
+        codecs)
+            _values -s ' ' 'codec' \
+                'copy:copy stream without reencoding'
+            _message "codec name"
+            ;;
+        vencoders)
+            local -a encs
+            encs=(
+                'copy:copy stream without reencoding'
+                'libx264:H.264 (x264)'
+                'libx264rgb:H.264 (x264, RGB)'
+                'libx265:H.265/HEVC (x265)'
+                'libaom-av1:AV1 (libaom)'
+                'librav1e:AV1 (rav1e)'
+                'libsvtav1:AV1 (SVT-AV1)'
+                'libvpx:VP8 (libvpx)'
+                'libvpx-vp9:VP9 (libvpx)'
+                'libtheora:Theora'
+                'libwebp:WebP'
+                'libwebp_anim:Animated WebP'
+                'libopenjpeg:JPEG 2000 (OpenJPEG)'
+                'libjxl:JPEG XL'
+                'libxvid:MPEG-4 (Xvid)'
+                'mpeg4:MPEG-4'
+                'h264_nvenc:H.264 (NVENC)'
+                'hevc_nvenc:HEVC (NVENC)'
+                'av1_nvenc:AV1 (NVENC)'
+                'h264_amf:H.264 (AMF)'
+                'hevc_amf:HEVC (AMF)'
+                'av1_amf:AV1 (AMF)'
+                'h264_qsv:H.264 (QSV)'
+                'hevc_qsv:HEVC (QSV)'
+                'av1_qsv:AV1 (QSV)'
+                'h264_vaapi:H.264 (VAAPI)'
+                'hevc_vaapi:HEVC (VAAPI)'
+                'av1_vaapi:AV1 (VAAPI)'
+                'h264_v4l2m2m:H.264 (V4L2 M2M)'
+                'hevc_v4l2m2m:HEVC (V4L2 M2M)'
+                'mpeg2video:MPEG-2'
+                'mjpeg:MJPEG'
+                'png:PNG'
+                'bmp:BMP'
+                'tiff:TIFF'
+                'gif:GIF'
+                'apng:APNG'
+                'rawvideo:raw video'
+                'ffv1:FFmpeg video 1'
+                'ffvhuff:FFmpeg Huffyuv'
+                'prores:Apple ProRes'
+                'dnxhd:DNxHD'
+                'dvvideo:DV video'
+                'huffyuv:Huffyuv'
+                'utvideo:Ut Video'
+                'vp8_v4l2m2m:VP8 (V4L2 M2M)'
+                'vp9_vaapi:VP9 (VAAPI)'
+                'vp9_qsv:VP9 (QSV)'
+                'h264_vulkan:H.264 (Vulkan)'
+                'hevc_vulkan:HEVC (Vulkan)'
+                'av1_vulkan:AV1 (Vulkan)'
+                'prores_ks:Apple ProRes (Kostya)'
+            )
+            _describe -t vencoders 'video encoder' encs
+            ;;
+        aencoders)
+            local -a encs
+            encs=(
+                'copy:copy stream without reencoding'
+                'aac:AAC'
+                'libmp3lame:MP3 (LAME)'
+                'libopus:Opus'
+                'libvorbis:Vorbis'
+                'libgsm:GSM'
+                'libopencore_amrnb:AMR-NB'
+                'ac3:AC-3'
+                'eac3:E-AC-3'
+                'flac:FLAC'
+                'alac:ALAC'
+                'wmav1:WMAv1'
+                'wmav2:WMAv2'
+                'pcm_s16le:PCM signed 16-bit LE'
+                'pcm_s16be:PCM signed 16-bit BE'
+                'pcm_s24le:PCM signed 24-bit LE'
+                'pcm_s32le:PCM signed 32-bit LE'
+                'pcm_f32le:PCM 32-bit float LE'
+                'pcm_f64le:PCM 64-bit float LE'
+                'pcm_alaw:PCM A-law'
+                'pcm_mulaw:PCM mu-law'
+                'pcm_u8:PCM unsigned 8-bit'
+                'truehd:TrueHD'
+                'dts:DTS'
+                'ttalossless:True Audio'
+                'wavpack:WavPack'
+            )
+            _describe -t aencoders 'audio encoder' encs
+            ;;
+        sencoders)
+            local -a encs
+            encs=(
+                'copy:copy stream without reencoding'
+                'ass:ASS subtitle'
+                'srt:SubRip subtitle'
+                'subrip:SubRip subtitle'
+                'text:raw text subtitle'
+                'mov_text:MOV text subtitle'
+                'webvtt:WebVTT subtitle'
+                'dvdsub:DVD subtitle'
+                'dvbsub:DVB subtitle'
+                'xsub:XSUB'
+            )
+            _describe -t sencoders 'subtitle encoder' encs
+            ;;
+        pix_fmts)
+            local -a pf
+            pf=(
+                'yuv420p:planar YUV 4:2:0 8-bit'
+                'yuyv422:packed YUV 4:2:2'
+                'rgb24:packed RGB 8:8:8 24-bit'
+                'bgr24:packed BGR 8:8:8 24-bit'
+                'yuv422p:planar YUV 4:2:2 8-bit'
+                'yuv444p:planar YUV 4:4:4 8-bit'
+                'yuv410p:planar YUV 4:1:0 8-bit'
+                'yuv411p:planar YUV 4:1:1 8-bit'
+                'gray:gray 8-bit'
+                'monow:monochrome white'
+                'monob:monochrome black'
+                'pal8:8-bit palettized'
+                'yuvj420p:planar YUV 4:2:0 full-scale'
+                'yuvj422p:planar YUV 4:2:2 full-scale'
+                'yuvj444p:planar YUV 4:4:4 full-scale'
+                'nv12:planar YUV 4:2:0 with interleaved UV'
+                'nv21:planar YUV 4:2:0 with interleaved VU'
+                'argb:packed ARGB 8:8:8:8 32-bit'
+                'rgba:packed RGBA 8:8:8:8 32-bit'
+                'abgr:packed ABGR 8:8:8:8 32-bit'
+                'bgra:packed BGRA 8:8:8:8 32-bit'
+                'gbrp:planar GBR 4:4:4 8-bit'
+                'yuva420p:planar YUVA 4:2:0 8-bit'
+                'yuva422p:planar YUVA 4:2:2 8-bit'
+                'yuva444p:planar YUVA 4:4:4 8-bit'
+                'yuv420p10le:planar YUV 4:2:0 10-bit LE'
+                'yuv422p10le:planar YUV 4:2:2 10-bit LE'
+                'yuv444p10le:planar YUV 4:4:4 10-bit LE'
+                'yuv420p12le:planar YUV 4:2:0 12-bit LE'
+                'yuv422p12le:planar YUV 4:2:2 12-bit LE'
+                'yuv444p12le:planar YUV 4:4:4 12-bit LE'
+                'gbrp10le:planar GBR 4:4:4 10-bit LE'
+                'gbrp12le:planar GBR 4:4:4 12-bit LE'
+                'gray10le:gray 10-bit LE'
+                'gray12le:gray 12-bit LE'
+                'gray14le:gray 14-bit LE'
+                'gray16le:gray 16-bit LE'
+                'gbrap10le:planar GBRA 4:4:4:4 10-bit LE'
+                'gbrap12le:planar GBRA 4:4:4:4 12-bit LE'
+                'rgb0:packed RGB 8:8:8:8'
+                'bgr0:packed BGR 8:8:8:8'
+                '0rgb:packed 0RGB 8:8:8:8'
+                '0bgr:packed 0BGR 8:8:8:8'
+                'rgb48le:packed RGB 16:16:16 LE'
+                'rgba64le:packed RGBA 16:16:16:16 LE'
+                'bgr48le:packed BGR 16:16:16 LE'
+                'bgra64le:packed BGRA 16:16:16:16 LE'
+                'ya8:packed YA 8:8'
+                'ya16le:packed YA 16:16 LE'
+                'rgbaf16le:pplanar RGBA float16 LE'
+                'cuda:CUDA surfaces'
+                'vulkan:Vulkan surfaces'
+                'd3d11:D3D11 surfaces'
+                'vaapi:VAAPI surfaces'
+                'opencl:OpenCL surfaces'
+                'videotoolbox:VideoToolbox surfaces'
+            )
+            _describe -t pix_fmts 'pixel format' pf
+            ;;
+        sample_fmts)
+            local -a sf
+            sf=(
+                'u8:unsigned 8-bit'
+                's16:signed 16-bit'
+                's32:signed 32-bit'
+                'flt:32-bit float'
+                'dbl:64-bit double'
+                'u8p:unsigned 8-bit planar'
+                's16p:signed 16-bit planar'
+                's32p:signed 32-bit planar'
+                'fltp:32-bit float planar'
+                'dblp:64-bit double planar'
+                's64:signed 64-bit'
+                's64p:signed 64-bit planar'
+            )
+            _describe -t sample_fmts 'sample format' sf
+            ;;
+        layouts)
+            local -a lo
+            lo=(
+                'mono:mono'
+                'stereo:stereo'
+                '2.1:2.1 surround'
+                '3.0:3.0 front'
+                '3.0(back):3.0 back'
+                '4.0:4.0 quad'
+                '4.1:4.1 surround'
+                '5.0:5.0 surround'
+                '5.0(side):5.0 side'
+                '5.1:5.1 surround'
+                '5.1(side):5.1 side'
+                '6.0:6.0 surround'
+                '6.1:6.1 surround'
+                '7.0:7.0 surround'
+                '7.1:7.1 surround'
+                '7.1(wide):7.1 wide'
+                '7.1(wide-side):7.1 wide side'
+                'octagonal:octagonal'
+                'hexagonal:hexagonal'
+                'downmix:downmix'
+            )
+            _describe -t layouts 'channel layout' lo
+            ;;
+        vfilters)
+            local -a flt
+            flt=(
+                'scale:scale video'
+                'crop:crop video'
+                'transpose:transpose video'
+                'rotate:rotate video'
+                'hflip:horizontal flip'
+                'vflip:vertical flip'
+                'fps:change frame rate'
+                'setpts:change PTS'
+                'setdar:set display aspect ratio'
+                'setsar:set sample aspect ratio'
+                'pad:pad video'
+                'overlay:overlay video'
+                'subtitles:render subtitles'
+                'drawtext:draw text'
+                'drawbox:draw box'
+                'drawgrid:draw grid'
+                'format:set pixel format'
+                'avgblur:average blur'
+                'boxblur:box blur'
+                'gblur:Gaussian blur'
+                'smartblur:smart blur'
+                'unsharp:unsharp mask'
+                'sharpen:sharpen'
+                'eq:adjust brightness/contrast/saturation'
+                'colorbalance:adjust color balance'
+                'colorlevels:adjust color levels'
+                'colorkey:color keying'
+                'chromakey:chroma keying'
+                'hue:adjust hue/saturation'
+                'negate:negate colors'
+                'curves:adjust curves'
+                'lut:lookup table'
+                'lutrgb:RGB lookup table'
+                'lutyuv:YUV lookup table'
+                'yadif:deinterlace (yadif)'
+                'bwdif:deinterlace (bwdif)'
+                'w3fdif:deinterlace (w3fdif)'
+                'fieldmatch:field matching'
+                'dejudder:remove judder'
+                'mpdecimate:MPEG-like decimate'
+                'decimate:decimate frames'
+                'framestep:skip frames'
+                'hwupload:upload to hardware'
+                'hwdownload:download from hardware'
+                'hwmap:map hardware frames'
+                'tonemap:tone mapping'
+                'zscale:zscale (z.lib)'
+                'nnedi:neural network edge-directed interpolation'
+            )
+            _describe -t vfilters 'video filter' flt
+            ;;
+        afilters)
+            local -a flt
+            flt=(
+                'aresample:resample audio'
+                'volume:change volume'
+                'loudnorm:EBU R128 loudness normalization'
+                'dynaudnorm:Dynamic audio normalization'
+                'equalizer:parametric equalizer'
+                'silenceremove:remove silence'
+                'silencedetect:detect silence'
+                'adelay:delay audio'
+                'aecho:echo audio'
+                'areverse:reverse audio'
+                'atrim:trim audio'
+                'bass:bass shelving filter'
+                'treble:treble shelving filter'
+                'bandpass:bandpass filter'
+                'bandreject:bandreject filter'
+                'lowpass:lowpass filter'
+                'highpass:highpass filter'
+                'acompressor:compressor'
+                'aexpander:expander'
+                'alimiter:limiter'
+                'agate:gate'
+                'sidechaincompress:sidechain compressor'
+                'pan:pan audio channels'
+                'channelsplit:split audio channels'
+                'amerge:merge audio streams'
+                'amix:mix audio streams'
+                'aselect:select audio frames'
+                'asettb:set timebase'
+                'asetpts:change PTS'
+                'atempo:change tempo'
+                'astats:audio statistics'
+                'ebur128:EBU R128 statistics'
+                'aphaser:audio phaser'
+                'aphasemeter:audio phase meter'
+                'afftdn:FFT denoiser'
+                'anlmdn:non-local means denoising'
+                'acrossover:audio crossover'
+                'acrusher:audio crusher'
+                'adynamicsmooth:audio dynamic smoothing'
+                'aexciter:audio exciter'
+            )
+            _describe -t afilters 'audio filter' flt
+            ;;
+    esac
+}
+
+_ffmpeg "$@"

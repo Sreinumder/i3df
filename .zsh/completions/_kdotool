@@ -1,0 +1,136 @@
+#compdef kdotool
+
+_kdotool() {
+    local line state
+    local -a subcommands
+
+    _arguments -C \
+        '(-h --help)'{-h,--help}'[Show this help]' \
+        '(-v --version)'{-v,--version}'[Show program version]' \
+        '(-q --quiet)'{-q,--quiet}"[Don't print anything to stdout]" \
+        '(-d --debug)'{-d,--debug}'[Enable debug output]' \
+        '(-n --dry-run)'{-n,--dry-run}"[Don't run script, just print to stdout]" \
+        '--shortcut[Register a shortcut to run the script]:shortcut:' \
+        '--name[Set a name for the shortcut]:name:' \
+        '--remove[Remove a previously registered shortcut]:name:' \
+        '1: :->cmds' \
+        '*:: :->args'
+
+    case $state in
+        cmds)
+            subcommands=(
+                'search:Search for windows matching regular expressions'
+                'getactivewindow:Select the currently active window'
+                'getmouselocation:Outputs the coordinates and window ID of mouse cursor'
+                'getwindowname:Output the name of a window'
+                'getwindowclassname:Output the class name of a window'
+                'getwindowgeometry:Output the geometry of a window'
+                'getwindowid:Output the ID of a window'
+                'getwindowpid:Output the PID owning a window'
+                'windowactivate:Activate a window'
+                'windowraise:Raise a window to the top of the stack (KDE 6)'
+                'windowminimize:Minimize a window'
+                'windowclose:Close a window'
+                'windowsize:Resize a window'
+                'windowmove:Move a window'
+                'windowstate:Change a property on a window'
+                'get_desktop_for_window:Output the desktop number a window is on'
+                'set_desktop_for_window:Move a window to a different desktop'
+                'get_desktop:Output the current desktop number'
+                'set_desktop:Change the current desktop'
+                'get_num_desktops:Output the current number of desktops'
+                'set_num_desktops:Change the number of desktops (KDE 5)'
+            )
+            _describe -t commands 'kdotool commands' subcommands
+            ;;
+        args)
+            case $line[1] in
+                search)
+                    _kdotool_search_options
+                    ;;
+                getmouselocation)
+                    _arguments '--shell[Output shell data you can eval]'
+                    ;;
+                windowsize)
+                    _arguments \
+                        '1:window:_kdotool_window_stacks' \
+                        '2:width (or x):' \
+                        '3:height (or y):'
+                    ;;
+                windowmove)
+                    _arguments \
+                        '--relative[Make movement relative to current window position]' \
+                        '1:window:_kdotool_window_stacks' \
+                        '2:X coordinate (or x):' \
+                        '3:Y coordinate (or y):'
+                    ;;
+                windowstate)
+                    _kdotool_windowstate_options
+                    ;;
+                set_desktop_for_window)
+                    _arguments \
+                        '1:window:_kdotool_window_stacks' \
+                        '2:desktop:(current_desktop all)'
+                    ;;
+                set_desktop|set_num_desktops)
+                    _arguments '1:number:'
+                    ;;
+                getwindowname|getwindowclassname|getwindowgeometry|getwindowid|getwindowpid|windowactivate|windowraise|windowminimize|windowclose|get_desktop_for_window)
+                    _arguments '1:window:_kdotool_window_stacks'
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_kdotool_window_stacks() {
+    local -a stacks
+    stacks=(
+        '%1:First window in the stack (Default)'
+        '%@:All windows in the stack'
+    )
+    _describe -t windows 'window stack target' stacks
+}
+
+_kdotool_search_options() {
+    _arguments \
+        '(-C --case-sensitive)'{-C,--case-sensitive}'[Match window title case-sensitively]' \
+        '(-c --class)'{-c,--class}'[Match against the window class]' \
+        '(-n --classname)'{-n,--classname}'[Match against the window classname]' \
+        '(-r --role)'{-r,--role}'[Match against the window role]' \
+        '(-t --title --name)'{-t,--title,--name}'[Match against the window title]' \
+        '(-p --pid)'{-p,--pid}'[Match windows belonging to a specific PID]:pid:' \
+        '(-s --screen)'{-s,--screen}'[Select windows on specific screen (KDE 5)]:screen number:' \
+        '(-D --desktop)'{-D,--desktop}'[Only match windows on a certain desktop]:desktop number:' \
+        '(-l --limit)'{-l,--limit}'[Stop searching after finding N windows]:limit:' \
+        '(-a --all)'{-a,--all}'[Require all conditions to be met]' \
+        '--any[Match windows that match any condition (Default)]' \
+        '1:pattern:'
+}
+
+_kdotool_windowstate_options() {
+    local -a properties
+    properties=(
+        'ABOVE:Show window above all others'
+        'BELOW:Show window below all others'
+        'SKIP_TASKBAR:Hides the window from the taskbar'
+        'SKIP_PAGER:Hides the window from the window pager'
+        'FULLSCREEN:Makes window fullscreen'
+        'SHADED:Rolls the window up'
+        'DEMANDS_ATTENTION:Marks window urgent'
+        'NO_BORDER:Window has no border'
+        'MINIMIZED:Minimize the window'
+        'MAXIMIZED_HORZ:Maximize horizontally'
+        'MAXIMIZED_VERT:Maximize vertically'
+        'MAXIMIZED:Maximize completely'
+    )
+
+    _arguments -S \
+        '*--add[Add property]:property: _describe -t properties "window property" properties' \
+        '*--remove[Remove property]:property: _describe -t properties "window property" properties' \
+        '*--toggle[Toggle property]:property: _describe -t properties "window property" properties' \
+        '1:window:_kdotool_window_stacks'
+}
+
+_kdotool "$@"
+
