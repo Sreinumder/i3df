@@ -1,4 +1,4 @@
-set nu rnu cul is hls ic scs sm smd et ts=2 sw=2 sts=2 ls=2 wim=longest:full,full | syntax on | colo pablo
+set cul is hls ic scs sm smd et ts=2 sw=2 sts=2 ls=2 cc=80 wim=longest:full,full | syntax on | colo pablo
 
 nnoremap j gj
 nnoremap k gk
