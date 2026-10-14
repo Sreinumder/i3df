@@ -118,8 +118,76 @@ touchpad:
       actions:
         - on: update
           input:
-            # - mouse: [middle]
-            - keyboard: [leftmeta+grave]
+            - keyboard: [leftmeta+leftshift+f]
+
+    - type: hold
+      fingers: 2
+      conditions:
+        - *left_thumb_x
+        - *left_thumb_y
+      actions:
+        - on: update
+          input:
+            - keyboard: [leftmeta+leftshift+p]
+
+    # - type: swipe
+    #   fingers: 2
+    #   direction: any
+    #   conditions:
+    #     - *left_thumb_x
+    #     - *left_thumb_y
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [+leftmeta]
+    #         - mouse: [ +left ]
+    #     - on: update
+    #       input:
+    #         - mouse: [ move_by_delta 2.0] # add a multiplier if necessary: "move_by_delta 1.5"
+    #     - on: end_cancel
+    #       input:
+    #         - keyboard: [ -leftmeta ]
+    #         - mouse: [ -left ]
+
+    - type: tap
+      fingers: 3
+      conditions:
+        - *left_thumb_x
+        - *left_thumb_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [f11]
+
+    - type: hold
+      fingers: 3
+      conditions:
+        - *left_thumb_x
+        - *left_thumb_y
+      actions:
+        - on: begin
+          input:
+            - keyboard: [delete]
+
+    # - type: swipe
+    #   fingers: 3
+    #   direction: any
+    #   conditions:
+    #     - *left_thumb_x
+    #     - *left_thumb_y
+    #   actions:
+    #     - on: begin
+    #       input:
+    #         - keyboard: [+leftmeta]
+    #         - mouse: [ +right ]
+    #     - on: update
+    #       input:
+    #         - mouse: [ move_by_delta 2.0]
+    #     - on: end_cancel
+    #       input:
+    #         - keyboard: [ -leftmeta ]
+    #         - mouse: [ -right ]
+
     # }}}
 
     # bottom zone {{{
@@ -314,50 +382,48 @@ touchpad:
 # 2 finger: index + pinky wide
 # [tap=float, swipe=arrow_keys] {{{
 
-    - type: swipe
-      fingers: 2
-      direction: left
-      clear_modifiers: false
-      conditions:
-        - &index_pinky_wide $max_finger_distance_percentage >= 0.51
-        - !$keyboard_modifiers contains meta
-      actions:
-        - on: update
-          interval: 30
-          input:
-            - keyboard: [+leftmeta]
-
-    - type: swipe
-      fingers: 2
-      direction: left
-      clear_modifiers: false
-      conditions:
-        - *index_pinky_wide
-        - $keyboard_modifiers contains meta
-      actions:
-        - on: update
-          interval: 30
-          input:
-            - keyboard: [-leftmeta]
-
-    - type: swipe
-      fingers: 2
-      direction: right
-      clear_modifiers: false
-      conditions:
-        - *index_pinky_wide
-      actions:
-        - on: update
-          interval: 30
-          input:
-            - keyboard: [-leftmeta]
+     # - type: swipe
+     #   fingers: 2
+     #   direction: left
+     #   clear_modifiers: false
+     #   conditions:
+     #     - &index_pinky_wide $max_finger_distance_percentage >= 0.51
+     #   actions:
+     #     - on: begin
+     #       input:
+     #         - keyboard: [leftmeta]
+    
+     # - type: swipe
+     #   fingers: 2
+     #   direction: left
+     #   clear_modifiers: false
+     #   conditions:
+     #     - *index_pinky_wide
+     #     - $keyboard_modifiers contains meta
+     #   actions:
+     #     - on: update
+     #       interval: 30
+     #       input:
+     #         - keyboard: [-leftmeta]
+    
+    # - type: swipe
+    #   fingers: 2
+    #   direction: right
+    #   clear_modifiers: false
+    #   conditions:
+    #     - *index_pinky_wide
+    #   actions:
+    #     - on: update
+    #       interval: 30
+    #       input:
+    #         - keyboard: [-leftmeta]
 
     - type: swipe
       fingers: 2
       clear_modifiers: false
       direction: up_down
       conditions:
-        - *index_pinky_wide
+        - &index_pinky_wide $max_finger_distance_percentage >= 0.51
       actions:
         - on: update
           interval: 30
@@ -470,7 +536,7 @@ touchpad:
       actions:
         - on: update
           interval: 190
-          command: ~/i3df/scripts/mpris_dbus Next
+          command: ~/i3df/scripts/mpris_dbus smartseek 100%
         - on: update
           interval: -190
           command: ~/i3df/scripts/mpris_dbus Previous
@@ -484,14 +550,14 @@ touchpad:
       actions:
         - on: update
           interval: -30
-          command: ~/i3df/scripts/mpris_dbus smartseek -4
+          command: ~/i3df/scripts/mpris_dbus smartseek -10
         - on: update
           interval: 30
-          command: ~/i3df/scripts/mpris_dbus smartseek +4
+          command: ~/i3df/scripts/mpris_dbus smartseek +10
 
     # }}}
 
-          # 2 finger: index + pinky swipe
+  # 2 finger: index + pinky swipe
   # [tap=enter, swipe=arrow_keys] {{{
     - type: swipe
       fingers: 2
@@ -501,11 +567,11 @@ touchpad:
         - &index_pinky $max_finger_distance_percentage >= 0.31
       actions:
         - on: update
-          interval: 30
+          interval: 50
           input:
             - keyboard: [right]
         - on: update
-          interval: -30
+          interval: -50
           input:
             - keyboard: [left]
 
@@ -517,11 +583,11 @@ touchpad:
         - *index_pinky
       actions:
         - on: update
-          interval: 30
+          interval: 50
           input:
             - keyboard: [down]
         - on: update
-          interval: -30
+          interval: -50
           input:
             - keyboard: [up]
 
@@ -591,11 +657,12 @@ touchpad:
     - type: pinch
       fingers: 3
       direction: out
+      clear_modifiers: false
       actions:
         - on: begin
           input:
-            - keyboard: [leftmeta+f]
             - mouse: [left]
+            - keyboard: [leftmeta+f]
 
     - type: pinch
       fingers: 3
