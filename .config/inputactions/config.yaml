@@ -60,6 +60,44 @@
 # 3 index_pinky_(middle/ring) -> left_click drag
 
 
+# scripting {{{
+scripting:
+  scripts:
+    # Single tap / double tap discrimination for the 2 finger index+ring tap.
+    #
+    # Every tap fires "begin" (PlayPause) and one "update", so the tap that comes
+    # right after another one can be told apart by its timestamp alone:
+    #   1 tap          -> play/pause
+    #   2 taps < 300ms -> the 2nd tap skips play/pause and switches player instead
+    - source: |
+        var MEDIA_TAP_WINDOW_MS = 300;
+        // Two update events of the same tap are only a few ms apart, real double
+        // taps never are, this keeps them apart.
+        var MEDIA_MIN_TAP_GAP_MS = 40;
+        var mediaTaps = [];
+
+        // True when a tap happened within the window, i.e. this tap is the 2nd half
+        // of a double tap.
+        function mediaTapIsFollowUp() {
+            return mediaTaps.length > 0 && Date.now() - mediaTaps[mediaTaps.length - 1] <= MEDIA_TAP_WINDOW_MS;
+        }
+
+        // True when the current tap is the 2nd half of a double tap.
+        function mediaTapIsDouble() {
+            return mediaTaps.length >= 2
+                && mediaTaps[1] - mediaTaps[0] >= MEDIA_MIN_TAP_GAP_MS
+                && mediaTaps[1] - mediaTaps[0] <= MEDIA_TAP_WINDOW_MS;
+        }
+
+        // Runs on "update", once per tap, after the "begin" actions.
+        function mediaTapRegister() {
+            if (!mediaTapIsFollowUp()) {
+                mediaTaps = []; // Not a double tap, forget the previous ones.
+            }
+            mediaTaps.push(Date.now());
+        }
+# }}}
+
 device_rules:
   - conditions: $touchpad
     swipe:
@@ -67,318 +105,6 @@ device_rules:
 
 touchpad:
   gestures:
-    # left thumb zone {{{
-    - type: swipe
-      fingers: 1
-      direction: up_down
-      conditions:
-        - &left_thumb_x $finger_1_initial_position_percentage_x <= 0.30
-        - &left_thumb_y $finger_1_initial_position_percentage_y < 0.40
-      actions:
-        - on: update
-          interval: -20
-          input:
-            - mouse: [wheel 0 -100]
-        - on: update
-          interval: 20
-          input:
-            - mouse: [wheel 0 100]
-
-    - type: swipe
-      fingers: 1
-      direction: left_right
-      conditions:
-        - *left_thumb_x
-        - *left_thumb_y
-      actions:
-        - on: update
-          interval: -20
-          input:
-            - mouse: [wheel -100 0]
-        - on: update
-          interval: 20
-          input:
-            - mouse: [wheel 100 0]
-
-    - type: tap
-      fingers: 1
-      conditions:
-        - *left_thumb_x
-        - *left_thumb_y
-      actions:
-        - on: update
-          input:
-            - mouse: [right]
-
-    - type: tap
-      fingers: 2
-      conditions:
-        - *left_thumb_x
-        - *left_thumb_y
-      actions:
-        - on: update
-          input:
-            - keyboard: [leftmeta+leftshift+f]
-
-    - type: hold
-      fingers: 2
-      conditions:
-        - *left_thumb_x
-        - *left_thumb_y
-      actions:
-        - on: update
-          input:
-            - keyboard: [leftmeta+leftshift+p]
-
-    # - type: swipe
-    #   fingers: 2
-    #   direction: any
-    #   conditions:
-    #     - *left_thumb_x
-    #     - *left_thumb_y
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [+leftmeta]
-    #         - mouse: [ +left ]
-    #     - on: update
-    #       input:
-    #         - mouse: [ move_by_delta 2.0] # add a multiplier if necessary: "move_by_delta 1.5"
-    #     - on: end_cancel
-    #       input:
-    #         - keyboard: [ -leftmeta ]
-    #         - mouse: [ -left ]
-
-    - type: tap
-      fingers: 3
-      conditions:
-        - *left_thumb_x
-        - *left_thumb_y
-      actions:
-        - on: begin
-          input:
-            - keyboard: [f11]
-
-    - type: hold
-      fingers: 3
-      conditions:
-        - *left_thumb_x
-        - *left_thumb_y
-      actions:
-        - on: begin
-          input:
-            - keyboard: [delete]
-
-    # - type: swipe
-    #   fingers: 3
-    #   direction: any
-    #   conditions:
-    #     - *left_thumb_x
-    #     - *left_thumb_y
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [+leftmeta]
-    #         - mouse: [ +right ]
-    #     - on: update
-    #       input:
-    #         - mouse: [ move_by_delta 2.0]
-    #     - on: end_cancel
-    #       input:
-    #         - keyboard: [ -leftmeta ]
-    #         - mouse: [ -right ]
-
-    # }}}
-
-    # bottom zone {{{
-
-    # - type: tap
-    #   fingers: 1
-    #   conditions:
-    #     - &zone_bottom_x $finger_1_initial_position_percentage_x > 0.30
-    #     - &zone_bottom_y $finger_1_initial_position_percentage_y >= 0.80
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [leftmeta+grave]
-
-    # movement zone bottom left_right
-    # - type: swipe
-    #   fingers: 1
-    #   direction: left_right
-    #   conditions:
-    #     - &zone_bottom_x $finger_1_initial_position_percentage_x > 0.30
-    #     - &zone_bottom_y $finger_1_initial_position_percentage_y >= 0.80
-    #   actions:
-    #     - on: update
-    #       interval: -40
-    #       input:
-    #         - keyboard: [left]
-    #     - on: update
-    #       interval: 40
-    #       input:
-    #         - keyboard: [right]
-
-      # }}}
-
-    # movement zone bottom left {{{
-    # - type: swipe
-    #   fingers: 1
-    #   direction: left_right
-    #   conditions:
-    #     - &zone_movement_x $finger_1_initial_position_percentage_x <= 0.30
-    #     - &zone_movement_y $finger_1_initial_position_percentage_y >= 0.40
-    #   actions:
-    #     - on: update
-    #       interval: -1
-    #       limit: 1
-    #       input:
-    #         - keyboard: [leftalt+f1]
-    #     - on: update
-    #       interval: 40
-    #       input:
-    #         - keyboard: [right]
-    #
-    # - type: swipe
-    #   fingers: 1
-    #   direction: up_down
-    #   conditions:
-    #     - *zone_movement_x
-    #     - *zone_movement_y
-    #   actions:
-    #     - on: update
-    #       interval: -40
-    #       input:
-    #         - keyboard: [up]
-    #     - on: update
-    #       interval: 40
-    #       input:
-    #         - keyboard: [down]
-
-    - type: swipe
-      fingers: 2
-      direction: left_right
-      conditions:
-        - &zone_movement_x $finger_1_initial_position_percentage_x <= 0.30
-        - &zone_movement_y $finger_1_initial_position_percentage_y >= 0.40
-        # - *zone_movement_x
-        # - *zone_movement_y
-      actions:
-        - on: update
-          interval: -40
-          input:
-            - keyboard: [home]
-        - on: update
-          interval: 40
-          input:
-            - keyboard: [end]
-
-    - type: swipe
-      fingers: 2
-      direction: up_down
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: update
-          interval: -60
-          input:
-            - keyboard: [leftctrl+z]
-        - on: update
-          interval: 60
-          input:
-            - keyboard: [leftctrl+y]
-
-    - type: tap
-      fingers: 1
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: begin
-          input:
-            - keyboard: [enter]
-
-    - type: hold
-      fingers: 1
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: begin
-          input:
-            - keyboard: [esc]
-
-    - type: tap
-      fingers: 2
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: update
-          input:
-            - keyboard: [backspace]
-
-    - type: hold
-      fingers: 2
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: tick
-          input:
-            - keyboard: [backspace]
-
-    - type: tap
-      fingers: 3
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftctrl+a]
-
-    - type: hold
-      fingers: 3
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftctrl+t]
-
-    - type: swipe
-      fingers: 3
-      direction: up_down
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: update
-          interval: -40
-          input:
-            - keyboard: [pageup]
-        - on: update
-          interval: 40
-          input:
-            - keyboard: [PageDown]
-
-    - type: tap
-      fingers: 4
-      conditions:
-        - *zone_movement_x
-        - *zone_movement_y
-      actions:
-        - on: begin
-          input:
-            - keyboard: [leftctrl+l]
-
-    # }}}
-
-# default zone / gestures {{{
-
 # 2 finger: index + pinky wide
 # [tap=float, swipe=arrow_keys] {{{
 
@@ -461,15 +187,32 @@ touchpad:
             # }}}
 
 # 2 finger: index + ring swipe
-# [tap=play/pause, left-right=media seek, up-down=prev/next] {{{
+# [tap=play/pause, double tap=pause+next player+raise, left-right=media seek, up-down=prev/next] {{{
     - type: tap
       fingers: 2
+      id: tap_2_index_ring
       conditions:
         - &index_ring_min $max_finger_distance_percentage >= 0.20
         - &index_ring_max $max_finger_distance_percentage < 0.31
       actions:
+        # Every tap, except the 2nd half of a double tap
         - on: begin
+          conditions:
+            function: () => !mediaTapIsFollowUp()
           command: ~/i3df/scripts/mpris_dbus PlayPause
+
+        # Once per tap, limit 2 in case a tap sends more than one update
+        - on: update
+          limit: 2
+          conflicting: false
+          function: mediaTapRegister
+
+        # 2nd tap of a double tap: ensure paused, go to the next player, raise it
+        - on: update
+          limit: 1
+          conditions:
+            function: mediaTapIsDouble
+          command: ~/i3df/scripts/mpris_dbus Pause; ~/i3df/scripts/mpris_dbus nextp; ~/i3df/scripts/mpris_dbus Raise
 
     - type: hold
       fingers: 2
@@ -493,37 +236,10 @@ touchpad:
       actions:
         - on: update
           interval: -30
-          command: ~/i3df/scripts/mpris_dbus rate "+0.25 0.5 0.75 1 1.25 1.5 2.0 4.0 8.0 16.0 32.0"
+          command: ~/i3df/scripts/mpris_dbus rate "+ -4.0 -2.0 -1.0  0.25 0.5 0.75 1 1.25 1.5 2.0 4.0 8.0 16.0 32.0"
         - on: update
           interval: 30
-          command: ~/i3df/scripts/mpris_dbus rate "-0.25 0.5 0.75 1 1.25 1.5 2.0 4.0 8.0 16.0 32.0"
-        - on: end_cancel
-          command: ~/i3df/scripts/mpris_dbus rate 1.0
-
-    - type: swipe
-      fingers: 2
-      direction: left
-      conditions:
-        - *index_ring_min
-        - *index_ring_max
-        - $last_trigger_id == hold_2_index_ring
-      actions:
-        - on: begin
-          command: ~/i3df/scripts/mpris_dbus Pause; ~/i3df/scripts/mpris_dbus prevp
-
-        - on: end_cancel
-          command: ~/i3df/scripts/mpris_dbus Raise; ~/i3df/scripts/mpris_dbus rate 1.0
-
-    - type: swipe
-      fingers: 2
-      direction: right
-      conditions:
-        - *index_ring_min
-        - *index_ring_max
-        - $last_trigger_id == hold_2_index_ring
-      actions:
-        - on: begin
-          command: ~/i3df/scripts/mpris_dbus nextp
+          command: ~/i3df/scripts/mpris_dbus rate "- -4.0 -2.0 -1.0 0.25 0.5 0.75 1 1.25 1.5 2.0 4.0 8.0 16.0 32.0"
         - on: end_cancel
           command: ~/i3df/scripts/mpris_dbus rate 1.0
 
@@ -536,23 +252,35 @@ touchpad:
       actions:
         - on: update
           interval: 190
-          command: ~/i3df/scripts/mpris_dbus smartseek 100%
+          command: ~/i3df/scripts/mpris_dbus Next
         - on: update
           interval: -190
           command: ~/i3df/scripts/mpris_dbus Previous
 
     - type: swipe
       fingers: 2
-      direction: left_right
+      direction: left
       conditions:
         - *index_ring_min
         - *index_ring_max
       actions:
-        - on: update
-          interval: -30
+        - on: begin
           command: ~/i3df/scripts/mpris_dbus smartseek -10
         - on: update
-          interval: 30
+          interval: 100
+          command: ~/i3df/scripts/mpris_dbus smartseek -10
+
+    - type: swipe
+      fingers: 2
+      direction: right
+      conditions:
+        - *index_ring_min
+        - *index_ring_max
+      actions:
+        - on: begin
+          command: ~/i3df/scripts/mpris_dbus smartseek +10
+        - on: update
+          interval: 100
           command: ~/i3df/scripts/mpris_dbus smartseek +10
 
     # }}}
@@ -601,14 +329,15 @@ touchpad:
           input:
             - keyboard: [enter]
 
-    # - type: hold
-    #   fingers: 2
-    #   clear_modifiers: false
-    #   conditions:
-    #     - *index_pinky
-    #   actions:
-    #     - on: begin
-    #       command: firefox --private-window https://www.chatgpt.com
+    - type: hold
+      fingers: 2
+      clear_modifiers: false
+      conditions:
+        - *index_pinky
+      actions:
+        - on: begin
+          input:
+            - keyboard: [esc]
 
     - type: pinch
       direction: in
@@ -657,7 +386,17 @@ touchpad:
     - type: pinch
       fingers: 3
       direction: out
-      clear_modifiers: false
+      conditions:
+        - $window_class == "kitty"
+      actions:
+        - on: begin
+          input:
+            - mouse: [left]
+            - keyboard: [leftalt+leftshift+slash]
+
+    - type: pinch
+      fingers: 3
+      direction: out
       actions:
         - on: begin
           input:
@@ -670,7 +409,7 @@ touchpad:
       actions:
         - on: begin
           input:
-            - keyboard: [leftctrl+f10]
+            - keyboard: [leftmeta+g]
 
     - type: hold
       fingers: 3
@@ -678,93 +417,6 @@ touchpad:
         - on: begin
           input:
             - keyboard: [leftmeta+grave]
-
-    # - type: hold
-    #   fingers: 3
-    #   id: overview_hold
-    #   actions:
-    #     - on: begin
-    #       input:
-    #         - keyboard: [leftctrl+f10]
-    #
-    # - type: swipe
-    #   fingers: 3
-    #   direction: left_right
-    #   id: overview_left_right
-    #   conditions:
-    #     - $last_trigger_id matches "overview_.*"
-    #   actions:
-    #     - on: update
-    #       interval: 50
-    #       input:
-    #         - keyboard: [right]
-    #     - on: update
-    #       interval: -50
-    #       input:
-    #         - keyboard: [left]
-    #     # - on: end_cancel
-    #     #   input:
-    #     #     - keyboard: [enter]
-    #
-    # - type: swipe
-    #   fingers: 3
-    #   direction: up_down
-    #   id: overview_up_down
-    #   conditions:
-    #     - $last_trigger_id matches "overview_.*"
-    #   actions:
-    #     - on: update
-    #       interval: 50
-    #       input:
-    #         - keyboard: [down]
-    #     - on: update
-    #       interval: -50
-    #       input:
-    #         - keyboard: [up]
-    #     # - on: end_cancel
-    #     #   input:
-    #     #     - keyboard: [enter]
-    #
-    # - type: swipe
-    #   fingers: 3
-    #   angle: 22.5-67.5  # top_right
-    #   id: overview_top_right
-    #   bidirectional: true
-    #   conditions:
-    #     - $last_trigger_id matches "overview_.*"
-    #   actions:
-    #     - on: update
-    #       interval: 50
-    #       input:
-    #         - keyboard: [up, right]
-    #     - on: update
-    #       interval: -50
-    #       input:
-    #         - keyboard: [down, left]
-    #     # - on: end_cancel
-    #     #   input:
-    #     #     - keyboard: [enter]
-    #
-    # - type: swipe
-    #   fingers: 3
-    #   angle: 112.5-157.5  # top_left
-    #   id: overview_top_left
-    #   bidirectional: true
-    #   conditions:
-    #     - $last_trigger_id matches "overview_.*"
-    #   actions:
-    #     - on: update
-    #       interval: 50
-    #       input:
-    #         - keyboard: [up, left]
-    #     - on: update
-    #       interval: -50
-    #       input:
-    #         - keyboard: [down, right]
-    #     # - on: end_cancel
-    #     #   input:
-    #     #     - keyboard: [enter]
-
     # }}}
 
     # swipe 3 up for brightnessup and down for next desktop {{{
@@ -952,6 +604,19 @@ touchpad:
     # 5 tap=close windows under the cursor {{{
     - type: tap
       fingers: 5
+      conditions:
+        - $window_class == "kitty"
+      actions:
+        - on: begin
+          input:
+            - mouse: [left]
+            - keyboard: [leftctrl+leftshift+w]
+          # plasma_shortcut: kwin,Window Close
+    # }}}
+
+    # 5 tap=close windows under the cursor {{{
+    - type: tap
+      fingers: 5
       actions:
         - on: begin
           input:
@@ -959,5 +624,3 @@ touchpad:
             - keyboard: [leftalt+f4]
           # plasma_shortcut: kwin,Window Close
     # }}}
-
-# }}}
