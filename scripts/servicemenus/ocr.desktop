@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=image/jpeg;image/png;image/tiff;image/bmp;image/webp;
+Actions=extractTextToClipboard;
+X-KDE-Priority=TopLevel
+
+[Desktop Action extractTextToClipboard]
+Name=Extract Text (OCR to Clipboard)
+Icon=edit-copy
+Exec=kitty -e bash -c 'tesseract "%f" stdout | tee /tmp/ocr.txt && xdg-open /tmp/ocr.txt'

@@ -1,0 +1,323 @@
+#
+# 	Part of kde-service-menu-reimage Version 2.7.1
+# 	Copyright (C) 2018-2026 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[Desktop Entry]
+#X-KDE-Priority=TopLevel
+Icon=edit-image
+Name=ReImage metadata service menu
+Type=Service
+X-KDE-ServiceTypes=KonqPopupMenu/Plugin
+MimeType=image/jpeg;image/tiff;
+TryExec=reimage-kdialog
+Actions=rfe;rff;_SEPARATOR_;sffe;sffn;_SEPARATOR_;seff;sefn;_SEPARATOR_;add-comment;view-metadata;extract-metadata;_SEPARATOR_;del-comment;del-exif;del-iptc;del-xmp;del-all;_SEPARATOR_;tfe;_SEPARATOR_;
+#X-KDE-Submenu=ReImage - Metadata
+#X-KDE-Submenu[ar]=ReImage - البيانات الوصفية
+#X-KDE-Submenu[it]=ReImage - Metadati
+#X-KDE-Submenu[ja]=ReImage - メタデータ
+#X-KDE-Submenu[pl]=ReImage - Metadane
+#X-KDE-Submenu[de]=ReImage - Metadaten
+#X-KDE-Submenu[eo]=ReImage - Metadatenoj
+#X-KDE-Submenu[fr]=ReImage - Métadonnées
+#X-KDE-Submenu[es]=ReImage - Metadatos
+#X-KDE-Submenu[pt]=ReImage - Metadados
+#X-KDE-Submenu[fa]=ReImage - متادیتا
+#X-KDE-Submenu[zh_CN]=ReImage - 元数据
+#X-KDE-Submenu[ru]=ReImage - Метаданные
+#X-KDE-Submenu[tr]=ReImage - Meta veriler
+
+################################################################################
+
+[Desktop Action rfe]
+Icon=edit-rename
+Exec=reimage-kdialog rfe %F
+Name=Rename from Exif date
+Name[ar]=تغيير التسمية من تاريخ Exif
+Name[it]=Rinomina dalla data Exif
+Name[ja]=Exif 日付からリネーム
+Name[pl]=Zmień nazwę na podstawie daty Exif
+Name[de]=Nach Exif-Datum umbenennen
+Name[eo]=Alinomi per Exif-dato
+Name[fr]=Renommer selon la date Exif
+Name[es]=Renombrar según la fecha Exif
+Name[pt]=Renomear a partir da data Exif
+Name[fa]=تغییر نام بر اساس تاریخ Exif
+Name[zh_CN]=按 Exif 日期重命名
+Name[ru]=Переименовать по дате Exif
+Name[tr]=Exif tarihine göre yeniden adlandır
+
+[Desktop Action rff]
+Icon=edit-rename
+Exec=reimage-kdialog rff %F
+Name=Rename from file's date
+Name[ar]=تغيير التسمية من تاريخ الملف
+Name[it]=Rinomina dalla data del file
+Name[ja]=ファイル日付からリネーム
+Name[pl]=Zmień nazwę na podstawie daty pliku
+Name[de]=Nach Dateidatum umbenennen
+Name[eo]=Alinomi per dosier-dato
+Name[fr]=Renommer selon la date du fichier
+Name[es]=Renombrar según la fecha del archivo
+Name[pt]=Renomear a partir da data do ficheiro
+Name[fa]=تغییر نام بر اساس تاریخ فایل
+Name[zh_CN]=按文件日期重命名
+Name[ru]=Переименовать по дате файла
+Name[tr]=Dosya tarihine göre yeniden adlandır
+
+################################################################################
+
+[Desktop Action sffe]
+Icon=appointment-new
+Exec=reimage-kdialog sffe %F
+Name=Set file date from Exif date
+Name[ar]=ضبط تاريخ الملف من تاريخ Exif
+Name[it]=Imposta la data del file a quella Exif
+Name[ja]=Exif からファイル日付を設定
+Name[pl]=Ustaw datę pliku na podstawie Exif
+Name[de]=Dateidatum anhand von Exif setzen
+Name[eo]=Agordi dosier-daton el Exif
+Name[fr]=Régler la date du fichier sur la date Exif
+Name[es]=Establecer fecha del archivo desde Exif
+Name[pt]=Definir data do ficheiro a partir de Exif
+Name[fa]=تنظیم تاریخ فایل از Exif
+Name[zh_CN]=从 Exif 设置文件日期
+Name[ru]=Установить дату файла из Exif
+Name[tr]=Exif verisinden dosya tarihini ayarla
+
+[Desktop Action sffn]
+Icon=appointment-new
+Exec=reimage-kdialog sffn %F
+Name=Set file date from file's name
+Name[ar]=ضبط تاريخ الملف من اسم الملف
+Name[it]=Imposta la data del file a quella del nome
+Name[ja]=ファイル名からファイル日付を設定
+Name[pl]=Ustaw datę pliku na podstawie nazwy
+Name[de]=Dateidatum anhand des Namens setzen
+Name[eo]=Agordi dosier-daton el nomo
+Name[fr]=Régler la date du fichier sur le nom
+Name[es]=Establecer fecha del archivo desde el nombre
+Name[pt]=Definir data do ficheiro a partir do nome
+Name[fa]=تنظیم تاریخ فایل از نام
+Name[zh_CN]=从文件名设置文件日期
+Name[ru]=Установить дату файла из имени
+Name[tr]=Dosya adından dosya tarihini ayarla
+
+################################################################################
+
+[Desktop Action seff]
+Icon=appointment-new
+Exec=reimage-kdialog seff %F
+Name=Set Exif date from file's date
+Name[ar]=ضبط تاريخ Exif من تاريخ الملف
+Name[it]=Imposta la data Exif a quella del file
+Name[ja]=ファイル日付から Exif 日付を設定
+Name[pl]=Ustaw datę Exif na podstawie pliku
+Name[de]=Exif-Datum anhand des Dateidatums setzen
+Name[eo]=Agordi Exif-daton el dosiero
+Name[fr]=Régler la date Exif sur la date du fichier
+Name[es]=Establecer fecha Exif desde el archivo
+Name[pt]=Definir data Exif a partir do ficheiro
+Name[fa]=تنظیم تاریخ Exif از فایل
+Name[zh_CN]=从文件设置 Exif 日期
+Name[ru]=Установить дату Exif из файла
+Name[tr]=Dosya verisinden Exif tarihini ayarla
+
+[Desktop Action sefn]
+Icon=appointment-new
+Exec=reimage-kdialog sefn %F
+Name=Set Exif date from file's name
+Name[ar]=ضبط تاريخ Exif من اسم الملف
+Name[it]=Imposta la data Exif a quella del nome
+Name[ja]=ファイル名から Exif 日付を設定
+Name[pl]=Ustaw datę Exif na podstawie nazwy
+Name[de]=Exif-Datum anhand des Namens setzen
+Name[eo]=Agordi Exif-daton el nomo
+Name[fr]=Régler la date Exif sur le nom
+Name[es]=Establecer fecha Exif desde el nombre
+Name[pt]=Definir data Exif a partir do nome
+Name[fa]=تنظیم تاریخ Exif از نام
+Name[zh_CN]=从文件名设置 Exif 日期
+Name[ru]=Установить дату Exif из имени
+Name[tr]=Dosya adından Exif tarihini ayarla
+
+################################################################################
+
+[Desktop Action add-comment]
+Icon=edit-comment
+Exec=reimage-kdialog ac %F
+Name=Add comment
+Name[ar]=إضافة تعليق
+Name[it]=Aggiungi un commento
+Name[ja]=コメントを追加
+Name[pl]=Dodaj komentarz
+Name[de]=Kommentar hinzufügen
+Name[eo]=Aldoni komenton
+Name[fr]=Ajouter un commentaire
+Name[es]=Añadir comentario
+Name[pt]=Adicionar comentário
+Name[fa]=افزودن یادداشت
+Name[zh_CN]=添加注释
+Name[ru]=Добавить комментарий
+Name[tr]=Yorum ekle
+
+[Desktop Action view-metadata]
+Icon=document-properties
+Exec=reimage-kdialog ve %F
+Name=View metadata
+Name[ar]=عرض البيانات الوصفية
+Name[it]=Visualizza metadati
+Name[ja]=メタデータを表示
+Name[pl]=Pokaż metadane
+Name[de]=Metadaten anzeigen
+Name[eo]=Vidi metadatenojn
+Name[fr]=Voir les métadonnées
+Name[es]=Ver metadatos
+Name[pt]=Visualizar metadados
+Name[fa]=مشاهده متادیتا
+Name[zh_CN]=查看元数据
+Name[ru]=Просмотреть метаданные
+Name[tr]=Meta verileri görüntüle
+
+[Desktop Action extract-metadata]
+Icon=document-export
+Exec=reimage-kdialog ee %F
+Name=Extract metadata to file
+Name[ar]=استخراج البيانات الوصفية إلى ملف
+Name[it]=Estrai metadati in un file
+Name[ja]=メタデータをファイルに抽出
+Name[pl]=Wyodrębnij metadane do pliku
+Name[de]=Metadaten in Datei extrahieren
+Name[eo]=Estrakti metadatenojn al dosiero
+Name[fr]=Extraire les métadonnées vers un fichier
+Name[es]=Extraer metadatos a un archivo
+Name[pt]=Extrair metadados para um ficheiro
+Name[fa]=استخراج متادیتا به فایل
+Name[zh_CN]=提取元数据到文件
+Name[ru]=Извлечь метаданные в файл
+Name[tr]=Meta verileri dosyaya aktar
+
+################################################################################
+
+[Desktop Action del-comment]
+Icon=delete-delete
+Exec=reimage-kdialog dc %F
+Name=Delete comment field
+Name[ar]=حذف حقل التعليق
+Name[it]=Cancella commento
+Name[ja]=コメントフィールドを削除
+Name[pl]=Usuń pole komentarza
+Name[de]=Kommentarfeld löschen
+Name[eo]=Forigi komentan kampon
+Name[fr]=Supprimer le champ commentaire
+Name[es]=Eliminar campo de comentario
+Name[pt]=Eliminar campo de comentário
+Name[fa]=حذف فیلد یادداشت
+Name[zh_CN]=删除注释字段
+Name[ru]=Удалить поле комментария
+Name[tr]=Yorum alanını sil
+
+[Desktop Action del-exif]
+Icon=edit-delete
+Exec=reimage-kdialog de %F
+Name=Strip Exif section
+Name[ar]=مسح قسم Exif
+Name[it]=Cancella le informazioni Exif
+Name[ja]=Exif セクションをクリア
+Name[pl]=Wyczyść sekcję Exif
+Name[de]=Exif-Bereich entfernen
+Name[eo]=Vakigi Exif-sekcion
+Name[fr]=Supprimer la section Exif
+Name[es]=Eliminar sección Exif
+Name[pt]=Limpar secção Exif
+Name[fa]=حذف بخش Exif
+Name[zh_CN]=清除 Exif 部分
+Name[ru]=Очистить секцию Exif
+Name[tr]=Exif bölümünü temizle
+
+[Desktop Action del-iptc]
+Icon=edit-delete
+Exec=reimage-kdialog di %F
+Name=Delete IPTC section
+Name[ar]=حذف قسم IPTC
+Name[it]=Cancella le informazioni IPTC
+Name[ja]=IPTC セクションを削除
+Name[pl]=Usuń sekcję IPTC
+Name[de]=IPTC-Bereich löschen
+Name[eo]=Forigi IPTC-sekcion
+Name[fr]=Supprimer la section IPTC
+Name[es]=Eliminar sección IPTC
+Name[pt]=Eliminar secção IPTC
+Name[fa]=حذف بخش IPTC
+Name[zh_CN]=删除 IPTC 部分
+Name[ru]=Удалить секцию IPTC
+Name[tr]=IPTC bölümünü sil
+
+[Desktop Action del-xmp]
+Icon=edit-delete
+Exec=reimage-kdialog dx %F
+Name=Delete XMP section
+Name[ar]=حذف قسم XMP
+Name[it]=Cancella le informazioni XMP
+Name[ja]=XMP セクションを削除
+Name[pl]=Usuń sekcję XMP
+Name[de]=XMP-Bereich löschen
+Name[eo]=Forigi XMP-sekcion
+Name[fr]=Supprimer la section XMP
+Name[es]=Eliminar sección XMP
+Name[pt]=Eliminar secção XMP
+Name[fa]=حذف بخش XMP
+Name[zh_CN]=删除 XMP 部分
+Name[ru]=Удалить секцию XMP
+Name[tr]=XMP bölümünü sil
+
+[Desktop Action del-all]
+Icon=edit-delete
+Exec=reimage-kdialog purejpg %F
+Name=Strip all unnecessary data
+Name[ar]=مسح جميع البيانات غير الضرورية
+Name[it]=Cancella tutti i metadati
+Name[ja]=すべての不要なデータを削除
+Name[pl]=Usuń wszystkie niepotrzebne dane
+Name[de]=Alle Metadaten entfernen
+Name[eo]=Forigi ĉiujn nenecesajn datenojn
+Name[fr]=Supprimer toutes les données inutiles
+Name[es]=Eliminar todos los datos innecesarios
+Name[pt]=Eliminar todos os dados desnecessários
+Name[fa]=حذف تمام متادیتای غیرضروری
+Name[zh_CN]=删除所有不必要的数据
+Name[ru]=Удалить все метаданные
+Name[tr]=Tüm gereksiz verileri temizle
+
+################################################################################
+
+[Desktop Action tfe]
+Icon=tag
+Exec=reimage-kdialog timestamp %F
+Name=Add timestamp from Exif
+Name[ar]=إضافة طابع زمني من Exif
+Name[it]=Aggiungi timestamp da Exif
+Name[ja]=Exif からタイムスタンプを追加
+Name[pl]=Dodaj znacznik czasu z Exif
+Name[de]=Zeitstempel aus Exif hinzufügen
+Name[eo]=Aldoni tempomarkon el Exif
+Name[fr]=Ajouter l'horodatage à partir d'Exif
+Name[es]=Añadir marca de tiempo desde Exif
+Name[pt]=Adicionar carimbo de data/hora a partir de Exif
+Name[fa]=افزودن برچسب زمان از Exif
+Name[zh_CN]=从 Exif 添加时间戳
+Name[ru]=Добавить отметку времени из Exif
+Name[tr]=Exif'ten zaman damgası ekle

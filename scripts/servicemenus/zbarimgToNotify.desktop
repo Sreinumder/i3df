@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+MimeType=image/png;image/jpeg;image/webp;image/gif;
+Actions=scanForCodes
+X-KDE-Priority=TopLevel
+
+[Desktop Action scanForCodes]
+Name=zbarimgToNotify
+Icon=barcode
+Exec=~/i3df/scripts/zbarimgToNotify
